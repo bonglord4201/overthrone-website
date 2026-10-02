@@ -14,8 +14,9 @@ Last updated: 2026-10-03. Read this first when picking the project back up.
 - Content (realms, ranks, forum posts, Tensura skills, settings) is edited in `/admin`, not in code.
 
 ### Website follow-ups
-- [ ] Check **Admin → Site Settings → Discord invite URL** is the invite that actually works
-      (`discord.gg/overthronesmp` vs the old `discord.gg/overthonesmp`).
+- Discord: the working invite is **`https://discord.gg/overthonesmp`** (no "r" after "th").
+  `discord.gg/overthronesmp` does NOT work. Use the working one everywhere (website + Tebex header),
+  or create a new never-expiring invite and update both places.
 - [ ] Add Tensura skills from https://tensura.wiki.gg/ (none are published yet).
 - [ ] **Tebex store URL** in Admin → Site Settings: leave EMPTY until the Tebex store is approved
       (the store currently shows a 503). Then set it to `https://overthronesmp.tebex.store`.
@@ -34,7 +35,8 @@ Last updated: 2026-10-03. Read this first when picking the project back up.
 - Asset pack + full settings sheet: `tebex-storefront/` (README, images, `build/render.mjs`).
 
 ### Tebex to-do (in order)
-1. [ ] Finish storefront blocks if not done: Category List (remove default "PACKAGES"),
+1. [ ] Tebex header Discord link → `https://discord.gg/overthonesmp`; clear Description on carousel slide 1.
+   [ ] Finish storefront blocks if not done: Category List (remove default "PACKAGES"),
        Category = Featured, Creator Code text, Footer text/links, Package pop-up enabled.
        Copy-paste text is in `tebex-storefront/README.md`.
 2. [ ] Continue setup → **Confirm customer support contact** (add support email).
