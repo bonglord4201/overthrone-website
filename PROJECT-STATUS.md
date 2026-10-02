@@ -31,11 +31,11 @@ Last updated: 2026-10-03. Read this first when picking the project back up.
   - Header logo + menu (Home, Realms, Forums, Discord, Website).
   - Carousel Style 1 with the 4 `*-v2-1920x640.jpg` slides set as **Background → Image**
     (Title/Description/Image fields left empty).
-  - Categories Featured, Ranks, Crate Keys, Cosmetics, Special Items, Bundles with their images.
+  - Categories Featured, Ranks, Crate Keys, Cosmetics, Throne Shards (owner's own image), Bundles.
 - Asset pack + full settings sheet: `tebex-storefront/` (README, images, `build/render.mjs`).
 
 ### Tebex to-do (in order)
-1. [ ] Tebex header Discord link → `https://discord.gg/overthonesmp`; clear Description on carousel slide 1.
+1. [x] Tebex header Discord link fixed; carousel slide 1 description cleared.
    [ ] Finish storefront blocks if not done: Category List (remove default "PACKAGES"),
        Category = Featured, Creator Code text, Footer text/links, Package pop-up enabled.
        Copy-paste text is in `tebex-storefront/README.md`.
