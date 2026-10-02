@@ -1,13 +1,15 @@
 {
   "name": "overthrone-website",
   "private": true,
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Official OVERTHRONE SMP website",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy && wrangler d1 migrations apply overthrone-db --remote",
+    "db:migrate": "wrangler d1 migrations apply overthrone-db --remote",
+    "db:migrate:local": "wrangler d1 migrations apply overthrone-db --local"
   },
   "devDependencies": {
-    "wrangler": "^4.50.0"
+    "wrangler": "^4.146.0"
   }
 }

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>OVERTHRONE SMP | Dark Fantasy MMORPG Minecraft Server</title>
-<meta name="description" content="OVERTHRONE SMP is a dark-fantasy MMORPG Minecraft server with Hunter ranks, five classes and four worlds. Don’t reach the throne. Overthrow it.">
+<meta name="description" content="OVERTHRONE SMP is a dark-fantasy MMORPG Minecraft server with Hunter ranks, six realms and Tensura: Reincarnated. Don’t reach the throne. Overthrow it.">
 <meta name="theme-color" content="#050505">
 <meta name="color-scheme" content="dark">
 <link rel="canonical" href="https://overthronesmp.net/">
@@ -28,59 +28,109 @@
 <link rel="preload" href="/fonts/lora-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="/styles.css">
 <script src="/app.js" defer></script>
+<script src="/content.js" defer></script>
 </head>
-<body>
+<body data-page="home">
 <a class="skip-link" href="#main">Skip to content</a>
+<div class="site-banner" data-banner hidden><div class="container"><span data-banner-text></span><a class="banner-link" data-banner-link hidden>Read more</a></div></div>
 <header class="site-header">
   <div class="container nav">
     <a class="brand" href="/" aria-label="OVERTHRONE SMP, home"><img src="/images/crown-mark.webp" alt="" width="48" height="40"><span>OVERTHRONE</span></a>
     <button class="menu" type="button" data-menu aria-expanded="false" aria-controls="site-nav" aria-label="Open menu"><span class="menu-bars" aria-hidden="true"></span></button>
     <nav class="site-nav" id="site-nav" data-nav aria-label="Main">
-      <ul class="nav-links"><li><a href="/" aria-current="page">Home</a></li><li><a href="/wiki">Wiki</a></li><li><a href="/store">Store</a></li></ul>
+      <ul class="nav-links"><li><a href="/" aria-current="page">Home</a></li><li><a href="/forums">Forums</a></li><li><a href="/store">Store</a></li></ul>
       <div class="nav-actions">
         <button class="btn btn-sm btn-primary" type="button" data-copy-ip><span data-label>Play Now</span></button>
-        <a class="btn btn-sm btn-ghost" href="https://discord.gg/overthonesmp" target="_blank" rel="noopener noreferrer">Discord</a>
+        <a class="btn btn-sm btn-ghost" href="https://discord.gg/overthonesmp" data-discord target="_blank" rel="noopener noreferrer">Discord</a>
       </div>
     </nav>
   </div>
 </header>
 <main id="main">
 <section class="hero">
-  <div class="container">
+  <div class="embers" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  <div class="container hero-inner">
     <h1 class="logo-wrap"><img class="logo" src="/images/overthrone-logo-800.webp" srcset="/images/overthrone-logo-480.webp 480w, /images/overthrone-logo-800.webp 800w" sizes="(max-width: 860px) 76vw, 440px" width="800" height="800" alt="OVERTHRONE SMP" fetchpriority="high"></h1>
-    <p class="tagline">Don’t reach the throne. Overthrow it.</p>
+    <p class="tagline" data-setting="hero_tagline">Don’t reach the throne. Overthrow it.</p>
     <div class="actions">
       <button class="btn btn-primary" type="button" data-copy-ip><span data-label>PLAY NOW</span></button>
-      <a class="btn btn-ghost" href="https://discord.gg/overthonesmp" target="_blank" rel="noopener noreferrer">DISCORD</a>
+      <a class="btn btn-ghost" href="https://discord.gg/overthonesmp" data-discord target="_blank" rel="noopener noreferrer">DISCORD</a>
     </div>
-    <p class="ip-line">Server address <button class="ip" type="button" data-copy-ip aria-label="Copy server address overthronesmp.net"><span data-label>overthronesmp.net</span></button></p>
+    <p class="ip-line">Server address <button class="ip" type="button" data-copy-ip aria-label="Copy server address overthronesmp.net"><span data-label data-setting="server_address">overthronesmp.net</span></button></p>
   </div>
 </section>
 
-<section class="section" id="worlds">
+<section class="info-strip" aria-label="Server information">
   <div class="container">
-    <div class="section-head"><h2>Worlds</h2><p>Four worlds, each with its own role.</p></div>
-    <ul class="list">
-        <li><strong>OVERTHRONE</strong><span>Hub</span></li>
-        <li><strong>THE REALM</strong><span>Survival</span></li>
-        <li><strong>THE FRONTIER</strong><span>Resource</span></li>
-        <li><strong>THE GATES</strong><span>Future dungeon / gate system</span></li>
-      </ul>
+    <dl class="info-grid">
+      <div><dt>Server address</dt><dd data-setting="server_address">overthronesmp.net</dd></div>
+      <div><dt>Minecraft</dt><dd data-setting="minecraft_version">1.21.1</dd></div>
+      <div><dt>Mod loader</dt><dd data-setting="mod_loader">NeoForge</dd></div>
+      <div><dt>Core mod</dt><dd data-setting="core_mod">Tensura: Reincarnated</dd></div>
+    </dl>
   </div>
 </section>
 
-<section class="section" id="ranks">
+<section class="section section-alt" id="announcements" data-announcements hidden>
   <div class="container">
-    <div class="section-head"><h2>Hunter Ranks</h2><p>The rank path runs from E to ???. Requirements are under development.</p></div>
-    <ol class="ranks" aria-label="Hunter ranks, lowest to highest"><li>E</li><li>D</li><li>C</li><li>B</li><li>A</li><li>S</li><li>???</li></ol>
+    <div class="section-head"><p class="eyebrow">Latest</p><h2>Announcements</h2></div>
+    <div class="announcements" data-announcement-list></div>
   </div>
 </section>
 
-<section class="section" id="classes">
+<section class="section" id="realms">
+  <span id="worlds" class="anchor-alias"></span>
   <div class="container">
-    <div class="section-head"><h2>Classes</h2></div>
-    <ul class="classes"><li>Warrior</li><li>Assassin</li><li>Mage</li><li>Ranger</li><li>Guardian</li></ul>
-    <p class="note">Abilities coming soon.</p>
+    <div class="section-head"><p class="eyebrow">The World of OVERTHRONE</p><h2>Realms</h2><p data-setting="realms_intro">Six realms, each with its own role.</p></div>
+    <div class="realms" data-realm-list>
+      <article class="realm"><span class="realm-num" aria-hidden="true">I</span><div class="realm-body"><p class="realm-sub">Hub</p><h3>OVERTHRONE</h3><p class="realm-desc">The hub and central starting area.</p></div></article>
+      <article class="realm"><span class="realm-num" aria-hidden="true">II</span><div class="realm-body"><p class="realm-sub">Survival</p><h3>THE REALM</h3><p class="realm-desc">The main survival world.</p></div></article>
+      <article class="realm"><span class="realm-num" aria-hidden="true">III</span><div class="realm-body"><p class="realm-sub">Resource</p><h3>THE FRONTIER</h3><p class="realm-desc">The resource and exploration world.</p></div></article>
+      <article class="realm"><span class="realm-num" aria-hidden="true">IV</span><div class="realm-body"><p class="realm-sub">Dungeon / Gate System</p><h3>THE GATES</h3><p class="realm-desc">The planned dungeon and gate system.</p><p class="realm-status">Under Development</p></div></article>
+      <article class="realm"><span class="realm-num" aria-hidden="true">V</span><div class="realm-body"><p class="realm-sub">Realm of the Divine</p><h3>AEONIA</h3><p class="realm-desc">A divine realm inspired by the Greek gods: ancient temples, divine architecture and a celestial, mythological atmosphere.</p><p class="realm-status">Coming Soon</p></div></article>
+      <article class="realm"><span class="realm-num" aria-hidden="true">VI</span><div class="realm-body"><p class="realm-sub">Realm of the Dead</p><h3>NETHERFALL</h3><p class="realm-desc">An underworld of volcanic wastes, ancient ruins, souls and the abyss. Extremely dangerous.</p><p class="realm-status">Coming Soon</p></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="ranks">
+  <div class="container">
+    <div class="section-head"><p class="eyebrow">Gameplay Progression</p><h2>Hunter Progression</h2><p data-setting="ranks_intro">The Hunter rank path runs from E to ???. Requirements are under development.</p></div>
+    <div class="hunter" data-ranks>
+      <ol class="ranks" aria-label="Hunter ranks, lowest to highest"><li>E</li><li>D</li><li>C</li><li>B</li><li>A</li><li>S</li><li>???</li></ol>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="tensura">
+  <div class="container">
+    <div class="section-head"><p class="eyebrow">Tensura: Reincarnated</p><h2>Tensura Skills</h2><p data-setting="tensura_intro">OVERTHRONE runs Tensura: Reincarnated. Browse its skills, magics and battlewills.</p></div>
+    <div class="tiles">
+      <a class="tile" href="/tensura?type=Skill"><span class="tile-kicker">Browse</span><strong>Skills</strong></a>
+      <a class="tile" href="/tensura?type=Magic"><span class="tile-kicker">Browse</span><strong>Magics</strong></a>
+      <a class="tile" href="/tensura?type=Battlewill"><span class="tile-kicker">Browse</span><strong>Battlewills</strong></a>
+    </div>
+    <p class="section-cta"><a class="btn btn-ghost" href="/tensura">Open Tensura Skills</a></p>
+  </div>
+</section>
+
+<div data-home-sections>
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head"><h2>Getting Started</h2></div>
+      <div class="rich"><p>OVERTHRONE SMP is a dark-fantasy MMORPG Minecraft server and is currently under development.</p><p>Join the Discord to follow development.</p></div>
+    </div>
+  </section>
+</div>
+
+<section class="join-band">
+  <div class="embers embers-low" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  <div class="container join-inner">
+    <div><p class="eyebrow">Join the Hunt</p><h2>Overthrow the throne.</h2></div>
+    <div class="actions">
+      <button class="btn btn-primary" type="button" data-copy-ip><span data-label>PLAY NOW</span></button>
+      <a class="btn btn-ghost" href="https://discord.gg/overthonesmp" data-discord target="_blank" rel="noopener noreferrer">DISCORD</a>
+    </div>
   </div>
 </section>
 </main>
@@ -89,7 +139,7 @@
     <div class="footer-copy">© <span data-year>2026</span> OVERTHRONE SMP
       <small>Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.</small>
     </div>
-    <nav class="footer-links" aria-label="Footer"><a href="/">Home</a><a href="/wiki">Wiki</a><a href="/store">Store</a><a href="https://discord.gg/overthonesmp" target="_blank" rel="noopener noreferrer">Discord</a></nav>
+    <nav class="footer-links" aria-label="Footer"><a href="/">Home</a><a href="/forums">Forums</a><a href="/tensura">Tensura Skills</a><a href="/store">Store</a><a href="https://discord.gg/overthonesmp" data-discord target="_blank" rel="noopener noreferrer">Discord</a><a data-social="youtube" href="/" hidden target="_blank" rel="noopener noreferrer">YouTube</a><a data-social="tiktok" href="/" hidden target="_blank" rel="noopener noreferrer">TikTok</a><a data-social="x" href="/" hidden target="_blank" rel="noopener noreferrer">X</a><a data-social="instagram" href="/" hidden target="_blank" rel="noopener noreferrer">Instagram</a><a data-social="twitch" href="/" hidden target="_blank" rel="noopener noreferrer">Twitch</a></nav>
   </div>
 </footer>
 <div class="sr-only" role="status" aria-live="polite" data-status></div>

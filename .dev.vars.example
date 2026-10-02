@@ -1,0 +1,3 @@
+# Local development only (copy to .dev.vars, never commit it).
+# Signs you into /admin on localhost without Cloudflare Access.
+DEV_ADMIN_EMAIL=you@example.com
