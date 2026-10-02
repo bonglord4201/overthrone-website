@@ -2,9 +2,11 @@
   "use strict";
 
   // Public site settings. Never put Tebex private credentials here.
+  // The Worker writes the admin-panel values onto <body> (data-server-address,
+  // data-tebex-url); these are the fallbacks if it can't.
   const CONFIG = {
-    serverAddress: "overthronesmp.net",
-    tebexUrl: "" // set to the public https:// Tebex store URL once it exists
+    serverAddress: document.body.dataset.serverAddress || "overthronesmp.net",
+    tebexUrl: document.body.dataset.tebexUrl || "" // public https:// Tebex store URL once it exists
   };
 
   const live = document.querySelector("[data-status]");

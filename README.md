@@ -2,50 +2,105 @@
 
 Official website for OVERTHRONE SMP: overthronesmp.net
 
-- Minecraft address: `overthronesmp.net`
-- Discord: `https://discord.gg/overthonesmp` (confirmed invite URL, do not "correct" it)
+- Minecraft address: `overthronesmp.net` (Minecraft 1.21.1, NeoForge, Tensura: Reincarnated)
+- Discord: `https://discord.gg/overthonesmp` (confirmed invite URL, do not "correct" it; editable in the admin panel)
 - Store: Tebex not created yet
 
 ## Stack
 
-Static site served by Cloudflare Workers Static Assets. There is no Worker script and no build step.
-Everything in `public/` is deployed as-is.
+- **Cloudflare Workers Static Assets** serves everything in `public/` (same as before).
+- **Worker script** (`src/worker.js`) runs only for the routes listed in `assets.run_worker_first`
+  in `wrangler.jsonc`: the JSON API (`/api/*`), uploaded images (`/media/*`), the admin panel
+  (`/admin`) and the main HTML pages, into which it writes the editable site settings.
+- **Cloudflare D1** database `overthrone-db` (binding `DB`) holds all editable content. Schema and
+  seed content live in `migrations/`.
+- **Cloudflare Access** protects `/admin` and `/api/admin/*`. The Worker also verifies the Access
+  token itself and checks the email against the `ADMIN_EMAILS` secret.
 
-## Develop and deploy
-
-```bash
-npm install
-npm run dev        # wrangler dev
-npx wrangler deploy
-```
+No build step. Pages ship with static fallback content, so the site still renders if the
+database is unreachable.
 
 ## Structure
 
 ```
+wrangler.jsonc        Worker + assets + D1 config
+src/
+  worker.js           routing, admin gate, settings injection (HTMLRewriter)
+  api.js              public + admin JSON API, media upload/serve
+  auth.js             Cloudflare Access JWT verification
+  settings.js         editable site settings (whitelist + defaults)
+  http.js             security headers, JSON helpers
+migrations/           D1 schema (0001) and initial content (0002)
 public/
-  index.html  wiki.html  store.html  404.html
-  styles.css  app.js
-  _headers            security headers + CSP (strict: no inline scripts or styles)
+  index.html  forums.html  tensura.html  store.html  404.html  admin.html
+  styles.css  app.js        shared styles; copy-IP, menu, store button
+  content.js                renders realms, ranks, forums, skills from /api/public/*
+  admin.css   admin.js      admin panel
+  _headers  _redirects      security headers + CSP; /wiki -> /forums
   robots.txt  sitemap.xml
-  fonts/              Lora (variable, Latin subset, OFL)
-  images/             real logo derivatives only (crop/resize of the official PNG)
+  fonts/  images/
 ```
 
-Internal links use extensionless URLs (`/wiki`, `/store`). Cloudflare redirects `/wiki.html` to `/wiki`.
+## Develop locally
 
-## Editing
+```bash
+npm install
+cp .dev.vars.example .dev.vars     # signs you into /admin on localhost only
+npm run db:migrate:local
+npm run dev                         # http://localhost:8787 and /admin
+```
 
-- Server address and the Tebex URL live at the top of `public/app.js`.
-- The Discord URL is written directly in each page's HTML.
-- Header and footer are repeated in each HTML file. Edit all four when changing navigation.
-- The CSP in `_headers` blocks inline `<script>`, inline `style=""` attributes and third-party hosts. Keep new code in `app.js` / `styles.css`, or loosen the CSP deliberately.
+## Deploy
+
+```bash
+npm run deploy    # wrangler deploy, then apply any new D1 migrations
+```
+
+`wrangler deploy` creates the `overthrone-db` D1 database automatically the first time.
+If the Worker is deployed by Cloudflare's Git integration (Workers Builds), set its
+**Deploy command** to `npm run deploy` so migrations are applied too.
+
+## Admin sign-in (one-time setup)
+
+1. Cloudflare dashboard → **Zero Trust** → **Access** → **Applications** → **Add an application** → **Self-hosted**.
+2. Add two public hostnames: `overthronesmp.net` path `admin` and `overthronesmp.net` path `api/admin`.
+3. Add a policy: Action **Allow**, Include **Emails** → your admin email(s).
+4. Save, open the application and copy its **Application Audience (AUD) Tag**.
+   Your team domain (`<team>.cloudflareaccess.com`) is shown in Zero Trust → Settings.
+5. Set three secrets on the Worker (Workers & Pages → overthrone-website → Settings →
+   Variables and Secrets, type **Secret**), or with `npx wrangler secret put <NAME>`:
+   - `ACCESS_TEAM_DOMAIN` = `<team>.cloudflareaccess.com`
+   - `ACCESS_AUD` = the AUD tag
+   - `ADMIN_EMAILS` = comma-separated admin emails (same as the Access policy)
+
+Then open https://overthronesmp.net/admin and sign in with the one-time code Access emails you.
+
+## Editing content
+
+Everything below is edited in `/admin`, no code changes needed:
+site settings (server address, Discord, Tebex URL, socials, banner, SEO, section intros),
+home sections, announcements, forum categories and posts, realms (with images),
+Hunter ranks, Tensura skills, and media.
+
+Tensura skill entries must come from the official wiki (https://tensura.wiki.gg/). Leave a
+field empty if the wiki does not document it; empty fields are hidden on the site.
+
+## Security notes
+
+- The CSP in `_headers` (mirrored in `src/http.js`) blocks inline scripts/styles and third-party
+  hosts. Keep new code in the `.js` / `.css` files.
+- Never put secrets in `public/`, `wrangler.jsonc` or site settings. Use `wrangler secret put`.
+- Admin write requests require the `X-Overthrone-Admin` header and a same-origin `Origin`.
+- Uploaded images are checked by file signature (PNG/JPEG/WebP/GIF/AVIF, max 1.5 MB) and served
+  with a sandboxing CSP.
 
 ## Connecting Tebex later
 
 1. Create the Tebex store.
-2. Put the public store URL in `CONFIG.tebexUrl` in `public/app.js`. `/store` then swaps "Store opening soon." for an "Open Store" button.
-3. For an on-site custom store using the Tebex Headless API, add a Worker script (`"main"` in `wrangler.jsonc`, `"run_worker_first": ["/api/*"]`) and store the private key with `wrangler secret put`. Never put Tebex private credentials in `public/`.
-4. Extend the CSP `connect-src` / `form-action` only for the hosts you actually use.
+2. Paste the public store URL into **Admin → Site Settings → Tebex store URL**. `/store` then
+   swaps "Store opening soon" for an "Open Store" button.
+3. For an on-site Tebex Headless store, add routes under `/api/` and store the private key with
+   `wrangler secret put`. Never put Tebex private credentials in `public/`.
 
 ## Assets
 

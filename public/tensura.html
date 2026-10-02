@@ -3,23 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Store | OVERTHRONE SMP</title>
-<meta name="description" content="The OVERTHRONE SMP store is opening soon.">
+<title>Tensura Skills | OVERTHRONE SMP</title>
+<meta name="description" content="Browse Tensura: Reincarnated skills, magics and battlewills on OVERTHRONE SMP (Minecraft 1.21.1, NeoForge).">
 <meta name="theme-color" content="#050505">
 <meta name="color-scheme" content="dark">
-<link rel="canonical" href="https://overthronesmp.net/store">
-<meta property="og:url" content="https://overthronesmp.net/store">
+<link rel="canonical" href="https://overthronesmp.net/tensura">
+<meta property="og:url" content="https://overthronesmp.net/tensura">
 <meta property="og:site_name" content="OVERTHRONE SMP">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Store | OVERTHRONE SMP">
-<meta property="og:description" content="Store opening soon.">
+<meta property="og:title" content="Tensura Skills | OVERTHRONE SMP">
+<meta property="og:description" content="Skills, magics and battlewills from Tensura: Reincarnated.">
 <meta property="og:image" content="https://overthronesmp.net/images/og-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="OVERTHRONE SMP logo. Don’t reach the throne. Overthrow it.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Store | OVERTHRONE SMP">
-<meta name="twitter:description" content="Store opening soon.">
+<meta name="twitter:title" content="Tensura Skills | OVERTHRONE SMP">
+<meta name="twitter:description" content="Skills, magics and battlewills from Tensura: Reincarnated.">
 <meta name="twitter:image" content="https://overthronesmp.net/images/og-card.png">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/images/favicon-32.png" type="image/png" sizes="32x32">
@@ -28,8 +28,9 @@
 <link rel="preload" href="/fonts/lora-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="/styles.css">
 <script src="/app.js" defer></script>
+<script src="/content.js" defer></script>
 </head>
-<body data-page="store">
+<body data-page="tensura">
 <a class="skip-link" href="#main">Skip to content</a>
 <div class="site-banner" data-banner hidden><div class="container"><span data-banner-text></span><a class="banner-link" data-banner-link hidden>Read more</a></div></div>
 <header class="site-header">
@@ -37,7 +38,7 @@
     <a class="brand" href="/" aria-label="OVERTHRONE SMP, home"><img src="/images/crown-mark.webp" alt="" width="48" height="40"><span>OVERTHRONE</span></a>
     <button class="menu" type="button" data-menu aria-expanded="false" aria-controls="site-nav" aria-label="Open menu"><span class="menu-bars" aria-hidden="true"></span></button>
     <nav class="site-nav" id="site-nav" data-nav aria-label="Main">
-      <ul class="nav-links"><li><a href="/">Home</a></li><li><a href="/forums">Forums</a></li><li><a href="/store" aria-current="page">Store</a></li></ul>
+      <ul class="nav-links"><li><a href="/">Home</a></li><li><a href="/forums">Forums</a></li><li><a href="/store">Store</a></li></ul>
       <div class="nav-actions">
         <button class="btn btn-sm btn-primary" type="button" data-copy-ip><span data-label>Play Now</span></button>
         <a class="btn btn-sm btn-ghost" href="https://discord.gg/overthonesmp" data-discord target="_blank" rel="noopener noreferrer">Discord</a>
@@ -46,16 +47,36 @@
   </div>
 </header>
 <main id="main">
-<div class="center-page store-page">
+<div class="page-head">
   <div class="embers embers-low" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
   <div class="container">
-    <p class="eyebrow">OVERTHRONE SMP</p>
-    <h1>Store</h1>
-    <div data-store-soon>
-      <p class="lead">STORE OPENING SOON</p>
-      <p class="muted">Tebex integration will be connected later.</p>
+    <p class="eyebrow">Tensura: Reincarnated</p>
+    <h1>Tensura Skills</h1>
+    <p><span data-setting="tensura_intro">OVERTHRONE runs Tensura: Reincarnated. Browse its skills, magics and battlewills.</span></p>
+    <dl class="head-facts">
+      <div><dt>Mod</dt><dd data-setting="core_mod">Tensura: Reincarnated</dd></div>
+      <div><dt>Minecraft</dt><dd data-setting="minecraft_version">1.21.1</dd></div>
+      <div><dt>Loader</dt><dd data-setting="mod_loader">NeoForge</dd></div>
+      <div><dt>Source</dt><dd><a class="inline-link" href="https://tensura.wiki.gg/" target="_blank" rel="noopener noreferrer">Official Tensura wiki</a></dd></div>
+    </dl>
+  </div>
+</div>
+<div class="container skills-page">
+  <div class="skill-tools" data-skill-tools>
+    <div class="skill-tabs" role="group" aria-label="Filter by type">
+      <button type="button" class="chip" data-type="" aria-pressed="true">All</button>
+      <button type="button" class="chip" data-type="Skill" aria-pressed="false">Skills</button>
+      <button type="button" class="chip" data-type="Magic" aria-pressed="false">Magics</button>
+      <button type="button" class="chip" data-type="Battlewill" aria-pressed="false">Battlewills</button>
     </div>
-    <a class="btn btn-primary" data-store-open target="_blank" rel="noopener noreferrer" hidden>Open Store</a>
+    <div class="skill-filters">
+      <label class="field-inline"><span class="sr-only">Search skills</span><input type="search" placeholder="Search skills" data-skill-search autocomplete="off"></label>
+      <label class="field-inline"><span class="sr-only">Category</span><select data-skill-category><option value="">All categories</option></select></label>
+    </div>
+  </div>
+  <p class="skill-count" data-skill-count aria-live="polite"></p>
+  <div class="skill-list" data-skill-list>
+    <p class="empty">Skill entries are being prepared from the official Tensura: Reincarnated documentation.</p>
   </div>
 </div>
 </main>
