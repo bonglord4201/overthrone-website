@@ -180,49 +180,46 @@ add("logo/overthrone-logo-wide-1200x300.png", 1200, 300,
      </div>
    </div>`, { transparent: true });
 
-// Hero / carousel slides ---------------------------------------------
-const heroText = (size) => `
-  <p class="eyebrow" style="font-size:${size * 0.2}px;margin-bottom:${size * 0.22}px">Official Store</p>
-  <div class="silver" style="font-size:${size}px;font-weight:600;letter-spacing:.08em;line-height:1">OVERTHRONE</div>
-  <div class="rule" style="width:${size * 1.4}px;margin:${size * 0.28}px 0 ${size * 0.26}px"></div>
-  <p style="font-size:${size * 0.36}px;color:#e9e4da">Don’t reach the throne. Overthrow it.</p>
-  <p style="font-family:system-ui,'Segoe UI',Arial,sans-serif;font-size:${size * 0.19}px;letter-spacing:.24em;color:#a39d94;margin-top:${size * 0.3}px">SERVER&nbsp;&nbsp;<span style="color:#efebe4;font-weight:700;letter-spacing:.12em">OVERTHRONESMP.NET</span></p>`;
+// Carousel slides ----------------------------------------------------
+// The Tebex carousel uses one image for every screen size and, on phones,
+// crops it to roughly the middle 500px. Everything that must be readable
+// sits inside a centred 460px-wide safe zone; the sides are decoration only.
+const SANS = "system-ui,'Segoe UI',Arial,sans-serif";
+const diamond = '<span style="color:#c51c38">◆</span>';
+const watermark = `<div class="silver" style="position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font-size:330px;font-weight:600;letter-spacing:.12em;opacity:.022;white-space:nowrap">OVERTHRONE</div>`;
+const flank = `<div style="position:absolute;top:50%;left:0;right:0;height:0">
+  <div style="position:absolute;right:calc(50% + 300px);width:520px;height:1px;background:linear-gradient(270deg,rgba(197,28,56,.8),transparent)"></div>
+  <div style="position:absolute;left:calc(50% + 300px);width:520px;height:1px;background:linear-gradient(90deg,rgba(197,28,56,.8),transparent)"></div>
+  <div style="position:absolute;right:calc(50% + 294px);top:-5px;width:10px;height:10px;transform:rotate(45deg);background:#c51c38"></div>
+  <div style="position:absolute;left:calc(50% + 294px);top:-5px;width:10px;height:10px;transform:rotate(45deg);background:#c51c38"></div></div>`;
+const centred = (inner) => `<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">${inner}</div>`;
+const rule = '<div class="rule" style="width:220px;margin:22px auto;background:linear-gradient(90deg,transparent,#c51c38,transparent)"></div>';
+const carousel = (file, seed, inner, withFlank = true) =>
+  add(file, 1920, 640, `${backdrop(1920, 640, seed, { gx: "50%", gy: "50%" })}${watermark}${withFlank ? flank : ""}<div class="frame" style="--inset:20px"></div>${centred(inner)}`);
 
-add("carousel/01-hero-1920x640.jpg", 1920, 640,
-  `${backdrop(1920, 640, 11, { gx: "32%", gy: "50%" })}<div class="frame" style="--inset:20px"></div>
-   <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:90px">
-     <img class="logo" src="${LOGO}" width="520" height="520">
-     <div>${heroText(118)}</div>
-   </div>`);
+carousel("carousel/01-hero-v2-1920x640.jpg", 11, `
+  <img class="logo" src="${LOGO}" width="390" height="390" style="margin-top:-18px">
+  <p style="font-size:34px;line-height:1.25;color:#e9e4da;margin-top:2px">Don’t reach the throne.<br>Overthrow it.</p>
+  <p style="font-family:${SANS};font-size:17px;letter-spacing:.3em;color:#a39d94;margin-top:16px">OVERTHRONESMP.NET</p>`, false);
 
-add("carousel/01-hero-mobile-1080x1080.jpg", 1080, 1080,
-  `${backdrop(1080, 1080, 12, { gy: "36%" })}<div class="frame" style="--inset:20px"></div>
-   <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
-     <img class="logo" src="${LOGO}" width="560" height="560" style="margin-top:-30px">
-     <p style="font-size:44px;color:#e9e4da;margin-top:10px">Don’t reach the throne. Overthrow it.</p>
-     <div class="rule" style="width:260px;margin:30px auto 26px;background:linear-gradient(90deg,transparent,#c51c38,transparent)"></div>
-     <p style="font-family:system-ui,'Segoe UI',Arial,sans-serif;font-size:26px;letter-spacing:.24em;color:#a39d94">SERVER&nbsp;&nbsp;<span style="color:#efebe4;font-weight:700">OVERTHRONESMP.NET</span></p>
-   </div>`);
+carousel("carousel/02-realms-v2-1920x640.jpg", 21, `
+  <p class="eyebrow" style="font-size:17px">The World of Overthrone</p>
+  <div class="silver" style="font-size:74px;font-weight:600;letter-spacing:.04em;line-height:1.05;margin-top:18px">SIX REALMS<br>AWAIT</div>
+  ${rule}
+  <p style="font-family:${SANS};font-weight:700;font-size:16px;letter-spacing:.2em;color:#c3c6cc;line-height:2">OVERTHRONE ${diamond} THE REALM<br>THE FRONTIER ${diamond} THE GATES<br>AEONIA ${diamond} NETHERFALL</p>`);
 
-const slide = (file, w, h, seed, eyebrow, title, sub, extra = "") =>
-  add(file, w, h, `${backdrop(w, h, seed, { gx: "50%", gy: "55%" })}<div class="frame" style="--inset:20px"></div>
-   <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 80px">
-     <p class="eyebrow" style="font-size:${w > 1100 ? 24 : 28}px;margin-bottom:24px">${eyebrow}</p>
-     <div class="silver" style="font-size:${w > 1100 ? 104 : 96}px;font-weight:600;letter-spacing:.06em;line-height:1.05">${title}</div>
-     <div class="rule" style="width:300px;margin:34px auto 30px;background:linear-gradient(90deg,transparent,#c51c38,transparent)"></div>
-     <p style="font-size:${w > 1100 ? 36 : 40}px;color:#e9e4da;max-width:1200px">${sub}</p>
-     ${extra}
-   </div>`);
+carousel("carousel/03-play-v2-1920x640.jpg", 31, `
+  <p class="eyebrow" style="font-size:17px">Join the Hunt</p>
+  <div class="silver" style="font-size:58px;font-weight:600;letter-spacing:.03em;line-height:1.1;margin-top:18px">OVERTHRONE<br>SMP.NET</div>
+  ${rule}
+  <p style="font-size:25px;color:#e9e4da">Copy the address and enter the realm.</p>
+  <p style="font-family:${SANS};font-size:15px;letter-spacing:.2em;color:#a39d94;margin-top:16px;line-height:1.9">MINECRAFT 1.21.1 ${diamond} NEOFORGE<br>TENSURA: REINCARNATED</p>`);
 
-const realmRow = (px) => `<p style="font-family:system-ui,'Segoe UI',Arial,sans-serif;font-weight:700;font-size:${px}px;letter-spacing:.22em;color:#c3c6cc;margin-top:34px;line-height:1.9">OVERTHRONE <span style="color:#c51c38">◆</span> THE REALM <span style="color:#c51c38">◆</span> THE FRONTIER<br>THE GATES <span style="color:#c51c38">◆</span> AEONIA <span style="color:#c51c38">◆</span> NETHERFALL</p>`;
-const playRow = (px, wrap) => `<p style="font-family:system-ui,'Segoe UI',Arial,sans-serif;font-size:${px}px;letter-spacing:.22em;color:#a39d94;margin-top:34px;line-height:1.9">MINECRAFT 1.21.1 <span style="color:#c51c38">◆</span> NEOFORGE ${wrap ? "<br>" : '<span style="color:#c51c38">◆</span> '}TENSURA: REINCARNATED</p>`;
-
-slide("carousel/02-realms-1920x640.jpg", 1920, 640, 21, "The World of OVERTHRONE", "SIX REALMS AWAIT", "", realmRow(24));
-slide("carousel/02-realms-mobile-1080x1080.jpg", 1080, 1080, 22, "The World of OVERTHRONE", "SIX REALMS<br>AWAIT", "", realmRow(26));
-slide("carousel/03-play-1920x640.jpg", 1920, 640, 31, "Join the Hunt", "OVERTHRONESMP.NET", "Copy the address and enter the realm.", playRow(22));
-slide("carousel/03-play-mobile-1080x1080.jpg", 1080, 1080, 32, "Join the Hunt", "OVERTHRONE<br>SMP.NET", "Copy the address and enter the realm.", playRow(24, true));
-slide("carousel/04-discord-1920x640.jpg", 1920, 640, 41, "Community", "JOIN THE DISCORD", "News, events and support from the OVERTHRONE team.");
-slide("carousel/04-discord-mobile-1080x1080.jpg", 1080, 1080, 42, "Community", "JOIN THE<br>DISCORD", "News, events and support from the OVERTHRONE team.");
+carousel("carousel/04-discord-v2-1920x640.jpg", 41, `
+  <p class="eyebrow" style="font-size:17px">Community</p>
+  <div class="silver" style="font-size:78px;font-weight:600;letter-spacing:.04em;line-height:1.05;margin-top:18px">JOIN THE<br>DISCORD</div>
+  ${rule}
+  <p style="font-size:26px;line-height:1.35;color:#e9e4da">News, events and support<br>from the OVERTHRONE team.</p>`);
 
 // Category tiles (no text: Tebex shows the category name itself) ------
 for (const key of Object.keys(ICONS)) {

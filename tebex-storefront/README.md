@@ -24,11 +24,13 @@ checkout all stay 100% Tebex.
 |---|---|---|
 | `assets/logo/overthrone-logo-800.png` | 800×800, transparent | **Header → Logo** (PNG/WEBP, ≥500px wide, ≤5MB) |
 | `assets/logo/overthrone-logo-wide-1200x300.png` | 1200×300, transparent | Alternative header logo if the square one looks too tall |
-| `assets/carousel/01-hero-1920x640.jpg` | 1920×640 | **Carousel slide 1** (desktop) |
-| `assets/carousel/02-realms-1920x640.jpg` | 1920×640 | Carousel slide 2 |
-| `assets/carousel/03-play-1920x640.jpg` | 1920×640 | Carousel slide 3 |
-| `assets/carousel/04-discord-1920x640.jpg` | 1920×640 | Carousel slide 4 |
-| `assets/carousel/*-mobile-1080x1080.jpg` | 1080×1080 | Use these if a slide has a separate mobile image, or if the builder crops wide images on phones |
+| `assets/carousel/01-hero-v2-1920x640.jpg` | 1920×640 | **Carousel slide 1** |
+| `assets/carousel/02-realms-v2-1920x640.jpg` | 1920×640 | Carousel slide 2 |
+| `assets/carousel/03-play-v2-1920x640.jpg` | 1920×640 | Carousel slide 3 |
+| `assets/carousel/04-discord-v2-1920x640.jpg` | 1920×640 | Carousel slide 4 |
+
+The Tebex carousel uses one image for all screen sizes and crops it to the middle on phones, so
+all text on the slides sits in a centred safe zone about 460px wide.
 | `assets/categories/featured-800.png` | 800×800 | Category image: **Featured** |
 | `assets/categories/ranks-800.png` | 800×800 | Category image: **Ranks** |
 | `assets/categories/crate-keys-800.png` | 800×800 | Category image: **Crate Keys** |
@@ -70,15 +72,11 @@ a category never leaves a wrong label baked into an image.
 - Login and Basket are Tebex's own buttons. Leave them enabled.
 
 ### Carousel
-| Slide | Image | Link |
-|---|---|---|
-| 1 | `01-hero-1920x640.jpg` | Featured category (or store home) |
-| 2 | `02-realms-1920x640.jpg` | `https://overthronesmp.net/#realms` |
-| 3 | `03-play-1920x640.jpg` | `https://overthronesmp.net` |
-| 4 | `04-discord-1920x640.jpg` | your Discord invite |
-
-The slide text is already in the images. If a slide has title or subtitle fields, leave them empty
-so the text isn't shown twice. If it has an alt-text field, use the slide's headline.
+- **Style:** 1.
+- For each **Carousel Media Item**, set **Background** to **Image** and choose the slide image.
+- Leave **Image** (the small foreground picture), **Title** and **Description** empty, because the text is already in the images.
+- Optionally add **Image alt text** with the slide's headline.
+- Slides have no link field in this builder. Visitors navigate with the header menu.
 
 ### Category List
 Create the categories in this order and give each its image:
