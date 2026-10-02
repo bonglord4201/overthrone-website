@@ -1,0 +1,13 @@
+{
+  "name": "overthrone-website",
+  "private": true,
+  "version": "3.0.0",
+  "description": "Official OVERTHRONE SMP website",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.50.0"
+  }
+}
