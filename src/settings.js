@@ -25,7 +25,7 @@ export const SETTINGS = {
   seo_home_title:       { group: "SEO", label: "Home page title", type: "text", max: 120, default: "" },
   seo_home_description: { group: "SEO", label: "Home page description", type: "text", max: 300, default: "" },
   seo_og_description:   { group: "SEO", label: "Social share description", type: "text", max: 200, default: "" },
-  vote_rewards:         { group: "Voting", label: "Voting rewards text (shown on /vote)", type: "text", max: 300, default: "" }
+  vote_rewards:         { group: "Voting", label: "Voting rewards text (shown on /vote)", type: "text", max: 300, default: "Every vote rewards you with 1x Vote Key and $50,000 in-game balance." }
 };
 
 // Vote page slots: vote_1_name / vote_1_url ... A slot shows on /vote once it has a URL.
