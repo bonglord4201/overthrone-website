@@ -77,5 +77,37 @@
     document.querySelectorAll("[data-store-open]").forEach((el) => { el.hidden = false; el.href = CONFIG.tebexUrl; });
   }
 
+  // Vote page: remember which sites this visitor voted on today (this browser only).
+  const voteCards = document.querySelectorAll("a[data-vote-slot]:not([hidden])");
+  if (voteCards.length) {
+    const today = new Date().toISOString().slice(0, 10);
+    const key = "overthrone-votes";
+    let state = {};
+    try { state = JSON.parse(localStorage.getItem(key) || "{}"); } catch {}
+    if (state.day !== today) state = { day: today, sites: [] };
+    const done = document.querySelector("[data-vote-done]");
+    const total = document.querySelector("[data-vote-total]");
+    const meter = document.querySelector("[data-vote-meter]");
+    const progress = document.querySelector("[data-vote-progress]");
+    const paint = () => {
+      let n = 0;
+      voteCards.forEach((card) => {
+        const on = state.sites.includes(card.href);
+        card.classList.toggle("is-voted", on);
+        if (on) n++;
+      });
+      if (done) done.textContent = n;
+      if (total) total.textContent = voteCards.length;
+      if (meter) meter.style.width = Math.round((n / voteCards.length) * 100) + "%";
+      if (progress) progress.hidden = false;
+    };
+    voteCards.forEach((card) => card.addEventListener("click", () => {
+      if (!state.sites.includes(card.href)) state.sites.push(card.href);
+      try { localStorage.setItem(key, JSON.stringify(state)); } catch {}
+      setTimeout(paint, 300);
+    }));
+    paint();
+  }
+
   document.querySelectorAll("[data-year]").forEach((el) => { el.textContent = new Date().getFullYear(); });
 })();

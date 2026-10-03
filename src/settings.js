@@ -29,10 +29,37 @@ export const SETTINGS = {
 };
 
 // Vote page slots: vote_1_name / vote_1_url ... A slot shows on /vote once it has a URL.
-export const VOTE_SLOTS = 6;
+export const VOTE_SLOTS = 8;
 for (let n = 1; n <= VOTE_SLOTS; n++) {
   SETTINGS[`vote_${n}_name`] = { group: "Voting", label: `Vote site ${n} name`, type: "text", max: 60, default: "" };
   SETTINGS[`vote_${n}_url`] = { group: "Voting", label: `Vote site ${n} link`, type: "url", default: "" };
+}
+
+// Friendly names for known vote sites, used when a vote site has no name (or a URL as its name).
+const VOTE_SITE_NAMES = {
+  "minecraft-mp.com": "Minecraft-MP",
+  "minecraftservers.org": "MinecraftServers.org",
+  "topg.org": "TopG",
+  "planetminecraft.com": "Planet Minecraft",
+  "minelist.io": "Minelist",
+  "minecraft-server-list.com": "Minecraft Server List",
+  "minecraft-server.net": "Minecraft-Server.net",
+  "servers-minecraft.net": "Servers-Minecraft",
+  "topminecraftservers.org": "Top Minecraft Servers",
+  "minecraftlist.com": "MinecraftList",
+  "craftlist.org": "Craftlist",
+  "minecraft.buzz": "Minecraft.buzz"
+};
+
+export function voteHost(url) {
+  try { return new URL(url).hostname.replace(/^www\./, ""); } catch { return ""; }
+}
+
+export function voteName(url, name) {
+  const n = String(name || "").trim();
+  if (n && !/^(https?:\/\/|www\.)|\.(com|org|net|io)\b/i.test(n)) return n;
+  const host = voteHost(url);
+  return VOTE_SITE_NAMES[host] || host || "Vote site";
 }
 
 export const isHttpUrl = (v) => /^https?:\/\/[^\s"'<>]+$/i.test(v);
@@ -42,7 +69,9 @@ export function cleanSetting(key, value) {
   const def = SETTINGS[key];
   if (!def) return null;
   if (def.type === "bool") return value === true || value === "1" || value === 1 ? "1" : "0";
-  const v = String(value ?? "").trim();
+  let v = String(value ?? "").trim();
+  // Accept links pasted without https:// (e.g. "minecraft-mp.com/server/1/vote/").
+  if (def.type === "url" && v && !/^[a-z]+:/i.test(v) && /^[\w-]+(\.[\w-]+)+(\/|$)/.test(v)) v = "https://" + v;
   if (def.type === "url" && v && !isHttpUrl(v)) throw new Error(def.label + " must start with https://");
   if (def.type === "link" && v && !isLink(v)) throw new Error(def.label + " must be a full URL or a path starting with /");
   if (def.max && v.length > def.max) throw new Error(def.label + " is too long (max " + def.max + ").");

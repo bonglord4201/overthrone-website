@@ -429,18 +429,46 @@ footer{padding:40px 0 32px;background:#030303;border-top:1px solid var(--line)}
 .rules-help .btn{margin:10px 10px 0 0}
 
 /* ---------- Vote page ---------- */
-.vote-page{padding:40px 0 96px;display:grid;gap:40px}
-.vote-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
-.vote-card{display:grid;gap:6px;padding:22px;border:1px solid var(--line);background:var(--panel);transition:border-color .2s,transform .2s,background .2s}
-.vote-card:hover,.vote-card:focus-visible{border-color:var(--red-hi);background:var(--panel-2);transform:translateY(-2px)}
-.vote-card-num{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
-.vote-card-name{font-family:var(--display);font-size:22px;color:#fff;overflow-wrap:anywhere}
-.vote-card-go{margin-top:6px;color:var(--red-text);font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase}
-.vote-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-.vote-panel{border:1px solid var(--line);background:var(--panel);padding:26px}
-.vote-panel h2{font-size:24px;margin-bottom:12px;text-transform:uppercase}
-.vote-panel p{margin:0;color:var(--muted)}
+.vote-hero{position:relative;overflow:hidden;padding:56px 0 48px;border-bottom:1px solid var(--line);background:radial-gradient(120% 140% at 85% 0%,rgba(165,22,45,.35),transparent 55%),linear-gradient(180deg,#0d0709,var(--black))}
+.vote-hero-inner{position:relative;display:grid;gap:32px}
+.vote-hero-text{max-width:640px}
+.vote-hero h1{font-size:clamp(38px,6vw,68px);text-transform:uppercase;letter-spacing:.01em}
+.vote-hero-text>p:not(.eyebrow){margin:14px 0 0;color:var(--muted);font-size:17px}
+.vote-hero-stats{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:22px}
+.vote-stat{font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.vote-stat strong{color:#fff;font-size:18px}
+.vote-meter{position:relative;width:180px;height:6px;background:rgba(255,255,255,.08);overflow:hidden}
+.vote-meter span{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,var(--red-hi),var(--gold));transition:width .4s}
+.vote-banner{margin:0;justify-self:start;max-width:100%;padding:6px;border:1px solid rgba(197,28,56,.55);background:#0a0507;box-shadow:0 0 0 1px rgba(0,0,0,.6),0 0 40px rgba(197,28,56,.35),0 20px 60px rgba(0,0,0,.6)}
+.vote-banner video{display:block;width:min(936px,100%);height:auto;aspect-ratio:936/120;background:#0a0507}
+.vote-page{padding:44px 0 96px;display:grid;gap:44px}
+.vote-sites-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:10px 24px;margin-bottom:20px}
+.vote-sites-head h2{font-size:clamp(28px,3.4vw,40px);text-transform:uppercase}
+.vote-sites-head p{margin:0;color:var(--muted);max-width:520px}
+.vote-sites-head strong{color:#fff}
+.vote-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,460px),1fr));gap:14px}
+.vote-card{position:relative;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px;min-width:0;padding:18px 18px 18px 20px;border:1px solid var(--line);background:linear-gradient(90deg,rgba(165,22,45,.14),transparent 60%),var(--panel);transition:border-color .2s,transform .2s,box-shadow .2s}
+.vote-card:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--red-hi)}
+.vote-card:hover,.vote-card:focus-visible{border-color:var(--red-hi);transform:translateY(-2px);box-shadow:0 10px 30px rgba(197,28,56,.25)}
+.vote-card-num{font-family:var(--display);font-size:30px;font-weight:700;line-height:1;color:var(--red-text);font-variant-numeric:tabular-nums}
+.vote-card-body{display:grid;gap:2px;min-width:0}
+.vote-card-name{font-family:var(--display);font-size:21px;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vote-card-host{font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vote-card-btn{display:inline-grid;place-items:center;min-height:44px;min-width:128px;padding:0 18px;background:var(--red);color:#fff;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;transition:background .2s}
+.vote-card:hover .vote-card-btn,.vote-card:focus-visible .vote-card-btn{background:var(--red-hi)}
+.vote-card-done{display:none}
+.vote-card.is-voted{border-color:rgba(61,220,132,.35);background:linear-gradient(90deg,rgba(61,220,132,.08),transparent 60%),var(--panel)}
+.vote-card.is-voted:before{background:#3ddc84}
+.vote-card.is-voted .vote-card-btn{background:transparent;border:1px solid rgba(61,220,132,.5);color:#3ddc84;letter-spacing:.06em}
+.vote-card.is-voted .vote-card-label{display:none}
+.vote-card.is-voted .vote-card-done{display:inline}
+.vote-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
+.vote-panel{border:1px solid var(--line);background:var(--panel);padding:28px}
+.vote-panel-rewards{background:radial-gradient(120% 120% at 100% 0%,rgba(201,164,93,.12),transparent 60%),var(--panel);border-color:rgba(201,164,93,.3)}
+.vote-panel h2{font-size:26px;margin:6px 0 12px;text-transform:uppercase}
+.vote-panel p:not(.eyebrow){margin:0;color:var(--muted)}
 .vote-steps{margin:0;padding-left:22px;color:var(--muted)}
-.vote-steps li{margin:6px 0}
+.vote-steps li{margin:7px 0}
 .vote-steps strong{color:#fff}
+@media(max-width:520px){.vote-card{grid-template-columns:auto 1fr;padding:16px}.vote-card-btn{grid-column:1/-1}.vote-hero{padding:40px 0 36px}}
 @media(max-width:560px){.rule-list li{grid-template-columns:40px 1fr}}

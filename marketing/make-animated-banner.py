@@ -217,12 +217,14 @@ def frame(i):
     d = ImageDraw.Draw(img)
     d.rectangle((0, 0, SW - 1, SH - 1), outline=(150, 18, 38, 255), width=S)
     d.rectangle((S, S, SW - 1 - S, SH - 1 - S), outline=(60, 8, 16, 255), width=S)
-    return img.convert("RGB").resize((W, H), Image.LANCZOS)
+    return img.convert("RGB")
 
 
 tmp = tempfile.mkdtemp()
 for i in range(N):
-    frame(i).save(os.path.join(tmp, f"f{i:03d}.png"))
+    big = frame(i)
+    big.resize((W, H), Image.LANCZOS).save(os.path.join(tmp, f"f{i:03d}.png"))
+    big.resize((W * 2, H * 2), Image.LANCZOS).save(os.path.join(tmp, f"h{i:03d}.png"))
 mp4 = os.path.join(HERE, "overthrone-banner-animated-468x60.mp4")
 gif = os.path.join(HERE, "overthrone-banner-animated-468x60.gif")
 subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", os.path.join(tmp, "f%03d.png"),
@@ -230,6 +232,14 @@ subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-
 subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", os.path.join(tmp, "f%03d.png"),
                 "-vf", "fps=10,split[a][b];[a]palettegen=max_colors=96:stats_mode=full[p];[b][p]paletteuse=dither=bayer:bayer_scale=5",
                 "-loop", "0", gif], check=True)
+# 2x version for the website's vote page (936x120) + poster frame
+web = os.path.join(ROOT, "public/images")
+subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", os.path.join(tmp, "h%03d.png"),
+                "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "22", "-preset", "slow", "-movflags", "+faststart", "-an",
+                os.path.join(web, "vote-banner.mp4")], check=True)
+subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", os.path.join(web, "vote-banner.mp4"), "-c:v", "libvpx-vp9", "-b:v", "0",
+                "-crf", "34", "-row-mt", "1", "-an", os.path.join(web, "vote-banner.webm")], check=True)
+Image.open(os.path.join(tmp, "h010.png")).save(os.path.join(web, "vote-banner-poster.webp"), quality=85)
 sheet = Image.new("RGB", (W, H * 6 + 5 * 4), (30, 30, 30))
 for j, fi in enumerate([10, 50, 90, 140, 180, 215]):
     sheet.paste(Image.open(os.path.join(tmp, f"f{fi:03d}.png")), (0, j * (H + 4)))

@@ -76,10 +76,13 @@ page({
 
 // ---------------------------------------------------------------- /vote
 const slots = VOTE_SLOTS.map((n) => `
-      <a class="vote-card" data-vote="${n}" href="/vote" target="_blank" rel="noopener noreferrer" hidden>
-        <span class="vote-card-num">Site ${n}</span>
-        <strong class="vote-card-name" data-vote-name="${n}">Vote site ${n}</strong>
-        <span class="vote-card-go">Vote now <span aria-hidden="true">→</span></span>
+      <a class="vote-card" data-vote="${n}" data-vote-slot="${n}" href="/vote" target="_blank" rel="noopener noreferrer" hidden>
+        <span class="vote-card-num" aria-hidden="true">${String(n).padStart(2, "0")}</span>
+        <span class="vote-card-body">
+          <strong class="vote-card-name" data-vote-name="${n}">Vote site ${n}</strong>
+          <span class="vote-card-host" data-vote-host="${n}"></span>
+        </span>
+        <span class="vote-card-btn"><span class="vote-card-label">Vote</span><span class="vote-card-done">Voted today ✓</span></span>
       </a>`).join("");
 
 page({
@@ -87,27 +90,41 @@ page({
   title: "Vote",
   description: "Vote for OVERTHRONE SMP every day to help new players find the server and earn voting rewards.",
   main: `<main id="main">
-<div class="page-head">
+<section class="vote-hero">
   ${embers}
-  <div class="container">
-    <p class="eyebrow">OVERTHRONE SMP</p>
-    <h1>Vote</h1>
-    <p>Vote for OVERTHRONE SMP every day. Each vote pushes us up the server lists and helps new players find the realm.</p>
+  <div class="container vote-hero-inner">
+    <div class="vote-hero-text">
+      <p class="eyebrow">Support the realm</p>
+      <h1>Vote for OVERTHRONE</h1>
+      <p>Every vote pushes OVERTHRONE SMP up the server lists and brings new Hunters into the realm. Vote on every site, every day.</p>
+      <div class="vote-hero-stats" data-vote-progress hidden>
+        <span class="vote-stat"><strong data-vote-done>0</strong> / <strong data-vote-total>0</strong> voted today</span>
+        <span class="vote-meter" aria-hidden="true"><span data-vote-meter></span></span>
+      </div>
+    </div>
+    <figure class="vote-banner">
+      <video poster="/images/vote-banner-poster.webp" autoplay muted loop playsinline preload="auto" width="936" height="120" aria-label="OVERTHRONE SMP animated banner"><source src="/images/vote-banner.webm" type="video/webm"><source src="/images/vote-banner.mp4" type="video/mp4"></video>
+    </figure>
   </div>
-</div>
+</section>
 <div class="container vote-page">
   <section aria-labelledby="vote-sites-title">
-    <div class="section-head"><p class="eyebrow">Daily</p><h2 id="vote-sites-title">Vote Sites</h2><p>You can vote once on every site each day.</p></div>
-    <div class="vote-grid">${slots}
+    <div class="vote-sites-head">
+      <h2 id="vote-sites-title">Vote Sites</h2>
+      <p>Click a site, enter your <strong>exact Minecraft username</strong>, and vote. Votes reset every 24 hours.</p>
+    </div>
+    <div class="vote-list">${slots}
     </div>
     <div class="empty-box" data-vote-empty><p>Vote links are coming soon.</p><p class="muted">Join the Discord to hear when voting opens.</p></div>
   </section>
   <div class="vote-info">
-    <section class="vote-panel" aria-labelledby="vote-rewards-title">
-      <h2 id="vote-rewards-title">Rewards</h2>
+    <section class="vote-panel vote-panel-rewards" aria-labelledby="vote-rewards-title">
+      <p class="eyebrow">Rewards</p>
+      <h2 id="vote-rewards-title">Vote Rewards</h2>
       <p data-setting="vote_rewards">Voting rewards are coming soon.</p>
     </section>
     <section class="vote-panel" aria-labelledby="vote-how-title">
+      <p class="eyebrow">Guide</p>
       <h2 id="vote-how-title">How to vote</h2>
       <ol class="vote-steps">
         <li>Pick a vote site above. It opens in a new tab.</li>
