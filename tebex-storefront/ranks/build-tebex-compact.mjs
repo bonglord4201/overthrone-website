@@ -11,6 +11,9 @@ const isNo = (v) => v === false || v === 0 || v === null;
 const cell = (v, r, prefix) => isNo(v) ? `<td class="n">✕</td>` : v === true ? `<td class="y">✓</td>`
   : prefix ? `<td class="${r.key}">${esc(v)}</td>` : `<td>${esc(v)}</td>`;
 // The Custom HTML block is rendered in its own frame, so links are absolute and open in a new tab.
+// Tebex runs Custom HTML in a sandboxed frame that blocks every link (tested: same tab and new tab),
+// so rank names are plain text. Set to true if Tebex ever allows links in the block.
+const LINK_RANKS = false;
 const rankUrl = (r) => PACKAGE_IDS[r.key] ? `${STORE_URL}/package/${PACKAGE_IDS[r.key]}` : `${STORE_URL}/category/ranks`;
 const sec = (t) => `<tr class="s"><td colspan="6">${esc(t)}</td></tr>`;
 const rows = SECTIONS.map((s) => sec(s.title) + s.rows.map((row) => `<tr><th>${esc(row.label)}</th>${row.values.map((v, i) => cell(v, RANKS[i], row.prefix)).join("")}</tr>`).join("")).join("")
@@ -31,7 +34,7 @@ ${RANKS.map((r) => `.otc .${r.key}{color:${r.color};font-weight:700}`).join("")}
 ${RANKS.map((r, i) => `.otc thead th:nth-child(${i + 2}){color:${r.color};border-bottom:2px solid ${r.color}}`).join("")}`;
 const html = `<style>${css.replace(/\n/g, "")}</style>
 <div class="otc"><h2>RANK COMPARISON</h2><p>Compare the perks and privileges included with each OVERTHRONE donor rank.</p>
-<div class="w"><table><thead><tr><th>FEATURE</th>${RANKS.map((r) => `<th><a href="${rankUrl(r)}" target="_blank" rel="noopener">${r.name.toUpperCase()}</a></th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></div>
+<div class="w"><table><thead><tr><th>FEATURE</th>${RANKS.map((r) => `<th>${LINK_RANKS ? `<a href="${rankUrl(r)}" target="_blank" rel="noopener">${r.name.toUpperCase()}</a>` : r.name.toUpperCase()}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></div>
 <p>Every rank includes all perks and commands of the ranks below it.</p></div>
 `;
 fs.writeFileSync(path.join(here, "tebex-custom-html.html"), html);
