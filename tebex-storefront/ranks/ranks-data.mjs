@@ -5,6 +5,11 @@
 // are unlocked at that rank and shown as ✓ for it and every higher rank.
 // Rows with `values` scale per rank (0 / null / false render as ✕).
 
+// Tebex package IDs (Tebex → Packages → the number in each rank's URL). Used to link the
+// rank names in the Tebex comparison block to each rank's store page.
+export const STORE_URL = "https://overthronesmp.tebex.store";
+export const PACKAGE_IDS = { ronin: null, valkyrie: null, monarch: null, godborn: null, overlord: null };
+
 export const RANKS = [
   { key: "ronin", name: "Ronin", color: "#E0434F" },
   { key: "valkyrie", name: "Valkyrie", color: "#C04DFF" },
