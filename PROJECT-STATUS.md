@@ -41,9 +41,10 @@ Last updated: 2026-10-03. Read this first when picking the project back up.
        Copy-paste text is in `tebex-storefront/README.md`.
 2. [ ] Continue setup → **Confirm customer support contact** (add support email).
 3. [ ] Continue setup → **Link Wallet** (owner enters own payout details).
-4. [ ] **Product catalogue is ready** in `tebex-storefront/catalogue/` (182 packages, 12 categories,
-       images, prices, developer handoff). Enter packages into Tebex from `packages.csv`, disabled
-       until the developer supplies real commands (see `DEVELOPER-HANDOFF.md`).
+4. [ ] **Product catalogue v2 is ready** in `tebex-storefront/catalogue/`: 180 packages, exactly 5 donor ranks
+       (Supporter, Elite, Champion, Warlord, Overlord), OG-style perk lists, compliance ratings, paste-ready
+       Tebex descriptions, one ChatGPT image prompt per package. All commands are placeholders
+       (DEV SYSTEM REQUIRED – no permissions/essentials/economy/crate/cosmetics mod installed yet).
    [ ] **With the server dev:** create packages (names/prices/descriptions; image
        `package-default-800.png` until real art exists). No pay-to-win: follow Mojang's
        commercial usage rules; Hunter ranks are gameplay-only and must not be sold.

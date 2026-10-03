@@ -1,46 +1,31 @@
-# OVERTHRONE SMP – Tebex Product Catalogue
+# OVERTHRONE SMP – Tebex Product Catalogue (v2)
 
-182 packages across 12 categories, ready to enter into Tebex. Your developer then replaces each command placeholder with a real command.
+180 packages across 12 categories. There are exactly **five donor ranks**: Supporter, Elite, Champion, Warlord and Overlord (Overlord is the top rank).
 
 | File | What it is |
 |---|---|
-| `CATALOGUE.md` | The full store: ranks, crates, keys, shards, cosmetics, pets, bundles, featured, boosters, starter, seasonal, gifts, utility, and the final store structure |
-| `packages.csv` | Master package database (open in Excel or Google Sheets). One row per package with its ID |
-| `DEVELOPER-HANDOFF.md` | For the developer: backend systems to build, the placeholder reference, and per-package delivery with a blank for the real command |
-| `IMAGE-PROMPTS.md` | Image list plus an individual AI-art prompt for every package, crate and category |
-| `images/<ID>.jpg` | A ready-made 800×800 image for every package (e.g. `images/RANK-001.jpg`) |
-| `images/CRATE-00x.jpg` | Crate artwork (6) |
-| `images/categories/*.jpg` | Category tiles (no text, matching the existing tiles) |
-| `catalogue-data.mjs` | Source of truth. Edit names and prices here, then rebuild |
+| `CATALOGUE.md` | The full store: OG-style rank perk lists, the rank comparison table, crates with odds, every package with its **ready-to-paste Tebex description**, and the store structure |
+| `packages.csv` | Master database (open in Excel or Google Sheets). Columns include the command placeholder, compliance rating, status, and the full Tebex description to paste |
+| `DEVELOPER-HANDOFF.md` | For the developer: systems to build, the placeholder reference, the perk matrix, and a "Real command" blank for every package |
+| `IMAGE-PROMPTS.md` | One ChatGPT image prompt per package, crate and category. Use one prompt per message |
+| `catalogue-data.mjs` | Source of truth (ranks, perk matrix, crates, items, prices). Edit it, then run `node tebex-storefront/catalogue/build-catalogue.mjs` |
+
+## Important
+
+- **Every command is a placeholder.** Your confirmed mod list has no permissions, essentials, economy, auction, crate or cosmetics mod, so those systems are **DEV SYSTEM REQUIRED**. Keep packages disabled in Tebex until the developer sends the real commands.
+- **Compliance:** every perk and package is rated Safe, Borderline or Risky.
+  - Risky perks (gear, kits, keep-XP, survival /fly, skill points) are **not** in the rank descriptions by default. They're listed under "Optional Risky perks" for each rank, so you choose.
 
 ## Entering a package in Tebex
 
-Go to **Packages → Create Package**, then:
+Go to **Packages → Create Package**, then fill in:
 
 1. **Name:** the PACKAGE column.
-2. **Description:** the DESCRIPTION column. For crate keys, also paste the odds table from `CATALOGUE.md`.
+2. **Description:** the TEBEX DESCRIPTION column. Paste it as-is.
 3. **Category:** the CATEGORY column.
-4. **Media → Select Images:** upload `images/<ID>.jpg`.
-5. **Pricing:** the PRICE AUD column. Use **Only charge the customer once**.
-6. **Game Server Commands:** leave empty until the developer sends the real command for this ID. Until then, keep the package **disabled** or hidden.
-7. **Gift packages:** in the **Variables** tab, add a "Recipient username" variable.
-8. **Starter and Founder packages:** in the **Limits** tab, set 1 per customer.
-9. **Ranks:** in **Discord Actions**, add the matching Discord role.
-
-## Rebuilding after edits
-
-```bash
-node tebex-storefront/catalogue/build-catalogue.mjs   # documents + packages.csv
-node tebex-storefront/catalogue/render-images.mjs     # images (needs Playwright)
-```
-
-## Compliance
-
-Everything follows Mojang's Minecraft Usage Guidelines so the store can pass Tebex review:
-
-- No paid gameplay advantages.
-- Crates and Throne Shards are cosmetic-only.
-- Boosters are global.
-- No capes.
-
-Before adding any new product, check it against the rules at the top of `CATALOGUE.md`.
+4. **Price:** the PRICE AUD column, with "Only charge the customer once".
+5. **Image:** generate it with ChatGPT from `IMAGE-PROMPTS.md` (same ID).
+6. **Game Server Commands:** add these later, when the developer replies.
+7. **Ranks:** also add a Discord Action for the role.
+8. **Gifts:** add a recipient-username Variable.
+9. **Starter packs:** set Limits to 1 per customer.

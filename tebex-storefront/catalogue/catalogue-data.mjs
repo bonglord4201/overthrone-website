@@ -37,64 +37,74 @@ export const CATEGORIES = [
   { key: "gifts", name: "Gifts", icon: "gift", note: "Buy for a friend. Enter their Minecraft username at checkout." }
 ];
 
-// ------------------------------------------------------------------ ranks
+// ------------------------------------------------------------------ server facts (from the owner's mod summary)
+// Minecraft 1.21.1 · NeoForge 21.1.251 · Java 21.
+// The confirmed mod list has NO permissions/prefix mod, NO essentials-style mod (homes, /hat, /nick…),
+// NO economy, NO auction house, NO crate mod and NO cosmetics mod. Every store perk therefore needs a
+// DEV SYSTEM (new mod, KubeJS script or config). Commands are placeholders until the developer
+// supplies real ones. "Suggested" mods are options for the developer, not confirmed installs.
+export const CONFIRMED_MODS = [
+  "Solo Leveling: Reawakening (SLR)", "Tensura: Reincarnated", "Tensura Leveling SLR: True Isekai", "Beyond Adventures",
+  "Pufferfish's Skills", "FTB Quests", "KubeJS", "RenderJS", "Easy NPC", "Epic Fight", "Epic Fight Skill Tree",
+  "Iron's Spells 'n Spellbooks", "Apothic Attributes", "Open Parties and Claims", "Lootr", "Sophisticated Backpacks",
+  "Waystones", "Xaero's Minimap / World Map", "Simply Swords", "Weapons of Miracles", "The Aether",
+  "YUNG's Better Dungeons", "Dungeons and Taverns", "Jade / Jade Addons"
+];
+
+// ------------------------------------------------------------------ ranks (EXACTLY FIVE; Overlord is the permanent top rank)
+export const RANK_ORDER = ["SUPPORTER", "ELITE", "CHAMPION", "WARLORD", "OVERLORD"];
 export const RANKS = [
-  {
-    id: "RANK-001", key: "SUPPORTER", name: "Supporter", price: 9.99, color: "#E0434F", tier: 1, icon: "🔴",
-    discord: "Supporter", lore: "Every rebellion begins with a single spark. Supporters lit the first fire beneath the throne.",
-    short: "The first mark of the rebellion. A crimson name and a starter cache.",
-    perks: ["[SUPPORTER] prefix and crimson name in chat and tab", "@Supporter Discord role", "Exclusive particle: Crimson Spark", "2× Ember Keys and 500 Throne Shards (one-time)", "Queue priority: tier 1", "Supporter chat emoji pack"],
-    grants: { keys: { EMBER: 2 }, shards: 500, cosmetics: ["PARTICLE_CRIMSON_SPARK"] }
-  },
-  {
-    id: "RANK-002", key: "ELITE", name: "Elite", price: 19.99, color: "#9B6BFF", tier: 2, icon: "💎",
-    discord: "Elite", lore: "Hunters who survived their first Gate and came back hungry. The Elite are marked by violet fire.",
-    short: "Violet prestige, a chosen chat colour and Bloodmoon keys.",
-    perks: ["Everything in Supporter", "[ELITE] prefix", "@Elite Discord role", "/chatcolor with 4 approved colours", "Exclusive aura: Violet Ember Aura", "3× Bloodmoon Keys and 1,000 Throne Shards (one-time)", "1 extra cosmetic wardrobe preset", "Queue priority: tier 2"],
-    grants: { keys: { BLOODMOON: 3 }, shards: 1000, cosmetics: ["AURA_VIOLET_EMBER"] }
-  },
-  {
-    id: "RANK-003", key: "CHAMPION", name: "Champion", price: 34.99, color: "#E39B5B", tier: 3, icon: "🏆",
-    discord: "Champion", lore: "Champions carry the scars of a hundred Gates. Bronze-forged and battle-proven.",
-    short: "Join messages, emotes, /hat and Abyssal keys.",
-    perks: ["Everything in Elite", "[CHAMPION] prefix", "@Champion Discord role", "Custom join message (staff-approved)", "/hat (cosmetic head slot)", "Emote pack: Champion Salutes", "Exclusive kill effect: Bronze Banner", "3× Abyssal Keys and 2,000 Throne Shards (one-time)", "Queue priority: tier 3"],
-    grants: { keys: { ABYSSAL: 3 }, shards: 2000, cosmetics: ["KILL_BRONZE_BANNER", "EMOTE_PACK_CHAMPION"] }
-  },
-  {
-    id: "RANK-004", key: "OVERLORD", name: "Overlord", price: 49.99, color: "#F2C14E", tier: 4, icon: "👑",
-    discord: "Overlord", lore: "Overlords command the ruins between realms. Gold-crowned, feared and followed.",
-    short: "The golden crown: /nick, an Overlord title and Dreadforge keys.",
-    perks: ["Everything in Champion", "[OVERLORD] prefix", "@Overlord Discord role", "/nick (staff-moderated nicknames)", "Exclusive title: the Overlord", "Exclusive trail: Gilded Ash Trail", "3× Dreadforge Keys and 3,500 Throne Shards (one-time)", "Queue priority: tier 4"],
-    grants: { keys: { DREADFORGE: 3 }, shards: 3500, cosmetics: ["TITLE_OVERLORD", "TRAIL_GILDED_ASH"] }
-  },
-  {
-    id: "RANK-005", key: "SOVEREIGN", name: "Sovereign", price: 74.99, color: "#D7DAE0", tier: 5, icon: "⚜️",
-    discord: "Sovereign", lore: "A Sovereign answers to no crown. Silver-white and cold as the mountain thrones of Aeonia.",
-    short: "Silver gradient chat, a raven companion and Regalia keys.",
-    perks: ["Everything in Overlord", "[SOVEREIGN] prefix", "@Sovereign Discord role", "Gradient chat colour: Silver Dawn", "Exclusive pet: Sovereign Raven", "Exclusive aura: Frost Crown Aura", "3× Regalia Keys and 5,000 Throne Shards (one-time)", "Queue priority: tier 5"],
-    grants: { keys: { REGALIA: 3 }, shards: 5000, cosmetics: ["CHAT_SILVER_DAWN", "PET_SOVEREIGN_RAVEN", "AURA_FROST_CROWN"] }
-  },
-  {
-    id: "RANK-006", key: "USURPER", name: "Usurper", price: 99.99, color: "#FF3B4E", tier: 6, icon: "🗡️",
-    discord: "Usurper", lore: "The Usurper does not ask for the throne. The Usurper takes it. Blood-red and unapologetic.",
-    short: "Server-wide arrival announcements, blood-rift teleports and Throne keys.",
-    perks: ["Everything in Sovereign", "[USURPER] prefix", "@Usurper Discord role", "Server-wide join announcement", "Exclusive teleport effect: Usurper's Rift", "Exclusive death effect: Crimson Requiem", "2× Throne Keys, 3× Regalia Keys and 7,500 Throne Shards (one-time)", "Queue priority: tier 6"],
-    grants: { keys: { THRONE: 2, REGALIA: 3 }, shards: 7500, cosmetics: ["TP_USURPERS_RIFT", "DEATH_CRIMSON_REQUIEM"] }
-  },
-  {
-    id: "RANK-007", key: "KINGSLAYER", name: "Kingslayer", price: 149.99, color: "#B0122C", tier: 7, icon: "⚔️",
-    discord: "Kingslayer", lore: "Kingslayers have struck down crowns before. Obsidian armour, a blade still wet with crimson.",
-    short: "Crown Fall kill effect, Kingslayer blade skin and a custom title.",
-    perks: ["Everything in Usurper", "[KINGSLAYER] prefix", "@Kingslayer Discord role", "Exclusive kill effect: Crown Fall", "Exclusive weapon skin: Kingslayer's Edge", "One custom title (staff-approved)", "3× Throne Keys and 10,000 Throne Shards (one-time)", "Queue priority: tier 7"],
-    grants: { keys: { THRONE: 3 }, shards: 10000, cosmetics: ["KILL_CROWN_FALL", "WEAPON_KINGSLAYERS_EDGE", "TITLE_CUSTOM_TOKEN"] }
-  },
-  {
-    id: "RANK-008", key: "THRONEBREAKER", name: "Thronebreaker", price: 249.99, color: "#FF2E4D", gradient: ["#FF2E4D", "#F2C14E"], tier: 8, icon: "🔱",
-    discord: "Thronebreaker", lore: "The apex. The one who did not reach the throne – but broke it. Crimson and gold, forever.",
-    short: "The apex rank: Shattered Throne mythic aura, full armour skin set and the Hall of Thrones.",
-    perks: ["Everything in Kingslayer", "[THRONEBREAKER] animated crimson-gold prefix", "@Thronebreaker Discord role", "Mythic aura: Shattered Throne", "Exclusive armour skin set: Thronebreaker Regalia", "Name in the Hall of Thrones (website and Discord)", "5× Throne Keys and 15,000 Throne Shards (one-time)", "Queue priority: tier 8 (highest)"],
-    grants: { keys: { THRONE: 5 }, shards: 15000, cosmetics: ["AURA_SHATTERED_THRONE", "ARMOUR_THRONEBREAKER_REGALIA", "HALL_OF_THRONES_ENTRY"] }
-  }
+  { id: "RANK-001", key: "SUPPORTER", name: "Supporter", price: 9.99, color: "#E0434F", tier: 1, icon: "🔴", discord: "Supporter",
+    lore: "Every rebellion begins with a single spark. Supporters lit the first fire beneath the throne.",
+    short: "The first mark of the rebellion.", grants: { keys: { EMBER: 2 }, shards: 500, cosmetics: ["PARTICLE_CRIMSON_SPARK"] } },
+  { id: "RANK-002", key: "ELITE", name: "Elite", price: 24.99, color: "#9B6BFF", tier: 2, icon: "💎", discord: "Elite",
+    lore: "Hunters who survived their first Gate and came back hungry. The Elite are marked by violet fire.",
+    short: "Violet prestige for proven Hunters.", grants: { keys: { BLOODMOON: 3 }, shards: 1000, cosmetics: ["AURA_VIOLET_EMBER"] } },
+  { id: "RANK-003", key: "CHAMPION", name: "Champion", price: 49.99, color: "#E39B5B", tier: 3, icon: "🏆", discord: "Champion",
+    lore: "Champions carry the scars of a hundred Gates. Bronze-forged and battle-proven.",
+    short: "Battle-proven bronze, with join messages and /hat.", grants: { keys: { ABYSSAL: 3 }, shards: 2000, cosmetics: ["KILL_BRONZE_BANNER"] } },
+  { id: "RANK-005", key: "WARLORD", name: "Warlord", price: 89.99, color: "#E25822", tier: 4, icon: "⚔️", discord: "Warlord",
+    lore: "Warlords lead guilds through the deepest Gates. Their banners burn crimson-orange across Netherfall.",
+    short: "Command the battlefield: /nick, the Warlord title and Dreadforge keys.", grants: { keys: { DREADFORGE: 3 }, shards: 3500, cosmetics: ["TITLE_WARLORD", "TRAIL_WAR_BANNER"] } },
+  { id: "RANK-004", key: "OVERLORD", name: "Overlord", price: 149.99, color: "#F2C14E", tier: 5, icon: "👑", discord: "Overlord",
+    lore: "The highest donor rank. Overlords stand closest to the throne – and closest to tearing it down.",
+    short: "The highest donor rank: the golden crown, an animated prefix and the Hall of Thrones.", grants: { keys: { THRONE: 3, REGALIA: 3 }, shards: 6000, cosmetics: ["AURA_OVERLORD_CROWN", "TITLE_OVERLORD", "PET_OVERLORD_RAVEN"] } }
+];
+
+// Perk matrix. values[] follow RANK_ORDER. rating: Safe / Borderline / Risky (Mojang Usage Guidelines + Tebex review).
+// default: include in the rank by default? Risky perks default to false – the owner decides.
+const P = (perk, values, rating, system, status, alt, opts = {}) => ({ perk, values, rating, system, status, alt, include: rating !== "Risky", ...opts });
+export const PERKS = [
+  P("Rank prefix in chat & tab", ["[SUPPORTER]", "[ELITE]", "[CHAMPION]", "[WARLORD]", "[OVERLORD] (animated)"], "Safe", "Permissions + prefix mod (suggested: LuckPerms or FTB Ranks – not in mod list)", "DEV SYSTEM REQUIRED", ""),
+  P("Coloured name", ["Crimson", "Violet", "Bronze", "Flame", "Gold"], "Safe", "Prefix/chat formatting mod", "DEV SYSTEM REQUIRED", ""),
+  P("Discord role", ["@Supporter", "@Elite", "@Champion", "@Warlord", "@Overlord"], "Safe", "Tebex Discord Actions (built into Tebex)", "Ready in Tebex", ""),
+  P("Join queue priority", ["Tier 1", "Tier 2", "Tier 3", "Tier 4", "Tier 5"], "Safe", "Queue/proxy system", "DEV SYSTEM REQUIRED", ""),
+  P("Throne Shards on purchase", ["500", "1,000", "2,000", "3,500", "6,000"], "Safe", "Throne Shard currency (cosmetic-only)", "DEV SYSTEM REQUIRED", "", { kind: "grant" }),
+  P("Crate keys on purchase", ["2× Ember", "3× Bloodmoon", "3× Abyssal", "3× Dreadforge", "3× Throne + 3× Regalia"], "Safe", "Crate system (cosmetic reward pool)", "DEV SYSTEM REQUIRED", "If crates use the gear pool this becomes Risky.", { kind: "grant" }),
+  P("Rank-exclusive cosmetic", ["Crimson Spark particle", "Violet Ember aura", "Bronze Banner kill effect", "Warlord title + War Banner trail", "Overlord Crown aura + title + Overlord Raven pet"], "Safe", "Cosmetics system", "DEV SYSTEM REQUIRED", "", { kind: "grant" }),
+  P("Chat colours (/chatcolor)", ["✗", "4 colours", "8 colours", "12 colours", "All + gradients"], "Safe", "Chat formatting mod or KubeJS", "DEV SYSTEM REQUIRED", ""),
+  P("Chat emoji pack", ["✓", "✓", "✓", "✓", "✓"], "Safe", "Chat formatting / resource pack", "DEV SYSTEM REQUIRED", ""),
+  P("Custom join message", ["✗", "✗", "✓", "✓", "✓"], "Safe", "Join-message mod or KubeJS", "DEV SYSTEM REQUIRED", ""),
+  P("Server-wide arrival announcement", ["✗", "✗", "✗", "✓", "✓"], "Safe", "KubeJS (on player join)", "DEV SYSTEM REQUIRED", ""),
+  P("/hat", ["✗", "✗", "✓", "✓", "✓"], "Safe", "Essentials-style mod (suggested: FTB Essentials – not in mod list) or KubeJS", "DEV SYSTEM REQUIRED", ""),
+  P("/nick (staff-moderated)", ["✗", "✗", "✗", "✓", "✓"], "Safe", "Essentials-style mod or KubeJS", "DEV SYSTEM REQUIRED", ""),
+  P("/sit & /lay", ["✗", "✗", "✗", "✗", "✓"], "Safe", "Sit mod or KubeJS (not in mod list)", "DEV SYSTEM REQUIRED", ""),
+  P("Emotes", ["✗", "✗", "Champion Salutes", "War Cries", "All rank emotes"], "Safe", "Emote mod (not in mod list)", "DEV SYSTEM REQUIRED", ""),
+  P("/fly in the OVERTHRONE hub only", ["✗", "✗", "✗", "✓", "✓"], "Safe", "Per-world permission (hub only)", "DEV SYSTEM REQUIRED", "Must be disabled in every gameplay world."),
+  P("Hall of Thrones listing (website + Discord)", ["✗", "✗", "✗", "✗", "✓"], "Safe", "Website admin panel + Discord", "Ready (manual)", ""),
+  P("Homes (/sethome)", ["2", "3", "4", "5", "6"], "Borderline", "Essentials-style mod (not in mod list)", "DEV SYSTEM REQUIRED", "Give every player the same home count; ranks get cosmetic home icons instead."),
+  P("Bonus claim chunks (Open Parties and Claims)", ["+25", "+50", "+75", "+100", "+150"], "Borderline", "Open Parties and Claims + permission-based claim limits", "UNVERIFIED (OPAC permission support must be confirmed)", "Same claim limit for everyone; earn extra chunks through Hunter rank progression."),
+  P("Auction House listing slots", ["5", "7", "9", "11", "15"], "Borderline", "Auction House mod (not in mod list)", "DEV SYSTEM REQUIRED", "Same slots for everyone; ranks get a cosmetic listing highlight."),
+  P("Class Reset Tokens on purchase", ["1", "2", "3", "4", "5"], "Borderline", "Custom class system (Warrior/Assassin/Mage/Ranger/Guardian)", "DEV SYSTEM REQUIRED", "Make class resets free on a cooldown for everyone.", { kind: "grant" }),
+  P("Race Reset Token on purchase (Tensura)", ["✗", "✗", "1", "1", "2"], "Borderline", "Tensura: Reincarnated race reset", "UNVERIFIED (no confirmed reset command)", "Offer resets in-game via a quest item for everyone.", { kind: "grant" }),
+  P("/back after death", ["✗", "✗", "✗", "✓", "✓"], "Risky", "Essentials-style mod", "DEV SYSTEM REQUIRED", "Remove. Use a cosmetic death effect instead."),
+  P("Sophisticated Backpack on purchase", ["Iron", "Gold", "Diamond", "Netherite", "Netherite + upgrades"], "Risky", "Sophisticated Backpacks (installed)", "Real mod – item ID UNVERIFIED", "Replace with Throne Shards of equal value.", { kind: "grant" }),
+  P("Waystones Warp/Return Scrolls on purchase", ["✗", "3", "5", "8", "12"], "Risky", "Waystones (installed)", "Real mod – item IDs UNVERIFIED", "Remove; travel stays earned."),
+  P("Iron's Spells ink/scrolls on purchase", ["✗", "✗", "Rare ink ×2", "Epic ink ×2", "Legendary ink ×1"], "Risky", "Iron's Spells 'n Spellbooks (installed)", "Real mod – item IDs UNVERIFIED", "Remove; offer a cosmetic spell-cast particle."),
+  P("Pufferfish's Skills points on purchase", ["✗", "✗", "✗", "2", "4"], "Risky", "Pufferfish's Skills (installed)", "Command UNVERIFIED", "Remove; skill points stay earned."),
+  P("Rank kit (/kit)", ["✗", "✗", "✗", "Weekly", "Daily"], "Risky", "Kit mod (not in mod list)", "DEV SYSTEM REQUIRED", "Cosmetic-only kit (titles/particles) or remove."),
+  P("Keep XP on death", ["✗", "✗", "✗", "✗", "✓"], "Risky", "KubeJS or gamerule per player (custom)", "DEV SYSTEM REQUIRED", "Remove; use a cosmetic death effect."),
+  P("/fly in survival worlds", ["✗", "✗", "✗", "✗", "✓"], "Risky", "Permissions", "DEV SYSTEM REQUIRED", "Hub-only /fly (already included).")
 ];
 
 // ------------------------------------------------------------------ crates
@@ -155,6 +165,18 @@ export const CRATES = [
     jackpot: "The Empty Throne – a spectral broken throne rises behind the player; awards the title “Throne Taker”"
   }
 ];
+// Optional GEAR reward pools using items from installed mods. Every row is RISKY under Mojang's
+// guidelines (paid crates containing gameplay items). They are listed so the owner can choose; the
+// default crates use the cosmetic pool above. Item IDs are UNVERIFIED – the developer must confirm them.
+export const GEAR_POOLS = {
+  EMBER: ["Sophisticated Backpacks: Copper Backpack", "Waystones: Return Scroll ×2", "Iron's Spells: Common Ink ×3"],
+  BLOODMOON: ["Sophisticated Backpacks: Iron Backpack", "Waystones: Warp Scroll ×2", "Iron's Spells: Uncommon Ink ×2"],
+  ABYSSAL: ["Sophisticated Backpacks: Gold Backpack", "Iron's Spells: Rare Ink ×2", "Epic Fight: Skill Book (choose)"],
+  DREADFORGE: ["Simply Swords: a unique weapon (choose item)", "Sophisticated Backpacks: Diamond Backpack", "Iron's Spells: Epic Ink"],
+  REGALIA: ["Weapons of Miracles: a weapon (choose item)", "Sophisticated Backpacks: Netherite Backpack", "Iron's Spells: Legendary Ink"],
+  THRONE: ["SLR / Tensura: a high-tier item (choose item)", "Weapons of Miracles: a top-tier weapon (choose item)", "Sophisticated Backpacks: Netherite Backpack + upgrades"]
+};
+
 export const KEY_QTYS = [
   { qty: 1, discount: 0 }, { qty: 5, discount: 0.10 }, { qty: 10, discount: 0.15 },
   { qty: 25, discount: 0.20 }, { qty: 50, discount: 0.25 }, { qty: 100, discount: 0.30 }
@@ -248,7 +270,7 @@ export const BUNDLES = [
   { id: "BND-007", name: "Crimson Court", rarity: "Epic", desc: "Dress for court: Crimson Warden armour skin, Crimson Halo and Crimson Gradient chat.", contents: { keys: { BLOODMOON: 5 }, shards: 5000, cosmetics: ["ARMOUR_CRIMSON_WARDEN", "AURA_CRIMSON_HALO", "CHAT_CRIMSON_GRADIENT"] }, art: "a crimson-draped throne room with lacquered armour on display" },
   { id: "BND-008", name: "Ashen Legion", rarity: "Epic", desc: "A party pack: 10 Ember Keys for you plus effects to show off with your guild.", contents: { keys: { EMBER: 10, BLOODMOON: 5 }, shards: 3000, cosmetics: ["DEATH_ASHEN_COLLAPSE", "EMOTE_BLADE_SALUTE", "TITLE_ASHBORN"] }, art: "a row of ashen legion banners over a field of embers" },
   { id: "BND-009", name: "Apex Predator", rarity: "Mythic", desc: "Endgame collection: Throne keys, Throne Edge, Nightmare Steed and the Void Hatchling.", contents: { keys: { THRONE: 5, REGALIA: 5 }, shards: 15000, cosmetics: ["WEAPON_THRONE_EDGE", "MOUNT_NIGHTMARE_STEED", "PET_VOID_HATCHLING"] }, art: "a black throne-stone greatsword planted before a nightmare steed and a void drake" },
-  { id: "BND-010", name: "The Overthrone", rarity: "Mythic", desc: "The ultimate package: the Thronebreaker rank plus a mountain of keys, shards and Mythic cosmetics.", contents: { rank: "THRONEBREAKER", keys: { THRONE: 10, REGALIA: 10 }, shards: 25000, cosmetics: ["AURA_ABYSSAL_FLAME", "WEAPON_THRONE_EDGE", "PET_VOID_HATCHLING"] }, art: "a shattered obsidian throne with a crimson-gold crown hovering above the pieces" },
+  { id: "BND-010", name: "The Overthrone", rarity: "Mythic", desc: "The ultimate package: the Overlord rank plus a mountain of keys, shards and Mythic cosmetics.", contents: { rank: "OVERLORD", keys: { THRONE: 10, REGALIA: 10 }, shards: 25000, cosmetics: ["AURA_ABYSSAL_FLAME", "WEAPON_THRONE_EDGE", "PET_VOID_HATCHLING"] }, art: "a shattered obsidian throne with a crimson-gold crown hovering above the pieces" },
   { id: "BND-011", name: "Collector's Ascension", rarity: "Legendary", desc: "Rank up and collect: the Overlord rank with extra Dreadforge keys and shards.", contents: { rank: "OVERLORD", keys: { DREADFORGE: 5 }, shards: 7500, cosmetics: ["PET_OBSIDIAN_RAVEN"] }, art: "a golden crown resting on a stack of dreadforge keys beside an obsidian raven" },
   { id: "BND-012", name: "Champion's Rise", rarity: "Epic", desc: "Rank up: the Champion rank with Abyssal keys and the Throne Shatter kill effect.", contents: { rank: "CHAMPION", keys: { ABYSSAL: 5 }, shards: 3000, cosmetics: ["KILL_THRONE_SHATTER"] }, art: "a bronze champion's trophy wreathed in crimson fire" }
 ];
@@ -307,9 +329,10 @@ export const GIFTS = [
   { name: "Gift Shard Bundle", price: 22.99, desc: "Gift 5,000 Throne Shards (+10% bonus).", deliver: "<GIVE_SHARDS:5500:{recipient}>", art: "a gift box filled with glowing red throne shards" },
   { name: "Gift Cosmetic Bundle", price: 19.99, desc: "Gift Crimson Halo, Bloodstep trail and the Blood Rift teleport effect.", deliver: "<GRANT_COSMETIC:AURA_CRIMSON_HALO:{recipient}> + <GRANT_COSMETIC:TRAIL_BLOODSTEP:{recipient}> + <GRANT_COSMETIC:TP_BLOOD_RIFT:{recipient}>", art: "a gift box with crimson light and runes spiralling out" },
   { name: "Gift Starter Bundle", price: 9.99, desc: "Gift the First Blood and Hunter's Key Ring starter packs.", deliver: "<GRANT_COSMETIC:TITLE_CRIMSON_HUNTER:{recipient}> + <GIVE_KEYS:EMBER:2:{recipient}> + <GIVE_KEYS:BLOODMOON:1:{recipient}> + <GIVE_KEYS:ABYSSAL:1:{recipient}> + <GIVE_SHARDS:500:{recipient}>", art: "a small gift box with a hunter's badge and three keys" },
-  { name: "Gift Rank: Elite", price: 19.99, desc: "Gift the Elite rank to a friend.", deliver: "<GRANT_RANK:ELITE:{recipient}>", art: "a gift box with a violet elite gem on the lid" },
-  { name: "Gift Rank: Champion", price: 34.99, desc: "Gift the Champion rank to a friend.", deliver: "<GRANT_RANK:CHAMPION:{recipient}>", art: "a gift box with a bronze champion trophy on the lid" },
-  { name: "Gift Rank: Overlord", price: 49.99, desc: "Gift the Overlord rank to a friend.", deliver: "<GRANT_RANK:OVERLORD:{recipient}>", art: "a gift box with a golden overlord crown on the lid" }
+  { name: "Gift Rank: Elite", price: 24.99, desc: "Gift the Elite rank to a friend.", deliver: "<GRANT_RANK:ELITE:{recipient}>", art: "a gift box with a violet elite gem on the lid" },
+  { name: "Gift Rank: Champion", price: 49.99, desc: "Gift the Champion rank to a friend.", deliver: "<GRANT_RANK:CHAMPION:{recipient}>", art: "a gift box with a bronze champion trophy on the lid" },
+  { name: "Gift Rank: Warlord", price: 89.99, desc: "Gift the Warlord rank to a friend.", deliver: "<GRANT_RANK:WARLORD:{recipient}>", art: "a gift box with a flame-red warlord banner on the lid" },
+  { name: "Gift Rank: Overlord", price: 149.99, desc: "Gift the Overlord rank to a friend.", deliver: "<GRANT_RANK:OVERLORD:{recipient}>", art: "a gift box with a golden overlord crown on the lid" }
 ];
 
 // ------------------------------------------------------------------ utility (no gameplay effect)

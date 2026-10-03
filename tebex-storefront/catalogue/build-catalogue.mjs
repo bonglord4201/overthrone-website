@@ -2,12 +2,7 @@
 //
 //   node tebex-storefront/catalogue/build-catalogue.mjs
 //
-// Outputs (in this folder):
-//   packages.json          normalised package list (also used by render-images.mjs)
-//   packages.csv           master package database (open in Excel / Google Sheets)
-//   CATALOGUE.md           the full store catalogue
-//   DEVELOPER-HANDOFF.md   backend systems + per-package delivery spec
-//   IMAGE-PROMPTS.md       one image-generation prompt per package, crate and category
+// Outputs: packages.json, packages.csv, CATALOGUE.md, DEVELOPER-HANDOFF.md, IMAGE-PROMPTS.md
 
 import fs from "node:fs";
 import path from "node:path";
@@ -24,509 +19,431 @@ const pad = (n) => String(n).padStart(3, "0");
 const crate = Object.fromEntries(D.CRATES.map((c) => [c.key, c]));
 const rank = Object.fromEntries(D.RANKS.map((r) => [r.key, r]));
 const cos = Object.fromEntries(D.COSMETICS.map((c) => [c.code, c]));
+const ORDER = D.RANK_ORDER.map((k) => rank[k]);
 
-// Value helpers (used to show bundle savings honestly, from this catalogue's own prices).
-const SHARD_RATE = 4.99 / 1000;
-const keysValue = (keys = {}) => Object.entries(keys).reduce((s, [k, n]) => s + crate[k].base * n, 0);
-const cosValue = (codes = []) => codes.reduce((s, c) => s + (cos[c] ? D.RARITY_PRICE[cos[c].rarity] : 0), 0);
+// ------------------------------------------------------------------ placeholders
+// Internal shorthand in catalogue-data.mjs → the owner's placeholder style.
+// {username} is Tebex's real placeholder for the buyer; {recipient} is a Tebex package variable (gifts).
+const who = (x) => (x ? x : "{username}");
+function cmd(s) {
+  return s
+    .replace(/<GRANT_RANK:(\w+)(?::(\{recipient\}))?>/g, (_, r, p) => `<SET_RANK_COMMAND player=${who(p)} rank=${r.toLowerCase()}>`)
+    .replace(/<GIVE_KEYS:(\w+):(\d+)(?::(\{recipient\}))?>/g, (_, c, n, p) => `<GIVE_CRATE_KEY_COMMAND player=${who(p)} crate=${c.toLowerCase()} amount=${n}>`)
+    .replace(/<GIVE_SHARDS:(\d+)(?::(\{recipient\}))?>/g, (_, n, p) => `<GIVE_SHARDS_COMMAND player=${who(p)} amount=${n}>`)
+    .replace(/<GRANT_COSMETIC:(\w+)(?::(\{recipient\}))?>/g, (_, c, p) => `<GRANT_COSMETIC_COMMAND player=${who(p)} id=${c.toLowerCase()}>`)
+    .replace(/<START_GLOBAL_BOOST:(\w+):(\d+)>/g, (_, t, m) => `<START_GLOBAL_BOOST_COMMAND type=${t.toLowerCase()} minutes=${m} buyer={username}>`)
+    .replace(/<GRANT_TOKEN:(\w+):(\d+)>/g, (_, t, n) => `<GIVE_TOKEN_COMMAND player={username} token=${t.toLowerCase()} amount=${n}>`)
+    .replace(/<GRANT_TEMP_PERMISSION:(\w+):(\w+)>/g, (_, p, d) => `<GRANT_TEMP_PERMISSION_COMMAND player={username} permission=${p.toLowerCase()} duration=${d}>`);
+}
+const keysCmd = (keys = {}) => Object.entries(keys).map(([k, n]) => `<GIVE_KEYS:${k}:${n}>`);
+const contentsCmd = (c) => cmd([c.rank ? `<GRANT_RANK:${c.rank}>` : null, ...keysCmd(c.keys), c.shards ? `<GIVE_SHARDS:${c.shards}>` : null, ...(c.cosmetics || []).map((x) => `<GRANT_COSMETIC:${x}>`)].filter(Boolean).join(" + "));
+const cosName = (code) => cos[code] ? `${cos[code].name} (${cos[code].type})` : code.split("_").slice(1).map((w) => w[0] + w.slice(1).toLowerCase()).join(" ") + ` (${code.split("_")[0].toLowerCase()})`;
 const describeContents = (c) => [
   c.rank ? `${rank[c.rank].name} rank` : null,
   ...Object.entries(c.keys || {}).map(([k, n]) => `${n}× ${crate[k].keyName}`),
   c.shards ? `${num(c.shards)} Throne Shards` : null,
-  ...(c.cosmetics || []).map((code) => cos[code] ? `${cos[code].name} (${cos[code].type})` : code.replace(/_/g, " ").toLowerCase())
-].filter(Boolean).join("; ");
-const commandsFor = (c) => [
-  c.rank ? `<GRANT_RANK:${c.rank}>` : null,
-  ...Object.entries(c.keys || {}).map(([k, n]) => `<GIVE_KEYS:${k}:${n}>`),
-  c.shards ? `<GIVE_SHARDS:${c.shards}>` : null,
-  ...(c.cosmetics || []).map((code) => `<GRANT_COSMETIC:${code}>`)
-].filter(Boolean).join(" + ");
-const systemsFor = (c) => [...new Set([
-  c.rank && "SYS-RANKS", Object.keys(c.keys || {}).length && "SYS-KEYS",
-  c.shards && "SYS-SHARDS", (c.cosmetics || []).length && "SYS-COSMETICS"
-].filter(Boolean))].join(", ");
+  ...(c.cosmetics || []).map(cosName)
+].filter(Boolean);
 
-const COLOR_WORD = (hex) => ({
-  "#E0434F": "crimson", "#9B6BFF": "violet", "#E39B5B": "burnished bronze", "#F2C14E": "molten gold",
-  "#D7DAE0": "cold silver-white", "#FF3B4E": "blood-red", "#B0122C": "deep blood-crimson", "#FF2E4D": "crimson and dark-gold",
-  "#F2A541": "amber ember", "#D61F3C": "blood-moon red", "#7B4DFF": "violet void", "#FF6A1A": "molten orange", "#E6C068": "dark gold"
-}[hex] || "crimson");
+const SHARD_RATE = 4.99 / 1000;
+const keysValue = (keys = {}) => Object.entries(keys).reduce((s, [k, n]) => s + crate[k].base * n, 0);
+const cosValue = (codes = []) => codes.reduce((s, c) => s + (cos[c] ? D.RARITY_PRICE[cos[c].rarity] : 0), 0);
 const RARITY_COLOR = { Common: "#A39D94", Rare: "#4FA3FF", Epic: "#9B6BFF", Legendary: "#F2C14E", Mythic: "#FF2E4D" };
 
-// ------------------------------------------------------------------ build package list
+const FOOT = "Delivered automatically in-game. Questions? Join our Discord.";
+const block = (title, lines, footer = FOOT) => [title, "", ...lines, "", footer].join("\n");
+const bullets = (arr) => arr.map((x) => `• ${x}`);
+const oddsLines = (c) => D.CRATE_TIERS.map((t, i) => `• ${t} (${c.odds[i]}%): ${c.rewards[i]}`);
+
+// ------------------------------------------------------------------ packages
 const P = [];
-const add = (p) => P.push({ status: "Ready – awaiting dev command", gift: "Enable Tebex gifting", ...p });
+const add = (p) => P.push({ compliance: "Safe", status: "DEV SYSTEM REQUIRED", gift: "Enable Tebex gifting", ...p });
 
-for (const r of D.RANKS) {
+// ----- ranks (OG-style perk lists built from the perk matrix)
+const inc = D.PERKS.filter((p) => p.include);
+const risky = D.PERKS.filter((p) => !p.include);
+ORDER.forEach((r, i) => {
+  const prev = ORDER[i - 1];
+  const lines = inc.filter((p) => p.values[i] !== "✗" && p.values[i] !== (prev ? p.values[i - 1] : undefined) && p.kind !== "grant")
+    .map((p) => (p.values[i] === "✓" ? p.perk : `${p.perk}: ${p.values[i]}`));
+  const grants = inc.filter((p) => p.kind === "grant" && p.values[i] !== "✗").map((p) => `${p.perk.replace(" on purchase", "")}: ${p.values[i]}`);
+  const optional = risky.filter((p) => p.values[i] !== "✗").map((p) => `${p.perk}: ${p.values[i]}`);
+  const desc = block(`${r.icon} ${r.name.toUpperCase()} RANK · LIFETIME`, [
+    r.lore, "",
+    prev ? `ALL ${prev.name.toUpperCase()} PERKS, AND:` : "PERKS:",
+    ...bullets(lines), "", "ON PURCHASE:", ...bullets(grants)
+  ], "Lifetime rank. Cosmetic and convenience perks. " + FOOT);
+  const ratings = inc.filter((p) => p.values[i] !== "✗").map((p) => p.rating);
   add({
-    id: r.id, category: "Ranks", name: `${r.name} Rank`, price: r.price, type: "Rank (lifetime)", rarity: `Tier ${r.tier}`,
-    contents: r.perks.join("; "), description: r.short, system: "SYS-RANKS, SYS-KEYS, SYS-SHARDS, SYS-COSMETICS, SYS-QUEUE, SYS-DISCORD",
-    command: `<GRANT_RANK:${r.key}> + ${Object.entries(r.grants.keys).map(([k, n]) => `<GIVE_KEYS:${k}:${n}>`).join(" + ")} + <GIVE_SHARDS:${r.grants.shards}> + ${r.grants.cosmetics.map((c) => `<GRANT_COSMETIC:${c}>`).join(" + ")} + Tebex Discord Action: add role @${r.discord}`,
-    color: r.color, icon: "crown", label: `TIER ${r.tier} RANK`, sub: r.name.toUpperCase(),
-    art: `a majestic ${COLOR_WORD(r.color)} crown-and-crest rank emblem for the "${r.name}" rank – ${r.lore}`
+    id: r.id, category: "Ranks", name: `${r.name} Rank`, price: r.price, type: `Donor rank (tier ${r.tier} of 5, lifetime)`, rarity: `Tier ${r.tier}`,
+    contents: [...lines, ...grants].join("; "), tebex: desc, optional: optional.join("; "),
+    system: "Permissions/prefix mod, crate system, Throne Shards, cosmetics, queue, Tebex Discord Actions",
+    command: [cmd(`<GRANT_RANK:${r.key}>`), contentsCmd({ keys: r.grants.keys, shards: r.grants.shards, cosmetics: r.grants.cosmetics }),
+      ...[["Class Reset Tokens on purchase", "class_reset"], ["Race Reset Token on purchase (Tensura)", "race_reset"]]
+        .map(([perk, token]) => { const v = D.PERKS.find((x) => x.perk === perk).values[i]; return /^\d+$/.test(v) ? `<GIVE_TOKEN_COMMAND player={username} token=${token} amount=${v}>` : null; })
+        .filter(Boolean), `Tebex Discord Action: add role @${r.discord}`].join(" + "),
+    compliance: ratings.includes("Borderline") ? "Borderline (homes/claims/AH/reset tokens – see table)" : "Safe",
+    color: r.color, art: `a majestic ${r.name} rank crest – ${r.lore} Main colour: ${r.color} on black, with crown, crest and banner motifs`
   });
-}
+});
 
+// ----- crate keys
 let k = 0;
 for (const c of D.CRATES) {
   for (const q of D.KEY_QTYS) {
     k++;
     const price = money(c.base * q.qty * (1 - q.discount));
     add({
-      id: `KEY-${pad(k)}`, category: "Crate Keys", name: `${c.keyName} ×${q.qty}`, price, type: "Crate key",
-      rarity: c.prestige, contents: `${q.qty}× ${c.keyName} for the ${c.name}${q.discount ? ` (${Math.round(q.discount * 100)}% bulk saving)` : ""}`,
-      description: `${q.qty === 1 ? "One" : q.qty} ${c.keyName}${q.qty > 1 ? "s" : ""}. ${c.lore} All rewards are cosmetic or Throne Shards; odds are shown in the description.`,
-      system: "SYS-CRATES, SYS-KEYS", command: `<GIVE_KEYS:${c.key}:${q.qty}>`,
-      color: c.color, icon: "key", label: `${c.prestige.toUpperCase()} KEY`, sub: `×${q.qty}`, qty: q.qty,
-      art: `${q.qty === 1 ? c.keyArt : `${q.qty > 10 ? "a large heap" : "a small cluster"} of ${c.keyName}s – each ${c.keyArt}`}`
+      id: `KEY-${pad(k)}`, category: "Crate Keys", name: `${c.keyName} ×${q.qty}`, price, type: "Crate key", rarity: c.prestige,
+      contents: `${q.qty}× ${c.keyName}${q.discount ? ` (${Math.round(q.discount * 100)}% bulk saving)` : ""}`,
+      tebex: block(`🗝️ ${c.keyName.toUpperCase()} ×${q.qty}`, [c.lore, "", `Opens the ${c.name} (${c.prestige}). Rewards and odds:`, ...oddsLines(c), "", `Jackpot: ${c.jackpot}.`, "Duplicate cosmetics convert to Throne Shards. Keys can also be earned in-game."]),
+      system: "Crate system", command: cmd(`<GIVE_KEYS:${c.key}:${q.qty}>`),
+      compliance: "Safe (cosmetic pool) · Risky if the optional gear pool is used",
+      color: c.color, art: q.qty === 1 ? c.keyArt : `${q.qty > 10 ? "a heap" : "a small cluster"} of ${c.keyName}s, each ${c.keyArt}`
     });
   }
 }
-for (const [i, kb] of [
-  { name: "Gate Key Sampler", price: 29.99, keys: { EMBER: 1, BLOODMOON: 1, ABYSSAL: 1, DREADFORGE: 1, REGALIA: 1, THRONE: 1 }, desc: "One key for every Gate Crate – try them all.", art: "six different keys (amber, crimson, violet, molten orange, gold and crimson-gold) laid in a fan on black velvet" },
+[
+  { name: "Gate Key Sampler", price: 29.99, keys: { EMBER: 1, BLOODMOON: 1, ABYSSAL: 1, DREADFORGE: 1, REGALIA: 1, THRONE: 1 }, desc: "One key for every Gate Crate – try them all.", art: "six different ornate keys (amber, crimson, violet, molten orange, gold, crimson-gold) fanned on black velvet" },
   { name: "Lower Gates Key Cache", price: 24.99, keys: { EMBER: 5, BLOODMOON: 3, ABYSSAL: 2 }, desc: "A mix of Ember, Bloodmoon and Abyssal keys.", art: "an iron key cache box holding amber, crimson and violet keys" },
   { name: "High Gates Key Vault", price: 89.99, keys: { DREADFORGE: 3, REGALIA: 3, THRONE: 3 }, desc: "Dreadforge, Regalia and Throne keys for the prestige crates.", art: "a black-and-gold vault door ajar with molten, gold and crimson keys inside" }
-].entries()) {
-  add({
-    id: `KEY-${pad(37 + i)}`, category: "Crate Keys", name: kb.name, price: kb.price, type: "Key bundle", rarity: "Mixed",
-    contents: describeContents({ keys: kb.keys }), description: kb.desc, system: "SYS-CRATES, SYS-KEYS", command: commandsFor({ keys: kb.keys }),
-    color: "#FF2E4D", icon: "key", label: "KEY BUNDLE", sub: "MIXED KEYS", art: kb.art,
-    value: keysValue(kb.keys)
-  });
-}
+].forEach((kb, i) => add({
+  id: `KEY-${pad(37 + i)}`, category: "Crate Keys", name: kb.name, price: kb.price, type: "Key bundle", rarity: "Mixed",
+  contents: describeContents({ keys: kb.keys }).join("; "), tebex: block(`🗝️ ${kb.name.toUpperCase()}`, [kb.desc, "", ...bullets(describeContents({ keys: kb.keys })), "", "See each crate key for rewards and odds."]),
+  system: "Crate system", command: contentsCmd({ keys: kb.keys }), compliance: "Safe (cosmetic pool) · Risky if the gear pool is used", color: "#FF2E4D", art: kb.art
+}));
 
+// ----- throne shards
 D.SHARD_PACKS.forEach((s, i) => {
   const total = Math.round(s.qty * (1 + s.bonus));
   add({
-    id: `SHARD-${pad(i + 1)}`, category: "Throne Shards", name: `${D.SHARD_NAMES[i]}: ${num(s.qty)} Throne Shards`, price: s.price, type: "Premium currency",
+    id: `SHARD-${pad(i + 1)}`, category: "Throne Shards", name: `${D.SHARD_NAMES[i]}: ${num(s.qty)} Throne Shards`, price: s.price, type: "Premium currency (cosmetic-only)",
     rarity: ["Common", "Common", "Rare", "Rare", "Epic", "Legendary", "Mythic"][i],
-    contents: `${num(s.qty)} Throne Shards${s.bonus ? ` + ${Math.round(s.bonus * 100)}% bonus (${num(total - s.qty)}) = ${num(total)}` : ""}`,
-    description: `${num(total)} Throne Shards to spend in the in-game Throne Vault on cosmetics.${s.bonus ? ` Includes a ${Math.round(s.bonus * 100)}% bonus.` : ""} Shards can't buy gameplay items.`,
-    system: "SYS-SHARDS", command: `<GIVE_SHARDS:${total}>`, color: "#FF2E4D", icon: "shards",
-    label: s.bonus ? `+${Math.round(s.bonus * 100)}% BONUS` : "THRONE SHARDS", sub: num(s.qty), bonus: s.bonus,
-    art: `${["a small pouch of", "a satchel of", "a small coffer of", "a chest of", "a vault pile of", "a towering hoard of", "a royal treasury overflowing with"][i]} glowing blood-red throne shard crystals with dark-gold flecks`
+    contents: `${num(s.qty)} Throne Shards${s.bonus ? ` + ${Math.round(s.bonus * 100)}% bonus = ${num(total)}` : ""}`,
+    tebex: block(`💎 ${num(total)} THRONE SHARDS`, [`${num(s.qty)} Throne Shards${s.bonus ? ` + ${Math.round(s.bonus * 100)}% BONUS (${num(total - s.qty)} extra)` : ""}.`, "", "Spend Throne Shards in the in-game Throne Vault on auras, trails, titles, pets, skins and more.", "Throne Shards can only be spent on cosmetics."]),
+    system: "Throne Shard currency + Throne Vault", command: cmd(`<GIVE_SHARDS:${total}>`), color: "#FF2E4D",
+    art: `${["a small leather pouch of", "a satchel of", "a small coffer of", "a chest of", "a vault pile of", "a towering hoard of", "a royal treasury overflowing with"][i]} glowing blood-red throne-shard crystals with dark-gold flecks`
   });
 });
 
+// ----- cosmetics & pets
 let ci = 0, pi = 0;
 for (const c of D.COSMETICS) {
   const isPet = c.cat === "pets";
   add({
     id: isPet ? `PET-${pad(++pi)}` : `COS-${pad(++ci)}`, category: isPet ? "Pets" : "Cosmetics", name: c.name, price: D.RARITY_PRICE[c.rarity],
-    type: c.type, rarity: c.rarity, contents: `${c.name} (${c.type})`, description: c.desc,
-    system: c.type === "Pet" ? "SYS-PETS" : /Skin/.test(c.type) ? "SYS-SKINS" : c.type === "Emote" ? "SYS-EMOTES" : /Title|Tag/.test(c.type) ? "SYS-TITLES" : c.type === "Chat Effect" ? "SYS-CHAT" : "SYS-COSMETICS",
-    command: `<GRANT_COSMETIC:${c.code}>`, color: RARITY_COLOR[c.rarity], icon: iconForType(c.type),
-    label: `${c.rarity.toUpperCase()} ${c.type.toUpperCase()}`, sub: c.type.toUpperCase(), art: c.art, code: c.code
+    type: c.type, rarity: c.rarity, contents: `${c.name} (${c.type})`,
+    tebex: block(`✦ ${c.name.toUpperCase()} · ${c.rarity.toUpperCase()} ${c.type.toUpperCase()}`, [c.desc, "", "Purely cosmetic: no stats, no gameplay effect.", "Equip it from your in-game wardrobe."]),
+    system: /Skin/.test(c.type) ? "Cosmetics system + resource pack models" : isPet ? "Cosmetic pet system" : "Cosmetics system",
+    command: cmd(`<GRANT_COSMETIC:${c.code}>`), color: RARITY_COLOR[c.rarity], art: c.art
   });
 }
-function iconForType(t) {
-  return { Aura: "aura", Trail: "trail", Particle: "aura", "Kill Effect": "skull", "Death Effect": "skull", Title: "scroll", "Chat Tag": "sigil",
-    "Mount Skin": "horseshoe", "Weapon Skin": "sword", "Armour Skin": "shield", Emote: "banner", "Spawn Effect": "portal",
-    "Teleport Effect": "portal", "Chat Effect": "bubble", Pet: "pet" }[t] || "aura";
-}
 
+// ----- bundles
 for (const b of D.BUNDLES) {
   const value = (b.contents.rank ? rank[b.contents.rank].price : 0) + keysValue(b.contents.keys) + (b.contents.shards || 0) * SHARD_RATE + cosValue(b.contents.cosmetics);
   const price = money(value * 0.62);
   add({
-    id: b.id, category: "Bundles", name: b.name, price, type: "Bundle", rarity: b.rarity, contents: describeContents(b.contents),
-    description: b.desc, system: systemsFor(b.contents), command: commandsFor(b.contents),
-    color: RARITY_COLOR[b.rarity], icon: "bundle", label: `${b.rarity.toUpperCase()} BUNDLE`, sub: "BUNDLE", art: b.art,
-    value: Math.round(value * 100) / 100
+    id: b.id, category: "Bundles", name: b.name, price, type: "Bundle", rarity: b.rarity, contents: describeContents(b.contents).join("; "),
+    tebex: block(`📦 ${b.name.toUpperCase()}`, [b.desc, "", "CONTAINS:", ...bullets(describeContents(b.contents)), "", `Worth ${fmt(Math.round(value * 100) / 100)}: save ${Math.round((1 - price / value) * 100)}%.`]),
+    system: "Ranks / crates / shards / cosmetics", command: contentsCmd(b.contents), color: RARITY_COLOR[b.rarity], art: b.art,
+    value: Math.round(value * 100) / 100, compliance: b.contents.rank ? "Borderline (includes a rank)" : "Safe"
   });
 }
 
-D.FEATURED.forEach((f, i) => add({
-  id: `FEAT-${pad(i + 1)}`, category: "Featured", name: f.name, price: f.price, type: `Featured (${f.window})`, rarity: f.rarity,
-  contents: f.desc, description: f.desc, system: sysFromCmd(f.deliver), command: f.deliver, color: RARITY_COLOR[f.rarity], icon: "featured",
-  label: "FEATURED", sub: f.window.toUpperCase(), art: f.art, status: "Rotation – enable while featured"
+// ----- simple lists
+const simple = (list, prefix, category, extra) => list.forEach((x, i) => add({
+  id: `${prefix}-${pad(i + 1)}`, category, name: x.name, price: x.price, contents: x.desc, command: cmd(x.deliver), art: x.art, ...extra(x, i)
 }));
-
+simple(D.FEATURED, "FEAT", "Featured", (f) => ({
+  type: `Featured (${f.window})`, rarity: f.rarity, color: RARITY_COLOR[f.rarity], system: sysFromCmd(f.deliver), status: "DEV SYSTEM REQUIRED · enable only while featured",
+  tebex: block(`★ ${f.name.toUpperCase()}`, [f.desc, "", `Availability: ${f.window}.`])
+}));
 D.BOOSTERS.forEach((b, i) => D.BOOST_DURATIONS.forEach((d, j) => add({
   id: `BOOST-${pad(i * 4 + j + 1)}`, category: "Boosters", name: `${b.name} (${d.label})`, price: d.price, type: "Global booster",
   rarity: ["Common", "Rare", "Epic", "Legendary"][j], contents: `${b.effect} for ${d.label.toLowerCase()}`,
-  description: `${b.effect} for ${d.label.toLowerCase()}. Global: everyone online benefits, and your name is announced as the booster. Boosts of the same type queue rather than stack.`,
-  system: "SYS-BOOSTERS", command: `<START_GLOBAL_BOOST:${b.code}:${d.mins}>`, color: ["#4FA3FF", "#9B6BFF", "#F2C14E", "#FF2E4D"][j],
-  icon: "booster", label: "GLOBAL BOOST", sub: d.label.toUpperCase(), art: `${b.art}, with a glowing hourglass motif`, gift: "Not giftable (global)"
+  tebex: block(`⏳ ${b.name.toUpperCase()} · ${d.label.toUpperCase()}`, [`${b.effect} for ${d.label.toLowerCase()}.`, "", "GLOBAL: every player online benefits, and your name is announced as the booster.", "Boosts of the same type queue up instead of stacking."]),
+  system: "Global booster system", command: cmd(`<START_GLOBAL_BOOST:${b.code}:${d.mins}>`), color: ["#4FA3FF", "#9B6BFF", "#F2C14E", "#FF2E4D"][j],
+  art: `${b.art}, with a glowing hourglass motif`, gift: "Not giftable (global)", compliance: "Borderline (global boosts benefit everyone; safest when tied to community goals)"
 })));
-
-D.STARTERS.forEach((s, i) => add({
-  id: `START-${pad(i + 1)}`, category: "Starter", name: s.name, price: s.price, type: "Starter pack (limit 1 per player)", rarity: "Starter",
-  contents: s.desc, description: s.desc + " One per player.", system: sysFromCmd(s.deliver), command: s.deliver,
-  color: "#E0434F", icon: "starter", label: "STARTER PACK", sub: "NEW HUNTERS", art: s.art
+simple(D.STARTERS, "START", "Starter", (s) => ({
+  type: "Starter pack (limit 1 per player)", rarity: "Starter", color: "#E0434F", system: sysFromCmd(s.deliver),
+  tebex: block(`🛡️ ${s.name.toUpperCase()} · STARTER`, [s.desc, "", "One per player. Welcome to the hunt."])
+}));
+simple(D.EVENTS, "EVENT", "Seasonal", (e) => ({
+  type: `Event: ${e.event}`, rarity: "Event", color: "#D61F3C", system: sysFromCmd(e.deliver) + ", event toggles", status: "DEV SYSTEM REQUIRED · keep DISABLED until the event",
+  tebex: block(`🌑 ${e.name.toUpperCase()} · ${e.event.toUpperCase()} EVENT`, [e.desc, "", "Available during the event only."])
+}));
+simple(D.GIFTS, "GIFT", "Gifts", (g) => ({
+  type: "Gift (recipient username variable)", rarity: "Gift", color: "#E6C068", system: sysFromCmd(g.deliver) + ", gift delivery", gift: "Is a gift package",
+  compliance: /GRANT_RANK/.test(g.deliver) ? "Borderline (rank)" : "Safe",
+  tebex: block(`🎁 ${g.name.toUpperCase()}`, [g.desc, "", "Enter your friend's Minecraft username at checkout. They receive it in-game."])
+}));
+simple(D.UTILITY, "UTIL", "Utility", (u) => ({
+  type: "Utility token", rarity: "Utility", color: "#C3C6CC", system: sysFromCmd(u.deliver),
+  tebex: block(`⚙️ ${u.name.toUpperCase()}`, [u.desc, "", "No gameplay effect."])
 }));
 
-D.EVENTS.forEach((e, i) => add({
-  id: `EVENT-${pad(i + 1)}`, category: "Seasonal", name: e.name, price: e.price, type: `Event: ${e.event}`, rarity: "Event",
-  contents: e.desc, description: `[${e.event.toUpperCase()} EVENT] ${e.desc} Available during the event only.`, system: sysFromCmd(e.deliver) + ", SYS-EVENTS",
-  command: e.deliver, color: "#D61F3C", icon: "moon", label: `${e.event.toUpperCase()} EVENT`, sub: "LIMITED", art: e.art,
-  status: "Event – keep disabled until the event"
-}));
-
-D.GIFTS.forEach((g, i) => add({
-  id: `GIFT-${pad(i + 1)}`, category: "Gifts", name: g.name, price: g.price, type: "Gift (recipient username variable)", rarity: "Gift",
-  contents: g.desc, description: g.desc, system: sysFromCmd(g.deliver) + ", SYS-GIFTS", command: g.deliver,
-  color: "#E6C068", icon: "gift", label: "GIFT", sub: "FOR A FRIEND", art: g.art, gift: "Is a gift package"
-}));
-
-D.UTILITY.forEach((u, i) => add({
-  id: `UTIL-${pad(i + 1)}`, category: "Utility", name: u.name, price: u.price, type: "Utility token", rarity: "Utility",
-  contents: u.desc, description: u.desc + " No gameplay effect.", system: "SYS-TOKENS" + (/QUEUE/.test(u.deliver) ? ", SYS-QUEUE" : ""),
-  command: u.deliver, color: "#C3C6CC", icon: "token", label: "UTILITY", sub: "TOKEN", art: u.art
-}));
-
-function sysFromCmd(cmd) {
+function sysFromCmd(c) {
   const s = new Set();
-  if (/GRANT_RANK/.test(cmd)) s.add("SYS-RANKS");
-  if (/GIVE_KEYS/.test(cmd)) s.add("SYS-KEYS");
-  if (/GIVE_SHARDS/.test(cmd)) s.add("SYS-SHARDS");
-  if (/GRANT_COSMETIC/.test(cmd)) s.add("SYS-COSMETICS");
-  if (/GLOBAL_BOOST/.test(cmd)) s.add("SYS-BOOSTERS");
-  if (/TOKEN|TEMP_PERMISSION/.test(cmd)) s.add("SYS-TOKENS");
+  if (/GRANT_RANK/.test(c)) s.add("Ranks");
+  if (/GIVE_KEYS/.test(c)) s.add("Crate system");
+  if (/GIVE_SHARDS/.test(c)) s.add("Throne Shards");
+  if (/GRANT_COSMETIC/.test(c)) s.add("Cosmetics system");
+  if (/GLOBAL_BOOST/.test(c)) s.add("Global boosters");
+  if (/TOKEN|TEMP_PERMISSION/.test(c)) s.add("Tokens/permissions");
   return [...s].join(", ");
 }
-
-// image file per package
-for (const p of P) p.image = `images/${p.id}.jpg`;
 
 // ------------------------------------------------------------------ outputs
 out("packages.json", JSON.stringify(P, null, 2));
 
 const csvCell = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
-const cols = ["ID", "CATEGORY", "PACKAGE", "PRICE AUD", "TYPE", "CONTENTS", "RARITY", "DEV SYSTEM", "COMMAND PLACEHOLDER", "IMAGE", "STATUS", "DESCRIPTION", "GIFTING"];
+const cols = ["ID", "CATEGORY", "PACKAGE", "PRICE AUD", "TYPE", "CONTENTS", "RARITY", "DEV SYSTEM", "COMMAND PLACEHOLDER", "COMPLIANCE", "STATUS", "TEBEX DESCRIPTION (paste)", "IMAGE PROMPT", "GIFTING"];
 out("packages.csv", "﻿" + [cols.map(csvCell).join(","), ...P.map((p) =>
-  [p.id, p.category, p.name, p.price.toFixed(2), p.type, p.contents, p.rarity, p.system, p.command, p.image, p.status, p.description, p.gift].map(csvCell).join(","))].join("\r\n"));
+  [p.id, p.category, p.name, p.price.toFixed(2), p.type, p.contents, p.rarity, p.system, p.command, p.compliance, p.status, p.tebex, `IMAGE-PROMPTS.md → ${p.id}`, p.gift].map(csvCell).join(","))].join("\r\n"));
+
+const byCat = (c) => P.filter((p) => p.category === c);
+const R = (id) => P.find((p) => p.id === id);
+const fence = (s) => "```\n" + s + "\n```";
 
 // ---------- CATALOGUE.md
-const byCat = (c) => P.filter((p) => p.category === c);
-let md = `# OVERTHRONE SMP – Tebex Store Catalogue
+const md = `# OVERTHRONE SMP – Tebex Store Catalogue (v2)
 
 *“${D.BRAND.slogan}”*
 
-${P.length} packages across ${D.CATEGORIES.length} categories. Prices are recommendations in AUD.
-Package IDs match \`packages.csv\`, \`DEVELOPER-HANDOFF.md\`, \`IMAGE-PROMPTS.md\` and the image files in \`images/\`.
+${P.length} packages in ${D.CATEGORIES.length} categories. Prices are recommendations in AUD.
+Every package has a **ready-to-paste Tebex description** (below, and in \`packages.csv\`) and an **image prompt** in \`IMAGE-PROMPTS.md\`.
 
-## Store rules (read first)
+## Read first: what your server can deliver today
 
-This catalogue is built to pass **Tebex store review** under Mojang's Minecraft Usage Guidelines:
+Your confirmed mod list (Minecraft 1.21.1, NeoForge 21.1.251):
+${D.CONFIRMED_MODS.join(", ")}.
 
-- **Nothing sold makes a paying player stronger.** No gear, kits, /fly, extra lives, personal XP or drop boosts, or paid-only content access.
-- **Ranks** give prestige, cosmetics, chat perks, queue priority, Discord roles and one-time cosmetic currency or keys.
-- **Crates** only contain cosmetics or Throne Shards. Odds are published, and keys are also earnable through play (voting, events, Gates).
-- **Throne Shards** can only be spent on cosmetics in the in-game Throne Vault.
-- **Boosters are global.** Everyone online benefits equally.
-- **No capes or cape-like back cosmetics.** These are not allowed under the guidelines.
-- **Hunter Ranks (E → ???) are earned through gameplay and are never sold.**
+**None of these mods provide:**
+- ranks or prefixes
+- homes, /hat or /nick
+- an economy or auction house
+- crates
+- cosmetics
+
+So **every store command is a placeholder** marked **DEV SYSTEM REQUIRED** until your developer adds those systems (new mods, KubeJS scripts or config) and gives you the real commands.
+
+Nothing here is an invented command. Suggested mods (e.g. LuckPerms, FTB Ranks, FTB Essentials) are **options for the developer**, not confirmed installs.
+
+**Compliance ratings** (Mojang's Minecraft Usage Guidelines, which Tebex checks in review):
+- **Safe:** cosmetic, chat or convenience with no gameplay effect.
+- **Borderline:** limits (homes, claims, auction slots, reset tokens). Many servers sell these, but review can question them.
+- **Risky:** paid gameplay items or advantages (gear, kits, keep-XP, survival /fly, skill points). These are **not included by default**. They're listed in the rank table so **you** decide.
 
 ---
 
-## 1. Final rank system
+## 1. Donor ranks (exactly five, Overlord is the top rank)
 
-Lifetime ranks, cumulative: each rank includes everything below it.
-
-| Tier | Rank | Discord role | Tebex package | Colour | Icon | Price |
+| Tier | Rank | Prefix | Colour | Discord role | Price | Package |
 |---|---|---|---|---|---|---|
-${D.RANKS.map((r) => `| ${r.tier} | **${r.name.toUpperCase()}** | @${r.discord} | ${r.name} Rank (${r.id}) | \`${r.gradient ? r.gradient.join(" → ") : r.color}\` | ${r.icon} | ${fmt(r.price)} |`).join("\n")}
+${ORDER.map((r) => `| ${r.tier} | ${r.icon} **${r.name.toUpperCase()}** | [${r.name.toUpperCase()}] | \`${r.color}\` | @${r.discord} | ${fmt(r.price)} | ${r.id} |`).join("\n")}
 
-${D.RANKS.map((r) => `### ${r.icon} ${r.name.toUpperCase()} · ${r.id} · ${fmt(r.price)}
-- **Lore:** ${r.lore}
-- **Short description:** ${r.short}
-- **Full description:** The ${r.name} rank is a lifetime rank on OVERTHRONE SMP. ${r.short} All perks are cosmetic or convenience only – no gameplay advantage.
-- **Perks:**
-${r.perks.map((x) => `  - ${x}`).join("\n")}
-- **Commands required:** ${P.find((p) => p.id === r.id).command}
-- **Developer requirements:**
-  - Permission group \`${r.key.toLowerCase()}\` inheriting the rank below.
-  - Prefix in colour \`${r.color}\`${r.gradient ? " (animated gradient)" : ""}.
-  - Discord role sync (Tebex Discord Action).
-  - Rank-exclusive cosmetics registered: ${r.grants.cosmetics.join(", ")}.
-- **Image:** \`images/${r.id}.jpg\` · prompt in IMAGE-PROMPTS.md
-`).join("\n")}
-**Upgrades:** you can later add "Upgrade to X" packages priced at the difference between ranks. The developer just needs to remove the old group when granting the new one.
+> IDs: RANK-001 to RANK-004 keep their old IDs. **Warlord is new (RANK-005)** and sits between Champion and Overlord.
+> Sovereign, Usurper, Kingslayer and Thronebreaker are removed (old RANK-005 to RANK-008).
+
+${ORDER.map((r) => {
+  const p = R(r.id);
+  return `### ${r.icon} ${r.name.toUpperCase()} · ${fmt(r.price)} · ${r.id}
+
+**Tebex description (paste as-is):**
+
+${fence(p.tebex)}
+
+- **Delivery placeholders:** \`${p.command}\`
+- **Compliance:** ${p.compliance}
+- **Optional Risky perks (not included; your call):** ${p.optional || "none"}
+`;
+}).join("\n")}
+
+## 2. Rank comparison table
+
+Features as rows, ranks as columns. The rating and status of each perk are shown in the last columns.
+
+| Perk | ${ORDER.map((r) => r.name).join(" | ")} | Rating | Status | Compliant alternative |
+|---|${ORDER.map(() => "---").join("|")}|---|---|---|
+${D.PERKS.map((p) => `| ${p.perk}${p.include ? "" : " *(optional)*"} | ${p.values.join(" | ")} | **${p.rating}** | ${p.status} | ${p.alt || "–"} |`).join("\n")}
+
+**Rank upgrades (optional):** create "Upgrade: Elite → Champion" style packages priced at the difference. The developer removes the old rank when granting the new one.
 
 ---
 
-## 2. Crate system
+## 3. Crates
 
-Every crate has five reward tiers. All rewards are cosmetic or Throne Shards. Duplicate cosmetics convert to Throne Shards.
+**Key command:** \`<GIVE_CRATE_KEY_COMMAND player={username} crate=<name> amount=<n>>\`: **DEV SYSTEM REQUIRED** (no crate mod is installed; KubeJS is one option).
 
-| Crate | Prestige | Key | Colour | Base key price | Common | Rare | Epic | Legendary | Mythic (jackpot) |
+Default reward pool: **cosmetics and Throne Shards only (Safe)**. Duplicate cosmetics convert to Throne Shards.
+
+| Crate | Prestige | Key | Colour | 1 key | Common | Rare | Epic | Legendary | Mythic |
 |---|---|---|---|---|---|---|---|---|---|
 ${D.CRATES.map((c) => `| **${c.name}** | ${c.prestige} | ${c.keyName} | \`${c.color}\` | ${fmt(c.base)} | ${c.odds.join("% | ")}% |`).join("\n")}
 
-${D.CRATES.map((c) => `### ${c.name}
+${D.CRATES.map((c) => `### ${c.name} (${c.prestige})
 - **Lore:** ${c.lore}
-- **Tier:** ${c.tier} (${c.prestige})
-- **Key:** ${c.keyName}
 - **Key art:** ${c.keyArt}
 - **Crate art:** ${c.crateArt}
-- **Rewards by tier:**
-${D.CRATE_TIERS.map((t, i) => `  - **${t}** (${c.odds[i]}%): ${c.rewards[i]}`).join("\n")}
-- **Jackpot:** ${c.jackpot}
-- **Key prices:** ${D.KEY_QTYS.map((q) => `${q.qty}× ${fmt(money(c.base * q.qty * (1 - q.discount)))}`).join(" · ")}
-- **Developer requirements:**
-  - Crate \`${c.key.toLowerCase()}\` with the odds above.
-  - Virtual keys delivered by command; works when the player is offline.
-  - Duplicate → shards conversion.
-  - Odds visible in-game.
-  - In-game key sources (vote, events, Gate drops) so the crate is also free to earn.
+- **Cosmetic pool (Safe, default):**
+${D.CRATE_TIERS.map((t, i) => `  - ${t} (${c.odds[i]}%): ${c.rewards[i]}`).join("\n")}
+- **Optional gear pool (Risky, not default), items from installed mods with IDs UNVERIFIED:** ${D.GEAR_POOLS[c.key].join(" · ")}.
+  Alternative: keep the cosmetic pool.
+- **Key prices:** ${D.KEY_QTYS.map((q) => `×${q.qty} ${fmt(money(c.base * q.qty * (1 - q.discount)))}`).join(" · ")}
 `).join("\n")}
----
 
-## 3. Crate key packages
+## 4. All packages, with Tebex descriptions
 
-| ID | Package | Price | Contents |
-|---|---|---|---|
-${byCat("Crate Keys").map((p) => `| ${p.id} | ${p.name} | ${fmt(p.price)} | ${p.contents} |`).join("\n")}
+${D.CATEGORIES.filter((c) => c.key !== "ranks").map((c) => {
+  const items = byCat(c.name);
+  if (!items.length) return "";
+  return `### ${c.name} (${items.length})
 
-Bulk discounts: 5 keys −10%, 10 keys −15%, 25 keys −20%, 50 keys −25%, 100 keys −30%.
+${c.note}
 
----
-
-## 4. Throne Shard packages
-
-Throne Shards are a premium **cosmetic-only** currency, spent in the in-game **Throne Vault**.
-
-| ID | Package | Price | Contents |
-|---|---|---|---|
-${byCat("Throne Shards").map((p) => `| ${p.id} | ${p.name} | ${fmt(p.price)} | ${p.contents} |`).join("\n")}
-
----
-
-## 5. Cosmetics and pets (${byCat("Cosmetics").length + byCat("Pets").length})
-
-All cosmetics are visual only. Skins never change stats; pets never fight.
-Prices by rarity: ${Object.entries(D.RARITY_PRICE).map(([r, v]) => `${r} ${fmt(v)}`).join(" · ")}
-
-| ID | Name | Category | Rarity | Price | Description | Dev system |
-|---|---|---|---|---|---|---|
-${[...byCat("Cosmetics"), ...byCat("Pets")].map((p) => `| ${p.id} | ${p.name} | ${p.type} | ${p.rarity} | ${fmt(p.price)} | ${p.description} | ${p.system} |`).join("\n")}
-
----
-
-## 6. Bundles (${byCat("Bundles").length})
-
-"Value" is the sum of the items at this catalogue's own prices. Bundles are priced at about 38% off.
-
-| ID | Bundle | Contents | Value | Price | Saving |
-|---|---|---|---|---|---|
-${byCat("Bundles").map((p) => `| ${p.id} | **${p.name}** | ${p.contents} | ${fmt(p.value)} | ${fmt(p.price)} | ${Math.round((1 - p.price / p.value) * 100)}% |`).join("\n")}
-
-${byCat("Bundles").map((p) => `- **${p.name}:** ${p.description}`).join("\n")}
-
----
-
-## 7. Featured products (${byCat("Featured").length}, rotate through the year)
-
-| ID | Product | Window | Price | Description |
+| ID | Package | Price | Contents | Compliance |
 |---|---|---|---|---|
-${byCat("Featured").map((p) => `| ${p.id} | ${p.name} | ${p.type.slice(10, -1)} | ${fmt(p.price)} | ${p.description} |`).join("\n")}
+${items.map((p) => `| ${p.id} | ${p.name} | ${fmt(p.price)} | ${p.contents} | ${p.compliance} |`).join("\n")}
 
-Limited items ("Founder", monthly relics) should be retired after their window and never re-sold, so they stay meaningful.
+<details><summary>Tebex descriptions (${c.name})</summary>
 
----
+${items.map((p) => `**${p.id}: ${p.name}**\n${fence(p.tebex)}`).join("\n\n")}
 
-## 8. Global boosters (${byCat("Boosters").length})
-
-Every booster is **server-wide**: all online players get the effect and the buyer is announced.
-Same-type boosts **queue** rather than stack, and each effect is capped.
-
-| Booster | 1 Hour | 3 Hours | 6 Hours | 24 Hours |
-|---|---|---|---|---|
-${D.BOOSTERS.map((b, i) => `| **${b.name}**: ${b.effect} | ${D.BOOST_DURATIONS.map((d, j) => `${fmt(d.price)} (BOOST-${pad(i * 4 + j + 1)})`).join(" | ")} |`).join("\n")}
+</details>
+`;
+}).join("\n")}
 
 ---
 
-## 9. Starter products (${byCat("Starter").length}, limit 1 per player)
+## 5. Store structure (category order)
 
-| ID | Package | Price | Contents |
-|---|---|---|---|
-${byCat("Starter").map((p) => `| ${p.id} | ${p.name} | ${fmt(p.price)} | ${p.contents} |`).join("\n")}
+${D.CATEGORIES.map((c, i) => `${i + 1}. **${c.name}** (${byCat(c.name).length}): ${c.note}`).join("\n")}
 
----
-
-## 10. Seasonal and event products (${byCat("Seasonal").length})
-
-Keep these **disabled** in Tebex until their event starts.
-
-| ID | Event | Package | Price | Contents |
-|---|---|---|---|---|
-${byCat("Seasonal").map((p) => `| ${p.id} | ${p.type.replace("Event: ", "")} | ${p.name} | ${fmt(p.price)} | ${p.contents} |`).join("\n")}
-
----
-
-## 11. Gift products (${byCat("Gifts").length}) and utility (${byCat("Utility").length})
-
-Gift packages use a Tebex **Variable** for the recipient's username (Package → Variables tab).
-Every other package can also be gifted with Tebex's built-in **Gifting** tab.
-
-| ID | Package | Price | Contents |
-|---|---|---|---|
-${[...byCat("Gifts"), ...byCat("Utility")].map((p) => `| ${p.id} | ${p.name} | ${fmt(p.price)} | ${p.contents} |`).join("\n")}
-
----
-
-## 12. Package database
-
-See **\`packages.csv\`** (${P.length} rows). Columns: ID, CATEGORY, PACKAGE, PRICE AUD, TYPE, CONTENTS, RARITY, DEV SYSTEM, COMMAND PLACEHOLDER, IMAGE, STATUS, DESCRIPTION, GIFTING.
-
-## 13. Developer handoff
-
-See **\`DEVELOPER-HANDOFF.md\`**.
-
-## 14–16. Images and prompts
-
-- Ready-made branded images for every package and category are in \`images/\` and \`images/categories/\`.
-- **\`IMAGE-PROMPTS.md\`** has an individual AI-art prompt for every package, crate and category, if you want to replace any image with painted artwork later.
-
----
-
-## 17. Final Tebex store structure
-
-Create the categories in this order:
-
-${D.CATEGORIES.map((c, i) => `${i + 1}. **${c.name}** – ${c.note} (${P.filter((p) => p.category === c.name).length} packages)`).join("\n")}
-
-**Recommended Tebex settings:**
+**Tebex settings:**
 - Enable gifting on ranks, keys, shards and cosmetics.
-- Set "limit 1 per customer" on Starter packages and Founder items.
-- Set "require player online" OFF wherever the developer supports offline delivery.
-- Put crate odds in every key package description.
+- Set limit 1 per customer on Starter and Founder items.
 - Keep Seasonal packages disabled until their event.
+- Keep every package **disabled** until the developer supplies its real command.
 `;
 out("CATALOGUE.md", md);
 
 // ---------- DEVELOPER-HANDOFF.md
 const SYSTEMS = [
-  ["SYS-TEBEX", "Tebex plugin", "Install the Tebex plugin that supports NeoForge 1.21.1 (confirm compatibility) and add the store secret key on the server only. Commands use Tebex's `{username}` placeholder. Prefer offline-safe delivery."],
-  ["SYS-RANKS", "Rank groups", "8 lifetime groups (supporter → thronebreaker), each inheriting the one below. Prefix, coloured name, chat/tab formatting. Thronebreaker has an animated crimson-gold prefix. Upgrades remove the lower group."],
-  ["SYS-DISCORD", "Discord role sync", "Use Tebex's built-in **Discord Actions** deliverable to add roles @Supporter … @Thronebreaker. Requires linking the Tebex Discord bot."],
-  ["SYS-QUEUE", "Queue priority", "Join-queue priority tiers 1–8 (by rank) plus a 30-day pass (UTIL). No gameplay effect."],
-  ["SYS-CRATES", "Gate Crates", "6 crates (Ember, Bloodmoon, Abyssal, Dreadforge, Regalia, Throne) plus event crates. Odds per the catalogue. Cosmetic/shard rewards only. Duplicate → shards. Odds shown in-game. Opening animation in a Crate Hall at spawn."],
-  ["SYS-KEYS", "Virtual keys", "Key balances per player and crate; deliverable while offline. Free key sources in gameplay (voting, events, Gate clears, Global Luck Boost)."],
-  ["SYS-SHARDS", "Throne Shards + Throne Vault", "Premium currency balance per player; deliverable while offline. In-game Throne Vault GUI that sells ONLY cosmetics. Never convertible to gameplay currency or items."],
-  ["SYS-COSMETICS", "Cosmetics engine", "Auras, trails, particles, kill effects, death effects, spawn effects and teleport effects. Players toggle them in a /cosmetics wardrobe. Per-player unlock storage."],
-  ["SYS-TITLES", "Titles and chat tags", "Selectable titles under the name, chat tags before the name. Custom-title token (staff approval)."],
-  ["SYS-CHAT", "Chat effects", "Chat colours, gradients (Silver Dawn, Crimson Gradient), Gilded Name Shimmer, emoji packs."],
-  ["SYS-PETS", "Cosmetic pets", "Follower pets with no combat, collision or item pickup. Summon or dismiss from the wardrobe. Custom pet names (Thronebreaker)."],
-  ["SYS-SKINS", "Weapon, armour and mount skins", "Resource-pack models (e.g. custom model data) that change appearance only, never stats. Applied via the wardrobe."],
-  ["SYS-EMOTES", "Emotes", "Emote playback (an emote mod or equivalent)."],
-  ["SYS-BOOSTERS", "Global boosters", "Server-wide timed boosts (XP, currency, drops, key-find luck, Hunter XP, Gate rewards, party). Same-type boosts queue; announce the buyer; boss bar timer; effect caps."],
-  ["SYS-TOKENS", "Tokens and temporary permissions", "Nick (30 days), name colour, prefix colour, wardrobe slots, guild banner slot. Temporary permissions expire automatically."],
-  ["SYS-GIFTS", "Gift delivery", "Gift packages read the recipient's username from a Tebex Variable and deliver to that player instead of the buyer."],
-  ["SYS-EVENTS", "Event content", "Event-only cosmetics, event crates and keys; toggled on for each event."],
-  ["SYS-HALL", "Hall of Thrones", "List of Thronebreaker holders. Can be posted on the website (admin panel) and Discord."]
+  ["Tebex delivery", "Install a Tebex plugin/mod compatible with NeoForge 1.21.1 (compatibility UNVERIFIED – confirm before purchase), or use RCON. Store secret key only on the server. Commands use Tebex's {username} placeholder; gift packages use a {recipient} package variable."],
+  ["Ranks + prefixes", "No permissions/prefix mod in the list. Needed: 5 groups (supporter → overlord) with inheritance, coloured prefixes, an animated Overlord prefix. Options: LuckPerms or FTB Ranks (NeoForge builds – confirm). Provide <SET_RANK_COMMAND>."],
+  ["Discord roles", "Tebex Discord Actions (built into Tebex) – link the Tebex Discord bot. No server command needed."],
+  ["Throne Shards", "Cosmetic-only currency. One option with REAL vanilla syntax: `scoreboard objectives add throne_shards dummy` then `scoreboard players add {username} throne_shards <amount>` (works only while the player is online unless queued). Or a KubeJS/currency mod. Must never buy gameplay items. Provide <GIVE_SHARDS_COMMAND>."],
+  ["Throne Vault", "In-game GUI/NPC (Easy NPC + KubeJS are installed) that sells cosmetics for Throne Shards."],
+  ["Crates + keys", "6 crates with the odds in CATALOGUE.md, virtual keys, duplicate → shards, odds visible in-game, free key sources in gameplay. No crate mod installed – KubeJS or a crate mod. Provide <GIVE_CRATE_KEY_COMMAND>."],
+  ["Cosmetics", "Auras, trails, particles, kill/death/spawn/teleport effects, titles, chat tags, chat effects, emotes, pets, weapon/armour/mount skins (resource-pack models, appearance only). RenderJS/KubeJS are installed and may help. Provide <GRANT_COSMETIC_COMMAND>."],
+  ["Chat formatting", "Chat colours, gradients, emoji packs, join messages, server-wide arrival announcement."],
+  ["Essentials commands", "/hat, /nick (moderated), /sit, /lay, hub-only /fly, homes (if kept). None in the mod list – essentials-style mod or KubeJS."],
+  ["Claims (Borderline)", "Open Parties and Claims is installed. Bonus claim chunks per rank need permission-based limits – confirm OPAC supports this with the chosen permission mod (UNVERIFIED)."],
+  ["Auction House (Borderline)", "No auction mod in the list. Needed only if AH listing slots stay as a rank perk."],
+  ["Class / race reset tokens (Borderline)", "Custom class system (Warrior/Assassin/Mage/Ranger/Guardian) + Tensura race reset – commands UNVERIFIED. Provide <GIVE_TOKEN_COMMAND>."],
+  ["Global boosters", "Server-wide timed boosts (XP, currency, drops, key-find, Hunter XP, Gate rewards, party). Queue same-type boosts, announce the buyer, show a timer. Provide <START_GLOBAL_BOOST_COMMAND>."],
+  ["Tokens / temp permissions", "Nick 30d, name/prefix colour, wardrobe slots, guild banner slot, queue pass. Provide <GIVE_TOKEN_COMMAND> and <GRANT_TEMP_PERMISSION_COMMAND>."],
+  ["Queue priority", "Join-queue priority by rank (needs a queue/proxy setup)."],
+  ["Events", "Event cosmetics/crates toggled per event."],
+  ["Optional Risky perks", "Only if the owner chooses them: Sophisticated Backpacks / Waystones / Iron's Spells items, Pufferfish skill points, kits, keep-XP, survival /fly, /back. Real item IDs and commands must be confirmed – none are assumed here."]
 ];
-let dev = `# OVERTHRONE SMP – Developer Handoff (Tebex packages)
+const dev = `# OVERTHRONE SMP – Developer Handoff (Tebex)
 
-The store owner has created every package in Tebex. Each one needs a **real command** in place of its **placeholder**.
+Hi! The owner has designed the full Tebex store. **Every package needs a real command** in place of its placeholder.
 
-**How to use this document:**
-1. Build the backend systems listed below.
-2. For each package, write the real command(s) that perform the "Delivery".
-3. Send the owner a list of: **ID → real command(s)**. The owner pastes them into Tebex (Package → Game Server Commands).
+Please do the following:
+1. Build or choose the systems below.
+2. Fill in the "Real command" line for each package ID.
+3. Send the list back.
 
-**Rules:**
-- **Never put the Tebex secret key in the website, GitHub or Discord.** It only goes in the server's Tebex plugin config.
-- **Everything must stay non-competitive:**
-  - Cosmetics never change stats.
-  - Crate and Throne Vault rewards are cosmetic or shards only.
-  - Boosters are global.
-- **Placeholder syntax:** \`<ACTION:ARG:ARG>\`. A \`{recipient}\` argument means "deliver to the gift recipient (Tebex Variable)". Otherwise deliver to \`{username}\`.
+**Server:** Minecraft 1.21.1 · NeoForge 21.1.251 · Java 21.
 
-## Backend systems required
+**Confirmed mods:** ${D.CONFIRMED_MODS.join(", ")}.
+There is no permissions, essentials, economy, auction, crate or cosmetics mod in that list.
 
-| ID | System | What it must do |
-|---|---|---|
-${SYSTEMS.map(([id, n, d]) => `| ${id} | ${n} | ${d} |`).join("\n")}
+**Placeholder format:** \`<NAME_COMMAND key=value …>\`.
+- \`{username}\` is Tebex's buyer placeholder.
+- \`{recipient}\` is a Tebex package variable used by gift packages.
 
-## Placeholder reference
+**Never put the Tebex secret key in the website, GitHub or Discord.**
+
+## Systems required
+
+| System | What it must do |
+|---|---|
+${SYSTEMS.map(([a, b]) => `| ${a} | ${b} |`).join("\n")}
+
+## Placeholders
 
 | Placeholder | Meaning |
 |---|---|
-| \`<GRANT_RANK:RANK>\` | Add the player to the rank group (permanent) |
-| \`<GIVE_KEYS:CRATE:N>\` | Give N virtual keys for the crate |
-| \`<GIVE_SHARDS:N>\` | Add N Throne Shards |
-| \`<GRANT_COSMETIC:CODE>\` | Unlock the cosmetic CODE (permanent) |
-| \`<START_GLOBAL_BOOST:TYPE:MINUTES>\` | Start (or queue) a server-wide boost |
-| \`<GRANT_TOKEN:TYPE:N>\` | Give N single-use tokens |
-| \`<GRANT_TEMP_PERMISSION:PERM:30d>\` | Temporary permission that expires |
-| Tebex Discord Action | Configured in Tebex, not a server command |
+| \`<SET_RANK_COMMAND player rank>\` | Give a lifetime donor rank (remove the lower rank on upgrades) |
+| \`<GIVE_CRATE_KEY_COMMAND player crate amount>\` | Give virtual crate keys |
+| \`<GIVE_SHARDS_COMMAND player amount>\` | Add Throne Shards |
+| \`<GRANT_COSMETIC_COMMAND player id>\` | Unlock a cosmetic |
+| \`<START_GLOBAL_BOOST_COMMAND type minutes buyer>\` | Start or queue a server-wide boost |
+| \`<GIVE_TOKEN_COMMAND player token amount>\` | Give tokens (class reset, name colour, wardrobe…) |
+| \`<GRANT_TEMP_PERMISSION_COMMAND player permission duration>\` | Temporary permission |
 
-## Cosmetic codes to implement (${D.COSMETICS.length} catalogue + rank/event exclusives)
+## Rank perk matrix (what each rank must unlock)
 
-| Code | Name | Type | Rarity |
-|---|---|---|---|
-${D.COSMETICS.map((c) => `| \`${c.code}\` | ${c.name} | ${c.type} | ${c.rarity} |`).join("\n")}
+| Perk | ${ORDER.map((r) => r.name).join(" | ")} | Rating | Status |
+|---|${ORDER.map(() => "---").join("|")}|---|---|
+${D.PERKS.map((p) => `| ${p.perk}${p.include ? "" : " (optional, Risky)"} | ${p.values.join(" | ")} | ${p.rating} | ${p.status} |`).join("\n")}
 
-**Also required** (exclusives referenced by ranks, crates, featured and events):
-${[...new Set(P.flatMap((p) => (p.command.match(/GRANT_COSMETIC:([A-Z0-9_]+)/g) || []).map((m) => m.split(":")[1])))].filter((c) => !cos[c]).map((c) => `\`${c}\``).join(", ")}
+## Cosmetic IDs to implement
 
-Plus the crate jackpots: Ashen Halo, Bloodmoon Eclipse aura, Voidborn Wraith, Molten Throne set, Gilded Regalia set, The Empty Throne + "Throne Taker".
+${[...new Set(P.flatMap((p) => [...p.command.matchAll(/id=([a-z0-9_]+)/g)].map((m) => m[1])))].sort().map((c) => `\`${c}\``).join(", ")}
 
-## Per-package delivery (${P.length} packages)
+## Per-package commands (${P.length})
 
 ${D.CATEGORIES.map((c) => {
-  const items = P.filter((p) => p.category === c.name);
+  const items = byCat(c.name);
   if (!items.length) return "";
   return `### ${c.name}
 
-${items.map((p) => `**${p.id}: ${p.name}** (${fmt(p.price)})
-- System required: ${p.system}
-- Delivery: ${p.contents}
-- Tebex command: \`${p.command}\`
+${items.map((p) => `**${p.id}: ${p.name}**
+- Delivers: ${p.contents}
+- Placeholder: \`${p.command}\`
 - Real command: ____________________`).join("\n\n")}
 `;
 }).join("\n")}
 `;
 out("DEVELOPER-HANDOFF.md", dev);
 
-// ---------- IMAGE-PROMPTS.md
-const STYLE = "Square 1:1 premium dark-fantasy MMORPG game-store item artwork. Single centred subject on a pure black background. Obsidian surfaces, dark-gold filigree accents, glowing {ACCENT} energy, drifting crimson embers and thin dark smoke, cinematic rim lighting, intricate detail, high-end painterly 3D render, AAA game store quality.";
-const NEG = "text, letters, words, numbers, logo, watermark, signature, border, frame, collage, grid, multiple panels, Minecraft blocks, Minecraft screenshot, pixel art, cartoon, chibi, anime, low detail, blurry, copyrighted characters, existing game logos, capes, cloaks";
-const prompt = (id, name, subject, accent) => `### ${id}: ${name}
-- **IMAGE ID:** ${id}
-- **PACKAGE:** ${name}
-- **File:** \`images/${id}.jpg\`
-- **Prompt:** ${STYLE.replace("{ACCENT}", accent)} Subject: ${subject}. No text anywhere in the image.
-- **Negative prompt:** ${NEG}
-`;
-const accentFor = (p) => COLOR_WORD(p.color) === "crimson" ? ({ "#4FA3FF": "cold blue-white", "#9B6BFF": "violet", "#F2C14E": "molten gold", "#A39D94": "ash-grey", "#C3C6CC": "silver", "#E6C068": "dark gold" }[p.color] || "crimson") : COLOR_WORD(p.color);
-let img = `# OVERTHRONE SMP – Image list and generation prompts
+// ---------- IMAGE-PROMPTS.md (for ChatGPT image generation, one at a time)
+const prompt = (id, name, subject, color) => `### ${id}: ${name}
+${fence(`Create a square 1:1 image. Premium dark-fantasy MMORPG game-store item artwork for "${name}".
+Subject: ${subject}.
+Style: one single centred subject on a pure black background; obsidian surfaces, dark-gold filigree, glowing ${color} accents, drifting crimson embers, thin dark smoke, cinematic rim lighting, intricate detail, high-end painterly 3D render, AAA game store quality.
+Do NOT include: any text, letters, numbers, logos, watermarks, borders, collages, grids, multiple panels, Minecraft blocks or screenshots, cartoon or anime style, capes, or characters from existing games.`)}`;
+const img = `# OVERTHRONE SMP – Image prompts for ChatGPT
 
-There is **one image per package**, and one per crate and category. Generate them **one at a time**: no collages, no grids, no text in the image.
+How to use these:
+- Paste **one prompt per message** into ChatGPT.
+- Download the image, then upload it to the Tebex package with the same ID.
+- Never ask for several images at once (no collages or grids).
 
-Every image in this list already exists as a ready-to-use branded image in \`images/\`. Use these prompts if you want painted AI artwork instead.
-Upload the result to the matching Tebex package. Recommended size: 1024×1024 or larger, exported as JPG or PNG.
+There are ${P.length + D.CRATES.length + D.CATEGORIES.length} prompts: one per package, one per crate and one per category.
 
-**Shared style (applies to all prompts):** ${STYLE.replace("{ACCENT}", "crimson")}
-**Shared negative prompt:** ${NEG}
+## Packages
 
-## 14. Complete image list (${P.length + D.CRATES.length + D.CATEGORIES.length} images)
+${P.map((p) => prompt(p.id, p.name, p.art, p.color)).join("\n\n")}
 
-| IMAGE ID | Package | File |
-|---|---|---|
-${P.map((p) => `| ${p.id} | ${p.name} | images/${p.id}.jpg |`).join("\n")}
-${D.CRATES.map((c, i) => `| CRATE-${pad(i + 1)} | ${c.name} (crate artwork) | images/CRATE-${pad(i + 1)}.jpg |`).join("\n")}
-${D.CATEGORIES.map((c) => `| CAT-${c.key.toUpperCase()} | ${c.name} (category) | images/categories/${c.key}.jpg |`).join("\n")}
+## Crates
 
-## 15. Individual prompts
+${D.CRATES.map((c, i) => prompt(`CRATE-${pad(i + 1)}`, c.name, c.crateArt, c.color)).join("\n\n")}
 
-${P.map((p) => prompt(p.id, p.name, p.art, accentFor(p))).join("\n")}
+## Categories
 
-### Crate artwork
+Match your existing category tiles: one ornate silver emblem with crimson gems, centred on black, inside a thin square frame.
 
-${D.CRATES.map((c, i) => prompt(`CRATE-${pad(i + 1)}`, c.name, c.crateArt, COLOR_WORD(c.color))).join("\n")}
-
-## 16. Category art prompts
-
-Keep these matching the existing category tiles: a single silver-and-crimson emblem on a black background with a crimson glow and a thin square frame.
-
-${D.CATEGORIES.map((c) => prompt(`CAT-${c.key.toUpperCase()}`, c.name, `a single ornate silver emblem representing "${c.name}" (${c.note.toLowerCase()}), crimson gemstone accents, centred, inside a thin dark square frame with corner brackets`, "crimson")).join("\n")}
+${D.CATEGORIES.map((c) => prompt(`CAT-${c.key.toUpperCase()}`, c.name, `a single ornate silver emblem representing "${c.name}", crimson gemstone accents, inside a thin dark square frame with corner brackets`, "#D61F3C")).join("\n\n")}
 `;
 out("IMAGE-PROMPTS.md", img);
 
-console.log(P.length, "packages");
 const counts = {};
 for (const p of P) counts[p.category] = (counts[p.category] || 0) + 1;
-console.log(counts);
+console.log(P.length, "packages", counts);
