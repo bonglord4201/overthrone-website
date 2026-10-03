@@ -93,5 +93,8 @@ for amount in AMOUNTS:
     img = base.copy()
     img.alpha_composite(layer, (ox, oy))
     name = amount.replace(",", "")
-    img.save(os.path.join(out_dir, f"throne-shards-{name}.png"))
+    # clean transparency: solid art fully opaque, faint background specks fully clear
+    a = img.getchannel("A").point(lambda v: 255 if v > 235 else (0 if v < 12 else v))
+    img.putalpha(a)
+    img.save(os.path.join(out_dir, f"throne-shards-{name}.png"), optimize=True)
     print("wrote", amount, "font", size)
