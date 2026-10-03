@@ -8,7 +8,7 @@
 // Tebex package IDs (Tebex → Packages → the number in each rank's URL). Used to link the
 // rank names in the Tebex comparison block to each rank's store page.
 export const STORE_URL = "https://overthronesmp.tebex.store";
-export const PACKAGE_IDS = { ronin: null, valkyrie: null, monarch: null, godborn: null, overlord: null };
+export const PACKAGE_IDS = { ronin: 7711787, valkyrie: 7711799, monarch: 7711809, godborn: 7711825, overlord: 7711838 };
 
 export const RANKS = [
   { key: "ronin", name: "Ronin", color: "#E0434F" },
