@@ -1,152 +1,222 @@
-# Animated 468x60 server-list banner for OVERTHRONE SMP (seamless 4-second loop).
-#   python3 marketing/make-animated-banner.py
-# Writes marketing/overthrone-banner-animated-468x60.mp4 (for minecraft-mp.com, which wants MP4)
-# and marketing/overthrone-banner-animated-468x60.gif (for sites that take GIF).
-import math, os, random, shutil, subprocess, tempfile
-from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageChops
+# Cinematic animated 468x60 server-list banner for OVERTHRONE SMP (seamless 9-second loop).
+#   python3 marketing/make-animated-banner.py <rank-art-dir>
+# <rank-art-dir> holds the owner's rank artwork: overlord.webp (hellfire castle) and godborn.webp
+# (heavenly citadel). Writes marketing/overthrone-banner-animated-468x60.mp4 (minecraft-mp.com wants MP4)
+# and .gif (other sites), plus a preview contact sheet.
+import math, os, random, shutil, subprocess, sys, tempfile
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageChops
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-W, H, S = 468, 60, 3                 # output size and supersampling
-FPS, SECONDS = 25, 4
-N = FPS * SECONDS
+ART = sys.argv[1]
+W, H, S = 468, 60, 3
 SW, SH = W * S, H * S
+FPS, SECONDS = 25, 9
+N = FPS * SECONDS
 
-RED, RED_HI, GOLD = (165, 22, 45), (255, 70, 80), (232, 196, 120)
-TITLE = "OVERTHRONE SMP"
-LINES = ["overthronesmp.net", "1.21.1 NeoForge  •  Tensura RPG", "Hunter Ranks  E  →  ???", "6 Realms  •  Dungeon Gates"]
+GOLD, CREAM, RED_HI = (240, 200, 120), (248, 240, 228), (255, 64, 70)
+DISPLAY = os.path.join(ROOT, "public/fonts/lora-var.woff")
+SANS_B = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 
-title_font = ImageFont.truetype(os.path.join(ROOT, "public/fonts/lora-var.woff"), 25 * S)
-try:
-    title_font.set_variation_by_axes([700])
-except Exception:
-    pass
-sub_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 10 * S)
-btn_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 9 * S)
+
+def font(path, size, bold=True):
+    f = ImageFont.truetype(path, size)
+    if bold and path.endswith(".woff"):
+        try: f.set_variation_by_axes([700])
+        except Exception: pass
+    return f
+
+
+def cover(img, w, h):
+    s = max(w / img.width, h / img.height)
+    img = img.resize((round(img.width * s), round(img.height * s)), Image.LANCZOS)
+    l, t = (img.width - w) // 2, (img.height - h) // 2
+    return img.crop((l, t, l + w, t + h))
+
+
+# --- scenes from the owner's artwork (clean regions, no frame/text) ---
+def scene(file, box, tint=1.0):
+    im = Image.open(os.path.join(ART, file)).convert("RGB").crop(box)
+    im = ImageEnhance.Contrast(im).enhance(1.12)
+    im = ImageEnhance.Color(im).enhance(tint)
+    return im
+
+SCENES = [
+    dict(img=scene("overlord.webp", (930, 150, 1650, 560), 1.15), pan=(0.0, 0.35), zoom=(1.0, 1.12),
+         title="OVERTHRONE SMP", sub="DON'T REACH THE THRONE. OVERTHROW IT.", accent=RED_HI, dark=0.62),
+    dict(img=scene("godborn.webp", (1010, 150, 1480, 520), 1.0), pan=(0.2, 0.75), zoom=(1.1, 1.0),
+         title="SIX REALMS AWAIT", sub="AEONIA  •  NETHERFALL  •  THE GATES", accent=GOLD, dark=0.72),
+    dict(img=scene("overlord.webp", (1000, 220, 1600, 560), 1.2), pan=(0.7, 0.3), zoom=(1.18, 1.05),
+         title="FROM E TO ???", sub="TENSURA RPG  •  HUNTER RANKS  •  BOSSES", accent=RED_HI, dark=0.62),
+]
+SEG = N // len(SCENES)
+FADE = int(FPS * 0.7)
 
 logo = Image.open(os.path.join(ROOT, "public/images/overthrone-logo-800.webp")).convert("RGBA")
-LOGO = SH - 6 * S
+LOGO = SH + 6 * S
 logo = logo.resize((LOGO, LOGO), Image.LANCZOS)
 logo_glow = Image.new("RGBA", logo.size, RED_HI + (0,))
-logo_glow.putalpha(logo.getchannel("A").filter(ImageFilter.GaussianBlur(6 * S)))
+logo_glow.putalpha(logo.getchannel("A").filter(ImageFilter.GaussianBlur(7 * S)))
+LX, LY = -1 * S, -3 * S
 
-# layout
-LX = 5 * S
-TX = LX + LOGO + 8 * S
-BTN_W, BTN_H = 92 * S, 22 * S
-BTN_X, BTN_Y = SW - BTN_W - 9 * S, (SH - BTN_H) // 2
+TX = LOGO - 2 * S                       # text column start
+IPW = 118 * S                           # right info plate width
+TW = SW - TX - IPW - 10 * S             # text column width
+title_cache, sub_font = {}, font(SANS_B, 8 * S)
+ip_font, ip_small = font(SANS_B, 10 * S), font(SANS_B, 7 * S)
 
-# title mask (for the light sweep)
-tmask = Image.new("L", (SW, SH), 0)
-ImageDraw.Draw(tmask).text((TX, 5 * S), TITLE, font=title_font, fill=255)
-tbox = tmask.getbbox()
 
-# embers: periodic paths so the loop is seamless
-random.seed(11)
-embers = []
-for _ in range(46):
-    embers.append(dict(
-        x=random.uniform(0, SW), y=random.uniform(0, SH),
-        rise=random.choice([1, 1, 2]) * SH,          # distance per loop (multiple of height)
-        sway=random.uniform(2, 7) * S, phase=random.uniform(0, 2 * math.pi),
-        r=random.uniform(0.9, 2.1) * S, hot=random.random() < 0.35))
+def title_font(text):
+    if text not in title_cache:
+        for size in range(26 * S, 12 * S, -S):
+            f = font(DISPLAY, size)
+            if ImageDraw.Draw(Image.new("L", (1, 1))).textlength(text, font=f) <= TW:
+                break
+        title_cache[text] = f
+    return title_cache[text]
+
+
+random.seed(5)
+EMBERS = [dict(x=random.uniform(0, SW), y=random.uniform(0, SH), rise=random.choice([1, 2, 2, 3]) * SH,
+               sway=random.uniform(2, 8) * S, ph=random.uniform(0, 6.28), r=random.uniform(0.8, 2.2) * S,
+               hot=random.random() < 0.4) for _ in range(60)]
+
+
+def ease(x):
+    return x * x * (3 - 2 * x)
+
+
+def background(sc, p):
+    z = sc["zoom"][0] + (sc["zoom"][1] - sc["zoom"][0]) * p
+    img = sc["img"]
+    cw, ch = img.width / z, img.width / z * SH / SW
+    ch = min(ch, img.height); cw = ch * SW / SH
+    px = sc["pan"][0] + (sc["pan"][1] - sc["pan"][0]) * p
+    x0 = (img.width - cw) * px
+    y0 = (img.height - ch) * 0.45
+    return img.resize((SW, SH), Image.BICUBIC, box=(x0, y0, x0 + cw, y0 + ch))
+
+
+def shade(dark):
+    """Left/right darkening so text and plate stay readable over busy art."""
+    g = Image.new("L", (SW, SH), 0)
+    px = g.load()
+    for x in range(SW):
+        u = x / SW
+        left = max(0.0, 1 - u / 0.62) ** 1.4
+        right = max(0.0, (u - 0.7) / 0.3) ** 1.6
+        v = int(255 * dark * min(1, left * 1.15 + right * 0.9 + 0.18))
+        for y in range(SH):
+            px[x, y] = v
+    return g
+
+SHADES = {sc["dark"]: shade(sc["dark"]) for sc in SCENES}
+
+
+def text_layer(sc, appear, t_global):
+    lay = Image.new("RGBA", (SW, SH), (0, 0, 0, 0))
+    d = ImageDraw.Draw(lay)
+    tf = title_font(sc["title"])
+    a = int(255 * appear)
+    dx = int((1 - appear) * 14 * S)
+    ty = 6 * S
+    # glow behind title
+    g = Image.new("L", (SW, SH), 0)
+    ImageDraw.Draw(g).text((TX + dx, ty), sc["title"], font=tf, fill=255, stroke_width=3 * S)
+    g = g.filter(ImageFilter.GaussianBlur(6 * S)).point(lambda v: int(v * 0.8 * appear))
+    lay.paste(sc["accent"] + (255,), (0, 0), g)
+    d.text((TX + dx, ty), sc["title"], font=tf, fill=(14, 4, 6, a), stroke_width=int(1.6 * S), stroke_fill=(14, 4, 6, a))
+    m = Image.new("L", (SW, SH), 0)
+    ImageDraw.Draw(m).text((TX + dx, ty), sc["title"], font=tf, fill=255)
+    m = m.point(lambda v: int(v * appear))
+    # metallic face: cream top -> gold bottom
+    face = Image.linear_gradient("L").resize((SW, SH))
+    face = Image.merge("RGB", [face.point(lambda v, c=c, k=k: int(c + (k - c) * v / 255)) for c, k in zip(CREAM, GOLD)])
+    lay.paste(face, (0, 0), m)
+    # light sweep
+    bbox = m.getbbox()
+    if bbox:
+        sx = bbox[0] - 40 * S + (bbox[2] - bbox[0] + 80 * S) * ((t_global * 3) % 1)
+        band = Image.new("L", (SW, SH), 0)
+        ImageDraw.Draw(band).polygon([(sx, 0), (sx + 16 * S, 0), (sx, SH), (sx - 16 * S, SH)], fill=255)
+        lay.paste((255, 255, 255), (0, 0), ImageChops.multiply(band.filter(ImageFilter.GaussianBlur(4 * S)), m).point(lambda v: int(v * 0.85)))
+    # subtitle with accent line
+    sy = 39 * S
+    d.line((TX + dx, sy + 5 * S, TX + dx + 10 * S, sy + 5 * S), fill=sc["accent"] + (a,), width=S)
+    d.text((TX + dx + 14 * S, sy), sc["sub"], font=sub_font, fill=(235, 225, 215, a), stroke_width=S, stroke_fill=(0, 0, 0, int(a * 0.8)))
+    return lay
+
+
+def ip_plate(t):
+    lay = Image.new("RGBA", (SW, SH), (0, 0, 0, 0))
+    d = ImageDraw.Draw(lay)
+    x0, y0, x1, y1 = SW - IPW - 6 * S, 9 * S, SW - 6 * S, SH - 9 * S
+    pulse = 0.5 + 0.5 * math.sin(2 * math.pi * t * 3)
+    glow = Image.new("RGBA", (SW, SH), (0, 0, 0, 0))
+    ImageDraw.Draw(glow).rounded_rectangle((x0 - 2 * S, y0 - 2 * S, x1 + 2 * S, y1 + 2 * S), 4 * S, fill=RED_HI + (int(110 + 110 * pulse),))
+    lay.alpha_composite(glow.filter(ImageFilter.GaussianBlur(5 * S)))
+    d.rounded_rectangle((x0, y0, x1, y1), 3 * S, fill=(18, 4, 8, 235), outline=(255, 90, 90, 255), width=max(1, S // 2 + 1))
+    top = "PLAY NOW"
+    tw = d.textlength(top, font=ip_small)
+    d.text(((x0 + x1 - tw) / 2, y0 + 4 * S), top, font=ip_small, fill=GOLD + (255,))
+    ip = "overthronesmp.net"
+    iw = d.textlength(ip, font=ip_font)
+    d.text(((x0 + x1 - iw) / 2, y0 + 15 * S), ip, font=ip_font, fill=(255, 255, 255, 255))
+    ver = "1.21.1 NEOFORGE"
+    vw = d.textlength(ver, font=ip_small)
+    d.text(((x0 + x1 - vw) / 2, y1 - 11 * S), ver, font=ip_small, fill=(255, 120, 120, 255))
+    return lay
+
+
+def embers(t):
+    lay = Image.new("RGBA", (SW, SH), (0, 0, 0, 0))
+    d = ImageDraw.Draw(lay)
+    for e in EMBERS:
+        y = (e["y"] - e["rise"] * t) % (SH + 10 * S) - 5 * S
+        x = e["x"] + e["sway"] * math.sin(2 * math.pi * t * 3 + e["ph"])
+        fl = 0.55 + 0.45 * math.sin(2 * math.pi * t * 7 + e["ph"] * 3)
+        col = (255, 200, 120) if e["hot"] else (255, 70, 50)
+        d.ellipse((x - e["r"], y - e["r"], x + e["r"], y + e["r"]), fill=col + (int(240 * fl),))
+    return Image.alpha_composite(lay.filter(ImageFilter.GaussianBlur(2.2 * S)), lay)
 
 
 def frame(i):
-    t = i / N                                         # 0..1 loop position
-    img = Image.new("RGB", (SW, SH), (7, 4, 5))
-
-    # drifting red fog
-    fog = Image.new("L", (SW, SH), 0)
-    fd = ImageDraw.Draw(fog)
-    for k, (cx, cy, rx, amp) in enumerate([(0.18, 0.5, 0.42, 0.06), (0.62, 0.4, 0.35, 0.08), (0.95, 0.6, 0.3, 0.05)]):
-        x = (cx + amp * math.sin(2 * math.pi * (t + k / 3))) * SW
-        y = (cy + 0.25 * math.cos(2 * math.pi * (t + k / 5))) * SH
-        r = rx * SW
-        fd.ellipse((x - r, y - r * 0.55, x + r, y + r * 0.55), fill=70 + 25 * k % 50)
-    fog = fog.filter(ImageFilter.GaussianBlur(28 * S))
-    img.paste((120, 10, 26), (0, 0), fog.point(lambda v: int(v * 0.6)))
-
-    # embers
-    ember = Image.new("RGBA", (SW, SH), (0, 0, 0, 0))
-    ed = ImageDraw.Draw(ember)
-    for e in embers:
-        y = (e["y"] - e["rise"] * t) % (SH + 10 * S) - 5 * S
-        x = e["x"] + e["sway"] * math.sin(2 * math.pi * t * 2 + e["phase"])
-        flick = 0.6 + 0.4 * math.sin(2 * math.pi * t * 4 + e["phase"] * 3)
-        col = (255, 190, 120) if e["hot"] else (255, 70, 60)
-        a = int(230 * flick)
-        r = e["r"]
-        ed.ellipse((x - r, y - r, x + r, y + r), fill=col + (a,))
-    glow = ember.filter(ImageFilter.GaussianBlur(2.5 * S))
-    img = Image.alpha_composite(img.convert("RGBA"), glow)
-    img = Image.alpha_composite(img, ember)
-
-    # left vignette behind logo + title for contrast
-    d = ImageDraw.Draw(img)
-
-    # logo with pulsing glow
-    pulse = 0.55 + 0.45 * math.sin(2 * math.pi * t * 2)
-    g = logo_glow.copy()
-    g.putalpha(g.getchannel("A").point(lambda v: int(v * pulse)))
-    img.alpha_composite(g, (LX, 3 * S))
-    img.alpha_composite(logo, (LX, 3 * S))
-
-    # title: shadow, face, then a light sweep across it once per loop
-    shadow = Image.new("RGBA", (SW, SH), (0, 0, 0, 0))
-    ImageDraw.Draw(shadow).text((TX + 1 * S, 6 * S), TITLE, font=title_font, fill=(0, 0, 0, 200))
-    img.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(1.2 * S)))
-    face = Image.new("RGBA", (SW, SH), (240, 234, 226, 255))
-    img.paste(face, (0, 0), tmask)
-    sweep_x = tbox[0] - 60 * S + (tbox[2] - tbox[0] + 120 * S) * ((t * 1.0) % 1.0)
-    band = Image.new("L", (SW, SH), 0)
-    bd = ImageDraw.Draw(band)
-    bd.polygon([(sweep_x, 0), (sweep_x + 22 * S, 0), (sweep_x + 2 * S, SH), (sweep_x - 20 * S, SH)], fill=255)
-    band = band.filter(ImageFilter.GaussianBlur(5 * S))
-    shine = ImageChops.multiply(band, tmask)
-    img.paste(GOLD, (0, 0), shine)
-
-    # rotating info line (cross-fade between lines)
-    seg = t * len(LINES)
-    k, f = int(seg) % len(LINES), seg - int(seg)
-    def put(text, alpha, dy):
-        lay = Image.new("RGBA", (SW, SH), (0, 0, 0, 0))
-        ImageDraw.Draw(lay).text((TX + 1 * S, 37 * S + dy), text, font=sub_font, fill=(255, 92, 106, int(255 * alpha)))
-        img.alpha_composite(lay)
-    fade = 0.18                                           # portion of each segment spent fading
-    if f < 1 - fade:
-        put(LINES[k], 1, 0)
+    t = i / N
+    k, local = divmod(i, SEG)
+    k %= len(SCENES)
+    sc, nxt = SCENES[k], SCENES[(k + 1) % len(SCENES)]
+    p = local / SEG
+    bg = background(sc, p)
+    dark = SHADES[sc["dark"]]
+    fade = 0.0
+    if local >= SEG - FADE:                                # cross-fade into the next scene
+        fade = ease((local - (SEG - FADE)) / FADE)
+        bg = Image.blend(bg, background(nxt, 0.0), fade)
+        dark = Image.blend(dark, SHADES[nxt["dark"]], fade)
+    img = bg.convert("RGBA")
+    img.paste((6, 2, 4, 255), (0, 0), dark)
+    # vignette top/bottom
+    vg = Image.linear_gradient("L").resize((1, SH)).point(lambda v: int(140 * (abs(v - 128) / 128) ** 2.2)).resize((SW, SH))
+    img.paste((0, 0, 0, 255), (0, 0), vg)
+    img = Image.alpha_composite(img, embers(t))
+    # logo with glow
+    pulse = 0.55 + 0.45 * math.sin(2 * math.pi * t * 3)
+    g = logo_glow.copy(); g.putalpha(g.getchannel("A").point(lambda v: int(v * pulse)))
+    img.alpha_composite(g, (LX, LY)); img.alpha_composite(logo, (LX, LY))
+    # text: current scene fades out at the end, next fades in
+    appear_in = ease(min(1, local / (FPS * 0.5))) if not (k == 0 and i < FPS * 0.5 and False) else 1
+    if fade:
+        # old text out in the first half of the fade, new text in during the second half
+        if fade < 0.5:
+            img = Image.alpha_composite(img, text_layer(sc, 1 - ease(fade * 2), t))
+        else:
+            img = Image.alpha_composite(img, text_layer(nxt, ease(fade * 2 - 1), t))
     else:
-        p = (f - (1 - fade)) / fade
-        put(LINES[k], 1 - p, -4 * S * p)
-        put(LINES[(k + 1) % len(LINES)], p, 4 * S * (1 - p))
-
-    # PLAY NOW button with breathing glow
-    bglow = Image.new("RGBA", (SW, SH), (0, 0, 0, 0))
-    ImageDraw.Draw(bglow).rounded_rectangle((BTN_X - 3 * S, BTN_Y - 3 * S, BTN_X + BTN_W + 3 * S, BTN_Y + BTN_H + 3 * S), 4 * S, fill=RED_HI + (int(150 * pulse),))
-    img.alpha_composite(bglow.filter(ImageFilter.GaussianBlur(5 * S)))
+        img = Image.alpha_composite(img, text_layer(sc, 1, t))
+    img = Image.alpha_composite(img, ip_plate(t))
     d = ImageDraw.Draw(img)
-    d.rounded_rectangle((BTN_X, BTN_Y, BTN_X + BTN_W, BTN_Y + BTN_H), 3 * S, fill=RED, outline=(255, 120, 120), width=max(1, S // 2))
-    label = "PLAY NOW"
-    lw = d.textlength(label, font=btn_font)
-    d.text((BTN_X + (BTN_W - lw) / 2, BTN_Y + (BTN_H - 9 * S) / 2 - 1 * S), label, font=btn_font, fill=(255, 245, 240))
-
-    # border with a highlight running around it
-    d.rectangle((0, 0, SW - 1, SH - 1), outline=RED, width=2 * S)
-    per = 2 * (SW + SH)
-    pos = (t * per) % per
-    hl = Image.new("L", (SW, SH), 0)
-    hd = ImageDraw.Draw(hl)
-    for off in range(0, 90 * S, S):
-        p = (pos - off) % per
-        if p < SW: x, y = p, 0
-        elif p < SW + SH: x, y = SW - 1, p - SW
-        elif p < 2 * SW + SH: x, y = SW - 1 - (p - SW - SH), SH - 1
-        else: x, y = 0, SH - 1 - (p - 2 * SW - SH)
-        a = int(255 * (1 - off / (90 * S)))
-        hd.ellipse((x - 2 * S, y - 2 * S, x + 2 * S, y + 2 * S), fill=a)
-    img.paste((255, 170, 150), (0, 0), hl.filter(ImageFilter.GaussianBlur(1 * S)))
-
+    d.rectangle((0, 0, SW - 1, SH - 1), outline=(150, 18, 38, 255), width=S)
+    d.rectangle((S, S, SW - 1 - S, SH - 1 - S), outline=(60, 8, 16, 255), width=S)
     return img.convert("RGB").resize((W, H), Image.LANCZOS)
 
 
@@ -156,12 +226,14 @@ for i in range(N):
 mp4 = os.path.join(HERE, "overthrone-banner-animated-468x60.mp4")
 gif = os.path.join(HERE, "overthrone-banner-animated-468x60.gif")
 subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", os.path.join(tmp, "f%03d.png"),
-                "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "20", "-preset", "slow", "-movflags", "+faststart", "-an", mp4], check=True)
+                "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "18", "-preset", "slow", "-movflags", "+faststart", "-an", mp4], check=True)
 subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", os.path.join(tmp, "f%03d.png"),
-                "-vf", "split[a][b];[a]palettegen=max_colors=128:stats_mode=full[p];[b][p]paletteuse=dither=sierra2_4a",
+                "-vf", "fps=10,split[a][b];[a]palettegen=max_colors=96:stats_mode=full[p];[b][p]paletteuse=dither=bayer:bayer_scale=5",
                 "-loop", "0", gif], check=True)
-frame(int(N * 0.1)).save(os.path.join(tmp, "preview.png"))
-shutil.copy(os.path.join(tmp, "preview.png"), os.path.join(HERE, "overthrone-banner-animated-preview.png"))
+sheet = Image.new("RGB", (W, H * 6 + 5 * 4), (30, 30, 30))
+for j, fi in enumerate([10, 50, 90, 140, 180, 215]):
+    sheet.paste(Image.open(os.path.join(tmp, f"f{fi:03d}.png")), (0, j * (H + 4)))
+sheet.resize((W * 2, sheet.height * 2), Image.NEAREST).save(os.path.join(HERE, "overthrone-banner-animated-preview.png"))
 shutil.rmtree(tmp)
 for p in (mp4, gif):
     print(os.path.basename(p), round(os.path.getsize(p) / 1024), "KB")
