@@ -24,7 +24,6 @@ PACKAGE                                  PURCHASE                          REFUN
 50,000 Throne Shards (+21,500 bonus)     shards give {username} 71500      shards take {username} 71500
 
 Also needed:
-1. Tebex plugin/mod for NeoForge 1.21.1 on the server, linked with the store's secret key
-   (secret key only in the server config - never in chat, GitHub or the website).
+1. Tebex is already installed and connected - nothing to do there.
 2. A test purchase to confirm shards arrive.
 3. Shards should only buy cosmetics (Mojang rules - Tebex can reject the store otherwise).

@@ -29,6 +29,10 @@ Overlord   lp user {username} parent add overlord          lp user {username} pa
 =====================================================================
 2. LUCKPERMS SETUP
 =====================================================================
+Tebex is ALREADY connected to the server (tebex-neoforge-1.21.1-2.4.6 is in mods/).
+LuckPerms is NOT installed yet - the console shows "neoforge:default_handler".
+Install LuckPerms for NeoForge 1.21.1 in mods/ and restart, then run:
+
 Create the groups and make each one inherit the rank below, so perks stack:
 
   lp creategroup ronin
@@ -112,8 +116,7 @@ Kit contents: see the kit screenshots the owner made (one per rank).
 =====================================================================
 4. ALSO NEEDED
 =====================================================================
-1. Tebex plugin/mod for NeoForge 1.21.1 on the server, linked with the store's secret key
-   (secret key only in the server config - never in chat, GitHub or the website).
+1. Tebex is already installed and connected - nothing to do there.
 2. A test purchase of each rank to confirm the group, prefix, perks and tokens arrive.
 3. Heads up: Mojang's rules don't allow selling gameplay advantages. Kits with gear,
    keep EXP, spawner mining, extra vaults and /inv <player> may get the store rejected
