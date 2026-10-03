@@ -68,7 +68,7 @@ page({
   <div class="rules-help">
     <h2>Need help or want to report someone?</h2>
     <p>Open a ticket in our Discord, or post with proof in <a class="inline-link" href="/forums?c=player-reports">Player Reports</a>.</p>
-    <p><a class="btn btn-primary" href="https://discord.gg/overthonesmp" data-discord target="_blank" rel="noopener noreferrer">Join the Discord</a> <a class="btn btn-ghost" href="/vote">Vote for the server</a></p>
+    <p><a class="btn btn-primary" href="https://discord.gg/overthronesmp" data-discord target="_blank" rel="noopener noreferrer">Join the Discord</a> <a class="btn btn-ghost" href="/vote">Vote for the server</a></p>
   </div>
 </div>
 </main>`

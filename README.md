@@ -3,7 +3,7 @@
 Official website for OVERTHRONE SMP: overthronesmp.net
 
 - Minecraft address: `overthronesmp.net` (Minecraft 1.21.1, NeoForge, Tensura: Reincarnated)
-- Discord: `https://discord.gg/overthonesmp` (confirmed invite URL, do not "correct" it; editable in the admin panel)
+- Discord: `https://discord.gg/overthronesmp` (confirmed invite URL, do not "correct" it; editable in the admin panel)
 - Store: Tebex not created yet
 
 ## Stack
