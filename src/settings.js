@@ -24,8 +24,16 @@ export const SETTINGS = {
   banner_link:          { group: "Announcement banner", label: "Banner link (optional)", type: "link", default: "" },
   seo_home_title:       { group: "SEO", label: "Home page title", type: "text", max: 120, default: "" },
   seo_home_description: { group: "SEO", label: "Home page description", type: "text", max: 300, default: "" },
-  seo_og_description:   { group: "SEO", label: "Social share description", type: "text", max: 200, default: "" }
+  seo_og_description:   { group: "SEO", label: "Social share description", type: "text", max: 200, default: "" },
+  vote_rewards:         { group: "Voting", label: "Voting rewards text (shown on /vote)", type: "text", max: 300, default: "" }
 };
+
+// Vote page slots: vote_1_name / vote_1_url ... A slot shows on /vote once it has a URL.
+export const VOTE_SLOTS = 6;
+for (let n = 1; n <= VOTE_SLOTS; n++) {
+  SETTINGS[`vote_${n}_name`] = { group: "Voting", label: `Vote site ${n} name`, type: "text", max: 60, default: "" };
+  SETTINGS[`vote_${n}_url`] = { group: "Voting", label: `Vote site ${n} link`, type: "url", default: "" };
+}
 
 export const isHttpUrl = (v) => /^https?:\/\/[^\s"'<>]+$/i.test(v);
 export const isLink = (v) => isHttpUrl(v) || /^\/(?!\/)[^\s"'<>]*$/.test(v);

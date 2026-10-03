@@ -1,0 +1,123 @@
+OVERTHRONE SMP - Rank commands (for Tebex) + what each rank needs
+
+Ranks, lowest to highest: RONIN -> VALKYRIE -> MONARCH -> GODBORN -> OVERLORD
+Every rank includes everything from the ranks below it. Ranks are lifetime (one-time purchase).
+
+=====================================================================
+1. COMMANDS TEBEX WILL RUN (from the server console)
+=====================================================================
+{username} = the buyer's Minecraft name (Tebex fills it in).
+These use LuckPerms (it has a NeoForge 1.21.1 version). If you use a different
+permissions mod, tell me your command format and I'll change Tebex.
+
+RANK       PURCHASE                                        REFUND / CHARGEBACK
+Ronin      lp user {username} parent add ronin             lp user {username} parent remove ronin
+           classtoken give {username} 1                    classtoken take {username} 1
+Valkyrie   lp user {username} parent add valkyrie          lp user {username} parent remove valkyrie
+           classtoken give {username} 2                    classtoken take {username} 2
+Monarch    lp user {username} parent add monarch           lp user {username} parent remove monarch
+           classtoken give {username} 3                    classtoken take {username} 3
+Godborn    lp user {username} parent add godborn           lp user {username} parent remove godborn
+           classtoken give {username} 4                    classtoken take {username} 4
+Overlord   lp user {username} parent add overlord          lp user {username} parent remove overlord
+           classtoken give {username} 5                    classtoken take {username} 5
+
+- "classtoken" = the Class Reset Tokens each rank gets on purchase (1x-5x).
+  This command does NOT exist yet - please make it, or send me your real command.
+- Each rank also has a Discord Action in Tebex to give the matching Discord role.
+
+=====================================================================
+2. LUCKPERMS SETUP
+=====================================================================
+Tebex is ALREADY connected to the server (tebex-neoforge-1.21.1-2.4.6 is in mods/).
+LuckPerms is NOT installed yet - the console shows "neoforge:default_handler".
+Install LuckPerms for NeoForge 1.21.1 in mods/ and restart, then run:
+
+Create the groups and make each one inherit the rank below, so perks stack:
+
+  lp creategroup ronin
+  lp creategroup valkyrie
+  lp creategroup monarch
+  lp creategroup godborn
+  lp creategroup overlord
+
+  lp group valkyrie parent add ronin
+  lp group monarch parent add valkyrie
+  lp group godborn parent add monarch
+  lp group overlord parent add godborn
+
+  lp group ronin setweight 10
+  lp group valkyrie setweight 20
+  lp group monarch setweight 30
+  lp group godborn setweight 40
+  lp group overlord setweight 50
+
+Chat/tab prefixes (colours: Ronin red, Valkyrie purple, Monarch orange-gold,
+Godborn pale gold, Overlord bright red):
+  lp group ronin meta setprefix 10 "&c[RONIN] "
+  lp group valkyrie meta setprefix 20 "&d[VALKYRIE] "
+  lp group monarch meta setprefix 30 "&6[MONARCH] "
+  lp group godborn meta setprefix 40 "&e[GODBORN] "
+  lp group overlord meta setprefix 50 "&4[OVERLORD] "
+(Prefixes only show in chat/tab if the server has a chat/tab mod that reads LuckPerms meta.)
+
+Optional - a track so staff can promote/demote in order:
+  lp createtrack donor
+  lp track donor append ronin
+  lp track donor append valkyrie
+  lp track donor append monarch
+  lp track donor append godborn
+  lp track donor append overlord
+
+=====================================================================
+3. PERKS EACH RANK NEEDS (give these permissions/limits to the group)
+=====================================================================
+The exact permission nodes depend on which mods you use for chest shops, auction
+house, jobs, vaults, homes, warps, kits and commands. Please map each perk to your
+mod's permission or config.
+
+                               RONIN    VALKYRIE  MONARCH   GODBORN    OVERLORD
+Prefix in chat & tab           yes      yes       yes       yes        yes
+View in-game chat on Discord   yes      yes       yes       yes        yes
+Colours in books               yes      yes       yes       yes        yes
+Show items in chat             -        yes       yes       yes        yes
+Sign formatting                -        yes       yes       yes        yes
+Coloured item names in anvils  -        yes       yes       yes        yes
+Custom chat formatting         -        -         -         -          yes
+Class reset tokens (purchase)  1        2         3         4          5
+Classes & abilities at once    1        1         1         1          2
+Keep EXP on death              -        -         -         -          yes
+Chest shops                    100      200       300       500        unlimited
+Double-chest shops             yes      yes       yes       yes        yes
+Remote chest shops             -        -         -         50 blocks  200 blocks
+Auction house slots            5        7         9         11         15
+Auction house priority         lvl 1    lvl 2     lvl 3     lvl 4      lvl 5
+Premium jobs                   yes      yes       yes       yes        yes
+Active jobs                    1        2         3         4          5
+Homes                          2        3         4         5          6
+Player vaults (/vault)         1        2         3         5          7
+Reset vaults                   3        5         7         9          12
+Player warps                   -        1         2         3          4
+Player warp priority           -        -         lvl 1     lvl 2      lvl 3
+Rank kits (/kits)              own kit  + lower kits ...                all 5
+Mine spawners with silk touch  yes      yes       yes       yes        yes
+Mine spawners without silk     -        -         yes       yes        yes
+Customise armour stands        -        -         -         -          yes
+
+Commands unlocked (higher ranks keep all lower commands):
+  RONIN     /craft /furnace /recipe /seen /ptime /pweather
+  VALKYRIE  /enchantable /grindstone /stonecutter /cartographytable /loom /smithingtable /firstjoin
+  MONARCH   /anvil /echest
+  GODBORN   /disposal /clearinventory /bal <player> /near /tprequest /rename /eglow
+  OVERLORD  /inv <player> /nick /color /me /hat /afk /sit /lay
+
+Kit contents: see the kit screenshots the owner made (one per rank).
+
+=====================================================================
+4. ALSO NEEDED
+=====================================================================
+1. Tebex is already installed and connected - nothing to do there.
+2. A test purchase of each rank to confirm the group, prefix, perks and tokens arrive.
+3. Heads up: Mojang's rules don't allow selling gameplay advantages. Kits with gear,
+   keep EXP, spawner mining, extra vaults and /inv <player> may get the store rejected
+   in Tebex review. Cosmetic perks (prefix, colours, /hat, /nick etc.) are fine.

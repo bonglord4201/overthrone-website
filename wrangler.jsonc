@@ -9,7 +9,7 @@
     "not_found_handling": "404-page",
     // Everything else (images, fonts, CSS, JS, 404) is served directly from
     // static assets without running the Worker.
-    "run_worker_first": ["/", "/forums", "/tensura", "/store", "/ranks", "/admin", "/admin/*", "/admin.html", "/api/*", "/media/*"]
+    "run_worker_first": ["/", "/forums", "/tensura", "/store", "/ranks", "/rules", "/vote", "/admin", "/admin/*", "/admin.html", "/api/*", "/media/*"]
   },
   // Created automatically by `wrangler deploy` if it does not exist yet.
   "d1_databases": [
