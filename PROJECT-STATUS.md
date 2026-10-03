@@ -48,7 +48,12 @@ Last updated: 2026-10-03. Read this first when picking the project back up.
    [ ] **With the server dev:** create packages (names/prices/descriptions; image
        `package-default-800.png` until real art exists). No pay-to-win: follow Mojang's
        commercial usage rules; Hunter ranks are gameplay-only and must not be sold.
-5. [ ] **Server dev:** Configure product delivery (Tebex plugin for NeoForge 1.21.1 + store
+5. [x] Tebex connected to the server (tebex-neoforge-1.21.1-2.4.6 in mods/, `tebex secret` run, console:
+       "Successfully connected to your store: OVERTHRONE SMP as OverthoneSMP").
+   [ ] **Server dev:** install LuckPerms (server currently uses the default NeoForge permission handler),
+       create rank groups/perks and the `shards` + `classtoken` commands. Sheets to send:
+       `tebex-storefront/ranks/SEND-TO-DEV-RANKS.txt`, `tebex-storefront/shards/SEND-TO-DEV.txt`.
+   [ ] (old) Configure product delivery (Tebex plugin for NeoForge 1.21.1 + store
        secret key on the server only, never on the website or in GitHub).
 6. [ ] Test purchase delivers in-game.
 7. [ ] **Submit for Review** in Tebex.
