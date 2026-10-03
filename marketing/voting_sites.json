@@ -1,0 +1,164 @@
+[
+  {
+    "slot": 11,
+    "item": "minecraft:diamond",
+    "name": "&b&lMinecraft-MP",
+    "lore": [
+      "&7Vote for OVERTHRONE SMP",
+      "&7on Minecraft-MP.com",
+      "",
+      "&6Reward: &f1x Vote Key &7+ &a$50,000",
+      "&eClick to get the vote link!"
+    ],
+    "enchanted": true,
+    "link": "https://minecraft-mp.com/server/364807/vote/"
+  },
+  {
+    "slot": 13,
+    "item": "minecraft:nether_star",
+    "name": "&c&lOVERTHRONE &4&lVOTE",
+    "lore": [
+      "&7Vote on every site, every day!",
+      "&7All vote links in one place:",
+      "",
+      "&foverthronesmp.net/vote",
+      "&eClick to open!"
+    ],
+    "enchanted": true,
+    "link": "https://overthronesmp.net/vote"
+  },
+  {
+    "slot": 15,
+    "item": "minecraft:emerald",
+    "name": "&a&lMinecraftServers.org",
+    "lore": [
+      "&7Vote for OVERTHRONE SMP",
+      "&7on MinecraftServers.org",
+      "",
+      "&6Reward: &f1x Vote Key &7+ &a$50,000",
+      "&eClick to get the vote link!"
+    ],
+    "enchanted": true,
+    "link": "https://overthronesmp.net/vote"
+  },
+  {
+    "slot": 0,
+    "item": "minecraft:red_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 1,
+    "item": "minecraft:black_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 2,
+    "item": "minecraft:red_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 3,
+    "item": "minecraft:black_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 4,
+    "item": "minecraft:red_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 5,
+    "item": "minecraft:black_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 6,
+    "item": "minecraft:red_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 7,
+    "item": "minecraft:black_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 8,
+    "item": "minecraft:red_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 9,
+    "item": "minecraft:black_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 17,
+    "item": "minecraft:black_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 18,
+    "item": "minecraft:red_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 19,
+    "item": "minecraft:black_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 20,
+    "item": "minecraft:red_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 21,
+    "item": "minecraft:black_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 22,
+    "item": "minecraft:red_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 23,
+    "item": "minecraft:black_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 24,
+    "item": "minecraft:red_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 25,
+    "item": "minecraft:black_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 26,
+    "item": "minecraft:red_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 10,
+    "item": "minecraft:gray_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 12,
+    "item": "minecraft:gray_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 14,
+    "item": "minecraft:gray_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 16,
+    "item": "minecraft:gray_stained_glass_pane",
+    "name": " "
+  }
+]
