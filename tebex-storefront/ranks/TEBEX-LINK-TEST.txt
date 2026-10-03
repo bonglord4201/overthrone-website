@@ -1,0 +1,12 @@
+<div style="background:#111;color:#fff;padding:16px;font:16px Arial;line-height:2">
+<b>LINK TEST (delete this block after)</b><br>
+<a style="color:#3ddc84" href="https://overthronesmp.tebex.store/package/7711787">Test 1 – Ronin (normal)</a><br>
+<a style="color:#3ddc84" href="https://overthronesmp.tebex.store/package/7711787" target="_top">Test 2 – Ronin (top)</a><br>
+<a style="color:#3ddc84" href="https://overthronesmp.tebex.store/package/7711787" target="_parent">Test 3 – Ronin (parent)</a><br>
+<a style="color:#3ddc84" href="https://overthronesmp.tebex.store/package/7711787" target="_blank">Test 4 – Ronin (new tab)</a><br>
+<a style="color:#3ddc84" href="/package/7711787">Test 5 – Ronin (short link)</a><br>
+<a style="color:#3ddc84" href="/package/7711787" target="_top">Test 6 – Ronin (short link, top)</a><br>
+<form action="https://overthronesmp.tebex.store/package/7711787" method="get" target="_top" style="margin:0"><button style="font:16px Arial">Test 7 – Ronin (button)</button></form>
+<span id="js">Test 8 – scripts: BLOCKED</span>
+<script>document.getElementById("js").textContent="Test 8 – scripts: WORK";</script>
+</div>
