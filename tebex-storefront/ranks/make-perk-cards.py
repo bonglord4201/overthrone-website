@@ -1,7 +1,8 @@
-# Builds easy-to-read 3:4 perk images (900x1200) from the owner's rank artwork:
+# Builds easy-to-read 3:4 perk / command images (900x1200) from the owner's rank artwork:
 # the art's own [RANK] title banner and scenery, with the perk list re-set in large, clean text.
 # Perk wording is copied from the owner's original perk images.
-#   python3 make-perk-cards.py <src-dir>   (expects ronin.webp, valkyrie.webp, ... in src-dir)
+#   python3 make-perk-cards.py <src-dir>              perk images   (src-dir: ronin.webp, valkyrie.webp, ...)
+#   python3 make-perk-cards.py <src-dir> --commands   command images (src-dir: the command artwork)
 #
 # Markup in perk lines: {text} = rank colour, a trailing "(...)" = grey note.
 import sys, os, re
@@ -9,6 +10,7 @@ from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 
 W, H = 900, 1200
 BOLD = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+REG = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
 WHITE, GREY = (242, 238, 230), (150, 146, 140)
 
 RANKS = {
@@ -120,6 +122,57 @@ RANKS = {
         ]),
 }
 
+# Command lists, copied from the owner's command images. Higher ranks list what their image lists.
+COMMANDS = {
+    "ronin": dict(header=None, perks=[
+        "{/recipe} | View an item's recipe",
+        "{/seen} | View a player's last login",
+        "{/craft} | Open a virtual crafting table",
+        "{/furnace} | Open a virtual furnace",
+        "{/ptime} | Change the time for yourself",
+        "{/pweather} | Change the weather for yourself",
+    ]),
+    "valkyrie": dict(header=None, perks=[
+        "{/recipe} | View an item's recipe",
+        "{/seen} | View a player's last login",
+        "{/craft} | Open a virtual crafting table",
+        "{/furnace} | Open a virtual furnace",
+        "{/ptime} | Change the time for yourself",
+        "{/pweather} | Change the weather for yourself",
+        "{/enchantable} | Open a virtual enchanting table",
+        "{/grindstone} | Open a virtual grindstone",
+        "{/stonecutter} | Open a virtual stonecutter",
+        "{/cartographytable} | Open a virtual cartography table",
+        "{/loom} | Open a virtual loom",
+        "{/smithingtable} | Open a virtual smithing table",
+    ]),
+    "monarch": dict(header=None, perks=[
+        "{/recipe} | View an item's recipe",
+        "{/seen} | View a player's last login",
+        "{/craft} | Open a virtual crafting table",
+        "{/furnace} | Open a virtual furnace",
+        "{/ptime} | Change the time for yourself",
+        "{/pweather} | Change the weather for yourself",
+        "{/enchantable} | Open a virtual enchanting table",
+        "{/grindstone} | Open a virtual grindstone",
+        "{/stonecutter} | Open a virtual stonecutter",
+        "{/cartographytable} | Open a virtual cartography table",
+        "{/loom} | Open a virtual loom",
+        "{/smithingtable} | Open a virtual smithing table",
+        "{/ec} | Open your ender chest",
+        "{/anvil} | Open a virtual anvil",
+    ]),
+    "godborn": dict(header=("ALL MONARCH COMMANDS, AND:", (255, 180, 50)), title=(95, 65, 965, 220), perks=[
+        "{/bal <player>} | View other player's balance",
+        "{/disposal} | Open a menu that acts as a trash bin",
+        "{/clearinventory} | Clears your inventory",
+        "{/rename} | Rename the item you are holding",
+        "{/tpahere} | Request to teleport a player to you",
+        "{/near} | View how many players are near you",
+        "{/eglow} | Make yourself glow in different colors",
+    ]),
+}
+
 
 def cover(img, w, h):
     s = max(w / img.width, h / img.height)
@@ -179,9 +232,12 @@ def background(art, r):
     return ImageEnhance.Brightness(cover(art.crop(r["scene"]), W, H)).enhance(0.8)
 
 
-src, out = sys.argv[1], os.path.join(os.path.dirname(os.path.abspath(__file__)), "perk-cards")
+MODE = "commands" if "--commands" in sys.argv else "perks"
+src = sys.argv[1]
+out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "command-cards" if MODE == "commands" else "perk-cards")
 os.makedirs(out, exist_ok=True)
-for key, r in RANKS.items():
+for key in (COMMANDS if MODE == "commands" else RANKS):
+    r = dict(RANKS[key], **COMMANDS[key]) if MODE == "commands" else RANKS[key]
     art = Image.open(os.path.join(src, f"{key}.webp")).convert("RGB")
     img = background(art, r)
 
@@ -200,32 +256,56 @@ for key, r in RANKS.items():
     img = Image.alpha_composite(img.convert("RGBA"), panel)
     d = ImageDraw.Draw(img)
 
-    # largest font size that fits the panel
     maxw = (px1 - px0) - 92
     avail = (py1 - py0) - 56
-    for size in range(36, 18, -1):
-        font = ImageFont.truetype(BOLD, size)
-        hfont = ImageFont.truetype(BOLD, size + 2)
-        lh = round(size * 1.3)
-        body = [wrap(runs(p, r["color"]), font, maxw) for p in r["perks"]]
-        need = sum(len(b) for b in body) * lh + len(body) * round(size * 0.12) + (round(lh * 1.5) if r["header"] else 0)
-        if need <= avail:
-            break
-    y = py0 + 28 + (avail - need) // 2
-    if r["header"]:
-        d.text((px0 + 30, y), r["header"][0], font=hfont, fill=r["header"][1])
-        y += round(lh * 1.5)
-    for b in body:
-        bx = px0 + 34
-        sq = round(size * 0.38)
-        by = y + round(size * 0.36)
-        d.rectangle((bx, by, bx + sq, by + sq), fill=r["color"])
-        for ln in b:
-            x = px0 + 34 + sq + 22
-            for wd, col in ln:
-                d.text((x, y), wd, font=font, fill=col)
-                x += font.getlength(wd)
-            y += lh
-        y += round(size * 0.12)
-    img.convert("RGB").save(os.path.join(out, f"{key}-perks-900x1200.jpg"), quality=92)
+    header = r["header"] or ((f"{key.upper()} COMMANDS", r["color"]) if MODE == "commands" else None)
+    if MODE == "commands":
+        # one block per command: the command in rank colour, its description underneath
+        items = [re.match(r"\{(.*)\} \| (.*)", c).groups() for c in r["perks"]]
+        for size in range(40, 16, -1):
+            font = ImageFont.truetype(BOLD, size)
+            dfont = ImageFont.truetype(REG, round(size * 0.8))
+            hfont = ImageFont.truetype(BOLD, size)
+            while hfont.getlength(header[0]) > maxw + 40:
+                hfont = ImageFont.truetype(BOLD, hfont.size - 1)
+            lh, dlh, gap = round(size * 1.12), round(size * 0.8 * 1.18), round(size * 0.32)
+            need = len(items) * (lh + dlh + gap) - gap + round(size * 1.8)
+            if need <= avail and all(dfont.getlength(dsc) <= maxw for _, dsc in items):
+                break
+        y = py0 + 28 + (avail - need) // 2
+        d.text((px0 + 30, y), header[0], font=hfont, fill=header[1])
+        y += round(size * 1.8)
+        sq = round(size * 0.36)
+        for cmd, dsc in items:
+            bx = px0 + 34
+            d.rectangle((bx, y + round(size * 0.38), bx + sq, y + round(size * 0.38) + sq), fill=r["color"])
+            d.text((bx + sq + 22, y), cmd, font=font, fill=r["color"])
+            d.text((bx + sq + 22, y + lh), dsc, font=dfont, fill=(205, 200, 192))
+            y += lh + dlh + gap
+    else:
+        for size in range(36, 18, -1):
+            font = ImageFont.truetype(BOLD, size)
+            hfont = ImageFont.truetype(BOLD, size + 2)
+            lh = round(size * 1.3)
+            body = [wrap(runs(p, r["color"]), font, maxw) for p in r["perks"]]
+            need = sum(len(b) for b in body) * lh + len(body) * round(size * 0.12) + (round(lh * 1.5) if header else 0)
+            if need <= avail:
+                break
+        y = py0 + 28 + (avail - need) // 2
+        if header:
+            d.text((px0 + 30, y), header[0], font=hfont, fill=header[1])
+            y += round(lh * 1.5)
+        for b in body:
+            bx = px0 + 34
+            sq = round(size * 0.38)
+            by = y + round(size * 0.36)
+            d.rectangle((bx, by, bx + sq, by + sq), fill=r["color"])
+            for ln in b:
+                x = px0 + 34 + sq + 22
+                for wd, col in ln:
+                    d.text((x, y), wd, font=font, fill=col)
+                    x += font.getlength(wd)
+                y += lh
+            y += round(size * 0.12)
+    img.convert("RGB").save(os.path.join(out, f"{key}-{MODE}-900x1200.jpg"), quality=92)
     print("wrote", key, "font", size)
