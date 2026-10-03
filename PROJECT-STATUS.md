@@ -41,7 +41,10 @@ Last updated: 2026-10-03. Read this first when picking the project back up.
        Copy-paste text is in `tebex-storefront/README.md`.
 2. [ ] Continue setup → **Confirm customer support contact** (add support email).
 3. [ ] Continue setup → **Link Wallet** (owner enters own payout details).
-4. [ ] **With the server dev:** create packages (names/prices/descriptions; image
+4. [ ] **Product catalogue is ready** in `tebex-storefront/catalogue/` (182 packages, 12 categories,
+       images, prices, developer handoff). Enter packages into Tebex from `packages.csv`, disabled
+       until the developer supplies real commands (see `DEVELOPER-HANDOFF.md`).
+   [ ] **With the server dev:** create packages (names/prices/descriptions; image
        `package-default-800.png` until real art exists). No pay-to-win: follow Mojang's
        commercial usage rules; Hunter ranks are gameplay-only and must not be sold.
 5. [ ] **Server dev:** Configure product delivery (Tebex plugin for NeoForge 1.21.1 + store
