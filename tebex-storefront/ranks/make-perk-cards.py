@@ -3,6 +3,7 @@
 # Perk wording is copied from the owner's original perk images.
 #   python3 make-perk-cards.py <src-dir>              perk images   (src-dir: ronin.webp, valkyrie.webp, ...)
 #   python3 make-perk-cards.py <src-dir> --commands   command images (src-dir: the command artwork)
+#   python3 make-perk-cards.py <src-dir> --kits <kit-dir>   kit images (src-dir: perk artwork, kit-dir: ronin.png ... kit screenshots)
 #
 # Markup in perk lines: {text} = rank colour, a trailing "(...)" = grey note.
 import sys, os, re
@@ -232,9 +233,9 @@ def background(art, r):
     return ImageEnhance.Brightness(cover(art.crop(r["scene"]), W, H)).enhance(0.8)
 
 
-MODE = "commands" if "--commands" in sys.argv else "perks"
+MODE = "commands" if "--commands" in sys.argv else "kits" if "--kits" in sys.argv else "perks"
 src = sys.argv[1]
-out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "command-cards" if MODE == "commands" else "perk-cards")
+out = os.path.join(os.path.dirname(os.path.abspath(__file__)), f"{MODE[:-1]}-cards")
 os.makedirs(out, exist_ok=True)
 for key in (COMMANDS if MODE == "commands" else RANKS):
     r = dict(RANKS[key], **COMMANDS[key]) if MODE == "commands" else RANKS[key]
@@ -259,7 +260,25 @@ for key in (COMMANDS if MODE == "commands" else RANKS):
     maxw = (px1 - px0) - 92
     avail = (py1 - py0) - 56
     header = r["header"] or ((f"{key.upper()} COMMANDS", r["color"]) if MODE == "commands" else None)
-    if MODE == "commands":
+    if MODE == "kits":
+        # the owner's in-game kit preview, enlarged, with a heading and how to claim it
+        kit = Image.open(os.path.join(sys.argv[sys.argv.index("--kits") + 1], f"{key}.png")).convert("RGB")
+        kw = (px1 - px0) - 60
+        kit = kit.resize((kw, round(kit.height * kw / kit.width)), Image.LANCZOS)
+        hfont, cfont = ImageFont.truetype(BOLD, 46), ImageFont.truetype(BOLD, 30)
+        notes = ["Claim in-game with /kits"] + (["Includes every lower rank kit too"] if key != "ronin" else [])
+        block = 46 + 40 + kit.height + 40 + len(notes) * 44
+        y = py0 + ((py1 - py0) - block) // 2
+        head = f"{key.upper()} KIT"
+        d.text(((W - hfont.getlength(head)) / 2, y), head, font=hfont, fill=r["color"])
+        y += 46 + 40
+        img.paste(kit, ((W - kw) // 2, y))
+        d.rectangle(((W - kw) // 2 - 2, y - 2, (W + kw) // 2 + 1, y + kit.height + 1), outline=r["color"], width=2)
+        y += kit.height + 40
+        for i, n in enumerate(notes):
+            d.text(((W - cfont.getlength(n)) / 2, y), n, font=cfont, fill=WHITE if i == 0 else GREY)
+            y += 44
+    elif MODE == "commands":
         # one block per command: the command in rank colour, its description underneath
         items = [re.match(r"\{(.*)\} \| (.*)", c).groups() for c in r["perks"]]
         for size in range(40, 16, -1):
@@ -308,4 +327,4 @@ for key in (COMMANDS if MODE == "commands" else RANKS):
                 y += lh
             y += round(size * 0.12)
     img.convert("RGB").save(os.path.join(out, f"{key}-{MODE}-900x1200.jpg"), quality=92)
-    print("wrote", key, "font", size)
+    print("wrote", key, MODE)
