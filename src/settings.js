@@ -7,7 +7,7 @@ export const SETTINGS = {
   minecraft_version:    { group: "Server", label: "Minecraft version", type: "text", max: 40, default: "1.21.1" },
   mod_loader:           { group: "Server", label: "Mod loader", type: "text", max: 40, default: "NeoForge" },
   core_mod:             { group: "Server", label: "Core mod", type: "text", max: 80, default: "Tensura: Reincarnated" },
-  discord_url:          { group: "Links", label: "Discord invite URL", type: "url", default: "https://discord.gg/overthonesmp" },
+  discord_url:          { group: "Links", label: "Discord invite URL", type: "url", default: "https://discord.gg/overthronesmp" },
   tebex_url:            { group: "Links", label: "Tebex store URL (leave empty until the store exists)", type: "url", default: "" },
   social_youtube:       { group: "Links", label: "YouTube URL", type: "url", default: "" },
   social_tiktok:        { group: "Links", label: "TikTok URL", type: "url", default: "" },

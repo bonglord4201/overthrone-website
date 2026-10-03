@@ -12,7 +12,7 @@ Banner: `overthrone-banner-468x60.png` (468x60, PNG, 24 KB).
 | Server port | leave empty (default 25565) |
 | Version | `1.21.1` |
 | Website | `https://overthronesmp.net` |
-| Discord | `https://discord.gg/overthonesmp` |
+| Discord | `https://discord.gg/overthronesmp` |
 | Country | your server's country |
 | Tags / game types | Survival, SMP, Modded, RPG, Economy, PvE, Dungeons, Roleplay |
 
@@ -36,7 +36,7 @@ Banner: `overthrone-banner-468x60.png` (468x60, PNG, 24 KB).
 3. Read the rules: [url=https://overthronesmp.net/rules]overthronesmp.net/rules[/url]
 
 [b]Website:[/b] [url=https://overthronesmp.net]overthronesmp.net[/url]
-[b]Discord:[/b] [url=https://discord.gg/overthonesmp]discord.gg/overthonesmp[/url]
+[b]Discord:[/b] [url=https://discord.gg/overthronesmp]discord.gg/overthronesmp[/url]
 [b]Vote daily:[/b] [url=https://overthronesmp.net/vote]overthronesmp.net/vote[/url]
 ```
 
@@ -55,7 +55,7 @@ A dark-fantasy MMORPG survival server on NeoForge 1.21.1.
 
 Join: overthronesmp.net (modpack link in our Discord)
 Website: https://overthronesmp.net
-Discord: https://discord.gg/overthonesmp
+Discord: https://discord.gg/overthronesmp
 ```
 
 ## Short description (for sites with a one-line field, under 150 characters)
