@@ -404,3 +404,43 @@ footer{padding:40px 0 32px;background:#030303;border-top:1px solid var(--line)}
   .compare-table .cf{min-width:170px}
   .compare-table th,.compare-table td{padding:10px}
 }
+
+/* ---------- Rules page ---------- */
+.rules-page{padding:40px 0 96px;display:grid;gap:32px}
+.rules-intro{max-width:780px;color:var(--muted)}
+.rules-intro p{margin:0 0 10px}
+.rules-toc ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.rules-toc a{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 16px;border:1px solid var(--line);background:var(--panel);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;transition:border-color .2s,background .2s}
+.rules-toc a:hover,.rules-toc a:focus-visible{border-color:var(--red-hi);background:var(--panel-2)}
+.rules-toc a span{color:var(--red-text)}
+.rules-body{display:grid;gap:28px}
+.rule-section{border:1px solid var(--line);background:var(--panel);padding:28px clamp(18px,3vw,36px);scroll-margin-top:calc(var(--header-h) + 16px);box-shadow:inset 3px 0 0 var(--red-hi)}
+.rule-section h2{display:flex;align-items:center;gap:14px;font-size:clamp(24px,3vw,32px);text-transform:uppercase;letter-spacing:.02em}
+.rule-num{display:inline-grid;place-items:center;width:40px;height:40px;flex:none;border:1px solid var(--red-hi);color:var(--red-text);font-family:var(--sans);font-size:16px;font-weight:700}
+.rule-intro{margin:12px 0 20px;color:var(--muted)}
+.rule-list{list-style:none;margin:0;padding:0;display:grid}
+.rule-list li{display:grid;grid-template-columns:52px 1fr;gap:12px;padding:14px 0;border-top:1px solid var(--line)}
+.rule-list p{margin:0}
+.rule-list strong{color:#fff}
+.rule-code{color:var(--red-text);font-weight:700;font-variant-numeric:tabular-nums}
+.rules-help{border:1px solid var(--line);background:var(--panel-2);padding:28px clamp(18px,3vw,36px)}
+.rules-help h2{font-size:24px;margin-bottom:8px}
+.rules-help p{margin:8px 0 0;color:var(--muted)}
+.rules-help .btn{margin:10px 10px 0 0}
+
+/* ---------- Vote page ---------- */
+.vote-page{padding:40px 0 96px;display:grid;gap:40px}
+.vote-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.vote-card{display:grid;gap:6px;padding:22px;border:1px solid var(--line);background:var(--panel);transition:border-color .2s,transform .2s,background .2s}
+.vote-card:hover,.vote-card:focus-visible{border-color:var(--red-hi);background:var(--panel-2);transform:translateY(-2px)}
+.vote-card-num{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.vote-card-name{font-family:var(--display);font-size:22px;color:#fff;overflow-wrap:anywhere}
+.vote-card-go{margin-top:6px;color:var(--red-text);font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase}
+.vote-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.vote-panel{border:1px solid var(--line);background:var(--panel);padding:26px}
+.vote-panel h2{font-size:24px;margin-bottom:12px;text-transform:uppercase}
+.vote-panel p{margin:0;color:var(--muted)}
+.vote-steps{margin:0;padding-left:22px;color:var(--muted)}
+.vote-steps li{margin:6px 0}
+.vote-steps strong{color:#fff}
+@media(max-width:560px){.rule-list li{grid-template-columns:40px 1fr}}
