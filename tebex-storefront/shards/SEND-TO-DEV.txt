@@ -1,0 +1,30 @@
+OVERTHRONE SMP - Throne Shards commands (for Tebex)
+
+Tebex will run these from the server CONSOLE when someone buys a shard pack.
+{username} = the buyer's Minecraft name (Tebex fills it in).
+Please make these commands work (or tell me your real command format and I'll change Tebex):
+
+  shards give <player> <amount>    -> ADD shards to the player's balance (used on purchase)
+  shards take <player> <amount>    -> REMOVE shards (used on refund / chargeback)
+  shards set <player> <amount>     -> staff: set an exact balance
+  shards balance [player]          -> check a balance (players see their own)
+
+- Must work from console (no player running it).
+- Tell the player in chat when shards are added, e.g. "+1,050 Throne Shards added to your balance."
+- Tebex is set to "require player online", so it runs when the buyer next joins.
+
+PACKAGE                                  PURCHASE                          REFUND / CHARGEBACK
+500 Throne Shards                        shards give {username} 500        shards take {username} 500
+1,000 Throne Shards (+50 bonus)          shards give {username} 1050       shards take {username} 1050
+2,500 Throne Shards (+300 bonus)         shards give {username} 2800       shards take {username} 2800
+5,500 Throne Shards (+400 bonus)         shards give {username} 5900       shards take {username} 5900
+9,000 Throne Shards (+2,500 bonus)       shards give {username} 11500      shards take {username} 11500
+15,000 Throne Shards (+3,750 bonus)      shards give {username} 18750      shards take {username} 18750
+25,000 Throne Shards (+8,500 bonus)      shards give {username} 33500      shards take {username} 33500
+50,000 Throne Shards (+21,500 bonus)     shards give {username} 71500      shards take {username} 71500
+
+Also needed:
+1. Tebex plugin/mod for NeoForge 1.21.1 on the server, linked with the store's secret key
+   (secret key only in the server config - never in chat, GitHub or the website).
+2. A test purchase to confirm shards arrive.
+3. Shards should only buy cosmetics (Mojang rules - Tebex can reject the store otherwise).
