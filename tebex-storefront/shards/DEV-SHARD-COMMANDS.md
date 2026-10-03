@@ -27,16 +27,16 @@ shards balance [player]           check a balance (players see their own)
 
 ## What is set in Tebex (one command per package)
 
-| Package | Tebex command |
-|---|---|
-| 500 Throne Shards | `shards give {username} 500` |
-| 1,000 Throne Shards | `shards give {username} 1000` |
-| 2,500 Throne Shards | `shards give {username} 2500` |
-| 5,500 Throne Shards | `shards give {username} 5500` |
-| 9,000 Throne Shards | `shards give {username} 9000` |
-| 15,000 Throne Shards | `shards give {username} 15000` |
-| 25,000 Throne Shards | `shards give {username} 25000` |
-| 50,000 Throne Shards | `shards give {username} 50000` |
+| Package | Shards given | On purchase | On refund / chargeback |
+|---|---|---|---|
+| 500 Throne Shards | 500 | `shards give {username} 500` | `shards take {username} 500` |
+| 1,000 Throne Shards (+50 bonus) | 1,050 | `shards give {username} 1050` | `shards take {username} 1050` |
+| 2,500 Throne Shards (+300 bonus) | 2,800 | `shards give {username} 2800` | `shards take {username} 2800` |
+| 5,500 Throne Shards (+400 bonus) | 5,900 | `shards give {username} 5900` | `shards take {username} 5900` |
+| 9,000 Throne Shards (+2,500 bonus) | 11,500 | `shards give {username} 11500` | `shards take {username} 11500` |
+| 15,000 Throne Shards (+3,750 bonus) | 18,750 | `shards give {username} 18750` | `shards take {username} 18750` |
+| 25,000 Throne Shards (+8,500 bonus) | 33,500 | `shards give {username} 33500` | `shards take {username} 33500` |
+| 50,000 Throne Shards (+21,500 bonus) | 71,500 | `shards give {username} 71500` | `shards take {username} 71500` |
 
 Each command is set to **"Require the player to be online"**, so Tebex waits and runs it when
 the buyer next joins.
