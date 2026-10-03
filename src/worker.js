@@ -7,7 +7,7 @@
 
 import { handleApi, serveMedia } from "./api.js";
 import { getAdmin, authConfigured } from "./auth.js";
-import { getSettings, isHttpUrl, isLink, VOTE_SLOTS } from "./settings.js";
+import { getSettings, isHttpUrl, isLink, VOTE_SLOTS, voteName, voteHost } from "./settings.js";
 import { secure } from "./http.js";
 
 const isAdminPath = (p) => p === "/admin" || p === "/admin/" || p === "/admin.html" || p.startsWith("/admin/");
@@ -82,13 +82,19 @@ function applySettings(res, s, path) {
 
   // Vote page: show each vote site that has a link, and hide "coming soon" once any exist.
   let anyVote = false;
+  let voteCount = 0;
   for (let n = 1; n <= VOTE_SLOTS; n++) {
-    const url = s[`vote_${n}_url`], name = s[`vote_${n}_name`];
+    let url = String(s[`vote_${n}_url`] || "").trim();
+    if (url && !/^[a-z]+:/i.test(url)) url = "https://" + url;
     if (!isHttpUrl(url)) continue;
     anyVote = true;
+    voteCount++;
+    const name = voteName(url, s[`vote_${n}_name`]);
     rw.on(`a[data-vote="${n}"]`, { element(el) { el.setAttribute("href", url); el.removeAttribute("hidden"); } });
-    if (name) rw.on(`[data-vote-name="${n}"]`, { element(el) { el.setInnerContent(name); } });
+    rw.on(`[data-vote-name="${n}"]`, { element(el) { el.setInnerContent(name); } });
+    rw.on(`[data-vote-host="${n}"]`, { element(el) { el.setInnerContent(voteHost(url)); } });
   }
+  if (anyVote) rw.on("[data-vote-total]", { element(el) { el.setInnerContent(String(voteCount)); } });
   if (anyVote) rw.on("[data-vote-empty]", { element(el) { el.setAttribute("hidden", ""); } });
 
   if (s.banner_enabled === "1" && s.banner_text) {
