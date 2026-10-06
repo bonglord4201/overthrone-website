@@ -1,0 +1,18 @@
+{
+  "name": "overthrone-discord-bot",
+  "version": "1.0.0",
+  "description": "OVERTHRONE SMP Discord bot: Minecraft account linking, live server status, tickets, moderation, levels, giveaways and more.",
+  "type": "module",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=18.17"
+  },
+  "dependencies": {
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.5"
+  }
+}

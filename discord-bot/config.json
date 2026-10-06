@@ -1,0 +1,50 @@
+{
+  "brand": "OVERTHRONE SMP",
+  "tagline": "Don't reach the throne. Overthrow it.",
+  "color": "#C1121F",
+  "logo": "https://overthronesmp.net/images/icon-192.png",
+  "banner": "https://overthronesmp.net/images/og-card.png",
+
+  "server": {
+    "address": "overthronesmp.net",
+    "statusHost": "51.161.196.66",
+    "statusPort": 25565,
+    "version": "NeoForge 1.21.1"
+  },
+
+  "links": {
+    "website": "https://overthronesmp.net",
+    "store": "https://overthronesmp.tebex.store",
+    "vote": "https://overthronesmp.net/vote",
+    "rules": "https://overthronesmp.net/rules",
+    "forums": "https://overthronesmp.net/forums",
+    "discord": "https://discord.gg/overthronesmp"
+  },
+
+  "linking": {
+    "setNickname": false,
+    "rewardCommands": [
+      "tellraw @a [\"\",{\"text\":\"[OVERTHRONE] \",\"color\":\"dark_red\",\"bold\":true},{\"text\":\"{player}\",\"color\":\"gold\"},{\"text\":\" linked their Discord account!\",\"color\":\"gray\"}]"
+    ]
+  },
+
+  "tickets": [
+    { "id": "support", "label": "General Support", "emoji": "🛠️", "description": "Help with the server, the modpack or anything else.", "questions": ["Your Minecraft username", "What do you need help with?"] },
+    { "id": "report", "label": "Report a Player", "emoji": "🚨", "description": "Report rule breakers. Proof is required.", "questions": ["Your Minecraft username", "Who are you reporting?", "What happened? Add screenshots or video."] },
+    { "id": "appeal", "label": "Ban Appeal", "emoji": "⚖️", "description": "Appeal a ban or mute.", "questions": ["Your Minecraft username", "Why were you punished?", "Why should it be removed?"] },
+    { "id": "store", "label": "Store & Payments", "emoji": "💰", "description": "Problems with a purchase or rank.", "questions": ["Your Minecraft username", "Transaction ID (from your Tebex email)", "What went wrong?"] },
+    { "id": "apply", "label": "Staff Application", "emoji": "📝", "description": "Apply to join the OVERTHRONE staff team.", "questions": ["Your Minecraft username and age", "Your timezone and how active you are", "Any past staff experience?", "Why should we pick you?"] }
+  ],
+
+  "levels": {
+    "enabled": true,
+    "xpMin": 15,
+    "xpMax": 25,
+    "cooldownSeconds": 60,
+    "roleRewards": {}
+  },
+
+  "autoMod": {
+    "blockInvites": true
+  }
+}
