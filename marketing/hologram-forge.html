@@ -1,0 +1,454 @@
+<title>Hologram Forge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Pixelify+Sans:wght@400;700&display=swap">
+<style>
+/* Layout: editor on the left, sticky in-game preview + generated commands on the right; stacks on phones.
+   Committed single dark look (obsidian + crimson), like the OVERTHRONE hub at night. */
+:root {
+  color-scheme: dark;
+  --bg: #0e0b0e;
+  --panel: #171217;
+  --panel-2: #1f181e;
+  --line: #33272f;
+  --fg: #efe7e9;
+  --muted: #a8979e;
+  --accent: #c1121f;
+  --accent-hi: #e3303c;
+  --gold: #e9b44c;
+  --ok: #55ff55;
+  --warn: #ffaa00;
+  --bad: #ff5555;
+  --f-display: "Cinzel", "Times New Roman", serif;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --f-pixel: "Pixelify Sans", "Courier New", monospace;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--fg); }
+body { font: 15px/1.5 var(--f-body); padding-inline: 16px; padding-block: 0 48px; }
+.wrap { max-width: 1240px; margin: 0 auto; }
+header.top { padding-block: 28px 18px; display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--line); margin-bottom: 22px; }
+header.top h1 { font: 800 clamp(26px, 4vw, 38px)/1.05 var(--f-display); letter-spacing: .06em; margin: 0; text-wrap: balance; }
+header.top h1 span { color: var(--accent-hi); }
+header.top p { margin: 6px 0 0; color: var(--muted); max-width: 60ch; }
+.grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 22px; align-items: start; }
+@media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+.side { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); display: grid; gap: 18px; }
+@media (max-width: 900px) { .side { position: static; } }
+section.box { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; min-width: 0; }
+h2 { font: 600 12px/1 var(--f-body); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 0 0 12px; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button, select, input { font: inherit; color: var(--fg); }
+button { background: var(--panel-2); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+button:hover { border-color: var(--muted); }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+button.primary { background: var(--accent); border-color: var(--accent); font-weight: 600; }
+button.primary:hover { background: var(--accent-hi); }
+input[type=text], input[type=number], select { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 7px 9px; min-width: 0; }
+label.f { display: grid; gap: 4px; font-size: 12px; color: var(--muted); }
+
+/* toolbar */
+.swatches { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px; }
+.sw { height: 30px; padding: 0; border-radius: 5px; font: 600 11px var(--f-mono); color: #000; text-shadow: none; }
+.sw[data-dark] { color: #fff; }
+.fmt, .sym { font-family: var(--f-mono); min-width: 36px; }
+.hint { font-size: 12.5px; color: var(--muted); margin: 10px 0 0; }
+.hint code, .tip code { font-family: var(--f-mono); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; color: var(--gold); }
+
+/* lines */
+.lines { display: grid; gap: 8px; }
+.line { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 8px; align-items: center; background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 8px; }
+.line.active { border-color: var(--gold); }
+.line .n { font: 600 11px var(--f-mono); color: var(--muted); text-align: center; font-variant-numeric: tabular-nums; }
+.line input[type=text] { width: 100%; font-family: var(--f-mono); font-size: 13.5px; }
+.line .ctl { display: flex; gap: 4px; align-items: center; }
+.line .ctl select { padding: 6px 4px; font-size: 12.5px; }
+.line .ctl button { padding: 5px 7px; font-size: 12px; }
+.settings { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+.coords { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.coords input { width: 100%; }
+
+/* preview */
+.stage { position: relative; border-radius: 8px; overflow: hidden; min-height: 280px; display: grid; place-items: center; padding: 28px 12px;
+  background:
+    radial-gradient(120% 70% at 50% 110%, #3a1712 0%, transparent 60%),
+    linear-gradient(180deg, #2a2633 0%, #3b3240 45%, #5a4232 100%); }
+.stage::after { content: ""; position: absolute; inset: auto 0 0 0; height: 26%; background: repeating-linear-gradient(90deg, #4a3a30 0 32px, #3f3129 32px 64px); opacity: .55; }
+.holo { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; font-family: var(--f-pixel); text-align: center; max-width: 100%; }
+.holo .pl { white-space: pre; line-height: 1.15; padding: 0 4px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.holo .pl.box { background: rgba(0, 0, 0, .25); }
+.holo .pl.empty { height: 14px; }
+
+/* output */
+.cmds { display: grid; gap: 8px; }
+.cmd { border: 1px solid var(--line); border-radius: 8px; background: var(--bg); overflow: hidden; }
+.cmd .head { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 8px; border-bottom: 1px solid var(--line); font-size: 12px; color: var(--muted); }
+.cmd .len { font: 600 11.5px var(--f-mono); font-variant-numeric: tabular-nums; padding: 2px 7px; border-radius: 99px; background: var(--panel-2); }
+.cmd .len.ok { color: var(--ok); }
+.cmd .len.bad { color: var(--bad); }
+.cmd pre { margin: 0; padding: 8px 10px; font: 12px/1.5 var(--f-mono); white-space: pre-wrap; word-break: break-all; color: #d9cdd1; }
+.cmd .head button { padding: 3px 9px; font-size: 12px; }
+.tip { font-size: 13px; color: var(--muted); margin: 10px 0 0; }
+.tip strong { color: var(--fg); }
+.warnbox { border: 1px solid #5a3a10; background: #24190b; color: #f3d39a; border-radius: 8px; padding: 10px 12px; font-size: 13px; }
+.toast { position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 18px); transform: translateX(-50%); background: var(--accent); color: #fff; padding: 8px 14px; border-radius: 99px; font-weight: 600; font-size: 13px; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 5; }
+.toast.show { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>HOLOGRAM <span>FORGE</span></h1>
+      <p>Type your hologram with colour codes, see it like it will look in-game, then copy the commands. Works on Minecraft 1.21.1 (NeoForge too) with no mod or plugin.</p>
+    </div>
+    <div class="row">
+      <button id="btn-example" type="button">Load example</button>
+      <button id="btn-clear" type="button">Start blank</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <main style="display:grid;gap:18px;min-width:0">
+      <section class="box" aria-labelledby="t-colors">
+        <h2 id="t-colors">Colours &amp; style</h2>
+        <div class="swatches" id="swatches"></div>
+        <div class="row" style="margin-top:8px">
+          <button class="fmt" type="button" data-ins="&amp;l" title="Bold"><b>B</b></button>
+          <button class="fmt" type="button" data-ins="&amp;o" title="Italic"><i>I</i></button>
+          <button class="fmt" type="button" data-ins="&amp;n" title="Underline"><u>U</u></button>
+          <button class="fmt" type="button" data-ins="&amp;m" title="Strikethrough"><s>S</s></button>
+          <button class="fmt" type="button" data-ins="&amp;r" title="Reset to plain white">Reset</button>
+          <span style="flex:1"></span>
+          <input type="color" id="hexpick" value="#c1121f" aria-label="Custom colour" style="width:40px;height:32px;padding:0;border:1px solid var(--line);border-radius:6px;background:none">
+          <button type="button" id="btn-hex">Insert custom colour</button>
+        </div>
+        <div class="row" style="margin-top:8px" id="symbols"></div>
+        <p class="hint">Click into a line, then click a colour. <code>&amp;4</code> dark red, <code>&amp;6</code> gold, <code>&amp;l</code> bold, <code>&amp;#ff8800</code> any colour. A new colour turns bold/italic off, so put <code>&amp;l</code> after the colour.</p>
+      </section>
+
+      <section class="box" aria-labelledby="t-lines">
+        <h2 id="t-lines">Lines (top to bottom)</h2>
+        <div class="lines" id="lines"></div>
+        <div class="row" style="margin-top:10px">
+          <button type="button" id="btn-add" class="primary">+ Add line</button>
+          <button type="button" id="btn-divider">+ Divider</button>
+          <button type="button" id="btn-space">+ Empty gap</button>
+        </div>
+      </section>
+
+      <section class="box" aria-labelledby="t-set">
+        <h2 id="t-set">Settings</h2>
+        <div class="settings">
+          <label class="f" for="s-tag">Name tag (used to delete it)
+            <input type="text" id="s-tag" value="holo" maxlength="24">
+          </label>
+          <label class="f" for="s-base">Bottom line height (blocks above you)
+            <input type="number" id="s-base" value="2.3" step="0.1">
+          </label>
+          <label class="f" for="s-gap">Line spacing
+            <select id="s-gap"><option value="0.85">Tight</option><option value="1" selected>Normal</option><option value="1.25">Loose</option></select>
+          </label>
+          <label class="f" for="s-bg">Background
+            <select id="s-bg"><option value="none" selected>None (clean)</option><option value="dark">Dark box</option></select>
+          </label>
+          <label class="f" for="s-shadow">Text shadow
+            <select id="s-shadow"><option value="1" selected>On (easier to read)</option><option value="0">Off</option></select>
+          </label>
+          <label class="f" for="s-bill">Facing
+            <select id="s-bill"><option value="center" selected>Always faces the player</option><option value="vertical">Turns left/right only</option><option value="fixed">Fixed (like a sign)</option></select>
+          </label>
+        </div>
+        <div style="margin-top:12px;display:grid;gap:6px">
+          <label class="f" for="s-pos">Where it goes
+            <select id="s-pos"><option value="rel" selected>Where I'm standing (type in chat)</option><option value="abs">Exact coordinates (works from console)</option></select>
+          </label>
+          <div class="coords" id="coords" hidden>
+            <input type="number" id="s-x" placeholder="X" aria-label="X" step="0.5" value="3.5">
+            <input type="number" id="s-y" placeholder="Y (feet)" aria-label="Y" step="0.5" value="-25">
+            <input type="number" id="s-z" placeholder="Z" aria-label="Z" step="0.5" value="378.5">
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="side">
+      <section class="box" aria-labelledby="t-prev">
+        <h2 id="t-prev">In-game preview</h2>
+        <div class="stage"><div class="holo" id="holo"></div></div>
+      </section>
+      <section class="box" aria-labelledby="t-out">
+        <div class="row" style="justify-content:space-between;margin-bottom:12px">
+          <h2 id="t-out" style="margin:0">Commands</h2>
+          <button type="button" id="btn-copyall">Copy all</button>
+        </div>
+        <div id="warn"></div>
+        <div class="cmds" id="cmds"></div>
+        <p class="tip"><strong>How to use:</strong> be OP, stand where it should float, and paste each command into chat one by one without moving.</p>
+        <div class="cmd" style="margin-top:10px">
+          <div class="head"><span>Delete it (stand within 6 blocks)</span><button type="button" id="btn-copykill">Copy</button></div>
+          <pre id="killcmd"></pre>
+        </div>
+      </section>
+    </aside>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const MC = {
+  "0": ["black", "#000000"], "1": ["dark_blue", "#0000AA"], "2": ["dark_green", "#00AA00"], "3": ["dark_aqua", "#00AAAA"],
+  "4": ["dark_red", "#AA0000"], "5": ["dark_purple", "#AA00AA"], "6": ["gold", "#FFAA00"], "7": ["gray", "#AAAAAA"],
+  "8": ["dark_gray", "#555555"], "9": ["blue", "#5555FF"], "a": ["green", "#55FF55"], "b": ["aqua", "#55FFFF"],
+  "c": ["red", "#FF5555"], "d": ["light_purple", "#FF55FF"], "e": ["yellow", "#FFFF55"], "f": ["white", "#FFFFFF"]
+};
+const NAME_HEX = Object.fromEntries(Object.values(MC));
+const SYMBOLS = ["✦", "➤", "▬", "★", "✪", "⚔", "☠", "❤", "⛏", "✔", "✘", "•", "»", "«", "┃", "⚡", "☀", "♛"];
+const DIVIDER = "&8▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬";
+const EXAMPLE = [
+  { t: "&4&l✦ CRATES & REALMS ✦", s: 2 },
+  { t: DIVIDER, s: 1 },
+  { t: "&7Unlock &6legendary loot &7with your keys", s: 1 },
+  { t: "&7Step through the gates to &cnew realms", s: 1 },
+  { t: DIVIDER, s: 1 },
+  { t: "&4➤ &eUse your keys on the crates below", s: 1 },
+  { t: "&4➤ &7Free keys every day: &a&l/vote", s: 1 }
+];
+const SCALES = [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3];
+
+let lines = load() ?? structuredClone(EXAMPLE);
+let active = 0;
+const $ = (id) => document.getElementById(id);
+
+function load() {
+  try { const v = JSON.parse(localStorage.getItem("hologram-forge")); return Array.isArray(v) && v.length ? v : null; } catch { return null; }
+}
+function persist() { try { localStorage.setItem("hologram-forge", JSON.stringify(lines)); } catch {} }
+
+// "&4&lHi &7there" -> [{text:"Hi ",color:"dark_red",bold:true},{text:"there",color:"gray"}]
+function parse(src) {
+  const segs = [];
+  let st = { color: null }, buf = "";
+  const push = () => { if (buf) { segs.push({ text: buf, ...st }); buf = ""; } };
+  for (let i = 0; i < src.length; i++) {
+    const c = src[i];
+    if (c === "&" && i + 1 < src.length) {
+      const k = src[i + 1].toLowerCase();
+      const hex = src.slice(i + 1, i + 8);
+      if (/^#[0-9a-fA-F]{6}$/.test(hex)) { push(); st = { color: hex.toLowerCase() }; i += 7; continue; }
+      if (MC[k]) { push(); st = { color: MC[k][0] }; i++; continue; }
+      const f = { l: "bold", o: "italic", n: "underlined", m: "strikethrough", k: "obfuscated" }[k];
+      if (f) { push(); st = { ...st, [f]: true }; i++; continue; }
+      if (k === "r") { push(); st = { color: null }; i++; continue; }
+    }
+    buf += c;
+  }
+  push();
+  // merge neighbours with identical style
+  const out = [];
+  for (const s of segs) {
+    const prev = out.at(-1);
+    const same = prev && JSON.stringify({ ...prev, text: 0 }) === JSON.stringify({ ...s, text: 0 });
+    if (same) prev.text += s.text; else out.push({ ...s });
+  }
+  return out;
+}
+
+function component(segs) {
+  const clean = segs.map((s) => {
+    const o = { text: s.text };
+    if (s.color) o.color = s.color;
+    for (const f of ["bold", "italic", "underlined", "strikethrough", "obfuscated"]) if (s[f]) o[f] = true;
+    return o;
+  });
+  return JSON.stringify(clean.length === 1 ? clean[0] : ["", ...clean]);
+}
+
+const num = (n) => String(Math.round(n * 100) / 100);
+const lineHeight = (s) => 0.25 * s + 0.05;
+
+function commands() {
+  const tag = ($("s-tag").value.trim() || "holo").replace(/[^A-Za-z0-9_.+-]/g, "");
+  const base = parseFloat($("s-base").value) || 0;
+  const gap = parseFloat($("s-gap").value);
+  const abs = $("s-pos").value === "abs";
+  const bx = parseFloat($("s-x").value) || 0, by = parseFloat($("s-y").value) || 0, bz = parseFloat($("s-z").value) || 0;
+  const nbtCommon = `Tags:["${tag}"]` +
+    ($("s-bill").value !== "fixed" ? `,billboard:"${$("s-bill").value}"` : "") +
+    ($("s-shadow").value === "1" ? ",shadow:1b" : "") +
+    ($("s-bg").value === "none" ? ",background:0" : "");
+  const ys = new Array(lines.length);
+  let cur = base;
+  for (let i = lines.length - 1; i >= 0; i--) { ys[i] = cur; cur += lineHeight(lines[i].s) * gap; }
+  const out = lines.map((l, i) => {
+    const segs = parse(l.t);
+    if (!segs.length || !segs.some((s) => s.text.trim())) return null;
+    const json = component(segs).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+    const scale = l.s !== 1 ? `,transformation:[${l.s}f,0f,0f,0f,0f,${l.s}f,0f,0f,0f,0f,${l.s}f,0f,0f,0f,0f,1f]` : "";
+    const pos = abs ? `${num(bx)} ${num(by + ys[i])} ${num(bz)}` : `~ ~${num(ys[i])} ~`;
+    return { line: i + 1, cmd: `/summon text_display ${pos} {${nbtCommon}${scale},text:'${json}'}` };
+  });
+  const kill = abs
+    ? `/kill @e[type=text_display,tag=${tag},x=${num(bx)},y=${num(by)},z=${num(bz)},distance=..8]`
+    : `/kill @e[type=text_display,tag=${tag},distance=..6]`;
+  return { list: out.filter(Boolean), kill };
+}
+
+function shade(hex) {
+  const n = parseInt(hex.slice(1), 16);
+  const r = ((n >> 16) & 255) >> 2, g = ((n >> 8) & 255) >> 2, b = (n & 255) >> 2;
+  return `rgb(${r},${g},${b})`;
+}
+
+function renderPreview() {
+  const shadow = $("s-shadow").value === "1";
+  const box = $("s-bg").value === "dark";
+  const holo = $("holo");
+  holo.textContent = "";
+  for (const l of lines) {
+    const div = document.createElement("div");
+    div.className = "pl" + (box ? " box" : "");
+    div.style.fontSize = 18 * l.s + "px";
+    const segs = parse(l.t);
+    if (!segs.length || !segs.some((s) => s.text.trim())) { div.classList.add("empty"); div.style.height = 14 * l.s + "px"; holo.append(div); continue; }
+    for (const s of segs) {
+      const sp = document.createElement("span");
+      sp.textContent = s.text;
+      const hex = s.color ? (s.color.startsWith("#") ? s.color : NAME_HEX[s.color]) : "#FFFFFF";
+      sp.style.color = hex;
+      if (shadow) sp.style.textShadow = `${Math.max(1, 2 * l.s / 1.5)}px ${Math.max(1, 2 * l.s / 1.5)}px 0 ${shade(hex)}`;
+      if (s.bold) sp.style.fontWeight = "700";
+      if (s.italic) sp.style.fontStyle = "italic";
+      const deco = [s.underlined && "underline", s.strikethrough && "line-through"].filter(Boolean).join(" ");
+      if (deco) sp.style.textDecoration = deco;
+      div.append(sp);
+    }
+    holo.append(div);
+  }
+}
+
+function renderOutput() {
+  const { list, kill } = commands();
+  const wrap = $("cmds");
+  wrap.textContent = "";
+  let tooLong = 0;
+  for (const c of list) {
+    const len = c.cmd.length;
+    if (len > 256) tooLong++;
+    const el = document.createElement("div");
+    el.className = "cmd";
+    el.innerHTML = `<div class="head"><span>Line ${c.line}</span><span class="row" style="gap:6px"><span class="len ${len > 256 ? "bad" : "ok"}">${len}/256</span><button type="button">Copy</button></span></div><pre></pre>`;
+    el.querySelector("pre").textContent = c.cmd;
+    el.querySelector("button").addEventListener("click", () => copy(c.cmd, `Line ${c.line} copied`));
+    wrap.append(el);
+  }
+  if (!list.length) wrap.innerHTML = `<p class="tip">Type something in a line to get its command.</p>`;
+  $("warn").innerHTML = tooLong
+    ? `<div class="warnbox" style="margin-bottom:10px"><strong>${tooLong} command${tooLong > 1 ? "s are" : " is"} longer than 256 characters</strong>, which is the chat limit. Shorten the text, use fewer colour changes, or paste it into a command block instead: <code>/give @s command_block</code>, place it, paste the command (without the /) and power it with a button.</div>`
+    : "";
+  $("killcmd").textContent = kill;
+}
+
+function renderLines() {
+  const wrap = $("lines");
+  wrap.textContent = "";
+  lines.forEach((l, i) => {
+    const row = document.createElement("div");
+    row.className = "line" + (i === active ? " active" : "");
+    row.innerHTML = `<span class="n">${i + 1}</span>
+      <input type="text" id="line-${i}" aria-label="Line ${i + 1} text" spellcheck="false">
+      <span class="ctl">
+        <select aria-label="Line ${i + 1} size">${SCALES.map((s) => `<option value="${s}"${s === l.s ? " selected" : ""}>${s === 1 ? "Size 1" : s + "×"}</option>`).join("")}</select>
+        <button type="button" data-a="up" title="Move up" aria-label="Move line ${i + 1} up">↑</button>
+        <button type="button" data-a="down" title="Move down" aria-label="Move line ${i + 1} down">↓</button>
+        <button type="button" data-a="del" title="Delete line" aria-label="Delete line ${i + 1}">✕</button>
+      </span>`;
+    const input = row.querySelector("input");
+    input.value = l.t;
+    input.addEventListener("focus", () => { active = i; document.querySelectorAll(".line").forEach((r, n) => r.classList.toggle("active", n === i)); });
+    input.addEventListener("input", () => { l.t = input.value; update(false); });
+    row.querySelector("select").addEventListener("change", (e) => { l.s = parseFloat(e.target.value); update(false); });
+    row.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
+      const a = b.dataset.a;
+      if (a === "del") { lines.splice(i, 1); if (!lines.length) lines.push({ t: "", s: 1 }); active = Math.min(active, lines.length - 1); }
+      if (a === "up" && i > 0) { [lines[i - 1], lines[i]] = [lines[i], lines[i - 1]]; active = i - 1; }
+      if (a === "down" && i < lines.length - 1) { [lines[i + 1], lines[i]] = [lines[i], lines[i + 1]]; active = i + 1; }
+      update(true);
+    }));
+    wrap.append(row);
+  });
+}
+
+function update(rebuildLines) {
+  if (rebuildLines) renderLines();
+  renderPreview();
+  renderOutput();
+  persist();
+}
+
+function insert(text) {
+  const input = $("line-" + active);
+  if (!input) return;
+  const a = input.selectionStart ?? input.value.length, b = input.selectionEnd ?? a;
+  input.value = input.value.slice(0, a) + text + input.value.slice(b);
+  input.focus();
+  input.setSelectionRange(a + text.length, a + text.length);
+  lines[active].t = input.value;
+  update(false);
+}
+
+function toast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toast.h);
+  toast.h = setTimeout(() => t.classList.remove("show"), 1400);
+}
+
+function copy(text, msg) {
+  const fallback = () => {
+    const ta = document.createElement("textarea");
+    ta.value = text; document.body.append(ta); ta.select();
+    try { document.execCommand("copy"); toast(msg); } catch { toast("Select the text and copy it manually"); }
+    ta.remove();
+  };
+  try { navigator.clipboard.writeText(text).then(() => toast(msg), fallback); } catch { fallback(); }
+}
+
+// toolbar
+const sw = $("swatches");
+for (const [code, [name, hex]] of Object.entries(MC)) {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "sw"; b.style.background = hex; b.textContent = "&" + code;
+  b.title = name.replace(/_/g, " ");
+  if (["0", "1", "2", "3", "4", "5", "8", "9"].includes(code)) b.dataset.dark = "";
+  b.addEventListener("mousedown", (e) => e.preventDefault());
+  b.addEventListener("click", () => insert("&" + code));
+  sw.append(b);
+}
+for (const s of SYMBOLS) {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "sym"; b.textContent = s; b.title = "Insert " + s;
+  b.addEventListener("mousedown", (e) => e.preventDefault());
+  b.addEventListener("click", () => insert(s));
+  $("symbols").append(b);
+}
+document.querySelectorAll(".fmt").forEach((b) => {
+  b.addEventListener("mousedown", (e) => e.preventDefault());
+  b.addEventListener("click", () => insert(b.dataset.ins));
+});
+$("btn-hex").addEventListener("click", () => insert("&" + $("hexpick").value));
+
+$("btn-add").addEventListener("click", () => { lines.push({ t: "&7", s: 1 }); active = lines.length - 1; update(true); $("line-" + active).focus(); });
+$("btn-divider").addEventListener("click", () => { lines.splice(active + 1, 0, { t: DIVIDER, s: 1 }); active++; update(true); });
+$("btn-space").addEventListener("click", () => { lines.splice(active + 1, 0, { t: "", s: 1 }); active++; update(true); });
+$("btn-example").addEventListener("click", () => { lines = structuredClone(EXAMPLE); active = 0; update(true); toast("Example loaded"); });
+$("btn-clear").addEventListener("click", () => { lines = [{ t: "&4&lYOUR TITLE", s: 2 }, { t: "&7Your description", s: 1 }]; active = 0; update(true); });
+$("btn-copyall").addEventListener("click", () => copy(commands().list.map((c) => c.cmd).join("\n"), "All commands copied"));
+$("btn-copykill").addEventListener("click", () => copy($("killcmd").textContent, "Delete command copied"));
+$("s-pos").addEventListener("change", () => { $("coords").hidden = $("s-pos").value !== "abs"; update(false); });
+for (const id of ["s-tag", "s-base", "s-gap", "s-bg", "s-shadow", "s-bill", "s-x", "s-y", "s-z"]) $(id).addEventListener("input", () => update(false));
+
+update(true);
+</script>
