@@ -156,6 +156,9 @@ label.f { display: grid; gap: 4px; font-size: 12px; color: var(--muted); }
           <label class="f" for="s-shadow">Text shadow
             <select id="s-shadow"><option value="1" selected>On (easier to read)</option><option value="0">Off</option></select>
           </label>
+          <label class="f" for="s-glow">Glow
+            <select id="s-glow"><option value="0" selected>Normal lighting</option><option value="1">Full bright (readable in dark spots)</option></select>
+          </label>
           <label class="f" for="s-bill">Facing
             <select id="s-bill"><option value="center" selected>Always faces the player</option><option value="vertical">Turns left/right only</option><option value="fixed">Fixed (like a sign)</option></select>
           </label>
@@ -269,6 +272,14 @@ function component(segs) {
 const num = (n) => String(Math.round(n * 100) / 100);
 const lineHeight = (s) => 0.25 * s + 0.05;
 
+// Approximate pixel width in the Minecraft font (5px glyph + 1px gap, narrow glyphs less, bold +1).
+const NARROW = { "i": 2, "l": 3, "!": 2, ".": 2, ",": 2, ":": 2, ";": 2, "|": 2, "'": 2, "`": 3, "t": 4, "I": 4, " ": 4, "[": 4, "]": 4, "(": 4, ")": 4, "f": 5, "k": 5, "<": 5, ">": 5, "*": 5, "\"": 4 };
+function textWidth(segs) {
+  let w = 0;
+  for (const s of segs) for (const ch of s.text) w += (NARROW[ch] ?? (ch.codePointAt(0) > 127 ? 9 : 6)) + (s.bold ? 1 : 0);
+  return w;
+}
+
 function commands() {
   const tag = ($("s-tag").value.trim() || "holo").replace(/[^A-Za-z0-9_.+-]/g, "");
   const base = parseFloat($("s-base").value) || 0;
@@ -287,8 +298,12 @@ function commands() {
     if (!segs.length || !segs.some((s) => s.text.trim())) return null;
     const json = component(segs).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
     const scale = l.s !== 1 ? `,transformation:[${l.s}f,0f,0f,0f,0f,${l.s}f,0f,0f,0f,0f,${l.s}f,0f,0f,0f,0f,1f]` : "";
+    // Minecraft wraps a text display at 200px by default; widen it so long lines stay on one row.
+    const px = textWidth(segs);
+    const wide = px > 190 ? `,line_width:${Math.ceil((px + 20) / 50) * 50}` : "";
+    const glow = $("s-glow").value === "1" ? ",brightness:{sky:15,block:15}" : "";
     const pos = abs ? `${num(bx)} ${num(by + ys[i])} ${num(bz)}` : `~ ~${num(ys[i])} ~`;
-    return { line: i + 1, cmd: `/summon text_display ${pos} {${nbtCommon}${scale},text:'${json}'}` };
+    return { line: i + 1, cmd: `/summon text_display ${pos} {${nbtCommon}${wide}${glow}${scale},text:'${json}'}` };
   });
   const kill = abs
     ? `/kill @e[type=text_display,tag=${tag},x=${num(bx)},y=${num(by)},z=${num(bz)},distance=..8]`
@@ -450,7 +465,7 @@ $("btn-copyfn").addEventListener("click", () => copy(commands().list.map((c) => 
 $("btn-copyall").addEventListener("click", () => copy(commands().list.map((c) => c.cmd).join("\n"), "All commands copied"));
 $("btn-copykill").addEventListener("click", () => copy($("killcmd").textContent, "Delete command copied"));
 $("s-pos").addEventListener("change", () => { $("coords").hidden = $("s-pos").value !== "abs"; update(false); });
-for (const id of ["s-tag", "s-base", "s-gap", "s-bg", "s-shadow", "s-bill", "s-x", "s-y", "s-z"]) $(id).addEventListener("input", () => update(false));
+for (const id of ["s-tag", "s-glow", "s-base", "s-gap", "s-bg", "s-shadow", "s-bill", "s-x", "s-y", "s-z"]) $(id).addEventListener("input", () => update(false));
 
 update(true);
 </script>
