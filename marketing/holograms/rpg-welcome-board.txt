@@ -20,7 +20,7 @@ execute positioned ^ ^ ^0.4 run summon text_display ~ ~2.95 ~ {shadow:1b,Tags:["
 
 execute positioned ^ ^ ^0.4 run summon text_display ~ ~2.65 ~ {shadow:1b,Tags:["rpg_info"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"✪ ","color":"light_purple"},"Every 10th quest is a Rank Trial"]'}
 
-execute positioned ^ ^ ^0.4 run summon text_display ~ ~2.25 ~ {shadow:1b,Tags:["rpg_info"],transformation:[1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'[{"text":"Leave anytime: ","color":"gray"},{"text":"/hub","color":"green"}," or the portal"]'}
+execute positioned ^ ^ ^0.4 run summon text_display ~ ~2.25 ~ {shadow:1b,Tags:["rpg_info"],transformation:[1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'[{"text":"Exit anytime: ","color":"gray"},{"text":"/hub","color":"green"}," or the portal"]'}
 
 STEP 2 - stay in the same spot and paste this to turn it to face you:
 
