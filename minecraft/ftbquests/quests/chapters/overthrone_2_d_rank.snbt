@@ -15,9 +15,9 @@
 			dependencies: ["2978CB5D38F896F8"]
 			id: "6FC26C1123A9811C"
 			rewards: [
-				{ count: 2, id: "D347823EAAF145D2", item: { count: 1, id: "minecraft:golden_apple" }, type: "item" }
+				{ count: 2, id: "5347823EAAF145D2", item: { count: 1, id: "minecraft:golden_apple" }, type: "item" }
 				{ id: "391BA3F675E5E904", type: "xp_levels", xp_levels: 5 }
-				{ id: "F4E379CCA9F09DDD", tags: ["ss_money_800"], type: "custom" }
+				{ id: "74E379CCA9F09DDD", tags: ["ss_money_800"], type: "custom" }
 			]
 			tasks: [{ count: 12L, id: "1CEC7B110E80239D", item: { count: 1, id: "minecraft:raw_gold" }, type: "item" }]
 			x: 0.0d
@@ -27,9 +27,9 @@
 			dependencies: ["6FC26C1123A9811C"]
 			id: "4814C9BD3ED65564"
 			rewards: [
-				{ count: 16, id: "BDA67B4EDD2AABE1", item: { count: 1, id: "minecraft:experience_bottle" }, type: "item" }
-				{ id: "D6661C259D436DA5", type: "xp_levels", xp_levels: 5 }
-				{ id: "9A2BDD0545A28A1F", tags: ["ss_money_900"], type: "custom" }
+				{ count: 16, id: "3DA67B4EDD2AABE1", item: { count: 1, id: "minecraft:experience_bottle" }, type: "item" }
+				{ id: "56661C259D436DA5", type: "xp_levels", xp_levels: 5 }
+				{ id: "1A2BDD0545A28A1F", tags: ["ss_money_900"], type: "custom" }
 			]
 			tasks: [{ entity: "minecraft:witch", id: "1F714E3F202AF244", type: "kill", value: 5L }]
 			x: 2.0d
@@ -63,11 +63,11 @@
 			dependencies: ["0F567A4DCC379651"]
 			id: "458D33B57FE71E20"
 			rewards: [
-				{ id: "DFD6A5299A4220C7", item: { count: 1, id: "artifacts:night_vision_goggles" }, type: "item" }
-				{ id: "CC0E988EC6C0ADB5", type: "xp_levels", xp_levels: 5 }
-				{ id: "B17D90E4D6405DC6", tags: ["ss_money_1000"], type: "custom" }
+				{ id: "5FD6A5299A4220C7", item: { count: 1, id: "artifacts:night_vision_goggles" }, type: "item" }
+				{ id: "4C0E988EC6C0ADB5", type: "xp_levels", xp_levels: 5 }
+				{ id: "317D90E4D6405DC6", tags: ["ss_money_1000"], type: "custom" }
 			]
-			tasks: [{ entity: "minecraft:skeleton", id: "A986967D4156C26B", type: "kill", value: 30L }]
+			tasks: [{ entity: "minecraft:skeleton", id: "2986967D4156C26B", type: "kill", value: 30L }]
 			x: 8.0d
 			y: 0.0d
 		}
@@ -75,11 +75,11 @@
 			dependencies: ["458D33B57FE71E20"]
 			id: "209EB637338194F0"
 			rewards: [
-				{ count: 16, id: "D2AEFFD9423CED26", item: { count: 1, id: "minecraft:experience_bottle" }, type: "item" }
+				{ count: 16, id: "52AEFFD9423CED26", item: { count: 1, id: "minecraft:experience_bottle" }, type: "item" }
 				{ id: "0DFC85163582ABFE", type: "xp_levels", xp_levels: 5 }
-				{ id: "9D7F4B9490ED33A2", tags: ["ss_money_900"], type: "custom" }
+				{ id: "1D7F4B9490ED33A2", tags: ["ss_money_900"], type: "custom" }
 			]
-			tasks: [{ count: 40L, id: "F5C742052E081456", item: { count: 1, id: "minecraft:lapis_lazuli" }, type: "item" }]
+			tasks: [{ count: 40L, id: "75C742052E081456", item: { count: 1, id: "minecraft:lapis_lazuli" }, type: "item" }]
 			x: 8.0d
 			y: 2.0d
 		}
@@ -87,9 +87,9 @@
 			dependencies: ["209EB637338194F0"]
 			id: "15EC20D5EFCBDADC"
 			rewards: [
-				{ count: 32, id: "B3B5DC47034841B1", item: { count: 1, id: "minecraft:lapis_lazuli" }, type: "item" }
+				{ count: 32, id: "33B5DC47034841B1", item: { count: 1, id: "minecraft:lapis_lazuli" }, type: "item" }
 				{ id: "5D01FA709184DA2E", type: "xp_levels", xp_levels: 6 }
-				{ id: "DEDB1380C5ADBE96", tags: ["ss_money_1000"], type: "custom" }
+				{ id: "5EDB1380C5ADBE96", tags: ["ss_money_1000"], type: "custom" }
 			]
 			tasks: [{ count: 1L, only_from_crafting: true, id: "3171EBB7D69A3060", item: { count: 1, id: "minecraft:enchanting_table" }, type: "item" }]
 			x: 6.0d
@@ -97,10 +97,10 @@
 		}
 		{
 			dependencies: ["15EC20D5EFCBDADC"]
-			id: "CB3821ECE5172772"
+			id: "4B3821ECE5172772"
 			rewards: [
-				{ count: 16, id: "CF268B84894804D0", item: { count: 1, id: "minecraft:golden_carrot" }, type: "item" }
-				{ id: "B488A8ADC25F82B8", type: "xp_levels", xp_levels: 5 }
+				{ count: 16, id: "4F268B84894804D0", item: { count: 1, id: "minecraft:golden_carrot" }, type: "item" }
+				{ id: "3488A8ADC25F82B8", type: "xp_levels", xp_levels: 5 }
 				{ id: "255A6C7B0B5E59EB", tags: ["ss_money_900"], type: "custom" }
 			]
 			tasks: [{ count: 64L, id: "3C5CF35CE72721CF", item: { count: 1, id: "minecraft:redstone" }, type: "item" }]
@@ -108,10 +108,10 @@
 			y: 2.0d
 		}
 		{
-			dependencies: ["CB3821ECE5172772"]
-			id: "F5141E6408F4CF57"
+			dependencies: ["4B3821ECE5172772"]
+			id: "75141E6408F4CF57"
 			rewards: [
-				{ id: "B908BD1C748F76E4", item: { components: { "minecraft:enchantments": { levels: { "minecraft:piercing":2 } } }, count: 1, id: "minecraft:crossbow" }, type: "item" }
+				{ id: "3908BD1C748F76E4", item: { components: { "minecraft:enchantments": { levels: { "minecraft:piercing":2 } } }, count: 1, id: "minecraft:crossbow" }, type: "item" }
 				{ id: "1B1A73ABA638DDFD", type: "xp_levels", xp_levels: 6 }
 				{ id: "52A28811005CA747", tags: ["ss_money_1200"], type: "custom" }
 			]
@@ -120,14 +120,14 @@
 			y: 2.0d
 		}
 		{
-			dependencies: ["F5141E6408F4CF57"]
-			id: "991070B4E3AC551D"
+			dependencies: ["75141E6408F4CF57"]
+			id: "191070B4E3AC551D"
 			rewards: [
 				{ id: "5B2CC2F9270A95A0", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness":2 } } }, count: 1, id: "minecraft:diamond_sword" }, type: "item" }
 				{ id: "476DB72DFFA417A5", item: { count: 1, id: "mowziesmobs:spear" }, type: "item" }
 				{ id: "63294D621093ADC0", type: "xp_levels", xp_levels: 10 }
 				{ id: "3DD1F9F367504D6A", table_id: 2138439913711542605L, type: "random" }
-				{ id: "976F6413C82BE3AD", tags: ["ss_money_3000"], type: "custom" }
+				{ id: "176F6413C82BE3AD", tags: ["ss_money_3000"], type: "custom" }
 			]
 			shape: "hexagon"
 			size: 1.5d
@@ -136,14 +136,14 @@
 			y: 2.0d
 		}
 		{
-			dependencies: ["991070B4E3AC551D"]
+			dependencies: ["191070B4E3AC551D"]
 			id: "2C725DAAF49FA609"
 			rewards: [
-				{ id: "AA880FAD6F9A941B", item: { count: 1, id: "minecraft:saddle" }, type: "item" }
+				{ id: "2A880FAD6F9A941B", item: { count: 1, id: "minecraft:saddle" }, type: "item" }
 				{ id: "7036C237FF34D9EC", type: "xp_levels", xp_levels: 5 }
-				{ id: "F1AE8D5183784383", tags: ["ss_money_900"], type: "custom" }
+				{ id: "71AE8D5183784383", tags: ["ss_money_900"], type: "custom" }
 			]
-			tasks: [{ count: 24L, consume_items: true, id: "FEA3BCB781E81C59", item: { count: 1, id: "minecraft:leather" }, type: "item" }]
+			tasks: [{ count: 24L, consume_items: true, id: "7EA3BCB781E81C59", item: { count: 1, id: "minecraft:leather" }, type: "item" }]
 			x: 0.0d
 			y: 4.0d
 		}
@@ -165,17 +165,17 @@
 			rewards: [
 				{ id: "3631FA888A038C2A", item: { count: 1, id: "minecraft:ender_chest" }, type: "item" }
 				{ id: "5E08FA43DE1561B0", type: "xp_levels", xp_levels: 6 }
-				{ id: "9E1019090C69916A", tags: ["ss_money_1500"], type: "custom" }
+				{ id: "1E1019090C69916A", tags: ["ss_money_1500"], type: "custom" }
 			]
-			tasks: [{ count: 8L, consume_items: true, id: "87C94185EB90178B", item: { count: 1, id: "minecraft:ender_pearl" }, type: "item" }]
+			tasks: [{ count: 8L, consume_items: true, id: "07C94185EB90178B", item: { count: 1, id: "minecraft:ender_pearl" }, type: "item" }]
 			x: 4.0d
 			y: 4.0d
 		}
 		{
 			dependencies: ["7C88D10104799DB9"]
-			id: "8BC4AA27C6F5A684"
+			id: "0BC4AA27C6F5A684"
 			rewards: [
-				{ count: 2, id: "BF2E847697A98FE8", item: { count: 1, id: "minecraft:golden_apple" }, type: "item" }
+				{ count: 2, id: "3F2E847697A98FE8", item: { count: 1, id: "minecraft:golden_apple" }, type: "item" }
 				{ id: "718B7DC0CDF5508D", type: "xp_levels", xp_levels: 6 }
 				{ id: "623FDF7D7AD80261", tags: ["ss_money_1200"], type: "custom" }
 			]
@@ -184,26 +184,26 @@
 			y: 4.0d
 		}
 		{
-			dependencies: ["8BC4AA27C6F5A684"]
-			id: "E1F1302B0DD11E00"
+			dependencies: ["0BC4AA27C6F5A684"]
+			id: "61F1302B0DD11E00"
 			rewards: [
 				{ id: "2C51F83637E6F543", item: { count: 1, id: "minecraft:iron_leggings" }, type: "item" }
 				{ id: "45D9064FB252C780", type: "xp_levels", xp_levels: 5 }
 				{ id: "232003C02005816F", tags: ["ss_money_1000"], type: "custom" }
 			]
-			tasks: [{ count: 1L, only_from_crafting: true, id: "CBF94FF954320F7B", item: { count: 1, id: "minecraft:iron_chestplate" }, type: "item" }]
+			tasks: [{ count: 1L, only_from_crafting: true, id: "4BF94FF954320F7B", item: { count: 1, id: "minecraft:iron_chestplate" }, type: "item" }]
 			x: 8.0d
 			y: 4.0d
 		}
 		{
-			dependencies: ["E1F1302B0DD11E00"]
+			dependencies: ["61F1302B0DD11E00"]
 			id: "177F19D74DBF2548"
 			rewards: [
-				{ count: 64, id: "FE39E951C6F37AF9", item: { count: 1, id: "minecraft:arrow" }, type: "item" }
-				{ id: "B697B5A3BCAD8637", type: "xp_levels", xp_levels: 6 }
-				{ id: "CF07EE784D12A465", tags: ["ss_money_1300"], type: "custom" }
+				{ count: 64, id: "7E39E951C6F37AF9", item: { count: 1, id: "minecraft:arrow" }, type: "item" }
+				{ id: "3697B5A3BCAD8637", type: "xp_levels", xp_levels: 6 }
+				{ id: "4F07EE784D12A465", tags: ["ss_money_1300"], type: "custom" }
 			]
-			tasks: [{ entity: "minecraft:bogged", id: "95364E0EB14F0706", type: "kill", value: 8L }]
+			tasks: [{ entity: "minecraft:bogged", id: "15364E0EB14F0706", type: "kill", value: 8L }]
 			x: 8.0d
 			y: 6.0d
 		}
@@ -212,46 +212,46 @@
 			id: "2E1192801903955D"
 			rewards: [
 				{ count: 2, id: "22F35FDF6A62856C", item: { count: 1, id: "minecraft:diamond" }, type: "item" }
-				{ id: "A2C7631BF2261B06", type: "xp_levels", xp_levels: 6 }
-				{ id: "9FD352EB8F21B9FA", tags: ["ss_money_1800"], type: "custom" }
+				{ id: "22C7631BF2261B06", type: "xp_levels", xp_levels: 6 }
+				{ id: "1FD352EB8F21B9FA", tags: ["ss_money_1800"], type: "custom" }
 			]
-			tasks: [{ count: 16L, consume_items: true, id: "F75F35EC0DE63751", item: { count: 1, id: "minecraft:emerald" }, type: "item" }]
+			tasks: [{ count: 16L, consume_items: true, id: "775F35EC0DE63751", item: { count: 1, id: "minecraft:emerald" }, type: "item" }]
 			x: 6.0d
 			y: 6.0d
 		}
 		{
 			dependencies: ["2E1192801903955D"]
-			id: "E83CEC10F27D1FCA"
+			id: "683CEC10F27D1FCA"
 			rewards: [
-				{ count: 2, id: "F0FF5C52DA6E310D", item: { count: 1, id: "minecraft:golden_apple" }, type: "item" }
-				{ id: "F5B69AA3F2EAE2DE", type: "xp_levels", xp_levels: 6 }
-				{ id: "B0376C8A6D4E25EA", tags: ["ss_money_1400"], type: "custom" }
+				{ count: 2, id: "70FF5C52DA6E310D", item: { count: 1, id: "minecraft:golden_apple" }, type: "item" }
+				{ id: "75B69AA3F2EAE2DE", type: "xp_levels", xp_levels: 6 }
+				{ id: "30376C8A6D4E25EA", tags: ["ss_money_1400"], type: "custom" }
 			]
 			tasks: [{ entity: "minecraft:cave_spider", id: "668F69076ABB9948", type: "kill", value: 15L }]
 			x: 4.0d
 			y: 6.0d
 		}
 		{
-			dependencies: ["E83CEC10F27D1FCA"]
+			dependencies: ["683CEC10F27D1FCA"]
 			id: "0702ABA3B00FDF10"
 			rewards: [
-				{ count: 3, id: "A4516A35BC080C52", item: { count: 1, id: "minecraft:golden_apple" }, type: "item" }
+				{ count: 3, id: "24516A35BC080C52", item: { count: 1, id: "minecraft:golden_apple" }, type: "item" }
 				{ id: "6CBAF9C91918199A", item: { count: 1, id: "minecraft:clock" }, type: "item" }
 				{ id: "45B59931A5B7712A", type: "xp_levels", xp_levels: 6 }
 				{ id: "17D1E4F2D3B42450", tags: ["ss_money_1600"], type: "custom" }
 			]
-			tasks: [{ count: 32L, consume_items: true, id: "E4998FC8744BDF1C", item: { count: 1, id: "minecraft:gold_ingot" }, type: "item" }]
+			tasks: [{ count: 32L, consume_items: true, id: "64998FC8744BDF1C", item: { count: 1, id: "minecraft:gold_ingot" }, type: "item" }]
 			x: 2.0d
 			y: 6.0d
 		}
 		{
 			dependencies: ["0702ABA3B00FDF10"]
-			id: "B19EBC32490459D6"
+			id: "319EBC32490459D6"
 			rewards: [
-				{ id: "D7D86FA27BF0FD82", item: { count: 1, id: "minecraft:trident" }, type: "item" }
+				{ id: "57D86FA27BF0FD82", item: { count: 1, id: "minecraft:trident" }, type: "item" }
 				{ count: 5, id: "7F8EDF066C953833", item: { count: 1, id: "minecraft:diamond" }, type: "item" }
 				{ id: "1269D4CD5F43F5D1", type: "xp_levels", xp_levels: 12 }
-				{ id: "C32F3B1111D8546B", table_id: 2138439913711542605L, type: "random" }
+				{ id: "432F3B1111D8546B", table_id: 2138439913711542605L, type: "random" }
 				{ id: "53172D8900162246", tags: ["ss_money_5000"], type: "custom" }
 			]
 			shape: "hexagon"

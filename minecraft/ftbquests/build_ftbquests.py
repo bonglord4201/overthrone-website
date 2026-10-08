@@ -16,8 +16,7 @@ QUESTS, CHAPTERS = data["quests"], data["chapters"]
 # Crate reward tables that already exist on the server (reward_tables/*.snbt)
 CRATES = {"common": "5E0DDFCE0735C9C9", "rare": "1DAD43C5864B214D", "legendary": "4CF008D4AA149717"}
 def table_id(hexid):
-    v = int(hexid, 16)
-    return v - (1 << 64) if v >= 1 << 63 else v
+    return int(hexid, 16)
 
 # "Mine X" quests become "collect the drop" tasks (FTB Quests tracks items, not broken blocks)
 MINE_TO_ITEM = {
@@ -34,8 +33,10 @@ def qid(*parts):
     """Stable 16-hex-digit FTB id from a name (same input -> same id, so re-running never breaks saves)."""
     salt = 0
     while True:
-        h = hashlib.sha1(("overthrone|" + "|".join(map(str, parts)) + "|" + str(salt)).encode()).hexdigest()[:16].upper()
-        if h not in used and h != "0" * 16:
+        v = int(hashlib.sha1(("overthrone|" + "|".join(map(str, parts)) + "|" + str(salt)).encode()).hexdigest()[:16], 16)
+        # FTB Quests reads ids with Long.parseLong(hex), so they must fit a signed long (first digit 0-7)
+        h = "%016X" % (v & 0x7FFFFFFFFFFFFFFF)
+        if h not in used and int(h, 16) > 1:
             used.add(h); return h
         salt += 1
 
