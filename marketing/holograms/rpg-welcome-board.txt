@@ -1,14 +1,45 @@
 STEP 1 - stand in the middle, right up against the board, looking straight at it. Paste these one at a time:
 
-execute positioned ^ ^ ^0.4 run summon text_display ~ ~6.0 ~ {shadow:1b,background:0,Tags:["rpg_info"],transformation:[1.1f,0f,0f,0f,0f,1.1f,0f,0f,0f,0f,1.1f,0f,0f,0f,0f,1f],text:'{"text":"✦ WELCOME TO THE ✦","color":"red","bold":true}'}
+execute positioned ^ ^ ^0.4 run summon text_display ~ ~6.0 ~ {shadow:1b,Tags:["rpg_info"],transformation:[1.1f,0f,0f,0f,0f,1.1f,0f,0f,0f,0f,1.1f,0f,0f,0f,0f,1f],text:'{"text":"✦ WELCOME TO THE ✦","color":"red","bold":true}'}
 
-execute positioned ^ ^ ^0.4 run summon text_display ~ ~5.2 ~ {shadow:1b,background:0,Tags:["rpg_info"],transformation:[2.6f,0f,0f,0f,0f,2.6f,0f,0f,0f,0f,2.6f,0f,0f,0f,0f,1f],text:'{"text":"RPG WORLD","color":"gold","bold":true}'}
+execute positioned ^ ^ ^0.4 run summon text_display ~ ~5.2 ~ {shadow:1b,Tags:["rpg_info"],transformation:[2.6f,0f,0f,0f,0f,2.6f,0f,0f,0f,0f,2.6f,0f,0f,0f,0f,1f],text:'{"text":"RPG WORLD","color":"gold","bold":true}'}
 
-execute positioned ^ ^ ^0.4 run summon text_display ~ ~4.85 ~ {shadow:1b,background:0,Tags:["rpg_info"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"A realm of monsters, magic & glory","color":"gray"}'}
+execute positioned ^ ^ ^0.4 run summon text_display ~ ~4.85 ~ {shadow:1b,Tags:["rpg_info"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"A realm of monsters, magic & glory","color":"gray","italic":true}'}
 
-execute positioned ^ ^ ^0.4 run summon text_display ~ ~4.55 ~ {shadow:1b,background:0,Tags:["rpg_info"],transformation:[1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'{"text":"━━━━━━━━━━━━━━━━━━","color":"dark_red"}'}
+execute positioned ^ ^ ^0.4 run summon text_display ~ ~4.55 ~ {shadow:1b,Tags:["rpg_info"],transformation:[1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'{"text":"━━━━━━━━━━━━━━━━━━","color":"dark_red"}'}
 
-execute positioned ^ ^ ^0.4 run summon text_display ~ ~4.2 ~ {shadow:1b,background:0,Tags:["rpg_info"],transformation:[1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'{"text":"WHAT TO DO HERE","color":"yellow","bold":true}'}
+execute positioned ^ ^ ^0.4 run summon text_display ~ ~4.2 ~ {shadow:1b,Tags:["rpg_info"],transformation:[1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'{"text":"WHAT TO DO HERE","color":"yellow","bold":true}'}
 
-execute positioned ^ ^ ^0.4 run summon text_display ~ ~3.85 ~ {shadow:1b,background:0,Tags:["rpg_info"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"⚔ ","color":"red"},"Hunt monsters & bosses for loot"]'}
+execute positioned ^ ^ ^0.4 run summon text_display ~ ~3.85 ~ {shadow:1b,Tags:["rpg_info"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"⚔ ","color":"red"},"Hunt monsters & bosses for loot"]'}
+
+execute positioned ^ ^ ^0.4 run summon text_display ~ ~3.55 ~ {shadow:1b,Tags:["rpg_info"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"✦ ","color":"green"},"Visit ",{"text":"Questmaster Orin","color":"green"}]'}
+
+execute positioned ^ ^ ^0.4 run summon text_display ~ ~3.25 ~ {shadow:1b,Tags:["rpg_info"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"☰ ","color":"aqua"},"100 quests: climb from E to S-Rank"]'}
+
+execute positioned ^ ^ ^0.4 run summon text_display ~ ~2.95 ~ {shadow:1b,Tags:["rpg_info"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"♦ ","color":"gold"},"Earn coins, gear, XP & crates"]'}
+
+execute positioned ^ ^ ^0.4 run summon text_display ~ ~2.65 ~ {shadow:1b,Tags:["rpg_info"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"✪ ","color":"light_purple"},"Every 10th quest is a Rank Trial"]'}
+
+execute positioned ^ ^ ^0.4 run summon text_display ~ ~2.25 ~ {shadow:1b,Tags:["rpg_info"],transformation:[1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'[{"text":"Leave anytime: ","color":"gray"},{"text":"/hub","color":"green"}," or the portal"]'}
+
+STEP 2 - stay in the same spot and paste this to turn it to face you:
+
+execute as @e[type=text_display,tag=rpg_info,distance=..6] at @s rotated as @p run tp @s ~ ~ ~ ~180 0
+
+ADJUST (stand near the board):
+
+Move it out toward you (if it's hidden inside the board):
+execute as @e[type=text_display,tag=rpg_info,distance=..8] at @s run tp @s ^ ^ ^0.1
+
+Move it back toward the board:
+execute as @e[type=text_display,tag=rpg_info,distance=..8] at @s run tp @s ^ ^ ^-0.1
+
+Move it all up:
+execute as @e[type=text_display,tag=rpg_info,distance=..8] at @s run tp @s ~ ~0.2 ~
+
+Move it all down:
+execute as @e[type=text_display,tag=rpg_info,distance=..8] at @s run tp @s ~ ~-0.2 ~
+
+Delete it and start again:
+kill @e[type=text_display,tag=rpg_info,distance=..8]
 
