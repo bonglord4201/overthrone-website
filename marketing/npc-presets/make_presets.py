@@ -136,6 +136,9 @@ NPCS = {
 # Ryo's custom skin that was already uploaded in-game (from the export); the others start with the default skin.
 RYO_SKIN = [456948940, -74762666, -1775736367, -930515890]
 
+# NPCs that skip their dialog and run a command straight away when right-clicked
+OPEN_ON_CLICK = {"questmaster_orin": "ftbquests open_book"}
+
 def build(key, name, color, pages):
     now = int(time.time() * 1000)
     skin = {"Type": S("CUSTOM"), "UUID": IA(RYO_SKIN)} if key == "guildmaster_ryo" else {"Type": S("DEFAULT")}
@@ -148,6 +151,9 @@ def build(key, name, color, pages):
         "DialogData": C({"Type": S("STANDARD"), "DialogDataSet": LIST(10, pages)}),
         "PresetUUID": IA(uuid_ints(uuid.uuid5(uuid.NAMESPACE_DNS, "overthronesmp.net/npc/" + key))),
     }
+    if key in OPEN_ON_CLICK:
+        # Right-click runs this instead of opening the dialog (replaces the default OPEN_DEFAULT_DIALOG action)
+        data["ActionData"] = C({"ActionEventSet": C({"ON_INTERACTION": LIST(10, [C(cmd(OPEN_ON_CLICK[key]))])})})
     root = {
         "PresetMetadata": C({
             "version": S("1.0.0"), "modified": L(now), "created": L(now), "category": S("General"),
