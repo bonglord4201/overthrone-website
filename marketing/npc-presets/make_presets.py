@@ -1,7 +1,7 @@
 """Builds Easy NPC (1.21.1, EasyNPCVersion 3) preset files for the OVERTHRONE RPG NPCs.
    python3 marketing/npc-presets/make_presets.py   -> writes *.npc.nbt next to this file
 Format copied from a real export (Guildmaster Ryo) and the Easy NPC source:
-  DialogData.DialogDataSet[] = {Name, Label?, Texts[{Text}], Buttons[{Name, Actions[{Type, Cmd?, ExecAsUser?}]}]}"""
+  DialogData.DialogDataSet[] = {Name, Label?, Texts[{Text}], Buttons[{Name, Actions[{Type, Cmd?, PermLevel}]}]}"""
 import gzip, os, struct, time, uuid
 
 OUT = os.path.dirname(os.path.abspath(__file__))
@@ -54,9 +54,12 @@ def btn(label, *actions):
 def go(page_name): return {"Type": S("OPEN_NAMED_DIALOG"), "Cmd": S(page_name)}
 def back(): return {"Type": S("OPEN_DEFAULT_DIALOG")}
 def close(): return {"Type": S("CLOSE_DIALOG")}
-def cmd(command): return {"Type": S("COMMAND"), "Cmd": S(command), "ExecAsUser": B(1)}
+# Runs as the NPC (permission level 2) on behalf of the player who clicked. Easy NPC blocks
+# "execute as user" commands unless they are allow-listed in security.cfg, so we don't use that.
+def cmd(command): return {"Type": S("COMMAND"), "Cmd": S("execute as @initiator run " + command), "PermLevel": I(2)}
 
-def run(label, command): return btn(label, cmd(command), close())
+# Close first, then run: a screen the command opens (like the quest book) must not get closed after it.
+def run(label, command): return btn(label, close(), cmd(command))
 def to(label, page_name): return btn(label, go(page_name))
 BACK = lambda: btn("<< Back", back())
 BYE = lambda label="Farewell": btn(label, close())
