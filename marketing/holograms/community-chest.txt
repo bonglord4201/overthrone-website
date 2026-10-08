@@ -1,0 +1,11 @@
+Stand ON TOP of the chest, in the middle of the two halves, then paste:
+
+/summon text_display ~ ~1.6 ~ {billboard:"center",shadow:1b,background:0,Tags:["comm_chest"],transformation:[0.8f,0f,0f,0f,0f,0.8f,0f,0f,0f,0f,0.8f,0f,0f,0f,0f,1f],text:'{"text":"✦ SHARED LOOT ✦","color":"dark_red","bold":true}'}
+
+/summon text_display ~ ~1.15 ~ {billboard:"center",shadow:1b,background:0,Tags:["comm_chest"],transformation:[1.6f,0f,0f,0f,0f,1.6f,0f,0f,0f,0f,1.6f,0f,0f,0f,0f,1f],text:'{"text":"COMMUNITY CHEST","color":"gold","bold":true}'}
+
+/summon text_display ~ ~0.85 ~ {billboard:"center",shadow:1b,background:0,Tags:["comm_chest"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"⬇ ","color":"green"},"Take what you need"]'}
+
+/summon text_display ~ ~0.6 ~ {billboard:"center",shadow:1b,background:0,Tags:["comm_chest"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"⬆ ","color":"aqua"},"Leave what you can spare"]'}
+
+Remove: /kill @e[type=text_display,tag=comm_chest,distance=..6]
