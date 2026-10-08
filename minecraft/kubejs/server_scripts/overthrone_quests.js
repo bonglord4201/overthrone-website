@@ -5,9 +5,10 @@
 //  Players:  /quest          show the current quest, progress and rewards
 //            /quest claim    turn in / claim the reward (RPG world only)
 //            /quest list     chapter overview
-//  Admins:   /questadmin check                 list any quest/reward IDs that don't exist in this modpack
-//            /questadmin set <player> <number> jump a player to quest <number> (1-101)
-//            /questadmin reset <player>        start a player again from quest 1
+//  Admins:   /questadmin check        list any quest/reward IDs that don't exist in this modpack
+//            /questadmin set <1-101>  jump to a quest      /questadmin reset   back to quest 1
+//            /questadmin complete     finish the current objective (testing)
+//            Other players: /execute as <player> run questadmin set 25
 //
 //  Progress only counts inside the RPG world (see RPG_DIMENSIONS), so SMP play
 //  can't be used to farm RPG quests. Rewards are only handed out in the RPG world,
@@ -454,47 +455,55 @@ ServerEvents.commandRegistry(event => {
       }))
   )
 
-  // admin commands are registered separately so a problem here can never break /quest
+  // Admin commands. They act on whoever runs them; to target another player use:
+  //   /execute as <player> run questadmin set 25
+  // (No argument types are used, so this works on every KubeJS version.)
   try {
-    const { arguments: Arguments } = event
-    const target = (ctx) => Arguments.PLAYER.getResult(ctx, 'player')
-    event.register(
-      Commands.literal('questadmin')
-        .requires(src => src.hasPermission(2))
-        .then(Commands.literal('check').executes(ctx => {
-          const out = []
-          for (let i = 0; i < QUESTS.length; i++) {
-            const q = QUESTS[i]
-            if (!questValid(q)) out.push('§cQuest ' + (i + 1) + ' (' + q.title + '): target ' + q.target + ' not found - will be skipped')
-            const items = q.rewards.items || []
-            for (let j = 0; j < items.length; j++) {
-              if (!idExists('item', items[j][0])) out.push('§eQuest ' + (i + 1) + ': reward ' + items[j][0].split('[')[0] + ' not found - ' + (items[j][2] ? 'gives ' + items[j][2] + ' instead' : 'skipped'))
-            }
-          }
-          const p = ctx.source.player
-          const say = (m) => { if (p) p.tell(m); else console.info(m.replace(/§./g, '')) }
-          say(out.length ? '§6Quest check found ' + out.length + ' issue(s):' : '§aAll 100 quests and rewards are valid for this modpack.')
-          for (let i = 0; i < out.length; i++) say(out[i])
-          return 1
-        }))
-        .then(Commands.literal('set').then(Commands.argument('player', Arguments.PLAYER.create(event)).then(
-          Commands.argument('number', Arguments.INTEGER.create(event)).executes(ctx => {
-            const p = target(ctx)
-            const n = Math.max(1, Math.min(QUESTS.length + 1, Arguments.INTEGER.getResult(ctx, 'number')))
-            setState(p, n - 1, 0)
-            const s = ctx.source.player
-            if (s) s.tell('§aSet ' + p.username + ' to quest ' + n + '.')
-            p.tell('§eA Guild officer moved you to quest §f' + n + '§e. Type §f/quest')
-            return 1
-          }))))
-        .then(Commands.literal('reset').then(Commands.argument('player', Arguments.PLAYER.create(event)).executes(ctx => {
-          const p = target(ctx)
-          setState(p, 0, 0)
-          const s = ctx.source.player
-          if (s) s.tell('§aReset ' + p.username + ' to quest 1.')
-          return 1
-        })))
-    )
+    const admin = Commands.literal('questadmin').requires(src => src.hasPermission(2))
+    admin.then(Commands.literal('check').executes(ctx => {
+      const out = []
+      for (let i = 0; i < QUESTS.length; i++) {
+        const q = QUESTS[i]
+        if (!questValid(q)) out.push('§cQuest ' + (i + 1) + ' (' + q.title + '): ' + q.target + ' not found - will be skipped')
+        const items = q.rewards.items || []
+        for (let j = 0; j < items.length; j++) {
+          if (!idExists('item', items[j][0])) out.push('§eQuest ' + (i + 1) + ': reward ' + items[j][0].split('[')[0] + ' not found - ' + (items[j][2] ? 'gives ' + items[j][2] + ' instead' : 'skipped'))
+        }
+      }
+      const p = ctx.source.player
+      const say = (m) => { if (p) p.tell(m); else console.info(m.replace(/§./g, '')) }
+      say(out.length ? '§6Quest check found ' + out.length + ' issue(s):' : '§aAll 100 quests and rewards are valid for this modpack.')
+      for (let i = 0; i < out.length; i++) say(out[i])
+      return 1
+    }))
+    admin.then(Commands.literal('reset').executes(ctx => {
+      const p = ctx.source.player
+      if (!p) return 0
+      setState(p, 0, 0)
+      p.tell('§aQuest progress reset to quest 1.')
+      return 1
+    }))
+    const setNode = Commands.literal('set')
+    for (let n = 1; n <= QUESTS.length + 1; n++) {
+      const num = n
+      setNode.then(Commands.literal(String(num)).executes(ctx => {
+        const p = ctx.source.player
+        if (!p) return 0
+        setState(p, num - 1, 0)
+        p.tell('§aMoved to quest ' + num + '. §7Type §f/quest')
+        return 1
+      }))
+    }
+    admin.then(setNode)
+    admin.then(Commands.literal('complete').executes(ctx => {   // finish the current objective (for testing)
+      const p = ctx.source.player
+      const q = p ? currentQuest(p) : null
+      if (!q) return 0
+      p.persistentData.putInt(KEY_PROG, q.count)
+      p.tell('§aObjective marked complete. §7Type §f/quest claim')
+      return 1
+    }))
+    event.register(admin)
   } catch (e) {
     console.error('[OVERTHRONE quests] admin commands failed to register: ' + e)
   }
