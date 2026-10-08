@@ -1,0 +1,44 @@
+{
+	id: "4CF008D4AA149717"
+	loot_crate: {
+		color: 16755200
+		drops: {
+			boss: 0
+			monster: 0
+			passive: 0
+		}
+		glow: 1b
+		string_id: "legendary"
+	}
+	loot_size: 1
+	order_index: 1
+	rewards: [
+		{
+			count: 8
+			id: "1FE49E8DCAE69E40"
+			item: {
+				count: 1
+				id: "minecraft:diamond"
+			}
+			weight: 10.0f
+		}
+		{
+			count: 2
+			id: "20448222C1B3C37A"
+			item: {
+				count: 1
+				id: "minecraft:netherite_scrap"
+			}
+			weight: 5.0f
+		}
+		{
+			id: "5F54D330D3E62D19"
+			item: {
+				count: 1
+				id: "minecraft:enchanted_golden_apple"
+			}
+			weight: 2.0f
+		}
+	]
+	use_title: true
+}

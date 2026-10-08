@@ -1,0 +1,425 @@
+{
+	"reward_table.5E0DDFCE0735C9C9.title": "Common Crate"
+	"reward_table.1DAD43C5864B214D.title": "Rare Crate"
+	"reward_table.4CF008D4AA149717.title": "Legendary Crate"
+	"chapter.17420DAE82FA89E8.title": "Getting Started"
+	"quest.2CD33DE9ACC18F2B.title": "Welcome!"
+	"quest.2CD33DE9ACC18F2B.quest_desc": ["Craft a crafting table."]
+	"reward.22681FE77DB21AFF.title": "100 coins"
+	"quest.6282672D57347FAF.title": "Stone Age"
+	"quest.6282672D57347FAF.quest_desc": ["Collect 32 cobblestone."]
+	"reward.2787C18F40843E9B.title": "150 coins"
+	"quest.38F62FA309EEC24A.title": "Iron Time"
+	"quest.38F62FA309EEC24A.quest_desc": ["Collect 8 iron ingots."]
+	"reward.7E9D886C08181E9F.title": "250 coins"
+	"chapter.A0EE9B2CD449C03D.title": "&aE-Rank: The Awakening"
+	"chapter.A0EE9B2CD449C03D.chapter_subtitle": ["Quests 1-20 of the Hunter Association"]
+	"reward.2936D293B0461F9C.title": "200 coins"
+	"quest.BD079F75FD25DB7B.title": "First Steps"
+	"quest.BD079F75FD25DB7B.quest_subtitle": "Quest 1 of 100"
+	"quest.BD079F75FD25DB7B.quest_desc": ["Every Hunter starts with an axe and a sore back. Bring the Guild some timber.", "", "&bObjective:&r Hand in 16 Oak Log", "&7The items are taken when you complete the quest."]
+	"reward.1EBFD22AF729B41B.title": "200 coins"
+	"quest.8C910239A77E099D.title": "Tools of the Trade"
+	"quest.8C910239A77E099D.quest_subtitle": "Quest 2 of 100"
+	"quest.8C910239A77E099D.quest_desc": ["Stone before steel. Craft yourself a proper pickaxe.", "", "&bObjective:&r Craft 1 Stone Pickaxe", "&7Only items you craft yourself count."]
+	"reward.D9EAAB80E4B3261E.title": "300 coins"
+	"quest.D3BD056A585065B2.title": "Night Watch"
+	"quest.D3BD056A585065B2.quest_subtitle": "Quest 3 of 100"
+	"quest.D3BD056A585065B2.quest_desc": ["The dead walk when the sun sleeps. Put ten of them back in the ground.", "", "&bObjective:&r Slay 10 Zombie"]
+	"reward.4F818DB65D48C58B.title": "300 coins"
+	"quest.0803178DDFC1B83B.title": "Bone Collector"
+	"quest.0803178DDFC1B83B.quest_subtitle": "Quest 4 of 100"
+	"quest.0803178DDFC1B83B.quest_desc": ["Skeleton archers have been picking off travellers. Thin their ranks.", "", "&bObjective:&r Slay 10 Skeleton"]
+	"reward.9E3F2CCB9E599F83.title": "300 coins"
+	"quest.E91334B96AFE4FB0.title": "Eight Legs"
+	"quest.E91334B96AFE4FB0.quest_subtitle": "Quest 5 of 100"
+	"quest.E91334B96AFE4FB0.quest_desc": ["Spiders nest close to the roads. Clear them out.", "", "&bObjective:&r Slay 8 Spider"]
+	"reward.BFFEE39C24237120.title": "350 coins"
+	"quest.7DF54BBA06763AD2.title": "Into the Stone"
+	"quest.7DF54BBA06763AD2.quest_subtitle": "Quest 6 of 100"
+	"quest.7DF54BBA06763AD2.quest_desc": ["Light keeps the monsters away. Mine coal for the Guild's torches.", "", "&bObjective:&r Mine and collect 16 Coal"]
+	"reward.E3D208D6B29342B6.title": "400 coins"
+	"quest.5934C4EED896EFA1.title": "Iron Will"
+	"quest.5934C4EED896EFA1.quest_subtitle": "Quest 7 of 100"
+	"quest.5934C4EED896EFA1.quest_desc": ["Brann needs ore for his forge. Find iron.", "", "&bObjective:&r Mine and collect 12 Raw Iron"]
+	"reward.7BA74F21D0518AD7.title": "350 coins"
+	"quest.F3ED17199E00C48B.title": "Harvest"
+	"quest.F3ED17199E00C48B.quest_subtitle": "Quest 8 of 100"
+	"quest.F3ED17199E00C48B.quest_desc": ["A Hunter that doesn't eat doesn't hunt. Bring wheat for the Guild kitchen.", "", "&bObjective:&r Hand in 32 Wheat", "&7The items are taken when you complete the quest."]
+	"reward.B7108FB06016A737.title": "300 coins"
+	"quest.0CE04B38F29C2C43.title": "Shield Bearer"
+	"quest.0CE04B38F29C2C43.quest_subtitle": "Quest 9 of 100"
+	"quest.0CE04B38F29C2C43.quest_desc": ["Learn to block before you learn to strike. Craft a shield.", "", "&bObjective:&r Craft 1 Shield", "&7Only items you craft yourself count."]
+	"reward.3564D2D82DDADFD6.title": "1,000 coins"
+	"quest.10F29A54E259C209.title": "&6&lRank E Trial: Creeper Hunt"
+	"quest.10F29A54E259C209.quest_subtitle": "Quest 10 of 100"
+	"quest.10F29A54E259C209.quest_desc": ["Your first trial. Creepers have levelled three farms this week. End them, quietly.", "", "&bObjective:&r Slay 10 Creeper", "", "&6Rank Trial! &7Bonus Common Crate reward."]
+	"reward.4DB427142BEFC626.title": "450 coins"
+	"quest.F9489B57B00A7C87.title": "Drowned Depths"
+	"quest.F9489B57B00A7C87.quest_subtitle": "Quest 11 of 100"
+	"quest.F9489B57B00A7C87.quest_desc": ["Something drags fishermen under at night. Hunt the drowned.", "", "&bObjective:&r Slay 8 Drowned"]
+	"reward.78DCF1A6894AABD4.title": "600 coins"
+	"quest.EE226C293E683503.title": "The Smith's Request"
+	"quest.EE226C293E683503.quest_subtitle": "Quest 12 of 100"
+	"quest.EE226C293E683503.quest_desc": ["Brann Ironfist is out of iron, again. Help him out.", "", "&bObjective:&r Hand in 24 Iron Ingot", "&7The items are taken when you complete the quest."]
+	"reward.59E0069F64A05C50.title": "450 coins"
+	"quest.ADD8A2909681BDBB.title": "Stock the Larder"
+	"quest.ADD8A2909681BDBB.quest_subtitle": "Quest 13 of 100"
+	"quest.ADD8A2909681BDBB.quest_desc": ["Hunters return hungry. Fill the Guild's larder.", "", "&bObjective:&r Hand in 16 Cooked Beef", "&7The items are taken when you complete the quest."]
+	"reward.BD71C81F7637C5A0.title": "500 coins"
+	"quest.9F1341BA5CBAE48D.title": "Desert Dust"
+	"quest.9F1341BA5CBAE48D.quest_subtitle": "Quest 14 of 100"
+	"quest.9F1341BA5CBAE48D.quest_desc": ["Husks stalk the dunes and never tire. Bring them rest.", "", "&bObjective:&r Slay 10 Husk"]
+	"reward.B4E4D7E3D68C2EFB.title": "500 coins"
+	"quest.3E0FAD463EA726A1.title": "Cold Bones"
+	"quest.3E0FAD463EA726A1.quest_subtitle": "Quest 15 of 100"
+	"quest.3E0FAD463EA726A1.quest_desc": ["Strays freeze their victims with every arrow. Silence them.", "", "&bObjective:&r Slay 8 Stray"]
+	"reward.E48603E93A65AD2F.title": "450 coins"
+	"quest.35CAE9104044C548.title": "Copper Veins"
+	"quest.35CAE9104044C548.quest_subtitle": "Quest 16 of 100"
+	"quest.35CAE9104044C548.quest_desc": ["Copper for the Guild's lightning rods. Dig deep.", "", "&bObjective:&r Mine and collect 48 Raw Copper"]
+	"reward.AD4756727DECA75C.title": "500 coins"
+	"quest.6970DED2ED9A3794.title": "Woodcutter"
+	"quest.6970DED2ED9A3794.quest_subtitle": "Quest 17 of 100"
+	"quest.6970DED2ED9A3794.quest_desc": ["The Guild Hall needs a new wing. Bring a mountain of timber.", "", "&bObjective:&r Hand in 64 Oak Log", "&7The items are taken when you complete the quest."]
+	"reward.BD6315FFC4BC214A.title": "400 coins"
+	"quest.691DD928D8850828.title": "Bowyer"
+	"quest.691DD928D8850828.quest_subtitle": "Quest 18 of 100"
+	"quest.691DD928D8850828.quest_desc": ["New recruits need bows. Craft three.", "", "&bObjective:&r Craft 3 Bow", "&7Only items you craft yourself count."]
+	"reward.3AC437309ED36086.title": "550 coins"
+	"quest.E50CC9D5D9DD56BB.title": "Slime Trouble"
+	"quest.E50CC9D5D9DD56BB.quest_subtitle": "Quest 19 of 100"
+	"quest.E50CC9D5D9DD56BB.quest_desc": ["Slimes keep bouncing out of the swamps. Squash them.", "", "&bObjective:&r Slay 10 Slime"]
+	"reward.08AF82C7F874ECFF.title": "2,000 coins"
+	"quest.2978CB5D38F896F8.title": "&6&lE-Rank Exam: The Bone March"
+	"quest.2978CB5D38F896F8.quest_subtitle": "Quest 20 of 100"
+	"quest.2978CB5D38F896F8.quest_desc": ["Prove you are ready for D-Rank. Twenty-five skeletons, no excuses.", "", "&bObjective:&r Slay 25 Skeleton", "", "&6Rank Trial! &7Bonus Common Crate reward."]
+	"chapter.75D4504EA09AC713.title": "&eD-Rank: The Wilds"
+	"chapter.75D4504EA09AC713.chapter_subtitle": ["Quests 21-40 of the Hunter Association"]
+	"reward.F4E379CCA9F09DDD.title": "800 coins"
+	"quest.6FC26C1123A9811C.title": "Golden Hour"
+	"quest.6FC26C1123A9811C.quest_subtitle": "Quest 21 of 100"
+	"quest.6FC26C1123A9811C.quest_desc": ["Gold glitters for kings and Hunters alike. Find some.", "", "&bObjective:&r Mine and collect 12 Raw Gold"]
+	"reward.9A2BDD0545A28A1F.title": "900 coins"
+	"quest.4814C9BD3ED65564.title": "Witch Hunt"
+	"quest.4814C9BD3ED65564.quest_subtitle": "Quest 22 of 100"
+	"quest.4814C9BD3ED65564.quest_desc": ["Witches brew poison in the marshes. Break their cauldrons.", "", "&bObjective:&r Slay 5 Witch"]
+	"reward.1FC736B959F48BB8.title": "900 coins"
+	"quest.7AE3FC7FD4FB7C4A.title": "Phantoms of the Night"
+	"quest.7AE3FC7FD4FB7C4A.quest_subtitle": "Quest 23 of 100"
+	"quest.7AE3FC7FD4FB7C4A.quest_desc": ["Those who never sleep are hunted from above. Strike them from the sky.", "", "&bObjective:&r Slay 6 Phantom"]
+	"reward.7A01389C16852F6D.title": "700 coins"
+	"quest.0F567A4DCC379651.title": "Silk and Steel"
+	"quest.0F567A4DCC379651.quest_subtitle": "Quest 24 of 100"
+	"quest.0F567A4DCC379651.quest_desc": ["The Guild's fletchers need string. Lots of it.", "", "&bObjective:&r Hand in 32 String", "&7The items are taken when you complete the quest."]
+	"reward.B17D90E4D6405DC6.title": "1,000 coins"
+	"quest.458D33B57FE71E20.title": "The Archer's Mark"
+	"quest.458D33B57FE71E20.quest_subtitle": "Quest 25 of 100"
+	"quest.458D33B57FE71E20.quest_desc": ["Skeleton camps are growing. Show them a real archer.", "", "&bObjective:&r Slay 30 Skeleton"]
+	"reward.9D7F4B9490ED33A2.title": "900 coins"
+	"quest.209EB637338194F0.title": "Lapis Lore"
+	"quest.209EB637338194F0.quest_subtitle": "Quest 26 of 100"
+	"quest.209EB637338194F0.quest_desc": ["The Archmage needs lapis for her enchantments.", "", "&bObjective:&r Mine and collect 40 Lapis Lazuli"]
+	"reward.DEDB1380C5ADBE96.title": "1,000 coins"
+	"quest.15EC20D5EFCBDADC.title": "Enchanter's Table"
+	"quest.15EC20D5EFCBDADC.quest_subtitle": "Quest 27 of 100"
+	"quest.15EC20D5EFCBDADC.quest_desc": ["Steel is strong. Enchanted steel is stronger. Craft an enchanting table.", "", "&bObjective:&r Craft 1 Enchanting Table", "&7Only items you craft yourself count."]
+	"reward.255A6C7B0B5E59EB.title": "900 coins"
+	"quest.CB3821ECE5172772.title": "Redstone Pulse"
+	"quest.CB3821ECE5172772.quest_subtitle": "Quest 28 of 100"
+	"quest.CB3821ECE5172772.quest_desc": ["Redstone runs the Guild's gates. Bring the dust.", "", "&bObjective:&r Mine and collect 64 Redstone"]
+	"reward.52A28811005CA747.title": "1,200 coins"
+	"quest.F5141E6408F4CF57.title": "Raider Scouts"
+	"quest.F5141E6408F4CF57.quest_subtitle": "Quest 29 of 100"
+	"quest.F5141E6408F4CF57.quest_desc": ["Pillager scouts were seen near the outposts. Strike first.", "", "&bObjective:&r Slay 10 Pillager"]
+	"reward.976F6413C82BE3AD.title": "3,000 coins"
+	"quest.991070B4E3AC551D.title": "&6&lD-Rank Trial: The Raid Captains"
+	"quest.991070B4E3AC551D.quest_subtitle": "Quest 30 of 100"
+	"quest.991070B4E3AC551D.quest_desc": ["Vindicators lead the raids. Cut off the head and the body falls.", "", "&bObjective:&r Slay 5 Vindicator", "", "&6Rank Trial! &7Bonus Rare Crate reward."]
+	"reward.F1AE8D5183784383.title": "900 coins"
+	"quest.2C725DAAF49FA609.title": "Leatherworker"
+	"quest.2C725DAAF49FA609.quest_subtitle": "Quest 31 of 100"
+	"quest.2C725DAAF49FA609.quest_desc": ["Armour starts with leather. Bring hides to the tanner.", "", "&bObjective:&r Hand in 24 Leather", "&7The items are taken when you complete the quest."]
+	"reward.6FCDF49DDEB772CC.title": "1,300 coins"
+	"quest.01F40B5CE83559DB.title": "Endless Night"
+	"quest.01F40B5CE83559DB.quest_subtitle": "Quest 32 of 100"
+	"quest.01F40B5CE83559DB.quest_desc": ["Endermen steal from the Guild's walls. Don't look them in the eye.", "", "&bObjective:&r Slay 5 Enderman"]
+	"reward.9E1019090C69916A.title": "1,500 coins"
+	"quest.7C88D10104799DB9.title": "Pearl Diver"
+	"quest.7C88D10104799DB9.quest_subtitle": "Quest 33 of 100"
+	"quest.7C88D10104799DB9.quest_desc": ["The Archmage studies ender pearls. Bring her eight.", "", "&bObjective:&r Hand in 8 Ender Pearl", "&7The items are taken when you complete the quest."]
+	"reward.623FDF7D7AD80261.title": "1,200 coins"
+	"quest.8BC4AA27C6F5A684.title": "Sea Legs"
+	"quest.8BC4AA27C6F5A684.quest_subtitle": "Quest 34 of 100"
+	"quest.8BC4AA27C6F5A684.quest_desc": ["The drowned have taken a whole bay. Take it back.", "", "&bObjective:&r Slay 20 Drowned"]
+	"reward.232003C02005816F.title": "1,000 coins"
+	"quest.E1F1302B0DD11E00.title": "Blacksmith's Steel"
+	"quest.E1F1302B0DD11E00.quest_subtitle": "Quest 35 of 100"
+	"quest.E1F1302B0DD11E00.quest_desc": ["Brann wants to see if you can forge your own armour.", "", "&bObjective:&r Craft 1 Iron Chestplate", "&7Only items you craft yourself count."]
+	"reward.CF07EE784D12A465.title": "1,300 coins"
+	"quest.177F19D74DBF2548.title": "Bog Walkers"
+	"quest.177F19D74DBF2548.quest_subtitle": "Quest 36 of 100"
+	"quest.177F19D74DBF2548.quest_desc": ["Poison-arrow skeletons stalk the swamps and trial halls. Hunt the bogged.", "", "&bObjective:&r Slay 8 Bogged"]
+	"reward.9FD352EB8F21B9FA.title": "1,800 coins"
+	"quest.2E1192801903955D.title": "Emerald Trade"
+	"quest.2E1192801903955D.quest_subtitle": "Quest 37 of 100"
+	"quest.2E1192801903955D.quest_desc": ["Silas pays well for emeralds. Very well.", "", "&bObjective:&r Hand in 16 Emerald", "&7The items are taken when you complete the quest."]
+	"reward.B0376C8A6D4E25EA.title": "1,400 coins"
+	"quest.E83CEC10F27D1FCA.title": "Cave Crawlers"
+	"quest.E83CEC10F27D1FCA.quest_subtitle": "Quest 38 of 100"
+	"quest.E83CEC10F27D1FCA.quest_desc": ["Venomous spiders nest in the old mineshafts. Burn them out.", "", "&bObjective:&r Slay 15 Cave Spider"]
+	"reward.17D1E4F2D3B42450.title": "1,600 coins"
+	"quest.0702ABA3B00FDF10.title": "Smelter"
+	"quest.0702ABA3B00FDF10.quest_subtitle": "Quest 39 of 100"
+	"quest.0702ABA3B00FDF10.quest_desc": ["The crown wants gold for its treasury.", "", "&bObjective:&r Hand in 32 Gold Ingot", "&7The items are taken when you complete the quest."]
+	"reward.53172D8900162246.title": "5,000 coins"
+	"quest.B19EBC32490459D6.title": "&6&lD-Rank Exam: Trial of Winds"
+	"quest.B19EBC32490459D6.quest_subtitle": "Quest 40 of 100"
+	"quest.B19EBC32490459D6.quest_desc": ["The Breezes guard the trial chambers. Defeat six to earn C-Rank.", "", "&bObjective:&r Slay 6 Breeze", "", "&6Rank Trial! &7Bonus Rare Crate reward."]
+	"chapter.9082CBCC6AB0D598.title": "&6C-Rank: Into the Depths"
+	"chapter.9082CBCC6AB0D598.chapter_subtitle": ["Quests 41-60 of the Hunter Association"]
+	"reward.CAE5E9B50E992F7D.title": "2,000 coins"
+	"quest.308043BF581E7DC1.title": "Diamond Fever"
+	"quest.308043BF581E7DC1.quest_subtitle": "Quest 41 of 100"
+	"quest.308043BF581E7DC1.quest_desc": ["Real Hunters carry diamond. Find your first.", "", "&bObjective:&r Mine and collect 5 Diamond"]
+	"reward.430D99F3FB22BEE9.title": "2,200 coins"
+	"quest.0145E3B4957D0E4A.title": "Mob Slayer"
+	"quest.0145E3B4957D0E4A.quest_subtitle": "Quest 42 of 100"
+	"quest.0145E3B4957D0E4A.quest_desc": ["A horde gathers in the east. Fifty zombies, Hunter.", "", "&bObjective:&r Slay 50 Zombie"]
+	"reward.B131411857C01429.title": "2,000 coins"
+	"quest.04F49331CC38A69E.title": "Silverfish Infestation"
+	"quest.04F49331CC38A69E.quest_subtitle": "Quest 43 of 100"
+	"quest.04F49331CC38A69E.quest_desc": ["Silverfish chew through the stronghold walls. Exterminate them.", "", "&bObjective:&r Slay 20 Silverfish"]
+	"reward.79A9C5C4B30456BA.title": "2,200 coins"
+	"quest.511D1B4596E944CF.title": "Obsidian Forge"
+	"quest.511D1B4596E944CF.quest_subtitle": "Quest 44 of 100"
+	"quest.511D1B4596E944CF.quest_desc": ["The Guild is building a vault. Bring obsidian.", "", "&bObjective:&r Hand in 16 Obsidian", "&7The items are taken when you complete the quest."]
+	"reward.FBAD02CBBBCAAC49.title": "2,500 coins"
+	"quest.77E7E51C93B58BA8.title": "Arsenal"
+	"quest.77E7E51C93B58BA8.quest_subtitle": "Quest 45 of 100"
+	"quest.77E7E51C93B58BA8.quest_desc": ["Forge a diamond blade worthy of a C-Rank Hunter.", "", "&bObjective:&r Craft 1 Diamond Sword", "&7Only items you craft yourself count."]
+	"reward.A9EDAEA905F8387F.title": "3,000 coins"
+	"quest.4686F8EC745BCB8C.title": "Ocean's Guardians"
+	"quest.4686F8EC745BCB8C.quest_subtitle": "Quest 46 of 100"
+	"quest.4686F8EC745BCB8C.quest_desc": ["Guardians lash out at every passing ship. Break their monument's defence.", "", "&bObjective:&r Slay 10 Guardian"]
+	"reward.9E6D1E195D5761F3.title": "2,500 coins"
+	"quest.F483AE006FD22AAD.title": "Undead Legion"
+	"quest.F483AE006FD22AAD.quest_subtitle": "Quest 47 of 100"
+	"quest.F483AE006FD22AAD.quest_desc": ["A skeleton legion marches at night. Break it.", "", "&bObjective:&r Slay 50 Skeleton"]
+	"reward.BCDEF633308CE77A.title": "3,000 coins"
+	"quest.5716A5217496747F.title": "Night Terrors"
+	"quest.5716A5217496747F.quest_subtitle": "Quest 48 of 100"
+	"quest.5716A5217496747F.quest_desc": ["The phantoms grow bolder every night. Ground them.", "", "&bObjective:&r Slay 15 Phantom"]
+	"reward.FD6F83B1C1678D8D.title": "2,500 coins"
+	"quest.7F61F9264D627D71.title": "Amethyst Song"
+	"quest.7F61F9264D627D71.quest_subtitle": "Quest 49 of 100"
+	"quest.7F61F9264D627D71.quest_desc": ["Amethyst hums with old magic. Harvest the geodes.", "", "&bObjective:&r Mine and collect 32 Amethyst Shard"]
+	"reward.070F2E0C76FA6471.title": "8,000 coins"
+	"quest.3771762E81048E96.title": "&6&lC-Rank Trial: The Evokers"
+	"quest.3771762E81048E96.quest_subtitle": "Quest 50 of 100"
+	"quest.3771762E81048E96.quest_desc": ["Evokers summon fangs from the earth. Defeat two and claim their totems.", "", "&bObjective:&r Slay 2 Evoker", "", "&6Rank Trial! &7Bonus Rare Crate reward."]
+	"reward.60DA1D065161A993.title": "2,600 coins"
+	"quest.52F6C8BC274BFE17.title": "Glow Ink"
+	"quest.52F6C8BC274BFE17.quest_subtitle": "Quest 51 of 100"
+	"quest.52F6C8BC274BFE17.quest_desc": ["The scribes need glowing ink for the quest board.", "", "&bObjective:&r Slay 10 Glow Squid"]
+	"reward.C1395F29B2004780.title": "2,800 coins"
+	"quest.BC00C8B3B49D7D78.title": "Builder's Stone"
+	"quest.BC00C8B3B49D7D78.quest_subtitle": "Quest 52 of 100"
+	"quest.BC00C8B3B49D7D78.quest_desc": ["The Hunter Association is expanding. Bring stone bricks for the walls.", "", "&bObjective:&r Hand in 128 Stone Bricks", "&7The items are taken when you complete the quest."]
+	"reward.5FFB9A2E120AD182.title": "4,000 coins"
+	"quest.C0808418AA5EC2C0.title": "The Ravager"
+	"quest.C0808418AA5EC2C0.quest_subtitle": "Quest 53 of 100"
+	"quest.C0808418AA5EC2C0.quest_desc": ["Ravagers flatten villages. Stop two of the beasts.", "", "&bObjective:&r Slay 2 Ravager"]
+	"reward.5C9817F0C303A6C1.title": "3,500 coins"
+	"quest.BFD2CC6D53882347.title": "Emerald Mine"
+	"quest.BFD2CC6D53882347.quest_subtitle": "Quest 54 of 100"
+	"quest.BFD2CC6D53882347.quest_desc": ["Emeralds hide in the mountains. Find them.", "", "&bObjective:&r Mine and collect 6 Emerald"]
+	"reward.2005E53F161E0535.title": "2,800 coins"
+	"quest.3B74BA3ABB62C443.title": "Masterwork Crossbows"
+	"quest.3B74BA3ABB62C443.quest_subtitle": "Quest 55 of 100"
+	"quest.3B74BA3ABB62C443.quest_desc": ["The Royal Guard needs crossbows. Craft three.", "", "&bObjective:&r Craft 3 Crossbow", "&7Only items you craft yourself count."]
+	"reward.5518448546AA27C0.title": "3,500 coins"
+	"quest.66B888530B4BCA69.title": "Creeper Purge"
+	"quest.66B888530B4BCA69.quest_subtitle": "Quest 56 of 100"
+	"quest.66B888530B4BCA69.quest_desc": ["The creepers are breeding in the caves. Purge them.", "", "&bObjective:&r Slay 40 Creeper"]
+	"reward.3BD5E6B7C9F841FC.title": "4,000 coins"
+	"quest.83B3ABAAD4D094C8.title": "Witch Coven"
+	"quest.83B3ABAAD4D094C8.quest_subtitle": "Quest 57 of 100"
+	"quest.83B3ABAAD4D094C8.quest_desc": ["A whole coven has gathered in the swamp. Break it.", "", "&bObjective:&r Slay 15 Witch"]
+	"reward.8C10CEF9461B24E5.title": "3,500 coins"
+	"quest.165C55522EFAE599.title": "Golden Feast"
+	"quest.165C55522EFAE599.quest_subtitle": "Quest 58 of 100"
+	"quest.165C55522EFAE599.quest_desc": ["The King is hosting a feast. Golden carrots, and plenty of them.", "", "&bObjective:&r Hand in 32 Golden Carrot", "&7The items are taken when you complete the quest."]
+	"reward.D9A200D15D3F85CD.title": "6,000 coins"
+	"quest.71CBB3E70B224F81.title": "Diamond Hoard"
+	"quest.71CBB3E70B224F81.quest_subtitle": "Quest 59 of 100"
+	"quest.71CBB3E70B224F81.quest_desc": ["The crown's treasury demands diamonds.", "", "&bObjective:&r Hand in 16 Diamond", "&7The items are taken when you complete the quest."]
+	"reward.D51C2A80CBF0BD11.title": "12,000 coins"
+	"quest.DE774EDDD816639E.title": "&6&lC-Rank Exam: The Monument Warden"
+	"quest.DE774EDDD816639E.quest_subtitle": "Quest 60 of 100"
+	"quest.DE774EDDD816639E.quest_desc": ["An Elder Guardian curses the sea. Slay it to earn B-Rank.", "", "&bObjective:&r Slay 1 Elder Guardian", "", "&6Rank Trial! &7Bonus Rare Crate reward."]
+	"chapter.ABA601D9BDE5D19B.title": "&cB-Rank: The Hunt Beyond"
+	"chapter.ABA601D9BDE5D19B.chapter_subtitle": ["Quests 61-80 of the Hunter Association"]
+	"reward.31836380981EFDD1.title": "5,000 coins"
+	"quest.97F6E101AD3AF6B9.title": "Jungle Jaws"
+	"quest.97F6E101AD3AF6B9.quest_subtitle": "Quest 61 of 100"
+	"quest.97F6E101AD3AF6B9.quest_desc": ["Man-eating plants lurk in the jungle. Uproot five Foliaaths.", "", "&bObjective:&r Slay 5 Foliaath"]
+	"reward.055061683D69DD13.title": "6,000 coins"
+	"quest.B1C03A9AEF76D4C3.title": "The Diamond Eater"
+	"quest.B1C03A9AEF76D4C3.quest_subtitle": "Quest 62 of 100"
+	"quest.B1C03A9AEF76D4C3.quest_desc": ["A Grottol is eating the deep diamond veins. Catch it before it digs away.", "", "&bObjective:&r Slay 1 Grottol"]
+	"reward.D44FA5282735EB45.title": "5,000 coins"
+	"quest.6F95A89E7319E920.title": "Lantern Light"
+	"quest.6F95A89E7319E920.quest_subtitle": "Quest 63 of 100"
+	"quest.6F95A89E7319E920.quest_desc": ["Floating lanterns lure Hunters into the dark forest. Pop them.", "", "&bObjective:&r Slay 8 Lantern"]
+	"reward.5167944D6341A5BD.title": "7,000 coins"
+	"quest.62841FE6E0856716.title": "Naga of the Coast"
+	"quest.62841FE6E0856716.quest_subtitle": "Quest 64 of 100"
+	"quest.62841FE6E0856716.quest_desc": ["Sea serpents spit acid at ships near the cliffs. Bring them down.", "", "&bObjective:&r Slay 3 Naga"]
+	"reward.31E2EF8C707B8C41.title": "6,000 coins"
+	"quest.76D368E6AAF8DA68.title": "Iron Wall"
+	"quest.76D368E6AAF8DA68.quest_subtitle": "Quest 65 of 100"
+	"quest.76D368E6AAF8DA68.quest_desc": ["A mansion's guards raid the roads. Twenty vindicators.", "", "&bObjective:&r Slay 20 Vindicator"]
+	"reward.72C9421C3EAFDAE8.title": "9,000 coins"
+	"quest.E6FE9C817ED1C290.title": "Netherite Dream"
+	"quest.E6FE9C817ED1C290.quest_subtitle": "Quest 66 of 100"
+	"quest.E6FE9C817ED1C290.quest_desc": ["Trade a fortune in diamonds for something rarer.", "", "&bObjective:&r Hand in 32 Diamond", "&7The items are taken when you complete the quest."]
+	"reward.0AD24316C266CACA.title": "7,000 coins"
+	"quest.869C6C76A5D891BB.title": "Sky Breaker"
+	"quest.869C6C76A5D891BB.quest_subtitle": "Quest 67 of 100"
+	"quest.869C6C76A5D891BB.quest_desc": ["The trial chambers are restless. Twenty Breezes.", "", "&bObjective:&r Slay 20 Breeze"]
+	"reward.0AB337A1015C1296.title": "7,500 coins"
+	"quest.90B11288CC4C9D66.title": "Trial Master"
+	"quest.90B11288CC4C9D66.quest_subtitle": "Quest 68 of 100"
+	"quest.90B11288CC4C9D66.quest_desc": ["Prove you have conquered the trial chambers. Bring five trial keys.", "", "&bObjective:&r Hand in 5 Trial Key", "&7The items are taken when you complete the quest."]
+	"reward.988B1901EBC09758.title": "12,000 coins"
+	"quest.353F3C71930675CE.title": "The Iron Colossus"
+	"quest.353F3C71930675CE.quest_subtitle": "Quest 69 of 100"
+	"quest.353F3C71930675CE.quest_desc": ["A living suit of armour guards an ancient vault. Topple the Wroughtnaut.", "", "&bObjective:&r Slay 1 Ferrous Wroughtnaut"]
+	"reward.F93D6F504BC9290A.title": "20,000 coins"
+	"quest.FA34643E4B50D80B.title": "&6&lB-Rank Trial: The Frost Tyrant"
+	"quest.FA34643E4B50D80B.quest_subtitle": "Quest 70 of 100"
+	"quest.FA34643E4B50D80B.quest_desc": ["The Frostmaw rules the frozen peaks. Shatter it.", "", "&bObjective:&r Slay 1 Frostmaw", "", "&6Rank Trial! &7Bonus Legendary Crate reward."]
+	"reward.33D3E7A79FC873D8.title": "8,000 coins"
+	"quest.5F4F679BD633F3C5.title": "Monster Hunter"
+	"quest.5F4F679BD633F3C5.quest_subtitle": "Quest 71 of 100"
+	"quest.5F4F679BD633F3C5.quest_desc": ["One hundred zombies. A real Hunter doesn't count, but the Guild does.", "", "&bObjective:&r Slay 100 Zombie"]
+	"reward.96CD1D55891E48CB.title": "8,000 coins"
+	"quest.2E26F7969231E162.title": "Bone Throne"
+	"quest.2E26F7969231E162.quest_subtitle": "Quest 72 of 100"
+	"quest.2E26F7969231E162.quest_desc": ["Build the Guild a throne of bones. One hundred skeletons.", "", "&bObjective:&r Slay 100 Skeleton"]
+	"reward.B250688A5263D2C5.title": "7,500 coins"
+	"quest.2158A76B2E1F3CD7.title": "Arachnophobia"
+	"quest.2158A76B2E1F3CD7.quest_subtitle": "Quest 73 of 100"
+	"quest.2158A76B2E1F3CD7.quest_desc": ["The spider queen's brood is endless. Seventy-five more.", "", "&bObjective:&r Slay 75 Spider"]
+	"reward.68AD24F6D9AC968D.title": "10,000 coins"
+	"quest.71E8230A06B9CB15.title": "Endless Ender"
+	"quest.71E8230A06B9CB15.quest_subtitle": "Quest 74 of 100"
+	"quest.71E8230A06B9CB15.quest_desc": ["Endermen gather in the dark plains. Thirty of them.", "", "&bObjective:&r Slay 30 Enderman"]
+	"reward.8E5ABC55F7ED52D6.title": "12,000 coins"
+	"quest.3226CE24F3AD5B00.title": "Master Miner"
+	"quest.3226CE24F3AD5B00.quest_subtitle": "Quest 75 of 100"
+	"quest.3226CE24F3AD5B00.quest_desc": ["Twenty-five diamond veins. The deep belongs to you now.", "", "&bObjective:&r Mine and collect 25 Diamond"]
+	"reward.04B0E916B67E7771.title": "8,000 coins"
+	"quest.CB9B38572C49013B.title": "Royal Armoury"
+	"quest.CB9B38572C49013B.quest_subtitle": "Quest 76 of 100"
+	"quest.CB9B38572C49013B.quest_desc": ["Forge a diamond chestplate for the Royal Guard.", "", "&bObjective:&r Craft 1 Diamond Chestplate", "&7Only items you craft yourself count."]
+	"reward.B6C303CF3E28B188.title": "11,000 coins"
+	"quest.0A71BA5E4E3BE626.title": "Sea Monsters"
+	"quest.0A71BA5E4E3BE626.quest_subtitle": "Quest 77 of 100"
+	"quest.0A71BA5E4E3BE626.quest_desc": ["Clear a whole ocean monument of its guardians.", "", "&bObjective:&r Slay 40 Guardian"]
+	"reward.F3C4D086F1015832.title": "11,000 coins"
+	"quest.2A7591BBB956B7C2.title": "Pillage the Pillagers"
+	"quest.2A7591BBB956B7C2.quest_subtitle": "Quest 78 of 100"
+	"quest.2A7591BBB956B7C2.quest_desc": ["Turn the raiders' own tactics against them. Fifty pillagers.", "", "&bObjective:&r Slay 50 Pillager"]
+	"reward.2826DE2EE5947F9A.title": "12,000 coins"
+	"quest.2E2CDC0D09759EB5.title": "Coven's End"
+	"quest.2E2CDC0D09759EB5.quest_subtitle": "Quest 79 of 100"
+	"quest.2E2CDC0D09759EB5.quest_desc": ["End the witches' coven for good.", "", "&bObjective:&r Slay 30 Witch"]
+	"reward.5158659795B80248.title": "30,000 coins"
+	"quest.2D8F7ADEE28A1B89.title": "&6&lB-Rank Exam: Tides of Ruin"
+	"quest.2D8F7ADEE28A1B89.quest_subtitle": "Quest 80 of 100"
+	"quest.2D8F7ADEE28A1B89.quest_desc": ["Three monuments, three Elder Guardians. Earn your S-Rank.", "", "&bObjective:&r Slay 3 Elder Guardian", "", "&6Rank Trial! &7Bonus Legendary Crate reward."]
+	"chapter.EFE337F1D1968558.title": "&4S-Rank: Overthrow"
+	"chapter.EFE337F1D1968558.chapter_subtitle": ["Quests 81-100 of the Hunter Association"]
+	"reward.9D9E688C9C61EF06.title": "40,000 coins"
+	"quest.49A43C8CF2FD957E.title": "The Ancient City"
+	"quest.49A43C8CF2FD957E.quest_subtitle": "Quest 81 of 100"
+	"quest.49A43C8CF2FD957E.quest_desc": ["Deep below lies a city of silence and a guardian that hunts by sound. Kill the Warden.", "", "&bObjective:&r Slay 1 Warden"]
+	"reward.1E7CB2E664F559C7.title": "20,000 coins"
+	"quest.37BCB0D8CF6F2B0C.title": "Deep Dark Relics"
+	"quest.37BCB0D8CF6F2B0C.quest_subtitle": "Quest 82 of 100"
+	"quest.37BCB0D8CF6F2B0C.quest_desc": ["The Archmage wants echo shards from the ancient cities.", "", "&bObjective:&r Hand in 8 Echo Shard", "&7The items are taken when you complete the quest."]
+	"reward.FBFF3299C49E3014.title": "25,000 coins"
+	"quest.8654860EF68B4437.title": "Hunter's Tithe"
+	"quest.8654860EF68B4437.quest_subtitle": "Quest 83 of 100"
+	"quest.8654860EF68B4437.quest_desc": ["Every S-Rank pays tribute to the crown.", "", "&bObjective:&r Hand in 16 Emerald Block", "&7The items are taken when you complete the quest."]
+	"reward.360F3FFDA07F359C.title": "20,000 coins"
+	"quest.BDC0B44AB4CEFC14.title": "Slayer Legion"
+	"quest.BDC0B44AB4CEFC14.quest_subtitle": "Quest 84 of 100"
+	"quest.BDC0B44AB4CEFC14.quest_desc": ["One hundred creepers. Try not to lose your house.", "", "&bObjective:&r Slay 100 Creeper"]
+	"reward.000A53004D4D148D.title": "25,000 coins"
+	"quest.205B4511261269DF.title": "Raid Breaker"
+	"quest.205B4511261269DF.quest_subtitle": "Quest 85 of 100"
+	"quest.205B4511261269DF.quest_desc": ["Ten ravagers. The villages will sing your name.", "", "&bObjective:&r Slay 10 Ravager"]
+	"reward.8F66971A879C95A3.title": "30,000 coins"
+	"quest.DB4F081FB2E9361B.title": "Evoker's End"
+	"quest.DB4F081FB2E9361B.quest_subtitle": "Quest 86 of 100"
+	"quest.DB4F081FB2E9361B.quest_desc": ["Hunt down ten evokers in their mansions.", "", "&bObjective:&r Slay 10 Evoker"]
+	"reward.CC732FF9F716AF8A.title": "35,000 coins"
+	"quest.313C68DC627FECBB.title": "Crystal Heart"
+	"quest.313C68DC627FECBB.quest_subtitle": "Quest 87 of 100"
+	"quest.313C68DC627FECBB.quest_desc": ["Two more Frostmaws have awoken in the north.", "", "&bObjective:&r Slay 2 Frostmaw"]
+	"reward.8F6B12293F32C724.title": "35,000 coins"
+	"quest.91DED085A0C14914.title": "Iron Graveyard"
+	"quest.91DED085A0C14914.quest_subtitle": "Quest 88 of 100"
+	"quest.91DED085A0C14914.quest_desc": ["Every vault has its guardian. Topple three Wroughtnauts.", "", "&bObjective:&r Slay 3 Ferrous Wroughtnaut"]
+	"reward.0CCF05C5BD50519B.title": "30,000 coins"
+	"quest.F9316B7D7E7C5F16.title": "Sky Lord"
+	"quest.F9316B7D7E7C5F16.quest_subtitle": "Quest 89 of 100"
+	"quest.F9316B7D7E7C5F16.quest_desc": ["Master the winds. Fifty Breezes.", "", "&bObjective:&r Slay 50 Breeze"]
+	"reward.E8F2FF4A688A9567.title": "60,000 coins"
+	"quest.BEF77BB3CBDC161F.title": "&6&lS-Rank Trial: Shadow of the Throne"
+	"quest.BEF77BB3CBDC161F.quest_subtitle": "Quest 90 of 100"
+	"quest.BEF77BB3CBDC161F.quest_desc": ["Two Wardens. Only the strongest Hunters walk out of the deep dark twice.", "", "&bObjective:&r Slay 2 Warden", "", "&6Rank Trial! &7Bonus Legendary Crate reward."]
+	"reward.7F4DFA21FEE51DC9.title": "40,000 coins"
+	"quest.DFBF86FB95B6655C.title": "Treasury of Kings"
+	"quest.DFBF86FB95B6655C.quest_subtitle": "Quest 91 of 100"
+	"quest.DFBF86FB95B6655C.quest_desc": ["King Aldric is rebuilding the treasury. Thirty-two gold blocks.", "", "&bObjective:&r Hand in 32 Gold Block", "&7The items are taken when you complete the quest."]
+	"reward.2B7BFF424010500F.title": "40,000 coins"
+	"quest.B9DAADBA669D3083.title": "The Thousand Cuts"
+	"quest.B9DAADBA669D3083.quest_subtitle": "Quest 92 of 100"
+	"quest.B9DAADBA669D3083.quest_desc": ["Two hundred and fifty zombies. Your blade should be tired by now.", "", "&bObjective:&r Slay 250 Zombie"]
+	"reward.B0F4BBB9B0E5AAC5.title": "40,000 coins"
+	"quest.E6595558F3BAFF5A.title": "Bone Lord"
+	"quest.E6595558F3BAFF5A.quest_subtitle": "Quest 93 of 100"
+	"quest.E6595558F3BAFF5A.quest_desc": ["Two hundred and fifty skeletons. Become the Bone Lord.", "", "&bObjective:&r Slay 250 Skeleton"]
+	"reward.F61CB41E0C776D17.title": "50,000 coins"
+	"quest.EDF9442DAEC0E845.title": "Deep Diamond"
+	"quest.EDF9442DAEC0E845.quest_subtitle": "Quest 94 of 100"
+	"quest.EDF9442DAEC0E845.quest_desc": ["Sixty-four diamond veins. The mountains have nothing left to hide.", "", "&bObjective:&r Mine and collect 64 Diamond"]
+	"reward.AB7895FE4F38C243.title": "50,000 coins"
+	"quest.8DD72F47073F596E.title": "Guardian of the Deep"
+	"quest.8DD72F47073F596E.quest_subtitle": "Quest 95 of 100"
+	"quest.8DD72F47073F596E.quest_desc": ["Six Elder Guardians. The seas are yours.", "", "&bObjective:&r Slay 6 Elder Guardian"]
+	"reward.A69463E1658AC6FD.title": "60,000 coins"
+	"quest.7475ED54A3D958AA.title": "Netherite Pact"
+	"quest.7475ED54A3D958AA.quest_subtitle": "Quest 96 of 100"
+	"quest.7475ED54A3D958AA.quest_desc": ["Pledge four netherite ingots to the crown's war chest.", "", "&bObjective:&r Hand in 4 Netherite Ingot", "&7The items are taken when you complete the quest."]
+	"reward.DAAF3C7CF4A6285C.title": "45,000 coins"
+	"quest.0D04F9679C6E61A5.title": "The Ender's Gaze"
+	"quest.0D04F9679C6E61A5.quest_subtitle": "Quest 97 of 100"
+	"quest.0D04F9679C6E61A5.quest_desc": ["One hundred endermen. Look them all in the eye.", "", "&bObjective:&r Slay 100 Enderman"]
+	"reward.5713A250008A8DF8.title": "50,000 coins"
+	"quest.7F4FDECBCE39991E.title": "Legend of the Coast"
+	"quest.7F4FDECBCE39991E.quest_subtitle": "Quest 98 of 100"
+	"quest.7F4FDECBCE39991E.quest_desc": ["Fifteen Naga. The coast will be safe for a generation.", "", "&bObjective:&r Slay 15 Naga"]
+	"reward.A29067AE53B14494.title": "80,000 coins"
+	"quest.CD7B67631A342614.title": "Tokens of Survival"
+	"quest.CD7B67631A342614.quest_subtitle": "Quest 99 of 100"
+	"quest.CD7B67631A342614.quest_desc": ["Only a Hunter who has cheated death five times may face the final trial.", "", "&bObjective:&r Hand in 5 Totem Of Undying", "&7The items are taken when you complete the quest."]
+	"reward.33BAF44CD71F99FF.title": "150,000 coins"
+	"quest.8C5AAA92FCF93BCD.title": "&6&lOVERTHRONE"
+	"quest.8C5AAA92FCF93BCD.quest_subtitle": "Quest 100 of 100"
+	"quest.8C5AAA92FCF93BCD.quest_desc": ["The final trial. Three Wardens. Do this, and the throne trembles at your name.", "", "&bObjective:&r Slay 3 Warden", "", "&6Rank Trial! &7Bonus Legendary Crate reward.", "", "&6&lComplete this to earn the title of OVERTHRONE."]
+}

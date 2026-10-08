@@ -1,0 +1,268 @@
+{
+	default_hide_dependency_lines: false
+	default_quest_shape: ""
+	filename: "overthrone_5_s_rank"
+	group: ""
+	icon: {
+		id: "minecraft:nether_star"
+	}
+	id: "EFE337F1D1968558"
+	images: [ ]
+	order_index: 5
+	quest_links: [ ]
+	quests: [
+		{
+			dependencies: ["2D8F7ADEE28A1B89"]
+			id: "49A43C8CF2FD957E"
+			rewards: [
+				{ id: "A72DBB81A032A3A6", item: { count: 1, id: "minecraft:netherite_ingot" }, type: "item" }
+				{ id: "01EC31888A13777D", item: { count: 1, id: "minecraft:recovery_compass" }, type: "item" }
+				{ id: "2A98F0767F443F8F", type: "xp_levels", xp_levels: 25 }
+				{ id: "9D9E688C9C61EF06", tags: ["ss_money_40000"], type: "custom" }
+			]
+			tasks: [{ entity: "minecraft:warden", id: "5FA6278DD9C818C8", type: "kill", value: 1L }]
+			x: 0.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["49A43C8CF2FD957E"]
+			id: "37BCB0D8CF6F2B0C"
+			rewards: [
+				{ id: "C4A7474ED44BD939", item: { count: 1, id: "minecraft:netherite_ingot" }, type: "item" }
+				{ id: "FE2EE0D1132A06BC", type: "xp_levels", xp_levels: 18 }
+				{ id: "1E7CB2E664F559C7", tags: ["ss_money_20000"], type: "custom" }
+			]
+			tasks: [{ count: 8L, consume_items: true, id: "FABB20F0B81E6B5F", item: { count: 1, id: "minecraft:echo_shard" }, type: "item" }]
+			x: 2.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["37BCB0D8CF6F2B0C"]
+			id: "8654860EF68B4437"
+			rewards: [
+				{ count: 2, id: "149F8D46D27E377A", item: { count: 1, id: "minecraft:diamond_block" }, type: "item" }
+				{ id: "C516C395F8473353", type: "xp_levels", xp_levels: 18 }
+				{ id: "FBFF3299C49E3014", tags: ["ss_money_25000"], type: "custom" }
+			]
+			tasks: [{ count: 16L, consume_items: true, id: "080EB13CA28B2BFB", item: { count: 1, id: "minecraft:emerald_block" }, type: "item" }]
+			x: 4.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["8654860EF68B4437"]
+			id: "BDC0B44AB4CEFC14"
+			rewards: [
+				{ count: 16, id: "AA3E441F738B3E04", item: { count: 1, id: "minecraft:golden_apple" }, type: "item" }
+				{ id: "5F78EA938F7EB924", type: "xp_levels", xp_levels: 18 }
+				{ id: "360F3FFDA07F359C", tags: ["ss_money_20000"], type: "custom" }
+			]
+			tasks: [{ entity: "minecraft:creeper", id: "0627E7D4C27D9A38", type: "kill", value: 100L }]
+			x: 6.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["BDC0B44AB4CEFC14"]
+			id: "205B4511261269DF"
+			rewards: [
+				{ count: 2, id: "F7C4E2A3B15438E9", item: { count: 1, id: "minecraft:totem_of_undying" }, type: "item" }
+				{ id: "D006B5FAD6CF7C7B", item: { count: 1, id: "artifacts:lucky_scarf" }, type: "item" }
+				{ id: "94EB6E0C886EED4E", type: "xp_levels", xp_levels: 20 }
+				{ id: "000A53004D4D148D", tags: ["ss_money_25000"], type: "custom" }
+			]
+			tasks: [{ entity: "minecraft:ravager", id: "2952B1BC4357D437", type: "kill", value: 10L }]
+			x: 8.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["205B4511261269DF"]
+			id: "DB4F081FB2E9361B"
+			rewards: [
+				{ count: 2, id: "185D700DF24320B5", item: { count: 1, id: "minecraft:totem_of_undying" }, type: "item" }
+				{ id: "7CBD5A5F480DE65B", type: "xp_levels", xp_levels: 20 }
+				{ id: "8F66971A879C95A3", tags: ["ss_money_30000"], type: "custom" }
+			]
+			tasks: [{ entity: "minecraft:evoker", id: "6F2066069EE04D1D", type: "kill", value: 10L }]
+			x: 8.0d
+			y: 2.0d
+		}
+		{
+			dependencies: ["DB4F081FB2E9361B"]
+			id: "313C68DC627FECBB"
+			rewards: [
+				{ count: 16, id: "237D2C6BB5D42A19", item: { count: 1, id: "minecraft:diamond" }, type: "item" }
+				{ id: "3ECDFFF8F4DC8702", type: "xp_levels", xp_levels: 22 }
+				{ id: "CC732FF9F716AF8A", tags: ["ss_money_35000"], type: "custom" }
+			]
+			tasks: [{ entity: "mowziesmobs:frostmaw", id: "9012EEC93EDE7E80", type: "kill", value: 2L }]
+			x: 6.0d
+			y: 2.0d
+		}
+		{
+			dependencies: ["313C68DC627FECBB"]
+			id: "91DED085A0C14914"
+			rewards: [
+				{ count: 2, id: "B3BF1E87E165A55A", item: { count: 1, id: "minecraft:netherite_ingot" }, type: "item" }
+				{ id: "EFAF081171F4B11E", type: "xp_levels", xp_levels: 22 }
+				{ id: "8F6B12293F32C724", tags: ["ss_money_35000"], type: "custom" }
+			]
+			tasks: [{ entity: "mowziesmobs:ferrous_wroughtnaut", id: "D419DC080CC597AF", type: "kill", value: 3L }]
+			x: 4.0d
+			y: 2.0d
+		}
+		{
+			dependencies: ["91DED085A0C14914"]
+			id: "F9316B7D7E7C5F16"
+			rewards: [
+				{ count: 64, id: "5BE98F3F37A9FB8F", item: { count: 1, id: "minecraft:wind_charge" }, type: "item" }
+				{ count: 16, id: "8B01F4B9A4355FC0", item: { count: 1, id: "minecraft:diamond" }, type: "item" }
+				{ id: "8D7905EB9A9BF2C3", type: "xp_levels", xp_levels: 20 }
+				{ id: "0CCF05C5BD50519B", tags: ["ss_money_30000"], type: "custom" }
+			]
+			tasks: [{ entity: "minecraft:breeze", id: "BC4BC5F5D0587F41", type: "kill", value: 50L }]
+			x: 2.0d
+			y: 2.0d
+		}
+		{
+			dependencies: ["F9316B7D7E7C5F16"]
+			id: "BEF77BB3CBDC161F"
+			rewards: [
+				{ id: "577BBCB9AC2621AD", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness":3,"minecraft:unbreaking":2 } } }, count: 1, id: "minecraft:netherite_sword" }, type: "item" }
+				{ id: "0FC395BD30558CFA", type: "xp_levels", xp_levels: 30 }
+				{ id: "F7933C42B20F1D82", table_id: 5543940850772645655L, type: "random" }
+				{ id: "E8F2FF4A688A9567", tags: ["ss_money_60000"], type: "custom" }
+			]
+			shape: "hexagon"
+			size: 1.5d
+			tasks: [{ entity: "minecraft:warden", id: "D9FD6F1682158594", type: "kill", value: 2L }]
+			x: 0.0d
+			y: 2.0d
+		}
+		{
+			dependencies: ["BEF77BB3CBDC161F"]
+			id: "DFBF86FB95B6655C"
+			rewards: [
+				{ id: "8A9D93E3206D3A66", item: { count: 1, id: "minecraft:enchanted_golden_apple" }, type: "item" }
+				{ id: "25CBFD3CB6E988C0", type: "xp_levels", xp_levels: 22 }
+				{ id: "7F4DFA21FEE51DC9", tags: ["ss_money_40000"], type: "custom" }
+			]
+			tasks: [{ count: 32L, consume_items: true, id: "72E59D2E0DC40F6C", item: { count: 1, id: "minecraft:gold_block" }, type: "item" }]
+			x: 0.0d
+			y: 4.0d
+		}
+		{
+			dependencies: ["DFBF86FB95B6655C"]
+			id: "B9DAADBA669D3083"
+			rewards: [
+				{ count: 2, id: "09AFB0043965FE8D", item: { count: 1, id: "minecraft:netherite_ingot" }, type: "item" }
+				{ id: "C34D021102A3E232", type: "xp_levels", xp_levels: 22 }
+				{ id: "2B7BFF424010500F", tags: ["ss_money_40000"], type: "custom" }
+			]
+			tasks: [{ entity: "minecraft:zombie", id: "F9160D0473430E3B", type: "kill", value: 250L }]
+			x: 2.0d
+			y: 4.0d
+		}
+		{
+			dependencies: ["B9DAADBA669D3083"]
+			id: "E6595558F3BAFF5A"
+			rewards: [
+				{ id: "07B6B8F7FC0E29C5", item: { components: { "minecraft:enchantments": { levels: { "minecraft:power":5,"minecraft:infinity":1 } } }, count: 1, id: "minecraft:bow" }, type: "item" }
+				{ id: "13337228231585F5", type: "xp_levels", xp_levels: 22 }
+				{ id: "B0F4BBB9B0E5AAC5", tags: ["ss_money_40000"], type: "custom" }
+			]
+			tasks: [{ entity: "minecraft:skeleton", id: "A026B7ACF9CE0ECB", type: "kill", value: 250L }]
+			x: 4.0d
+			y: 4.0d
+		}
+		{
+			dependencies: ["E6595558F3BAFF5A"]
+			id: "EDF9442DAEC0E845"
+			rewards: [
+				{ count: 2, id: "F369510942BEA79A", item: { count: 1, id: "minecraft:netherite_ingot" }, type: "item" }
+				{ id: "1548E659A4EDCB51", type: "xp_levels", xp_levels: 25 }
+				{ id: "F61CB41E0C776D17", tags: ["ss_money_50000"], type: "custom" }
+			]
+			tasks: [{ count: 64L, id: "A3BB3E88E79BDAF4", item: { count: 1, id: "minecraft:diamond" }, type: "item" }]
+			x: 6.0d
+			y: 4.0d
+		}
+		{
+			dependencies: ["EDF9442DAEC0E845"]
+			id: "8DD72F47073F596E"
+			rewards: [
+				{ id: "B054950FBED1DC79", item: { count: 1, id: "minecraft:conduit" }, type: "item" }
+				{ id: "191CF3A41F4EBBED", item: { count: 1, id: "artifacts:crystal_heart" }, type: "item" }
+				{ id: "274A817CC5E80C8B", type: "xp_levels", xp_levels: 25 }
+				{ id: "AB7895FE4F38C243", tags: ["ss_money_50000"], type: "custom" }
+			]
+			tasks: [{ entity: "minecraft:elder_guardian", id: "4FD6D995C5494E9F", type: "kill", value: 6L }]
+			x: 8.0d
+			y: 4.0d
+		}
+		{
+			dependencies: ["8DD72F47073F596E"]
+			id: "7475ED54A3D958AA"
+			rewards: [
+				{ count: 2, id: "E89515382993A662", item: { count: 1, id: "minecraft:enchanted_golden_apple" }, type: "item" }
+				{ count: 2, id: "C807A15E0F21644A", item: { count: 1, id: "minecraft:totem_of_undying" }, type: "item" }
+				{ id: "E121B13A8DAFD542", type: "xp_levels", xp_levels: 25 }
+				{ id: "A69463E1658AC6FD", tags: ["ss_money_60000"], type: "custom" }
+			]
+			tasks: [{ count: 4L, consume_items: true, id: "62E382ECD135BFA0", item: { count: 1, id: "minecraft:netherite_ingot" }, type: "item" }]
+			x: 8.0d
+			y: 6.0d
+		}
+		{
+			dependencies: ["7475ED54A3D958AA"]
+			id: "0D04F9679C6E61A5"
+			rewards: [
+				{ id: "CE59EDF56CBE444A", item: { count: 1, id: "minecraft:ender_chest" }, type: "item" }
+				{ count: 16, id: "8737C248045C075E", item: { count: 1, id: "minecraft:ender_pearl" }, type: "item" }
+				{ id: "A7AC1089B7470DA9", type: "xp_levels", xp_levels: 25 }
+				{ id: "DAAF3C7CF4A6285C", tags: ["ss_money_45000"], type: "custom" }
+			]
+			tasks: [{ entity: "minecraft:enderman", id: "85B4417051A7BDFD", type: "kill", value: 100L }]
+			x: 6.0d
+			y: 6.0d
+		}
+		{
+			dependencies: ["0D04F9679C6E61A5"]
+			id: "7F4FDECBCE39991E"
+			rewards: [
+				{ count: 2, id: "DCD1EEA762270A82", item: { count: 1, id: "minecraft:enchanted_golden_apple" }, type: "item" }
+				{ id: "9A4074229CBE8F46", type: "xp_levels", xp_levels: 25 }
+				{ id: "5713A250008A8DF8", tags: ["ss_money_50000"], type: "custom" }
+			]
+			tasks: [{ entity: "mowziesmobs:naga", id: "C3CE1A842DAAAF12", type: "kill", value: 15L }]
+			x: 4.0d
+			y: 6.0d
+		}
+		{
+			dependencies: ["7F4FDECBCE39991E"]
+			id: "CD7B67631A342614"
+			rewards: [
+				{ id: "D1A96DA4AD5BB54C", item: { components: { "minecraft:enchantments": { levels: { "minecraft:protection":3,"minecraft:unbreaking":3 } } }, count: 1, id: "minecraft:netherite_helmet" }, type: "item" }
+				{ id: "71A0626F92E0F6EF", type: "xp_levels", xp_levels: 35 }
+				{ id: "A29067AE53B14494", tags: ["ss_money_80000"], type: "custom" }
+			]
+			tasks: [{ count: 5L, consume_items: true, id: "72F9B1B92E80A5C3", item: { count: 1, id: "minecraft:totem_of_undying" }, type: "item" }]
+			x: 2.0d
+			y: 6.0d
+		}
+		{
+			dependencies: ["CD7B67631A342614"]
+			id: "8C5AAA92FCF93BCD"
+			rewards: [
+				{ id: "CA2802F4F515B6DC", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness":5,"minecraft:unbreaking":3,"minecraft:looting":3 } }, "minecraft:custom_name": "{\"text\":\"Throneslayer\",\"color\":\"gold\",\"bold\":true,\"italic\":false}" }, count: 1, id: "minecraft:netherite_sword" }, type: "item" }
+				{ count: 3, id: "64A668B35A820F62", item: { count: 1, id: "minecraft:enchanted_golden_apple" }, type: "item" }
+				{ id: "C49DA40D205C5646", type: "xp_levels", xp_levels: 50 }
+				{ id: "49A289E21E92A5AC", table_id: 5543940850772645655L, type: "random" }
+				{ id: "33BAF44CD71F99FF", tags: ["ss_money_150000"], type: "custom" }
+			]
+			shape: "hexagon"
+			size: 1.5d
+			tasks: [{ entity: "minecraft:warden", id: "8D7CF113BB575549", type: "kill", value: 3L }]
+			x: 0.0d
+			y: 6.0d
+		}
+	]
+}

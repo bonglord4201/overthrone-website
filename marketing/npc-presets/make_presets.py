@@ -64,10 +64,10 @@ BYE = lambda label="Farewell": btn(label, close())
 # ---- the NPCs ----
 NPCS = {
  "questmaster_orin": ("Questmaster Orin", "#55FF55", [
-   page("main", "Welcome to the quest board, @initiator! The Hunter Association has 100 contracts waiting, from E-Rank errands to S-Rank legends. Finish one, claim your reward, and the next is yours. What'll it be?",
-        [run("✦ Show my quest", "quest"), run("✔ Turn in my quest", "quest claim"), to("? How do quests work", "how"), run("☰ Quest board progress", "quest list")], default=True),
-   page("how", "Simple, Hunter. Type /quest any time to see your contract. Slay, mine and craft out here in the RPG world - progress doesn't count anywhere else. For delivery quests, carry the items when you turn in. Every 10th quest is a Rank Trial with a special reward. Finish all 100... and the throne will know your name.",
-        [run("✦ Show my quest", "quest"), BACK()]),
+   page("main", "Welcome to the quest board, @initiator! The Hunter Association has 100 contracts waiting, from E-Rank errands to S-Rank legends. Every quest you finish unlocks the next. Ready to earn your rank?",
+        [run("✦ Open the Quest Book", "ftbquests open_book"), to("? How do quests work", "how"), BYE("Maybe later")], default=True),
+   page("how", "Open the Quest Book and follow the path: E-Rank, D, C, B... then S. Each quest shows what to slay, mine, craft or hand in. When it's done, click it and claim your coins, XP and gear. Every 10th quest is a Rank Trial with a bonus crate. Finish all 100... and the throne will know your name.",
+        [run("✦ Open the Quest Book", "ftbquests open_book"), BACK()]),
  ]),
  "wayfinder_kael": ("Kael the Wayfinder", "#55FF55", [
    page("main", "Ah, @initiator! Another soul washed up on these shores. Beyond this sanctuary lies the wild world: untamed, unclaimed and unforgiving. What do you seek, traveller?",

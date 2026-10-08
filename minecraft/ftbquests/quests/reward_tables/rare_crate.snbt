@@ -1,0 +1,44 @@
+{
+	id: "1DAD43C5864B214D"
+	loot_crate: {
+		color: 5636095
+		drops: {
+			boss: 0
+			monster: 0
+			passive: 0
+		}
+		string_id: "rare"
+	}
+	loot_size: 1
+	order_index: 2
+	rewards: [
+		{
+			count: 8
+			id: "419001FB9EC97F27"
+			item: {
+				count: 1
+				id: "minecraft:gold_ingot"
+			}
+			weight: 10.0f
+		}
+		{
+			count: 2
+			id: "362AD3B6841F30CF"
+			item: {
+				count: 1
+				id: "minecraft:diamond"
+			}
+			weight: 5.0f
+		}
+		{
+			count: 2
+			id: "1257F18A0D0631F9"
+			item: {
+				count: 1
+				id: "minecraft:golden_apple"
+			}
+			weight: 5.0f
+		}
+	]
+	use_title: true
+}
