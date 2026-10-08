@@ -1,0 +1,16 @@
+/summon text_display ~ ~6.37 ~ {Tags:["warps","w1"],billboard:"center",line_width:300,text:'{"text":"✦ WARPS ✦","color":"dark_red","bold":true}'}
+/summon text_display ~ ~5.99 ~ {Tags:["warps","w2"],billboard:"center",line_width:300,text:'{"text":"Travel anywhere in the realm","color":"gray"}'}
+/summon text_display ~ ~5.54 ~ {Tags:["warps","w3"],billboard:"center",line_width:300,text:'{"text":"▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬","color":"dark_gray"}'}
+/summon text_display ~ ~5.1 ~ {Tags:["warps","w4"],billboard:"center",line_width:300,text:'["",{"text":"Crates ","color":"white"},{"text":"» ","color":"dark_gray"},{"text":"/warp crates","color":"gold","bold":true}]'}
+/summon text_display ~ ~4.65 ~ {Tags:["warps","w4"],billboard:"center",line_width:300,text:'["",{"text":"Throne Market ","color":"white"},{"text":"» ","color":"dark_gray"},{"text":"/warp market","color":"gold","bold":true}]'}
+/summon text_display ~ ~4.21 ~ {Tags:["warps","w4"],billboard:"center",line_width:300,text:'["",{"text":"Hunter Association ","color":"white"},{"text":"» ","color":"dark_gray"},{"text":"/warp hunters","color":"gold","bold":true}]'}
+/summon text_display ~ ~3.76 ~ {Tags:["warps","w4"],billboard:"center",line_width:300,text:'["",{"text":"The Realms ","color":"white"},{"text":"» ","color":"dark_gray"},{"text":"/warp realms","color":"gold","bold":true}]'}
+/summon text_display ~ ~3.32 ~ {Tags:["warps","w4"],billboard:"center",line_width:300,text:'["",{"text":"Tavern ","color":"white"},{"text":"» ","color":"dark_gray"},{"text":"/warp tavern","color":"gold","bold":true}]'}
+/summon text_display ~ ~2.87 ~ {Tags:["warps","w4"],billboard:"center",line_width:300,text:'["",{"text":"Classes ","color":"white"},{"text":"» ","color":"dark_gray"},{"text":"/warp classes","color":"gold","bold":true}]'}
+/summon text_display ~ ~2.43 ~ {Tags:["warps","w4"],billboard:"center",line_width:300,text:'["",{"text":"AFK Zone ","color":"white"},{"text":"» ","color":"dark_gray"},{"text":"/warp afk","color":"gold","bold":true}]'}
+/summon text_display ~ ~1.98 ~ {Tags:["warps","w3"],billboard:"center",line_width:300,text:'{"text":"▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬","color":"dark_gray"}'}
+/summon text_display ~ ~1.6 ~ {Tags:["warps","w2"],billboard:"center",line_width:300,text:'["",{"text":"➤ ","color":"dark_red"},{"text":"Type a warp in chat to teleport","color":"gray"}]'}
+/execute as @e[type=text_display,tag=w1,distance=..10] run data merge entity @s {shadow:1b,background:1711276032,brightness:{sky:15,block:15},transformation:[3.5f,0f,0f,0f,0f,3.5f,0f,0f,0f,0f,3.5f,0f,0f,0f,0f,1f]}
+/execute as @e[type=text_display,tag=w2,distance=..10] run data merge entity @s {shadow:1b,background:1711276032,brightness:{sky:15,block:15},transformation:[1.25f,0f,0f,0f,0f,1.25f,0f,0f,0f,0f,1.25f,0f,0f,0f,0f,1f]}
+/execute as @e[type=text_display,tag=w3,distance=..10] run data merge entity @s {shadow:1b,background:1711276032,brightness:{sky:15,block:15},transformation:[1.5f,0f,0f,0f,0f,1.5f,0f,0f,0f,0f,1.5f,0f,0f,0f,0f,1f]}
+/execute as @e[type=text_display,tag=w4,distance=..10] run data merge entity @s {shadow:1b,background:1711276032,brightness:{sky:15,block:15},transformation:[1.5f,0f,0f,0f,0f,1.5f,0f,0f,0f,0f,1.5f,0f,0f,0f,0f,1f]}
