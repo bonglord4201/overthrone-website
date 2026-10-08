@@ -1,0 +1,18 @@
+Stand in the middle of the path at the bottom of the steps, then paste:
+
+/summon text_display ~ ~4.35 ~ {billboard:"center",shadow:1b,background:0,Tags:["rpg_arcade"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"✦ OVERTHRONE ✦","color":"dark_red","bold":true}'}
+
+/summon text_display ~ ~3.55 ~ {billboard:"center",shadow:1b,background:0,Tags:["rpg_arcade"],transformation:[2.6f,0f,0f,0f,0f,2.6f,0f,0f,0f,0f,2.6f,0f,0f,0f,0f,1f],text:'{"text":"ARCADE","color":"light_purple","bold":true}'}
+
+/summon text_display ~ ~3.15 ~ {billboard:"center",shadow:1b,background:0,Tags:["rpg_arcade"],transformation:[1.4f,0f,0f,0f,0f,1.4f,0f,0f,0f,0f,1.4f,0f,0f,0f,0f,1f],text:'{"text":"& TRADE HALL","color":"gold","bold":true}'}
+
+/summon text_display ~ ~2.9 ~ {billboard:"center",shadow:1b,background:0,Tags:["rpg_arcade"],transformation:[1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'{"text":"━━━━━━━━━━━━━━","color":"dark_red"}'}
+
+/summon text_display ~ ~2.6 ~ {billboard:"center",shadow:1b,background:0,Tags:["rpg_arcade"],transformation:[1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'[{"text":"✦ ","color":"light_purple"},"Games, prizes & jackpots"]'}
+
+/summon text_display ~ ~2.3 ~ {billboard:"center",shadow:1b,background:0,Tags:["rpg_arcade"],transformation:[1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'[{"text":"⇄ ","color":"aqua"},"Trade gear with other hunters"]'}
+
+/summon text_display ~ ~1.95 ~ {billboard:"center",shadow:1b,background:0,Tags:["rpg_arcade"],transformation:[1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'{"text":"Step inside!","color":"yellow","italic":true}'}
+
+Remove: /kill @e[type=text_display,tag=rpg_arcade,distance=..10]
+Move up: /execute as @e[type=text_display,tag=rpg_arcade,distance=..10] at @s run tp @s ~ ~0.25 ~
