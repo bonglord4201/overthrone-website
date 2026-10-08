@@ -1,0 +1,14 @@
+STEP 1 - stand in the middle, right up against the board, looking straight at it. Paste these one at a time:
+
+execute positioned ^ ^ ^0.4 run summon text_display ~ ~6.0 ~ {shadow:1b,background:0,Tags:["rpg_info"],transformation:[1.1f,0f,0f,0f,0f,1.1f,0f,0f,0f,0f,1.1f,0f,0f,0f,0f,1f],text:'{"text":"✦ WELCOME TO THE ✦","color":"red","bold":true}'}
+
+execute positioned ^ ^ ^0.4 run summon text_display ~ ~5.2 ~ {shadow:1b,background:0,Tags:["rpg_info"],transformation:[2.6f,0f,0f,0f,0f,2.6f,0f,0f,0f,0f,2.6f,0f,0f,0f,0f,1f],text:'{"text":"RPG WORLD","color":"gold","bold":true}'}
+
+execute positioned ^ ^ ^0.4 run summon text_display ~ ~4.85 ~ {shadow:1b,background:0,Tags:["rpg_info"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"A realm of monsters, magic & glory","color":"gray"}'}
+
+execute positioned ^ ^ ^0.4 run summon text_display ~ ~4.55 ~ {shadow:1b,background:0,Tags:["rpg_info"],transformation:[1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'{"text":"━━━━━━━━━━━━━━━━━━","color":"dark_red"}'}
+
+execute positioned ^ ^ ^0.4 run summon text_display ~ ~4.2 ~ {shadow:1b,background:0,Tags:["rpg_info"],transformation:[1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'{"text":"WHAT TO DO HERE","color":"yellow","bold":true}'}
+
+execute positioned ^ ^ ^0.4 run summon text_display ~ ~3.85 ~ {shadow:1b,background:0,Tags:["rpg_info"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"⚔ ","color":"red"},"Hunt monsters & bosses for loot"]'}
+
