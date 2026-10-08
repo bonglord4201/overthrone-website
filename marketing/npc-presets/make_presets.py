@@ -63,6 +63,12 @@ BYE = lambda label="Farewell": btn(label, close())
 
 # ---- the NPCs ----
 NPCS = {
+ "questmaster_orin": ("Questmaster Orin", "#55FF55", [
+   page("main", "Welcome to the quest board, @initiator! The Hunter Association has 100 contracts waiting, from E-Rank errands to S-Rank legends. Finish one, claim your reward, and the next is yours. What'll it be?",
+        [run("✦ Show my quest", "quest"), run("✔ Turn in my quest", "quest claim"), to("? How do quests work", "how"), run("☰ Quest board progress", "quest list")], default=True),
+   page("how", "Simple, Hunter. Type /quest any time to see your contract. Slay, mine and craft out here in the RPG world - progress doesn't count anywhere else. For delivery quests, carry the items when you turn in. Every 10th quest is a Rank Trial with a special reward. Finish all 100... and the throne will know your name.",
+        [run("✦ Show my quest", "quest"), BACK()]),
+ ]),
  "wayfinder_kael": ("Kael the Wayfinder", "#55FF55", [
    page("main", "Ah, @initiator! Another soul washed up on these shores. Beyond this sanctuary lies the wild world: untamed, unclaimed and unforgiving. What do you seek, traveller?",
         [run("⚔ Send me into the wild", "wild"), to("? How does this world work", "guide"), run("➤ Take me back to the hub", "hub")], default=True),
