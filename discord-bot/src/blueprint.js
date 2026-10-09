@@ -33,7 +33,8 @@ export const ROLES = [
 export const LAYOUT = [
   { key: "stats", name: "📊 SERVER STATS", aliases: ["server stats", "stats"], perm: null, optional: true, channels: [] },   // only ordered if it exists
   { key: "info", name: "📌 INFORMATION", aliases: ["the throne", "throne", "information", "info", "overthrone", "overthrone smp", "start here", "important"], perm: "readonly", channels: [
-    { key: "welcome", name: "👋・welcome", aliases: ["welcome"], bot: "welcome" },
+    { key: "welcome", name: "👋・welcome", aliases: ["welcome"] },                       // the info page
+    { key: "arrived", name: "🛬・arrived", aliases: ["arrived", "arrivals", "joins", "new members", "welcomes"], bot: "welcome", optional: true },   // join messages
     { key: "rules", name: "📜・rules", aliases: ["rules", "server rules"] },
     { key: "announcements", name: "📢・announcements", aliases: ["announcements", "announcement", "news"] },
     { key: "updates", name: "💻・updates", aliases: ["updates", "update", "server updates"] },
