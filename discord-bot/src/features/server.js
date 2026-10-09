@@ -144,6 +144,20 @@ function backup(guild, label) {
 }
 
 // ------------------------------------------------------------------ plan
+// Golden rules: never delete, rename, move or reorder anything that already exists, and never
+// change existing roles. Existing channels are only touched to fix a real problem:
+//   hide      a staff channel members can see       -> staff-only
+//   readonly  an info/guide channel members post in  -> members can read but not post
+//   sync      an already-private staff channel       -> staff roles + bot get access (members see no change)
+const PRIVATE = ["staff", "team", "botlog"];
+const everyoneCanPost = (guild, ch) => ch.permissionsFor(guild.roles.everyone)?.has(P.SendMessages);
+
+function decide(guild, ch, kind) {
+  if (PRIVATE.includes(kind)) return everyoneCanSee(guild, ch) ? "hide" : "sync";
+  if (kind === "readonly" && !isVoice(ch) && everyoneCanSee(guild, ch) && everyoneCanPost(guild, ch)) return "readonly";
+  return null;
+}
+
 async function buildPlan(guild) {
   await guild.channels.fetch();
   await guild.roles.fetch();
@@ -152,35 +166,58 @@ async function buildPlan(guild) {
   const botIds = new Set((await guild.members.fetch().catch(() => guild.members.cache)).filter((m) => m.user.bot).map((m) => m.id));
   const steps = [];
   const warnings = [];
+  const actions = [];   // { ch, kind, team, action }
 
   for (const def of ROLES) {
     const r = roles[def.key];
-    steps.push(r ? `✓ Role **${r.name}** already exists${def.perms.length && !r.permissions.has(def.perms) ? " (its permissions will be topped up)" : ""}` : `➕ Create role **${def.name}**`);
+    steps.push(r ? `✓ Role **${r.name}** already exists (left as it is)` : `➕ Create role **${def.name}**`);
   }
   for (const { cat, category, channels } of result) {
-    if (!category && cat.optional) continue;
-    steps.push(category ? `📁 Use category **${category.name}** for ${cat.name}` : `➕ Create category **${cat.name}**`);
-    for (const { def, channel } of channels) {
-      if (!channel) { steps.push(`   ➕ Create ${def.voice ? "voice" : "channel"} **${def.name}**`); continue; }
-      const moving = category && channel.parentId !== category.id;
-      const kind = def.perm ?? cat.perm;
-      const wasPublic = everyoneCanSee(guild, channel);
-      const hides = ["staff", "team", "botlog"].includes(kind) && wasPublic;
-      steps.push(`   ${moving || !category ? "↪️ Move" : "✓ Keep"} **#${channel.name}**${moving ? ` (from ${channel.parent?.name ?? "no category"})` : ""} · ${kind}${hides ? " · 🔒 **members can see it right now, will be hidden**" : ""}`);
-      if (hides) warnings.push(`#${channel.name} is visible to everyone`);
+    if (!category && cat.optional) {
+      // No category for this group: the channels stay exactly where they are (only problems are fixed).
+      const kept = [];
+      for (const { def, channel } of channels) {
+        if (!channel) continue;
+        const kind = def.perm === undefined ? cat.perm : def.perm;
+        const act = kind ? decide(guild, channel, kind) : null;
+        if (act) { actions.push({ ch: channel, kind, team: def.team, action: act }); steps.push(`✏️ **#${channel.name}**: members can post here, it will be made read-only (it stays where it is)`); }
+        else kept.push("#" + channel.name);
+      }
+      if (kept.length) steps.push(`✓ No changes at all: ${kept.join(", ")}`);
+      continue;
     }
+    if (category) {
+      // Categories are only touched to hide a staff category that members can see.
+      const act = PRIVATE.includes(cat.perm) ? decide(guild, category, cat.perm) : null;
+      if (act) actions.push({ ch: category, kind: cat.perm, action: act });
+      steps.push(`📁 **${category.name}**${act === "hide" ? " · 🔒 members can see this category, it will be made staff-only" : ""}`);
+    } else steps.push(`➕ Create category **${cat.name}**`);
+    const unchanged = [];
+    for (const { def, channel } of channels) {
+      const kind = def.perm === undefined ? cat.perm : def.perm;
+      if (!channel) {
+        if (!def.optional) steps.push(`   ➕ Create ${def.voice ? "voice channel" : "channel"} **${def.name}**${PRIVATE.includes(kind) ? " (staff-only)" : ""}`);
+        continue;
+      }
+      const act = kind ? decide(guild, channel, kind) : null;
+      if (act) actions.push({ ch: channel, kind, team: def.team, action: act });
+      if (act === "hide") { steps.push(`   🔒 **#${channel.name}**: members can see it right now, it will be made staff-only`); warnings.push(`#${channel.name} is visible to everyone`); }
+      else if (act === "readonly") steps.push(`   ✏️ **#${channel.name}**: members can post here, it will be made read-only`);
+      else unchanged.push((isVoice(channel) ? "🔊" : "#") + channel.name);
+    }
+    if (unchanged.length) steps.push(`   ✓ No changes: ${unchanged.join(", ")}`);
   }
   for (const ch of others) {
     if (looksPrivate(ch.name) && everyoneCanSee(guild, ch)) {
-      steps.push(`🔒 Make **#${ch.name}** staff-only (members can see it right now)`);
+      actions.push({ ch, kind: "staff", action: "hide" });
+      steps.push(`🔒 **#${ch.name}**: looks like a staff channel and members can see it, it will be made staff-only`);
       warnings.push(`#${ch.name} is visible to everyone`);
     }
   }
   if (ticketCat && everyoneCanSee(guild, ticketCat)) warnings.push(`ticket category ${ticketCat.name} is visible to everyone`);
-  for (const { extra, keep } of dupes) steps.push(`⚠️ Duplicate: **#${extra.name}** looks like **#${keep.name}**, so it's left untouched. Delete it yourself if you don't need it.`);
-  const untouched = others.filter((c) => !(looksPrivate(c.name) && everyoneCanSee(guild, c)));
-  if (untouched.length) steps.push(`ℹ️ Left exactly as they are: ${untouched.map((c) => (isVoice(c) ? "🔊" : "#") + c.name).join(", ")}`);
-  return { roles, result, others, ticketCat, botIds, steps, warnings };
+  for (const { extra, keep } of dupes) steps.push(`ℹ️ **#${extra.name}** is similar to **#${keep.name}**. Both are left as they are.`);
+  steps.push("ℹ️ Every other channel and category is left exactly as it is. Nothing is moved, renamed, reordered or deleted.");
+  return { roles, result, others, ticketCat, botIds, steps, warnings, actions };
 }
 
 function planFile(plan, title) {
@@ -189,120 +226,97 @@ function planFile(plan, title) {
 }
 
 // ------------------------------------------------------------------ apply
+async function fix(guild, ch, kind, team, action, roles, botIds) {
+  const reason = "OVERTHRONE /server apply";
+  if (action === "hide") return ch.permissionOverwrites.set(mergeOverwrites(ch, template(kind, guild, roles, team), true, botIds), reason);
+  if (action === "sync") {
+    const merged = mergeOverwrites(ch, template(kind, guild, roles, team), false, botIds);
+    if (!sameOverwrites(ch, merged)) await ch.permissionOverwrites.set(merged, reason);
+    return;
+  }
+  if (action === "readonly") {
+    // Only take posting away from @everyone; every other overwrite stays exactly as it is.
+    const everyone = guild.roles.everyone.id;
+    await ch.permissionOverwrites.edit(everyone, Object.fromEntries(PERM.noPost.map((bit) => [new PermissionsBitField(bit).toArray()[0], false])), { reason });
+    await ch.permissionOverwrites.edit(guild.members.me.id, { ViewChannel: true, SendMessages: true, EmbedLinks: true, AttachFiles: true, ManageMessages: true }, { reason, type: OverwriteType.Member });
+    if (roles.admin) await ch.permissionOverwrites.edit(roles.admin.id, { SendMessages: true }, { reason });
+  }
+}
+
 async function apply(guild, plan, log) {
   const me = guild.members.me;
   const roles = plan.roles;
-  const created = [];
+  const reason = "OVERTHRONE /server apply";
 
-  // Roles: create missing ones under the bot's role, top up permissions of the staff roles.
-  let pos = me.roles.highest.position - 1;
+  // Roles: only create the missing ones (existing roles are never changed).
   for (const def of ROLES) {
     let r = roles[def.key];
     if (!r) {
-      r = await guild.roles.create({ name: def.name, color: def.color, hoist: Boolean(def.hoist), mentionable: false, permissions: def.perms, reason: "OVERTHRONE /server apply" });
+      r = await guild.roles.create({ name: def.name, color: def.color, hoist: Boolean(def.hoist), mentionable: false, permissions: def.perms, reason });
       db.server.createdRoles.push(r.id);
-      created.push(r);
       log(`➕ Role ${r.name}`);
-    } else if (def.perms.length && !r.permissions.has(def.perms) && r.position < me.roles.highest.position) {
-      await r.setPermissions(new PermissionsBitField(r.permissions).add(def.perms), "OVERTHRONE /server apply");
-      log(`🔧 Permissions topped up on ${r.name}`);
     }
     roles[def.key] = r;
     db.server.roles[def.key] = r.id;
-  }
-  if (created.length) {
-    const order = ROLES.map((d) => roles[d.key]).filter((r) => created.includes(r));
-    await guild.roles.setPositions(order.map((r) => ({ role: r.id, position: Math.max(1, pos--) }))).catch((e) => log("⚠️ Couldn't order the new roles: " + e.message));
   }
   db.settings.roles.staff = roles.staff.id;
   db.settings.roles.linked = roles.linked.id;
   db.settings.staffRoles = ROLES.filter((d) => d.staff).map((d) => roles[d.key].id);
   db.settings.supportRoles = ROLES.filter((d) => d.support).map((d) => roles[d.key].id);
 
-  // Categories and channels.
-  const catOrder = [];
+  // Fix the problems found by the plan.
+  for (const { ch, kind, team, action } of plan.actions) {
+    await fix(guild, ch, kind, team, action, roles, plan.botIds);
+    if (action === "hide") log(`🔒 #${ch.name} is now staff-only`);
+    if (action === "readonly") log(`✏️ #${ch.name} is now read-only for members`);
+  }
+
+  // Remember every layout channel, and create the missing ones (at the bottom of their category).
   for (const { cat, category: found, channels } of plan.result) {
     let category = found;
-    if (!category && cat.optional) continue;
-    const catPerm = cat.perm ? template(cat.perm, guild, roles) : null;
+    if (!category && cat.optional) {
+      for (const { def, channel } of channels) if (channel) { db.server.layout[cat.key + "/" + def.key] = channel.id; if (def.bot) db.settings.channels[def.bot] = channel.id; }
+      continue;
+    }
     if (!category) {
-      category = await guild.channels.create({ name: cat.name, type: ChannelType.GuildCategory, permissionOverwrites: catPerm ?? undefined, reason: "OVERTHRONE /server apply" });
+      category = await guild.channels.create({ name: cat.name, type: ChannelType.GuildCategory, permissionOverwrites: cat.perm ? template(cat.perm, guild, roles) : undefined, reason });
       db.server.createdChannels.push(category.id);
       log(`➕ Category ${category.name}`);
-    } else if (catPerm) {
-      const merged = mergeOverwrites(category, catPerm, ["staff", "team", "botlog"].includes(cat.perm), plan.botIds);
-      if (!sameOverwrites(category, merged)) await category.permissionOverwrites.set(merged, "OVERTHRONE /server apply");
     }
     db.server.layout[cat.key] = category.id;
-    catOrder.push(category);
-
-    const children = [];
     for (const { def, channel: foundCh } of channels) {
       let channel = foundCh;
-      const kind = def.perm ?? cat.perm;
-      const perms = kind ? template(kind, guild, roles, def.team) : null;
-      const isPrivate = ["staff", "team", "botlog"].includes(kind);
       if (!channel) {
+        if (def.optional) continue;
+        const kind = def.perm ?? cat.perm;
         channel = await guild.channels.create({
           name: def.name, type: def.voice ? ChannelType.GuildVoice : ChannelType.GuildText, parent: category.id,
-          permissionOverwrites: perms ?? undefined, reason: "OVERTHRONE /server apply"
+          permissionOverwrites: kind ? template(kind, guild, roles, def.team) : undefined, reason
         });
         db.server.createdChannels.push(channel.id);
-        log(`➕ ${def.voice ? "Voice" : "Channel"} ${channel.name}`);
-      } else {
-        if (channel.parentId !== category.id) {
-          await channel.setParent(category.id, { lockPermissions: false, reason: "OVERTHRONE /server apply" });
-          log(`↪️ Moved #${channel.name} → ${category.name}`);
-        }
-        if (perms) {
-          const merged = mergeOverwrites(channel, perms, isPrivate, plan.botIds);
-          if (!sameOverwrites(channel, merged)) {
-            await channel.permissionOverwrites.set(merged, "OVERTHRONE /server apply");
-            log(`🔐 Permissions on #${channel.name} (${kind})`);
-          }
-        }
+        log(`➕ ${def.voice ? "Voice channel" : "Channel"} ${channel.name} in ${category.name}`);
       }
-      children.push(channel);
       db.server.layout[cat.key + "/" + def.key] = channel.id;
       if (def.bot) db.settings.channels[def.bot] = channel.id;
     }
-    // Layout channels first (in order), then anything else already in the category.
-    await guild.channels.fetch();
-    const rest = guild.channels.cache.filter((c) => c.parentId === category.id && !children.includes(c)).sort((a, b) => a.rawPosition - b.rawPosition);
-    const order = [...children, ...rest.values()];
-    if (order.length) await guild.channels.setPositions(order.map((c, n) => ({ channel: c.id, position: n, parent: category.id, lockPermissions: false })))
-      .catch((e) => log(`⚠️ Couldn't order ${category.name}: ${e.message}`));
   }
 
-  // Unknown channels with staff-like names: make them staff-only.
-  for (const ch of plan.others) {
-    if (looksPrivate(ch.name) && everyoneCanSee(guild, ch)) {
-      await ch.permissionOverwrites.set(mergeOverwrites(ch, template("staff", guild, roles), true, plan.botIds), "OVERTHRONE /server apply");
-      log(`🔒 #${ch.name} is now staff-only`);
-    }
-  }
-
-  // Ticket category: private, support roles can see every ticket.
+  // Ticket category: private, every support role can see every ticket.
   let ticketCat = plan.ticketCat;
-  if (!ticketCat) {
-    ticketCat = await guild.channels.create({ name: "🎫 TICKETS", type: ChannelType.GuildCategory, reason: "OVERTHRONE /server apply" });
-    db.server.createdChannels.push(ticketCat.id);
-    log("➕ Category 🎫 TICKETS");
-  }
   const supportOnly = [
     { id: guild.roles.everyone.id, type: OverwriteType.Role, allow: [], deny: [P.ViewChannel] },
     ...db.settings.supportRoles.map((id) => ({ id, type: OverwriteType.Role, allow: [...PERM.view, ...PERM.chat], deny: [] })),
     { id: me.id, type: OverwriteType.Member, allow: PERM.bot, deny: [] }
   ];
-  await ticketCat.permissionOverwrites.set(mergeOverwrites(ticketCat, supportOnly, true, plan.botIds), "OVERTHRONE /server apply");
+  if (!ticketCat) {
+    ticketCat = await guild.channels.create({ name: "🎫 TICKETS", type: ChannelType.GuildCategory, permissionOverwrites: supportOnly, reason });
+    db.server.createdChannels.push(ticketCat.id);
+    log("➕ Category 🎫 TICKETS (private, for ticket channels)");
+  } else {
+    const merged = mergeOverwrites(ticketCat, supportOnly, everyoneCanSee(guild, ticketCat), plan.botIds);
+    if (!sameOverwrites(ticketCat, merged)) await ticketCat.permissionOverwrites.set(merged, reason);
+  }
   db.settings.channels.tickets = ticketCat.id;
-
-  // Category order: the layout first, then any other categories, then tickets.
-  const otherCats = guild.channels.cache.filter((c) => c.type === ChannelType.GuildCategory && !catOrder.includes(c) && c.id !== ticketCat.id)
-    .sort((a, b) => a.rawPosition - b.rawPosition);
-  const staffCat = catOrder.find((c) => c.id === db.server.layout.staff);
-  const ordered = [...catOrder.filter((c) => c !== staffCat), ...otherCats.values(), staffCat, ticketCat].filter(Boolean);
-  await guild.channels.setPositions(ordered.map((c, n) => ({ channel: c.id, position: n }))).catch((e) => log("⚠️ Couldn't reorder categories: " + e.message));
   save();
 }
 
@@ -356,11 +370,12 @@ async function archiveAndClear(channel, guild, log) {
   log(`🗄️ Archived and cleared ${old.length} old message(s) in #${channel.name}`);
 }
 
-async function postContent(guild, clearOld, log) {
+async function postContent(guild, clearOld, log, only = null) {
   let content;
   try { content = JSON.parse(fs.readFileSync(CONTENT_FILE, "utf8")); } catch { throw new Error("content.json is missing next to index.js. Upload it with the bot files."); }
   await guild.channels.fetch();
   for (const block of content.channels) {
+    if (only && block.key !== only) continue;
     const ch = channelFor(guild, block.key);
     if (!ch?.isTextBased()) { log(`⏭️ No channel for "${block.key}" (run /server apply first)`); continue; }
     if (clearOld) await archiveAndClear(ch, guild, log);
@@ -383,7 +398,7 @@ async function postContent(guild, clearOld, log) {
 
   // Ticket panel (the bot's own tickets) in the support channel.
   const ticketsCh = channelFor(guild, "tickets");
-  if (ticketsCh && !(await ticketsCh.messages.fetch(db.server.content._ticketPanel ?? "0").catch(() => null))) {
+  if ((!only || only === "tickets") && ticketsCh && !(await ticketsCh.messages.fetch(db.server.content._ticketPanel ?? "0").catch(() => null))) {
     const { panelMessage } = await import("./tickets.js");
     const sent = await ticketsCh.send(panelMessage());
     db.server.content._ticketPanel = sent.id;
@@ -393,7 +408,7 @@ async function postContent(guild, clearOld, log) {
   // Ping roles panel.
   const rolesCh = channelFor(guild, "roles");
   const pingDefs = ROLES.filter((r) => r.ping && db.server.roles[r.key]);
-  if (rolesCh && pingDefs.length) {
+  if ((!only || only === "roles") && rolesCh && pingDefs.length) {
     const row = new ActionRowBuilder().addComponents(pingDefs.map((d) =>
       new ButtonBuilder().setCustomId("role:" + db.server.roles[d.key]).setLabel(d.name.replace(" Ping", "")).setEmoji(d.ping).setStyle(ButtonStyle.Secondary)));
     const payload = { embeds: [embed("⭐ Pick your notifications", "Click a button to get pinged for what you care about. Click again to remove it.\n\n📢 **Announcements**: big news\n💻 **Updates**: server and modpack updates\n🎉 **Events**: in-game events\n🎁 **Giveaways**: giveaways")], components: [row] };
@@ -419,14 +434,13 @@ async function restore(guild, file, log) {
     }
     await ch.permissionOverwrites.set(c.overwrites.map((o) => ({ id: o.id, type: o.type, allow: BigInt(o.allow), deny: BigInt(o.deny) })), "OVERTHRONE /server restore").catch((e) => log(`⚠️ #${ch.name}: ${e.message}`));
   }
-  await guild.channels.setPositions(snap.channels.filter((c) => guild.channels.cache.has(c.id)).map((c) => ({ channel: c.id, position: c.position }))).catch(() => {});
   for (const r of snap.roles) {
     const role = guild.roles.cache.get(r.id);
     if (role && !role.managed && role.position < guild.members.me.roles.highest.position && role.permissions.bitfield.toString() !== r.permissions) {
       await role.setPermissions(BigInt(r.permissions), "OVERTHRONE /server restore").catch(() => {});
     }
   }
-  log(`♻️ Restored permissions, categories and order for ${snap.channels.length} channels (${cats.length} categories) from ${path.basename(file)}.`);
+  log(`♻️ Restored permissions and categories for ${snap.channels.length} channels (${cats.length} categories) from ${path.basename(file)}.`);
   log("New roles and channels made by /server apply were kept. Delete them by hand if you don't want them.");
 }
 
@@ -447,6 +461,8 @@ export const commands = [
       .addSubcommand((s) => s.setName("apply").setDescription("Back up, then set up roles, categories and permissions")
         .addBooleanOption((o) => o.setName("confirm").setDescription("Set to True to really apply").setRequired(true)))
       .addSubcommand((s) => s.setName("content").setDescription("Post or refresh the info channels, ticket panel and role panel")
+        .addStringOption((o) => o.setName("only").setDescription("Just one channel (default: all of them)").addChoices(
+          ...["welcome", "rules", "links", "faq", "commands", "mods", "quests", "bosses", "tickets", "roles"].map((v) => ({ name: v, value: v }))))
         .addBooleanOption((o) => o.setName("clear_old").setDescription("Archive (to bot-logs) and remove the old messages in those channels first")))
       .addSubcommand((s) => s.setName("restore").setDescription("Put permissions, categories and order back from a backup")
         .addBooleanOption((o) => o.setName("confirm").setDescription("Set to True to really restore").setRequired(true))
@@ -488,7 +504,7 @@ export const commands = [
       }
 
       if (sub === "content") {
-        await postContent(g, Boolean(i.options.getBoolean("clear_old")), log);
+        await postContent(g, Boolean(i.options.getBoolean("clear_old")), log, i.options.getString("only"));
         return done("✅ Content posted");
       }
 

@@ -49,14 +49,13 @@ Admins only. The bot needs the **Administrator** permission.
 
 1. **`/server preview`**: changes nothing. Lists every change it would make and any staff channel that members can see right now. The full plan comes as a file.
 2. **`/server apply confirm:True`**: saves a backup (`data/backups/`, also sent to you), then:
-   - creates the missing roles: Admin, Developer, Moderator, In-Game Admin, Builder, Helper and the ping roles (it never removes roles or takes them off anyone)
-   - puts channels into clean categories (Information, How to Play, Guides & Roadmap, Community, Support, Voice, Staff) and creates only the ones that are missing
-   - sets permissions: info and guide channels are read-only; the staff area, logs and tickets are staff-only; dev chat is Developer + Admin; build chat is Builder + Admin; in-game staff chat is In-Game Admin + Moderator + Admin
-   - makes any other channel with a staff-like name (staff, admin, logs, dev…) staff-only
-   - **never deletes or renames a channel**. Duplicates are reported for you to delete yourself.
+   - creates only the **missing** roles (In-Game Admin, Staff, Linked, ping roles). Existing roles are never changed.
+   - creates only the **missing** staff channels (build-team, in-game-staff, mod-logs, bot-logs, ticket-logs) and a private ticket category
+   - fixes real problems only: staff channels members can see become staff-only, and info/guide channels members can post in become read-only. Staff roles get access to the staff area.
+   - **never moves, renames, reorders or deletes anything**. `how-to-play` is never touched.
    It's safe to run again: the second run changes nothing.
-3. **`/server content`**: posts the welcome, rules, website links, FAQ, useful commands, mods & keybinds, quests and bosses posts, plus the ticket panel and the ping-role panel. Running it again edits those posts instead of reposting them. Add `clear_old:True` to archive the old messages in those channels to bot-logs and remove them first.
-4. **`/server restore confirm:True`**: puts every channel's permissions, category and order back the way they were before the last apply. `original:True` goes back to before the first one.
+3. **`/server content`**: posts the welcome, rules, website links, FAQ, useful commands, mods & keybinds, quests and bosses posts, plus the ticket panel and the ping-role panel. Running it again edits those posts instead of reposting them. Use `only:` to do one channel at a time. Add `clear_old:True` to archive the old messages in those channels to bot-logs and remove them first.
+4. **`/server restore confirm:True`**: puts every channel's permissions back the way they were before the last apply. `original:True` goes back to before the first one.
 
 The layout is in `src/blueprint.js`. The posts come from `content.json`, which `node scripts/build-discord-content.mjs` builds from the website's guide and rules, so Discord and the website always match.
 

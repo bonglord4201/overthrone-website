@@ -32,7 +32,7 @@ export const ROLES = [
 //   voice     everyone joins and talks
 export const LAYOUT = [
   { key: "stats", name: "📊 SERVER STATS", aliases: ["server stats", "stats"], perm: null, optional: true, channels: [] },   // only ordered if it exists
-  { key: "info", name: "📌 INFORMATION", aliases: ["information", "info", "overthrone", "overthrone smp", "start here", "important"], perm: "readonly", channels: [
+  { key: "info", name: "📌 INFORMATION", aliases: ["the throne", "throne", "information", "info", "overthrone", "overthrone smp", "start here", "important"], perm: "readonly", channels: [
     { key: "welcome", name: "👋・welcome", aliases: ["welcome"], bot: "welcome" },
     { key: "rules", name: "📜・rules", aliases: ["rules", "server rules"] },
     { key: "announcements", name: "📢・announcements", aliases: ["announcements", "announcement", "news"] },
@@ -42,8 +42,9 @@ export const LAYOUT = [
     { key: "links", name: "🌐・website-links", aliases: ["website links", "links", "website", "useful links"] },
     { key: "roles", name: "⭐・roles", aliases: ["roles", "self roles", "get roles", "reaction roles"] }
   ] },
-  { key: "play", name: "📖 HOW TO PLAY", aliases: ["how to play", "getting started", "new players"], perm: "readonly", channels: [
-    { key: "howtoplay", name: "📖・how-to-play", aliases: ["how to play", "modpack", "install"] },
+  // Optional: if there is no "How to Play" category these channels stay exactly where and how they are.
+  { key: "play", name: "📖 HOW TO PLAY", aliases: ["how to play", "getting started", "new players"], perm: "readonly", optional: true, channels: [
+    { key: "howtoplay", name: "📖・how-to-play", aliases: ["how to play", "modpack", "install"], perm: null },   // never touched
     { key: "mods", name: "🧩・mods-guide", aliases: ["mods guide", "mods", "mod list", "keybinds"] },
     { key: "commands", name: "⌨️・useful-commands", aliases: ["useful commands", "commands", "command list"] },
     { key: "faq", name: "❓・faq", aliases: ["faq", "frequently asked questions"] }
@@ -62,20 +63,20 @@ export const LAYOUT = [
     { key: "dungeons", name: "🏰・dungeons", aliases: ["dungeons"] }
   ] },
   { key: "community", name: "💬 COMMUNITY", aliases: ["the community", "community", "chat", "social"], perm: "community", channels: [
-    { key: "general", name: "💬・general", aliases: ["general", "general chat", "chat", "main chat"] },
-    { key: "media", name: "📷・media", aliases: ["media", "screenshots", "clips", "showcase"] },
+    { key: "general", name: "💬・general", aliases: ["general", "general chat", "chat", "main chat"], optional: true },
+    { key: "media", name: "📷・media", aliases: ["media", "screenshots", "clips", "showcase"], optional: true },
     { key: "suggestions", name: "💡・suggestions", aliases: ["suggestions", "suggestion", "ideas"], bot: "suggestions" },
-    { key: "lfg", name: "🤝・looking-for-party", aliases: ["looking for party", "looking for group", "lfg", "party finder"] },
-    { key: "trading", name: "🪙・trading", aliases: ["trading", "trade", "market", "marketplace"] },
-    { key: "botcmds", name: "🤖・bot-commands", aliases: ["bot commands", "commands bot", "bots", "bot spam"] },
-    { key: "levelups", name: "🏆・level-ups", aliases: ["level ups", "levelups", "level up"], bot: "levelups", perm: "readonly" }
+    { key: "lfg", name: "🤝・looking-for-party", aliases: ["looking for party", "looking for group", "looking for guild", "lfg", "party finder"], optional: true },
+    { key: "trading", name: "🪙・trading", aliases: ["trading", "trade", "market", "marketplace"], optional: true },
+    { key: "botcmds", name: "🤖・bot-commands", aliases: ["bot commands", "commands bot", "bots", "bot spam"], optional: true },
+    { key: "levelups", name: "🏆・level-ups", aliases: ["level ups", "levelups", "level up"], bot: "levelups", perm: "readonly", optional: true }
   ] },
   { key: "support", name: "🎫 SUPPORT", aliases: ["support", "help", "tickets support"], perm: "readonly", channels: [
     { key: "tickets", name: "🎫・open-a-ticket", aliases: ["open a ticket", "create ticket", "create a ticket", "tickets", "ticket", "support", "get help"] }
   ] },
   { key: "voice", name: "🔊 VOICE", aliases: ["voice", "voice channels", "vc"], perm: "voice", channels: [
-    { key: "vcgeneral", name: "🔊 General", aliases: ["general", "general vc", "general voice", "lounge"], voice: true },
-    { key: "vcgaming", name: "🎮 Gaming", aliases: ["gaming", "gaming vc", "minecraft"], voice: true }
+    { key: "vcgeneral", name: "🔊 General", aliases: ["general", "general vc", "general voice", "lounge"], voice: true, optional: true },
+    { key: "vcgaming", name: "🎮 Gaming", aliases: ["gaming", "gaming vc", "minecraft"], voice: true, optional: true }
   ] },
   { key: "staff", name: "🛡️ STAFF", aliases: ["staff", "staff only", "staff area", "staff logs", "admin", "management", "team"], perm: "staff", channels: [
     { key: "staffchat", name: "🛡️・staff-chat", aliases: ["staff chat", "staff", "staff general", "staff talk"] },
