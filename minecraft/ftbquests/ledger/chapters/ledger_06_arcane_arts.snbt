@@ -14,10 +14,10 @@
 			description: ["The guild wants 1 freshly crafted Brewing Stand.", "", "&bObjective:&r Craft 1 Brewing Stand", "&7Only items you craft yourself count."]
 			id: "72254A5D06470664"
 			rewards: [
-				{ count: 5, id: "64983481116B56D6", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 3, id: "6AD74BE0DE3A4660", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 2, id: "37C83ACCCE4603CA", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 9, id: "389CE35ABD836D59", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 1 of 100 • 5 Iron, 3 Copper"
+			subtitle: "Entry 1 of 100 • 2 Diamond, 9 Emerald"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "0D15B02F616F981E", item: { count: 1, id: "minecraft:brewing_stand" }, type: "item" }]
 			title: "The Brewing Stand"
 			x: 0.0d
@@ -28,10 +28,9 @@
 			description: ["Prove your hands are skilled: craft 16 Glass Bottle yourself.", "", "&bObjective:&r Craft 16 Glass Bottle", "&7Only items you craft yourself count."]
 			id: "502441DA5FA4F265"
 			rewards: [
-				{ count: 5, id: "0EC200799B71CF07", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 3, id: "7A4478DF79B659B0", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "124DED66D92C1C42", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 2 of 100 • 5 Iron, 3 Copper"
+			subtitle: "Entry 2 of 100 • 3 Diamond"
 			tasks: [{ count: 16L, only_from_crafting: true, id: "67E63A43D1AD0DDE", item: { count: 1, id: "minecraft:glass_bottle" }, type: "item" }]
 			title: "Empty Bottles"
 			x: 1.5d
@@ -42,10 +41,9 @@
 			description: ["Accomplish \"Local Brewery\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Local Brewery\""]
 			id: "36B1C34D9AE28A9E"
 			rewards: [
-				{ count: 5, id: "23CACB99927DA0BD", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 3, id: "52686A193A28CDAA", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "4BB78B7B71645DC6", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 3 of 100 • 5 Iron, 3 Copper"
+			subtitle: "Entry 3 of 100 • 3 Diamond"
 			tasks: [{ advancement: "minecraft:nether/brew_potion", criterion: "", id: "18F783659662C283", type: "advancement" }]
 			title: "Local Brewery"
 			x: 3.0d
@@ -56,10 +54,9 @@
 			description: ["Brew and carry a Potion of Awkward.", "", "&bObjective:&r Have a Potion of Awkward"]
 			id: "40C42A00B42287EE"
 			rewards: [
-				{ count: 5, id: "595D6D8A04F7910D", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 3, id: "2346D58065D65DD3", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "7B7810ACFA10B768", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 4 of 100 • 5 Iron, 3 Copper"
+			subtitle: "Entry 4 of 100 • 3 Diamond"
 			tasks: [{ count: 1L, id: "752AA53BF1B9D46D", item: { components: { "minecraft:potion_contents": { potion: "minecraft:awkward" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Awkward Beginnings"
 			x: 4.5d
@@ -70,10 +67,9 @@
 			description: ["The alchemists want to see a Potion of Night Vision of your own making.", "", "&bObjective:&r Have a Potion of Night Vision"]
 			id: "55F6DE36F303F0E9"
 			rewards: [
-				{ count: 5, id: "5DDFC172B87C0DC7", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 4, id: "04B6A069AB98B55D", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "568E89702A23EAB6", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 5 of 100 • 5 Iron, 4 Copper"
+			subtitle: "Entry 5 of 100 • 3 Diamond"
 			tasks: [{ count: 1L, id: "6F16BE4A4B6D87AF", item: { components: { "minecraft:potion_contents": { potion: "minecraft:night_vision" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Eyes of the Night"
 			x: 6.0d
@@ -84,10 +80,10 @@
 			description: ["Brew and carry a Potion of Invisibility.", "", "&bObjective:&r Have a Potion of Invisibility"]
 			id: "12A002E9D6EBB9B8"
 			rewards: [
-				{ count: 5, id: "19F2DAD76CB5167E", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 4, id: "20A8666201DD6A04", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "5332474F8BFF7FF4", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 1, id: "135A20993D8EC45A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 6 of 100 • 5 Iron, 4 Copper"
+			subtitle: "Entry 6 of 100 • 3 Diamond, 1 Emerald"
 			tasks: [{ count: 1L, id: "41BBC1A3A8B6D119", item: { components: { "minecraft:potion_contents": { potion: "minecraft:invisibility" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Now You See Me"
 			x: 7.5d
@@ -98,10 +94,10 @@
 			description: ["The alchemists want to see a Potion of Leaping of your own making.", "", "&bObjective:&r Have a Potion of Leaping"]
 			id: "02FCE29776AF7842"
 			rewards: [
-				{ count: 5, id: "6ACD878BF4BA1C87", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 4, id: "1D7A71D70709467D", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "773BCBC1D0D405B8", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 1, id: "557B0C9F611F7068", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 7 of 100 • 5 Iron, 4 Copper"
+			subtitle: "Entry 7 of 100 • 3 Diamond, 1 Emerald"
 			tasks: [{ count: 1L, id: "055B5C787AC568EA", item: { components: { "minecraft:potion_contents": { potion: "minecraft:leaping" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Leap of Faith"
 			x: 9.0d
@@ -112,10 +108,10 @@
 			description: ["Brew and carry a Potion of Fire Resistance.", "", "&bObjective:&r Have a Potion of Fire Resistance"]
 			id: "492D442CD0D97684"
 			rewards: [
-				{ count: 5, id: "1291866C6502C09C", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 4, id: "10F52DC59A3E64EB", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "241D948BEF3A927D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 1, id: "215E5ADFD544A0B4", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 8 of 100 • 5 Iron, 4 Copper"
+			subtitle: "Entry 8 of 100 • 3 Diamond, 1 Emerald"
 			tasks: [{ count: 1L, id: "19A20D7110555211", item: { components: { "minecraft:potion_contents": { potion: "minecraft:fire_resistance" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Fireproof"
 			x: 9.0d
@@ -126,10 +122,10 @@
 			description: ["The alchemists want to see a Potion of Swiftness of your own making.", "", "&bObjective:&r Have a Potion of Swiftness"]
 			id: "3571CD5BC1A2F9BC"
 			rewards: [
-				{ count: 5, id: "73BD7DB6479BD131", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 5, id: "7548B9577989865C", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "03655AA3FB20DDAB", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 1, id: "76CAC83212DAEE47", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 9 of 100 • 5 Iron, 5 Copper"
+			subtitle: "Entry 9 of 100 • 3 Diamond, 1 Emerald"
 			tasks: [{ count: 1L, id: "6C8F94ED554F47F7", item: { components: { "minecraft:potion_contents": { potion: "minecraft:swiftness" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Quicksilver"
 			x: 7.5d
@@ -137,15 +133,16 @@
 		}
 		{
 			dependencies: ["3571CD5BC1A2F9BC"]
-			description: ["Brew and carry a Potion of Water Breathing.", "", "&bObjective:&r Have a Potion of Water Breathing", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["Brew and carry a Potion of Water Breathing.", "", "&bObjective:&r Have a Potion of Water Breathing", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Copper Spell Book"]
 			id: "4372CCD79BB61B8E"
 			rewards: [
-				{ count: 1, id: "1BD2BAB7BA38A570", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 4, id: "4C51E017B077F7AC", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 7, id: "1BB335B26C7C082A", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "344A1CF65039ECCB", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "3D037916761CEF1A", item: { count: 1, id: "irons_spellbooks:copper_spell_book" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 10 of 100 • 1 Gold, 4 Iron"
+			subtitle: "Entry 10 of 100 • 7 Diamond, 8 Emerald + Gear"
 			tasks: [{ count: 1L, id: "4D26EB7733D34B10", item: { components: { "minecraft:potion_contents": { potion: "minecraft:water_breathing" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "&6&lGills"
 			x: 6.0d
@@ -156,10 +153,10 @@
 			description: ["The alchemists want to see a Potion of Healing of your own making.", "", "&bObjective:&r Have a Potion of Healing"]
 			id: "6382FFF4504CFE68"
 			rewards: [
-				{ count: 5, id: "63F12B75E745DF89", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 5, id: "32BD7DEA57D57CC4", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "2669ABB202F10ADE", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "7BBAA788721D77EE", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 11 of 100 • 5 Iron, 5 Copper"
+			subtitle: "Entry 11 of 100 • 3 Diamond, 2 Emerald"
 			tasks: [{ count: 1L, id: "2EAB7B61846FCE61", item: { components: { "minecraft:potion_contents": { potion: "minecraft:healing" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "First Aid"
 			x: 4.5d
@@ -170,10 +167,10 @@
 			description: ["Brew and carry a Potion of Regeneration.", "", "&bObjective:&r Have a Potion of Regeneration"]
 			id: "1526F22F57060F37"
 			rewards: [
-				{ count: 5, id: "0E89FAE6A38347B3", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 5, id: "20E8432781E50327", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "4993DF0DCFE11BF9", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "25E7F51B6DF94642", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 12 of 100 • 5 Iron, 5 Copper"
+			subtitle: "Entry 12 of 100 • 3 Diamond, 2 Emerald"
 			tasks: [{ count: 1L, id: "010F0C7DC6543AEB", item: { components: { "minecraft:potion_contents": { potion: "minecraft:regeneration" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Second Wind"
 			x: 3.0d
@@ -184,10 +181,10 @@
 			description: ["The alchemists want to see a Potion of Strength of your own making.", "", "&bObjective:&r Have a Potion of Strength"]
 			id: "4210079DC778AAEC"
 			rewards: [
-				{ count: 5, id: "2CDC0F4A2B96743E", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 6, id: "1A9AEC85157A1C11", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "2C3AF40A65A140FE", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "3A38C1A2210FB2E8", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 13 of 100 • 5 Iron, 6 Copper"
+			subtitle: "Entry 13 of 100 • 3 Diamond, 2 Emerald"
 			tasks: [{ count: 1L, id: "60BC7724125E76A3", item: { components: { "minecraft:potion_contents": { potion: "minecraft:strength" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Liquid Courage"
 			x: 1.5d
@@ -198,10 +195,10 @@
 			description: ["Brew and carry a Potion of Slow Falling.", "", "&bObjective:&r Have a Potion of Slow Falling"]
 			id: "640F27E23679CCAE"
 			rewards: [
-				{ count: 5, id: "7EC105254A35DC5E", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 6, id: "2DDB778A8D07E276", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "732E9D398E45155D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "1D8D172C01FC8642", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 14 of 100 • 5 Iron, 6 Copper"
+			subtitle: "Entry 14 of 100 • 3 Diamond, 2 Emerald"
 			tasks: [{ count: 1L, id: "3B6408C59DC2808C", item: { components: { "minecraft:potion_contents": { potion: "minecraft:slow_falling" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Feather Fall"
 			x: 0.0d
@@ -212,10 +209,10 @@
 			description: ["The alchemists want to see a Potion of Poison of your own making.", "", "&bObjective:&r Have a Potion of Poison"]
 			id: "495730B8E67997CE"
 			rewards: [
-				{ count: 5, id: "51F9D45FBD09B4BA", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 6, id: "25A1F1671E97CAB9", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "406DACD051717146", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "612907B314CBA147", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 15 of 100 • 5 Iron, 6 Copper"
+			subtitle: "Entry 15 of 100 • 3 Diamond, 2 Emerald"
 			tasks: [{ count: 1L, id: "08D09626B4CFFA0C", item: { components: { "minecraft:potion_contents": { potion: "minecraft:poison" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Venom"
 			x: 0.0d
@@ -226,10 +223,10 @@
 			description: ["Brew and carry a Potion of Weakness.", "", "&bObjective:&r Have a Potion of Weakness"]
 			id: "63914CD2547FF3A8"
 			rewards: [
-				{ count: 5, id: "0C2A8E6863A6A82B", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 6, id: "3E81F45F5EDA9B7B", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "6B9F7F515C5533B3", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 3, id: "5AC153CFFCA02659", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 16 of 100 • 5 Iron, 6 Copper"
+			subtitle: "Entry 16 of 100 • 3 Diamond, 3 Emerald"
 			tasks: [{ count: 1L, id: "259B3A935DE5AD91", item: { components: { "minecraft:potion_contents": { potion: "minecraft:weakness" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Sap Strength"
 			x: 1.5d
@@ -240,10 +237,10 @@
 			description: ["The alchemists want to see a Potion of Harming of your own making.", "", "&bObjective:&r Have a Potion of Harming"]
 			id: "5E56382BC1FB19B0"
 			rewards: [
-				{ count: 5, id: "66C0EC6BA13736C2", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 7, id: "44948B54C05FA76C", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "114CF8D605FDD2E0", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 3, id: "0AF445CB10B2937A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 17 of 100 • 5 Iron, 7 Copper"
+			subtitle: "Entry 17 of 100 • 3 Diamond, 3 Emerald"
 			tasks: [{ count: 1L, id: "4849CB0CCFAAB35B", item: { components: { "minecraft:potion_contents": { potion: "minecraft:harming" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Bottled Pain"
 			x: 3.0d
@@ -254,10 +251,10 @@
 			description: ["Brew and carry a Potion of Slowness.", "", "&bObjective:&r Have a Potion of Slowness"]
 			id: "6DA4C89E7A66F05B"
 			rewards: [
-				{ count: 5, id: "4F07A685D9EA7D62", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 7, id: "3AD252CB070203FD", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "4A9A410044EBA411", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 3, id: "4535559210393CE8", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 18 of 100 • 5 Iron, 7 Copper"
+			subtitle: "Entry 18 of 100 • 3 Diamond, 3 Emerald"
 			tasks: [{ count: 1L, id: "265B0D85259B6DFD", item: { components: { "minecraft:potion_contents": { potion: "minecraft:slowness" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Molasses"
 			x: 4.5d
@@ -268,10 +265,10 @@
 			description: ["The alchemists want to see a Potion of Turtle Master of your own making.", "", "&bObjective:&r Have a Potion of Turtle Master"]
 			id: "07847940ED090557"
 			rewards: [
-				{ count: 5, id: "2BA18580CE8B5AF9", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 7, id: "7C116DCDDD7BB4B5", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "66E66B707D7F08CD", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 3, id: "15787ACA48470998", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 19 of 100 • 5 Iron, 7 Copper"
+			subtitle: "Entry 19 of 100 • 3 Diamond, 3 Emerald"
 			tasks: [{ count: 1L, id: "37DABED66922AF87", item: { components: { "minecraft:potion_contents": { potion: "minecraft:turtle_master" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Turtle Master"
 			x: 6.0d
@@ -279,15 +276,16 @@
 		}
 		{
 			dependencies: ["07847940ED090557"]
-			description: ["Brew and carry a Potion of Long Night Vision.", "", "&bObjective:&r Have a Potion of Long Night Vision", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["Brew and carry a Potion of Long Night Vision.", "", "&bObjective:&r Have a Potion of Long Night Vision", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Wandering Magician Helmet&7 (enchanted)"]
 			id: "55F69606C0A5A1E8"
 			rewards: [
-				{ count: 1, id: "672158AAB6E89042", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 4, id: "51E36688AA9E2287", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 8, id: "3CCF2432623BA1B8", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 4, id: "26FAAA72B73158CA", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "517EAB4236720413", item: { components: { "minecraft:enchantments": { levels: { "minecraft:protection": 2, "minecraft:unbreaking": 2 } } }, count: 1, id: "irons_spellbooks:wandering_magician_helmet" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 20 of 100 • 1 Gold, 4 Iron"
+			subtitle: "Entry 20 of 100 • 8 Diamond, 4 Emerald + Gear"
 			tasks: [{ count: 1L, id: "2C43772084CB3696", item: { components: { "minecraft:potion_contents": { potion: "minecraft:long_night_vision" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "&6&lLong Night"
 			x: 7.5d
@@ -298,10 +296,10 @@
 			description: ["The alchemists want to see a Potion of Long Invisibility of your own making.", "", "&bObjective:&r Have a Potion of Long Invisibility"]
 			id: "69A8D2FDFE7A121C"
 			rewards: [
-				{ count: 5, id: "3D194D53F4E6FCC3", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 8, id: "464F716BFB89F30D", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "12B4807F7839B26C", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 4, id: "1FC050D1465F1CC6", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 21 of 100 • 5 Iron, 8 Copper"
+			subtitle: "Entry 21 of 100 • 3 Diamond, 4 Emerald"
 			tasks: [{ count: 1L, id: "3BC9B5AD70EFB65B", item: { components: { "minecraft:potion_contents": { potion: "minecraft:long_invisibility" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Ghost Walk"
 			x: 9.0d
@@ -312,10 +310,10 @@
 			description: ["Brew and carry a Potion of Strong Swiftness.", "", "&bObjective:&r Have a Potion of Strong Swiftness"]
 			id: "51942C5FF2F16125"
 			rewards: [
-				{ count: 5, id: "1E53ED9427FF8A91", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 8, id: "44CBCEDDEC3AD500", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "5518C622EC304B20", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 4, id: "218F155F713CF8EB", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 22 of 100 • 5 Iron, 8 Copper"
+			subtitle: "Entry 22 of 100 • 3 Diamond, 4 Emerald"
 			tasks: [{ count: 1L, id: "553FF1E500A00294", item: { components: { "minecraft:potion_contents": { potion: "minecraft:strong_swiftness" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Lightning Feet"
 			x: 9.0d
@@ -326,10 +324,10 @@
 			description: ["The alchemists want to see a Potion of Strong Strength of your own making.", "", "&bObjective:&r Have a Potion of Strong Strength"]
 			id: "7D3A0EA2D5C1DFA3"
 			rewards: [
-				{ count: 5, id: "101F23C2522B3000", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 8, id: "0AC27D552E2D3DD5", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "0ECA12FE32BC95D6", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 4, id: "7135317A9A423E66", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 23 of 100 • 5 Iron, 8 Copper"
+			subtitle: "Entry 23 of 100 • 3 Diamond, 4 Emerald"
 			tasks: [{ count: 1L, id: "7128C28FD9C29045", item: { components: { "minecraft:potion_contents": { potion: "minecraft:strong_strength" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Titan's Draught"
 			x: 7.5d
@@ -340,10 +338,10 @@
 			description: ["Brew and carry a Potion of Strong Healing.", "", "&bObjective:&r Have a Potion of Strong Healing"]
 			id: "25FD5329E4AAFCE0"
 			rewards: [
-				{ count: 5, id: "4BA81598C81FD640", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 9, id: "5C4C7B2293DA7385", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "0F7A7D4ECF359841", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 4, id: "222E052F956EC5E3", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 24 of 100 • 5 Iron, 9 Copper"
+			subtitle: "Entry 24 of 100 • 3 Diamond, 4 Emerald"
 			tasks: [{ count: 1L, id: "08C7750A056558EE", item: { components: { "minecraft:potion_contents": { potion: "minecraft:strong_healing" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Greater Healing"
 			x: 6.0d
@@ -354,10 +352,10 @@
 			description: ["The alchemists want to see a Potion of Strong Regeneration of your own making.", "", "&bObjective:&r Have a Potion of Strong Regeneration"]
 			id: "35565437A9340735"
 			rewards: [
-				{ count: 5, id: "79F522060A97D114", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 9, id: "66E1121340633247", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "08F965B6047407B3", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "19E124EB1B09C153", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 25 of 100 • 5 Iron, 9 Copper"
+			subtitle: "Entry 25 of 100 • 3 Diamond, 5 Emerald"
 			tasks: [{ count: 1L, id: "6A06B5C881C18FFF", item: { components: { "minecraft:potion_contents": { potion: "minecraft:strong_regeneration" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Phoenix Tears"
 			x: 4.5d
@@ -368,10 +366,10 @@
 			description: ["Brew and carry a Potion of Strong Leaping.", "", "&bObjective:&r Have a Potion of Strong Leaping"]
 			id: "719BC84B0684BF2C"
 			rewards: [
-				{ count: 5, id: "239FC41EF926903A", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 9, id: "5748F83927C570C9", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "017BAA8C40FF4A34", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "7B0634B65BBA4C3C", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 26 of 100 • 5 Iron, 9 Copper"
+			subtitle: "Entry 26 of 100 • 3 Diamond, 5 Emerald"
 			tasks: [{ count: 1L, id: "485C9430A0A75E6D", item: { components: { "minecraft:potion_contents": { potion: "minecraft:strong_leaping" } }, count: 1, id: "minecraft:potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Moon Boots"
 			x: 3.0d
@@ -382,10 +380,10 @@
 			description: ["The alchemists want to see a Splash Potion of Healing of your own making.", "", "&bObjective:&r Have a Splash Potion of Healing"]
 			id: "33FBA0AC14CCA290"
 			rewards: [
-				{ count: 5, id: "7E96ADA0CCD97309", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 9, id: "0BE59626E2F41F6B", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "335F1B6F24ABE5E1", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "3952535A7D622F61", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 27 of 100 • 5 Iron, 9 Copper"
+			subtitle: "Entry 27 of 100 • 3 Diamond, 5 Emerald"
 			tasks: [{ count: 1L, id: "44FB6D1EF97BC2DD", item: { components: { "minecraft:potion_contents": { potion: "minecraft:healing" } }, count: 1, id: "minecraft:splash_potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Splash of Life"
 			x: 1.5d
@@ -396,9 +394,10 @@
 			description: ["Brew and carry a Splash Potion of Harming.", "", "&bObjective:&r Have a Splash Potion of Harming"]
 			id: "7598EBBB57466F81"
 			rewards: [
-				{ count: 6, id: "17CF9F8FED202113", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 3, id: "7CEBBBE80287CDE2", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "7976DF02DBE19028", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 28 of 100 • 6 Iron"
+			subtitle: "Entry 28 of 100 • 3 Diamond, 5 Emerald"
 			tasks: [{ count: 1L, id: "4334BE79C2C7146B", item: { components: { "minecraft:potion_contents": { potion: "minecraft:harming" } }, count: 1, id: "minecraft:splash_potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Splash of Doom"
 			x: 0.0d
@@ -409,9 +408,10 @@
 			description: ["The alchemists want to see a Splash Potion of Weakness of your own making.", "", "&bObjective:&r Have a Splash Potion of Weakness"]
 			id: "0A044ADD29BA63D9"
 			rewards: [
-				{ count: 6, id: "3B68CFB8C8D13C33", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 3, id: "3FE5E9BAE0539628", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "62F52486C3210E50", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 29 of 100 • 6 Iron"
+			subtitle: "Entry 29 of 100 • 3 Diamond, 6 Emerald"
 			tasks: [{ count: 1L, id: "4C57BD59A07DD99A", item: { components: { "minecraft:potion_contents": { potion: "minecraft:weakness" } }, count: 1, id: "minecraft:splash_potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Cure Prep"
 			x: 0.0d
@@ -419,15 +419,15 @@
 		}
 		{
 			dependencies: ["0A044ADD29BA63D9"]
-			description: ["Brew and carry a Lingering Potion of Regeneration.", "", "&bObjective:&r Have a Lingering Potion of Regeneration", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["Brew and carry a Lingering Potion of Regeneration.", "", "&bObjective:&r Have a Lingering Potion of Regeneration", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Wandering Magician Chestplate&7 (enchanted)"]
 			id: "66E01F8B7149D050"
 			rewards: [
-				{ count: 1, id: "5C9B815126EF7F25", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 5, id: "51AAB9ED905AD190", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 9, id: "09D74EDBC64EAD18", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ id: "24CB1582350B93E0", item: { components: { "minecraft:enchantments": { levels: { "minecraft:protection": 2, "minecraft:unbreaking": 2 } } }, count: 1, id: "irons_spellbooks:wandering_magician_chestplate" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 30 of 100 • 1 Gold, 5 Iron"
+			subtitle: "Entry 30 of 100 • 9 Diamond + Gear"
 			tasks: [{ count: 1L, id: "186E73408897A299", item: { components: { "minecraft:potion_contents": { potion: "minecraft:regeneration" } }, count: 1, id: "minecraft:lingering_potion" }, match_components: "fuzzy", type: "item" }]
 			title: "&6&lHealing Cloud"
 			x: 1.5d
@@ -438,9 +438,10 @@
 			description: ["The alchemists want to see a Lingering Potion of Poison of your own making.", "", "&bObjective:&r Have a Lingering Potion of Poison"]
 			id: "411DCF87EDB4827A"
 			rewards: [
-				{ count: 6, id: "62C901DAD2263F40", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 3, id: "40D0B00DB566B4E7", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "162ABCD123EAA0C1", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 31 of 100 • 6 Iron"
+			subtitle: "Entry 31 of 100 • 3 Diamond, 6 Emerald"
 			tasks: [{ count: 1L, id: "2F26A2CE9800C8EA", item: { components: { "minecraft:potion_contents": { potion: "minecraft:poison" } }, count: 1, id: "minecraft:lingering_potion" }, match_components: "fuzzy", type: "item" }]
 			title: "Toxic Cloud"
 			x: 3.0d
@@ -451,10 +452,10 @@
 			description: ["Prove your hands are skilled: craft 4 Fermented Spider Eye yourself.", "", "&bObjective:&r Craft 4 Fermented Spider Eye", "&7Only items you craft yourself count."]
 			id: "1367DCF2586B2712"
 			rewards: [
-				{ count: 6, id: "46AAA6C3574DD50F", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 1, id: "01179431E2236854", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "4E963B1329B4D01A", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "424BA49255FD8AE9", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 32 of 100 • 6 Iron, 1 Copper"
+			subtitle: "Entry 32 of 100 • 3 Diamond, 6 Emerald"
 			tasks: [{ count: 4L, only_from_crafting: true, id: "6C59A00C0BBA9549", item: { count: 1, id: "minecraft:fermented_spider_eye" }, type: "item" }]
 			title: "Fermented Eyes"
 			x: 4.5d
@@ -465,10 +466,10 @@
 			description: ["Workshop order: 4 Glistering Melon Slice, made by you.", "", "&bObjective:&r Craft 4 Glistering Melon Slice", "&7Only items you craft yourself count."]
 			id: "216DFD38418181F2"
 			rewards: [
-				{ count: 6, id: "52D0778374EAD574", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 1, id: "184D0E83F078DC74", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "7DAC6DE153A610DD", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 7, id: "129F61A2B3868242", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 33 of 100 • 6 Iron, 1 Copper"
+			subtitle: "Entry 33 of 100 • 3 Diamond, 7 Emerald"
 			tasks: [{ count: 4L, only_from_crafting: true, id: "74A7FAB2F33ED6DF", item: { count: 1, id: "minecraft:glistering_melon_slice" }, type: "item" }]
 			title: "Glistering Melon"
 			x: 6.0d
@@ -479,10 +480,10 @@
 			description: ["Supply run: 32 Sugar, taken on hand-in.", "", "&bObjective:&r Hand in 32 Sugar", "&7The items are taken when you complete the quest."]
 			id: "08912C7E28949740"
 			rewards: [
-				{ count: 6, id: "16565DAE326D7AA0", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 1, id: "0C7B60FD6C19A35B", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "77E60C9FDEE26733", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 7, id: "1C0AB6394AE4E7E9", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 34 of 100 • 6 Iron, 1 Copper"
+			subtitle: "Entry 34 of 100 • 3 Diamond, 7 Emerald"
 			tasks: [{ count: 32L, consume_items: true, id: "3FF835D23D4009EF", item: { count: 1, id: "minecraft:sugar" }, type: "item" }]
 			title: "Swiftness Sugar"
 			x: 7.5d
@@ -493,10 +494,10 @@
 			description: ["The realm needs Spider Eye. Bring 16 and they're yours no more.", "", "&bObjective:&r Hand in 16 Spider Eye", "&7The items are taken when you complete the quest."]
 			id: "26EC3EB30A335031"
 			rewards: [
-				{ count: 6, id: "30E499FF05659E6A", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 2, id: "066B6CFBF704B77C", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "415BD499A43790A8", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 7, id: "50E9D326914F3B1A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 35 of 100 • 6 Iron, 2 Copper"
+			subtitle: "Entry 35 of 100 • 3 Diamond, 7 Emerald"
 			tasks: [{ count: 16L, consume_items: true, id: "75B3A20B8F072E25", item: { count: 1, id: "minecraft:spider_eye" }, type: "item" }]
 			title: "Spider Eyes"
 			x: 9.0d
@@ -507,10 +508,10 @@
 			description: ["The guild stores are low on Phantom Membrane. Hand in 8.", "", "&bObjective:&r Hand in 8 Phantom Membrane", "&7The items are taken when you complete the quest."]
 			id: "0AE5426657BBC573"
 			rewards: [
-				{ count: 6, id: "2E9F7661503300ED", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 2, id: "28E38AB5C90534CE", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "1B20E98254A07400", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 7, id: "16523E8B5ADF47F2", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 36 of 100 • 6 Iron, 2 Copper"
+			subtitle: "Entry 36 of 100 • 3 Diamond, 7 Emerald"
 			tasks: [{ count: 8L, consume_items: true, id: "72EA47940283A0B4", item: { count: 1, id: "minecraft:phantom_membrane" }, type: "item" }]
 			title: "Phantom Membrane"
 			x: 9.0d
@@ -521,10 +522,10 @@
 			description: ["A merchant has ordered 4 Pufferfish. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 4 Pufferfish", "&7The items are taken when you complete the quest."]
 			id: "2C43265305B4CEA2"
 			rewards: [
-				{ count: 6, id: "26D199C61C64E9BB", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 2, id: "44995298DC780528", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "1FB2E0026F89D08C", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "6E56BA7BC578A576", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 37 of 100 • 6 Iron, 2 Copper"
+			subtitle: "Entry 37 of 100 • 3 Diamond, 8 Emerald"
 			tasks: [{ count: 4L, consume_items: true, id: "11AF1C8EDA7387DF", item: { count: 1, id: "minecraft:pufferfish" }, type: "item" }]
 			title: "Puffer Venom"
 			x: 7.5d
@@ -535,10 +536,10 @@
 			description: ["Supply run: 16 Honey Bottle, taken on hand-in.", "", "&bObjective:&r Hand in 16 Honey Bottle", "&7The items are taken when you complete the quest."]
 			id: "179F6F2320D75B42"
 			rewards: [
-				{ count: 6, id: "4D637D015DB70024", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 2, id: "75AA00834D247C69", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "2F08BEFFC83F232D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "4F41CF684B3E4A3F", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 38 of 100 • 6 Iron, 2 Copper"
+			subtitle: "Entry 38 of 100 • 3 Diamond, 8 Emerald"
 			tasks: [{ count: 16L, consume_items: true, id: "4A8FD9CD51788EAF", item: { count: 1, id: "minecraft:honey_bottle" }, type: "item" }]
 			title: "Honeyed Tonic"
 			x: 6.0d
@@ -549,10 +550,10 @@
 			description: ["The realm needs Gunpowder. Bring 32 and they're yours no more.", "", "&bObjective:&r Hand in 32 Gunpowder", "&7The items are taken when you complete the quest."]
 			id: "4EED071659771203"
 			rewards: [
-				{ count: 6, id: "292B9EC426142AB2", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 3, id: "2C45C76B43FEA48C", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "6D8B8288F70FE032", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "6D74B45EBB0FFE98", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 39 of 100 • 6 Iron, 3 Copper"
+			subtitle: "Entry 39 of 100 • 3 Diamond, 8 Emerald"
 			tasks: [{ count: 32L, consume_items: true, id: "19693427A89CC39E", item: { count: 1, id: "minecraft:gunpowder" }, type: "item" }]
 			title: "Gunpowder"
 			x: 4.5d
@@ -560,15 +561,16 @@
 		}
 		{
 			dependencies: ["4EED071659771203"]
-			description: ["Reach 25 for interact with brewingstand.", "", "&bObjective:&r Reach interact with brewingstand: 25", "&7Counts your total since you first joined.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["Reach 25 for interact with brewingstand.", "", "&bObjective:&r Reach interact with brewingstand: 25", "&7Counts your total since you first joined.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Wandering Magician Leggings&7 (enchanted)"]
 			id: "42BE3B835BFEA8ED"
 			rewards: [
-				{ count: 1, id: "137D81002AF9DF99", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 6, id: "1399A045EA64CFE7", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 9, id: "19A06F3F6190D60C", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "515E1E02D941D464", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "0E97B46D724B8389", item: { components: { "minecraft:enchantments": { levels: { "minecraft:protection": 2, "minecraft:unbreaking": 2 } } }, count: 1, id: "irons_spellbooks:wandering_magician_leggings" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 40 of 100 • 1 Gold, 6 Iron"
+			subtitle: "Entry 40 of 100 • 9 Diamond, 6 Emerald + Gear"
 			tasks: [{ id: "416AF44D134CCE43", stat: "minecraft:interact_with_brewingstand", type: "stat", value: 25 }]
 			title: "&6&lBrewmaster"
 			x: 3.0d
@@ -579,10 +581,10 @@
 			description: ["Prove your hands are skilled: craft 2 Golden Apple yourself.", "", "&bObjective:&r Craft 2 Golden Apple", "&7Only items you craft yourself count."]
 			id: "4BF723ABB29052BF"
 			rewards: [
-				{ count: 6, id: "7E6541D44C27B475", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 3, id: "1B69073427682AB6", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "5F2DF4CFE123D7F8", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 9, id: "696C29D7FEC16B55", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 41 of 100 • 6 Iron, 3 Copper"
+			subtitle: "Entry 41 of 100 • 3 Diamond, 9 Emerald"
 			tasks: [{ count: 2L, only_from_crafting: true, id: "49EBDE12459F5DF0", item: { count: 1, id: "minecraft:golden_apple" }, type: "item" }]
 			title: "Golden Apples"
 			x: 1.5d
@@ -593,10 +595,10 @@
 			description: ["Earn the advancement \"Zombie Doctor\".", "", "&bObjective:&r Earn the advancement \"Zombie Doctor\""]
 			id: "669ECC1A7F68B773"
 			rewards: [
-				{ count: 6, id: "4872E263679B5E48", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 4, id: "7BF06CA5EFD5C1A5", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "639B2968EC06A2B4", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 9, id: "64BC83A04B1685A6", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 42 of 100 • 6 Iron, 4 Copper"
+			subtitle: "Entry 42 of 100 • 3 Diamond, 9 Emerald"
 			tasks: [{ advancement: "minecraft:story/cure_zombie_villager", criterion: "", id: "0441C07046B369F5", type: "advancement" }]
 			title: "Zombie Doctor"
 			x: 0.0d
@@ -607,10 +609,10 @@
 			description: ["Accomplish \"Enchanter\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Enchanter\""]
 			id: "63296F6F22485C66"
 			rewards: [
-				{ count: 6, id: "5013161110CC0D99", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 4, id: "46802F2D53070FE8", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "529306C5596FEE8F", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 9, id: "19FFEB2336E5157E", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 43 of 100 • 6 Iron, 4 Copper"
+			subtitle: "Entry 43 of 100 • 3 Diamond, 9 Emerald"
 			tasks: [{ advancement: "minecraft:story/enchant_item", criterion: "", id: "3A6A771CEBECD47F", type: "advancement" }]
 			title: "Enchanter"
 			x: 0.0d
@@ -621,10 +623,9 @@
 			description: ["Reach 10 for enchant item.", "", "&bObjective:&r Reach enchant item: 10", "&7Counts your total since you first joined."]
 			id: "1F9C992554CA744F"
 			rewards: [
-				{ count: 6, id: "7E225DB6B898D8EE", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 4, id: "51FD48D741B097C8", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "59E1EACBBDF2388D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 44 of 100 • 6 Iron, 4 Copper"
+			subtitle: "Entry 44 of 100 • 4 Diamond"
 			tasks: [{ id: "3AED515D4E446758", stat: "minecraft:enchant_item", type: "stat", value: 10 }]
 			title: "Apprentice Enchanter"
 			x: 1.5d
@@ -635,10 +636,9 @@
 			description: ["A merchant has ordered 16 Book. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 16 Book", "&7The items are taken when you complete the quest."]
 			id: "1F885FB4EFB96837"
 			rewards: [
-				{ count: 6, id: "5484FD3B7E2FA729", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 4, id: "5E00CCA8574B7837", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "7910219F880FDE2D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 45 of 100 • 6 Iron, 4 Copper"
+			subtitle: "Entry 45 of 100 • 4 Diamond"
 			tasks: [{ count: 16L, consume_items: true, id: "26752750FF24E3DB", item: { count: 1, id: "minecraft:book" }, type: "item" }]
 			title: "Spellbooks"
 			x: 3.0d
@@ -649,10 +649,9 @@
 			description: ["The guild wants 8 freshly crafted Lapis Block.", "", "&bObjective:&r Craft 8 Lapis Block", "&7Only items you craft yourself count."]
 			id: "1487B968E96B374E"
 			rewards: [
-				{ count: 6, id: "643441CE6269C059", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 5, id: "254D38B8A33FCA07", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "129550725C475E5E", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 46 of 100 • 6 Iron, 5 Copper"
+			subtitle: "Entry 46 of 100 • 4 Diamond"
 			tasks: [{ count: 8L, only_from_crafting: true, id: "442A84D4C2F292B2", item: { count: 1, id: "minecraft:lapis_block" }, type: "item" }]
 			title: "Lapis Blocks"
 			x: 4.5d
@@ -663,10 +662,9 @@
 			description: ["The Ledger wants proof: carry 16 Experience Bottle and show it.", "", "&bObjective:&r Have 16 Experience Bottle in your inventory"]
 			id: "1AF30CD780F8D704"
 			rewards: [
-				{ count: 6, id: "2B38E612030E3ADE", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 5, id: "3FADFFBF97F4DCA2", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "264FEDACEB260EE4", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 47 of 100 • 6 Iron, 5 Copper"
+			subtitle: "Entry 47 of 100 • 4 Diamond"
 			tasks: [{ count: 16L, id: "1F162D2208056637", item: { count: 1, id: "minecraft:experience_bottle" }, type: "item" }]
 			title: "Bottled Wisdom"
 			x: 6.0d
@@ -677,10 +675,10 @@
 			description: ["Obtain an enchanted book of Unbreaking III.", "", "&bObjective:&r Have an Enchanted Book of Unbreaking III (only that enchantment)"]
 			id: "53065CD436A3910C"
 			rewards: [
-				{ count: 6, id: "0722F82CAB5E767A", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 5, id: "341450AEA745E37F", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "2A1772DB3C784C38", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 1, id: "3BDA82801696A3C3", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 48 of 100 • 6 Iron, 5 Copper"
+			subtitle: "Entry 48 of 100 • 4 Diamond, 1 Emerald"
 			tasks: [{ count: 1L, id: "62DCB59DA5E2A9EE", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:unbreaking": 3 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Unbreaking III"
 			x: 7.5d
@@ -691,10 +689,10 @@
 			description: ["Bring a book of Efficiency V, enchanted, traded or found.", "", "&bObjective:&r Have an Enchanted Book of Efficiency V (only that enchantment)"]
 			id: "667940A4BE4D583A"
 			rewards: [
-				{ count: 6, id: "0686B34261A9E695", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 6, id: "62C70BFC1E908869", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "475DD6C5A8E5A5F3", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 1, id: "3D7EF40256143FC0", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 49 of 100 • 6 Iron, 6 Copper"
+			subtitle: "Entry 49 of 100 • 4 Diamond, 1 Emerald"
 			tasks: [{ count: 1L, id: "536B8A2C098EFCB2", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:efficiency": 5 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Efficiency V"
 			x: 9.0d
@@ -702,15 +700,15 @@
 		}
 		{
 			dependencies: ["667940A4BE4D583A"]
-			description: ["Obtain an enchanted book of Fortune III.", "", "&bObjective:&r Have an Enchanted Book of Fortune III (only that enchantment)", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["Obtain an enchanted book of Fortune III.", "", "&bObjective:&r Have an Enchanted Book of Fortune III (only that enchantment)", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Wandering Magician Boots&7 (enchanted)"]
 			id: "091E3D3102AB0141"
 			rewards: [
-				{ count: 1, id: "2ABCEDDD2698D4A2", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 6, id: "625D828E6B974CA3", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "5633B406629155E7", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ id: "686CBB20B9D37274", item: { components: { "minecraft:enchantments": { levels: { "minecraft:protection": 2, "minecraft:unbreaking": 2 } } }, count: 1, id: "irons_spellbooks:wandering_magician_boots" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 50 of 100 • 1 Gold, 6 Iron"
+			subtitle: "Entry 50 of 100 • 1 Netherite + Gear"
 			tasks: [{ count: 1L, id: "2F5C63147E8AE96D", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:fortune": 3 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "&6&lFortune III"
 			x: 9.0d
@@ -721,10 +719,10 @@
 			description: ["Bring a book of Silk Touch I, enchanted, traded or found.", "", "&bObjective:&r Have an Enchanted Book of Silk Touch I (only that enchantment)"]
 			id: "75AB9FD6C4E9E02D"
 			rewards: [
-				{ count: 6, id: "581647EF34F0E129", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 6, id: "5D6D787B04D549F7", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "724C225FB980E4E3", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 1, id: "3C6346BD72EE988F", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 51 of 100 • 6 Iron, 6 Copper"
+			subtitle: "Entry 51 of 100 • 4 Diamond, 1 Emerald"
 			tasks: [{ count: 1L, id: "5E7290D5E1005221", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:silk_touch": 1 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Silk Touch"
 			x: 7.5d
@@ -735,10 +733,10 @@
 			description: ["Obtain an enchanted book of Sharpness V.", "", "&bObjective:&r Have an Enchanted Book of Sharpness V (only that enchantment)"]
 			id: "3432CB6836A02D7C"
 			rewards: [
-				{ count: 6, id: "63352C31C2F90C78", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 6, id: "113A058FC9248BFA", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "484AF213A86327C1", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "2F85036094B1607E", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 52 of 100 • 6 Iron, 6 Copper"
+			subtitle: "Entry 52 of 100 • 4 Diamond, 2 Emerald"
 			tasks: [{ count: 1L, id: "2D48FBD9D22B4375", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:sharpness": 5 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Sharpness V"
 			x: 6.0d
@@ -749,10 +747,10 @@
 			description: ["Bring a book of Smite V, enchanted, traded or found.", "", "&bObjective:&r Have an Enchanted Book of Smite V (only that enchantment)"]
 			id: "506F68663EF41BE3"
 			rewards: [
-				{ count: 6, id: "1FA8635BC9D86E85", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 7, id: "508555E710C13235", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "31B1571EB7A4CEEA", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "1B2F5CA67360230A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 53 of 100 • 6 Iron, 7 Copper"
+			subtitle: "Entry 53 of 100 • 4 Diamond, 2 Emerald"
 			tasks: [{ count: 1L, id: "2805EC15AD08B6BF", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:smite": 5 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Smite V"
 			x: 4.5d
@@ -763,10 +761,10 @@
 			description: ["Obtain an enchanted book of Bane Of Arthropods V.", "", "&bObjective:&r Have an Enchanted Book of Bane Of Arthropods V (only that enchantment)"]
 			id: "1CFB6F72986753D7"
 			rewards: [
-				{ count: 6, id: "154C270483BF0824", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 7, id: "392DBC1EC071C701", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "2F4BEF24A846676E", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "45809524AE4434C0", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 54 of 100 • 6 Iron, 7 Copper"
+			subtitle: "Entry 54 of 100 • 4 Diamond, 2 Emerald"
 			tasks: [{ count: 1L, id: "5B2F8785C7250C34", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:bane_of_arthropods": 5 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Bane of Arthropods V"
 			x: 3.0d
@@ -777,10 +775,10 @@
 			description: ["Bring a book of Looting III, enchanted, traded or found.", "", "&bObjective:&r Have an Enchanted Book of Looting III (only that enchantment)"]
 			id: "75403C63BB194DF4"
 			rewards: [
-				{ count: 6, id: "7FA1080C78E4382F", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 7, id: "73899B034893BC52", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "504978F11FD03067", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 3, id: "5F6528B59092CB9A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 55 of 100 • 6 Iron, 7 Copper"
+			subtitle: "Entry 55 of 100 • 4 Diamond, 3 Emerald"
 			tasks: [{ count: 1L, id: "31863453142CC84A", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:looting": 3 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Looting III"
 			x: 1.5d
@@ -791,10 +789,10 @@
 			description: ["Obtain an enchanted book of Sweeping Edge III.", "", "&bObjective:&r Have an Enchanted Book of Sweeping Edge III (only that enchantment)"]
 			id: "6980E810FFF0A6C8"
 			rewards: [
-				{ count: 6, id: "05D6CEEA0E7F9D03", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 8, id: "364260999F49807F", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "15542FE64BF65288", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 3, id: "026EC04B0E59E850", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 56 of 100 • 6 Iron, 8 Copper"
+			subtitle: "Entry 56 of 100 • 4 Diamond, 3 Emerald"
 			tasks: [{ count: 1L, id: "5610E958DBB80B89", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:sweeping_edge": 3 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Sweeping Edge III"
 			x: 0.0d
@@ -805,10 +803,10 @@
 			description: ["Bring a book of Fire Aspect II, enchanted, traded or found.", "", "&bObjective:&r Have an Enchanted Book of Fire Aspect II (only that enchantment)"]
 			id: "50C5440DCCF34F19"
 			rewards: [
-				{ count: 6, id: "08822435259D82D1", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 8, id: "6E8FFCB86DFCA4E4", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "2422A83F8181C043", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 3, id: "4C9754E54E046E70", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 57 of 100 • 6 Iron, 8 Copper"
+			subtitle: "Entry 57 of 100 • 4 Diamond, 3 Emerald"
 			tasks: [{ count: 1L, id: "0F041A43F3B60455", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:fire_aspect": 2 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Fire Aspect II"
 			x: 0.0d
@@ -819,10 +817,10 @@
 			description: ["Obtain an enchanted book of Knockback II.", "", "&bObjective:&r Have an Enchanted Book of Knockback II (only that enchantment)"]
 			id: "2F3FD684C367346A"
 			rewards: [
-				{ count: 6, id: "6B646B83DF5AA15B", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 8, id: "2C7E6DE88926E269", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "77C50E1251B9C493", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 4, id: "1ECA9FF2A6E702A7", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 58 of 100 • 6 Iron, 8 Copper"
+			subtitle: "Entry 58 of 100 • 4 Diamond, 4 Emerald"
 			tasks: [{ count: 1L, id: "2694A038949798E5", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:knockback": 2 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Knockback II"
 			x: 1.5d
@@ -833,10 +831,10 @@
 			description: ["Bring a book of Protection IV, enchanted, traded or found.", "", "&bObjective:&r Have an Enchanted Book of Protection IV (only that enchantment)"]
 			id: "7CFA015373430519"
 			rewards: [
-				{ count: 6, id: "4895C6FE7DED9CEC", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 9, id: "478BAAA1C0EAD023", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "482E2DD05985EE77", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 4, id: "456A10D0FB349509", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 59 of 100 • 6 Iron, 9 Copper"
+			subtitle: "Entry 59 of 100 • 4 Diamond, 4 Emerald"
 			tasks: [{ count: 1L, id: "1228913EAABA88C5", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:protection": 4 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Protection IV"
 			x: 3.0d
@@ -844,15 +842,16 @@
 		}
 		{
 			dependencies: ["7CFA015373430519"]
-			description: ["Obtain an enchanted book of Fire Protection IV.", "", "&bObjective:&r Have an Enchanted Book of Fire Protection IV (only that enchantment)", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["Obtain an enchanted book of Fire Protection IV.", "", "&bObjective:&r Have an Enchanted Book of Fire Protection IV (only that enchantment)", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Iron Spell Book"]
 			id: "4E446FBB5B10563F"
 			rewards: [
-				{ count: 1, id: "056456F93A4424EC", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 7, id: "72F3B2335931F3F8", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "06FB2C21256B6203", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 1, id: "0782F3599FBEC70C", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ id: "35FD132BEF72B8E1", item: { count: 1, id: "irons_spellbooks:iron_spell_book" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 60 of 100 • 1 Gold, 7 Iron"
+			subtitle: "Entry 60 of 100 • 1 Netherite, 1 Diamond + Gear"
 			tasks: [{ count: 1L, id: "596BBE6B79EF093D", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:fire_protection": 4 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "&6&lFire Protection IV"
 			x: 4.5d
@@ -863,10 +862,10 @@
 			description: ["Bring a book of Blast Protection IV, enchanted, traded or found.", "", "&bObjective:&r Have an Enchanted Book of Blast Protection IV (only that enchantment)"]
 			id: "643CD8502B101661"
 			rewards: [
-				{ count: 6, id: "3D0BA58DEE9038D8", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 9, id: "0753FD64CFF8F2E1", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "625B3BD5B15E022E", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 4, id: "2FD46719295CD65B", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 61 of 100 • 6 Iron, 9 Copper"
+			subtitle: "Entry 61 of 100 • 4 Diamond, 4 Emerald"
 			tasks: [{ count: 1L, id: "26AEDE761F8518CF", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:blast_protection": 4 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Blast Protection IV"
 			x: 6.0d
@@ -877,9 +876,10 @@
 			description: ["Obtain an enchanted book of Projectile Protection IV.", "", "&bObjective:&r Have an Enchanted Book of Projectile Protection IV (only that enchantment)"]
 			id: "49654C75B6AAE01F"
 			rewards: [
-				{ count: 7, id: "54827D1B9FEA753D", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 4, id: "652CD0B6DEA79051", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "3841299BCC02CCF8", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 62 of 100 • 7 Iron"
+			subtitle: "Entry 62 of 100 • 4 Diamond, 5 Emerald"
 			tasks: [{ count: 1L, id: "47F72DBE60C574E5", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:projectile_protection": 4 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Projectile Protection IV"
 			x: 7.5d
@@ -890,9 +890,10 @@
 			description: ["Bring a book of Feather Falling IV, enchanted, traded or found.", "", "&bObjective:&r Have an Enchanted Book of Feather Falling IV (only that enchantment)"]
 			id: "66BB4AD3D7970576"
 			rewards: [
-				{ count: 7, id: "0B0F92D297D84D27", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 4, id: "3EBAC76D6C9C8877", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "6C42EA6EB808D32D", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 63 of 100 • 7 Iron"
+			subtitle: "Entry 63 of 100 • 4 Diamond, 5 Emerald"
 			tasks: [{ count: 1L, id: "148634F31AC7E520", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:feather_falling": 4 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Feather Falling IV"
 			x: 9.0d
@@ -903,9 +904,10 @@
 			description: ["Obtain an enchanted book of Respiration III.", "", "&bObjective:&r Have an Enchanted Book of Respiration III (only that enchantment)"]
 			id: "093DD234B24DB7DE"
 			rewards: [
-				{ count: 7, id: "5F6E561D667A8D5F", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 4, id: "6C27315085F04B53", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "4D6E312F12DEF071", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 64 of 100 • 7 Iron"
+			subtitle: "Entry 64 of 100 • 4 Diamond, 5 Emerald"
 			tasks: [{ count: 1L, id: "171BB3D22528287F", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:respiration": 3 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Respiration III"
 			x: 9.0d
@@ -916,10 +918,10 @@
 			description: ["Bring a book of Aqua Affinity I, enchanted, traded or found.", "", "&bObjective:&r Have an Enchanted Book of Aqua Affinity I (only that enchantment)"]
 			id: "5D4CB7E77F3738E3"
 			rewards: [
-				{ count: 7, id: "41D9F90FFB8E832F", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 1, id: "45E586271D4FB8A4", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "6CF045510B09659B", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "4A50882B7AB74FE9", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 65 of 100 • 7 Iron, 1 Copper"
+			subtitle: "Entry 65 of 100 • 4 Diamond, 6 Emerald"
 			tasks: [{ count: 1L, id: "69278AEBB00F031E", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:aqua_affinity": 1 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Aqua Affinity"
 			x: 7.5d
@@ -930,10 +932,10 @@
 			description: ["Obtain an enchanted book of Depth Strider III.", "", "&bObjective:&r Have an Enchanted Book of Depth Strider III (only that enchantment)"]
 			id: "66921D7776F0E883"
 			rewards: [
-				{ count: 7, id: "20F4AF9E4C8A30BA", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 1, id: "40E88D4F0A961318", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "345A264804690C0E", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "30F7236B5E31DA4D", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 66 of 100 • 7 Iron, 1 Copper"
+			subtitle: "Entry 66 of 100 • 4 Diamond, 6 Emerald"
 			tasks: [{ count: 1L, id: "45135F513E999857", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:depth_strider": 3 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Depth Strider III"
 			x: 6.0d
@@ -944,10 +946,10 @@
 			description: ["Bring a book of Thorns III, enchanted, traded or found.", "", "&bObjective:&r Have an Enchanted Book of Thorns III (only that enchantment)"]
 			id: "24BFF2F6F31BA25F"
 			rewards: [
-				{ count: 7, id: "61C36B2CD145DA27", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 1, id: "09BEE2264C3DCA35", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "6A47D6FD6BA8D88E", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "0D985E2EEDDC43CC", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 67 of 100 • 7 Iron, 1 Copper"
+			subtitle: "Entry 67 of 100 • 4 Diamond, 6 Emerald"
 			tasks: [{ count: 1L, id: "555B8D12FD63235E", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:thorns": 3 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Thorns III"
 			x: 4.5d
@@ -958,10 +960,10 @@
 			description: ["Obtain an enchanted book of Power V.", "", "&bObjective:&r Have an Enchanted Book of Power V (only that enchantment)"]
 			id: "5E0CC9DAADE6485F"
 			rewards: [
-				{ count: 7, id: "415601BA4E1655A1", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 1, id: "44F6FE653C4C7DB3", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "4DA04C03F20A37E2", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 7, id: "03C91ED0B48EF329", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 68 of 100 • 7 Iron, 1 Copper"
+			subtitle: "Entry 68 of 100 • 4 Diamond, 7 Emerald"
 			tasks: [{ count: 1L, id: "3433081810637E50", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:power": 5 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Power V"
 			x: 3.0d
@@ -972,10 +974,10 @@
 			description: ["Bring a book of Punch II, enchanted, traded or found.", "", "&bObjective:&r Have an Enchanted Book of Punch II (only that enchantment)"]
 			id: "1C7B97C2FCA3D17D"
 			rewards: [
-				{ count: 7, id: "24959AE8AC945293", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 2, id: "00BFA19AC7B6057A", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "394D38C72DFAF8A6", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 7, id: "7FC709B9A20732A5", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 69 of 100 • 7 Iron, 2 Copper"
+			subtitle: "Entry 69 of 100 • 4 Diamond, 7 Emerald"
 			tasks: [{ count: 1L, id: "73B8CB045FFD36C8", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:punch": 2 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Punch II"
 			x: 1.5d
@@ -983,15 +985,16 @@
 		}
 		{
 			dependencies: ["1C7B97C2FCA3D17D"]
-			description: ["Obtain an enchanted book of Flame I.", "", "&bObjective:&r Have an Enchanted Book of Flame I (only that enchantment)", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["Obtain an enchanted book of Flame I.", "", "&bObjective:&r Have an Enchanted Book of Flame I (only that enchantment)", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Ice Staff&7 (enchanted)"]
 			id: "7715F067D15C8D3D"
 			rewards: [
-				{ count: 1, id: "6A2AD0721F70037E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 8, id: "71A9DF85BBB5CADC", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "5818DA7279CE53CA", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 2, id: "388C25CB8BCEF1EA", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ id: "37E6F0300837A5BC", item: { components: { "minecraft:enchantments": { levels: { "minecraft:unbreaking": 3 } } }, count: 1, id: "irons_spellbooks:ice_staff" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 70 of 100 • 1 Gold, 8 Iron"
+			subtitle: "Entry 70 of 100 • 1 Netherite, 2 Diamond + Gear"
 			tasks: [{ count: 1L, id: "03CE00B9C34577B6", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:flame": 1 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "&6&lFlame"
 			x: 0.0d
@@ -1002,10 +1005,10 @@
 			description: ["Bring a book of Infinity I, enchanted, traded or found.", "", "&bObjective:&r Have an Enchanted Book of Infinity I (only that enchantment)"]
 			id: "643993387EF09CE3"
 			rewards: [
-				{ count: 7, id: "5A9C5785455403DD", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 2, id: "59B59E83D7930209", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "75B4BF71023B5763", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "32D9B2C55A0D32CB", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 71 of 100 • 7 Iron, 2 Copper"
+			subtitle: "Entry 71 of 100 • 4 Diamond, 8 Emerald"
 			tasks: [{ count: 1L, id: "08E757D3335BB394", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:infinity": 1 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Infinity"
 			x: 0.0d
@@ -1016,10 +1019,10 @@
 			description: ["Obtain an enchanted book of Multishot I.", "", "&bObjective:&r Have an Enchanted Book of Multishot I (only that enchantment)"]
 			id: "645D4534CFCBD52B"
 			rewards: [
-				{ count: 7, id: "7F061F3411F39999", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 3, id: "06771891D065817B", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "793F7A8BCB07B7DF", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "086DB2696BFCA295", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 72 of 100 • 7 Iron, 3 Copper"
+			subtitle: "Entry 72 of 100 • 4 Diamond, 8 Emerald"
 			tasks: [{ count: 1L, id: "68F415FBAC7A62DA", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:multishot": 1 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Multishot"
 			x: 1.5d
@@ -1030,10 +1033,10 @@
 			description: ["Bring a book of Piercing IV, enchanted, traded or found.", "", "&bObjective:&r Have an Enchanted Book of Piercing IV (only that enchantment)"]
 			id: "5619016F28F4862B"
 			rewards: [
-				{ count: 7, id: "35FFE02D059E79E0", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 3, id: "0DD04908A4EB6459", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "6E468E3D03198D0D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "43B0BDEE3A291551", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 73 of 100 • 7 Iron, 3 Copper"
+			subtitle: "Entry 73 of 100 • 4 Diamond, 8 Emerald"
 			tasks: [{ count: 1L, id: "1C9ECCCE097A6901", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:piercing": 4 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Piercing IV"
 			x: 3.0d
@@ -1044,10 +1047,10 @@
 			description: ["Obtain an enchanted book of Quick Charge III.", "", "&bObjective:&r Have an Enchanted Book of Quick Charge III (only that enchantment)"]
 			id: "6F4A54BC62713037"
 			rewards: [
-				{ count: 7, id: "4B34A4EF8848F464", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 3, id: "6478147326DE7070", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "62F598B878951FCD", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 9, id: "168FF4E1D65A8A4B", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 74 of 100 • 7 Iron, 3 Copper"
+			subtitle: "Entry 74 of 100 • 4 Diamond, 9 Emerald"
 			tasks: [{ count: 1L, id: "74D02C2B92FD9093", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:quick_charge": 3 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Quick Charge III"
 			x: 4.5d
@@ -1058,10 +1061,10 @@
 			description: ["Bring a book of Loyalty III, enchanted, traded or found.", "", "&bObjective:&r Have an Enchanted Book of Loyalty III (only that enchantment)"]
 			id: "286BA833AFCAE6C5"
 			rewards: [
-				{ count: 7, id: "3E0326F39588FCC3", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 4, id: "4DEC3FDC63591087", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "01A0C9F76EFD7C0B", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 9, id: "1BD02941506F47D2", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 75 of 100 • 7 Iron, 4 Copper"
+			subtitle: "Entry 75 of 100 • 4 Diamond, 9 Emerald"
 			tasks: [{ count: 1L, id: "537BEBD428C85849", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:loyalty": 3 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Loyalty III"
 			x: 6.0d
@@ -1072,10 +1075,10 @@
 			description: ["Obtain an enchanted book of Riptide III.", "", "&bObjective:&r Have an Enchanted Book of Riptide III (only that enchantment)"]
 			id: "71ECCA87F8B72852"
 			rewards: [
-				{ count: 7, id: "44D339FB5546FA58", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 4, id: "5457B6684FD4DCF4", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "75B418D4F2312BB7", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 9, id: "4583282C8D4A3D68", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 76 of 100 • 7 Iron, 4 Copper"
+			subtitle: "Entry 76 of 100 • 4 Diamond, 9 Emerald"
 			tasks: [{ count: 1L, id: "513A5696272BF289", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:riptide": 3 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Riptide III"
 			x: 7.5d
@@ -1086,10 +1089,9 @@
 			description: ["Bring a book of Channeling I, enchanted, traded or found.", "", "&bObjective:&r Have an Enchanted Book of Channeling I (only that enchantment)"]
 			id: "2C7800957590B4BD"
 			rewards: [
-				{ count: 7, id: "101DFB3AF3048828", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 4, id: "4D33B43937213CC6", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 5, id: "0F320356A7FCF97E", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 77 of 100 • 7 Iron, 4 Copper"
+			subtitle: "Entry 77 of 100 • 5 Diamond"
 			tasks: [{ count: 1L, id: "5F4E0A956E755578", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:channeling": 1 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Channeling"
 			x: 9.0d
@@ -1100,10 +1102,9 @@
 			description: ["Obtain an enchanted book of Impaling V.", "", "&bObjective:&r Have an Enchanted Book of Impaling V (only that enchantment)"]
 			id: "11C1B890EDAC17C7"
 			rewards: [
-				{ count: 7, id: "36206F36E72B3FC7", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 5, id: "22860B7CECE8C22B", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 5, id: "18A11DE9B2B7B2B3", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 78 of 100 • 7 Iron, 5 Copper"
+			subtitle: "Entry 78 of 100 • 5 Diamond"
 			tasks: [{ count: 1L, id: "55023C366BF13598", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:impaling": 5 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Impaling V"
 			x: 9.0d
@@ -1114,10 +1115,9 @@
 			description: ["Bring a book of Luck Of The Sea III, enchanted, traded or found.", "", "&bObjective:&r Have an Enchanted Book of Luck Of The Sea III (only that enchantment)"]
 			id: "1FC44A48F229B2CF"
 			rewards: [
-				{ count: 7, id: "3C4766A526D1A317", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 5, id: "1C977BAFB74E3DB6", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 5, id: "38F51886BF72034C", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 79 of 100 • 7 Iron, 5 Copper"
+			subtitle: "Entry 79 of 100 • 5 Diamond"
 			tasks: [{ count: 1L, id: "56BA04DFACD1272F", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:luck_of_the_sea": 3 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Luck of the Sea III"
 			x: 7.5d
@@ -1125,15 +1125,16 @@
 		}
 		{
 			dependencies: ["1FC44A48F229B2CF"]
-			description: ["Obtain an enchanted book of Lure III.", "", "&bObjective:&r Have an Enchanted Book of Lure III (only that enchantment)", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["Obtain an enchanted book of Lure III.", "", "&bObjective:&r Have an Enchanted Book of Lure III (only that enchantment)", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Gold Spell Book"]
 			id: "4D306BC025A49B89"
 			rewards: [
-				{ count: 1, id: "272D679783BC7F6F", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 9, id: "6B00F9B30C8CD6D4", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "6149122B2336BE74", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 3, id: "78B43AA7D9A7C837", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ id: "1B12ADF857D9428D", item: { count: 1, id: "irons_spellbooks:gold_spell_book" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 80 of 100 • 1 Gold, 9 Iron"
+			subtitle: "Entry 80 of 100 • 1 Netherite, 3 Diamond + Gear"
 			tasks: [{ count: 1L, id: "3DE5916D32BAC800", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:lure": 3 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "&6&lLure III"
 			x: 6.0d
@@ -1144,10 +1145,10 @@
 			description: ["Bring a book of Mending I, enchanted, traded or found.", "", "&bObjective:&r Have an Enchanted Book of Mending I (only that enchantment)"]
 			id: "0B4076C95FF71805"
 			rewards: [
-				{ count: 7, id: "7F5D011D91648ACF", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 6, id: "62EEFFACA127A5E0", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 5, id: "1CA92DE5F519B815", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 1, id: "028C44444994918C", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 81 of 100 • 7 Iron, 6 Copper"
+			subtitle: "Entry 81 of 100 • 5 Diamond, 1 Emerald"
 			tasks: [{ count: 1L, id: "2D3392EFD1E9E901", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:mending": 1 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Mending"
 			x: 4.5d
@@ -1158,10 +1159,10 @@
 			description: ["Obtain an enchanted book of Frost Walker II.", "", "&bObjective:&r Have an Enchanted Book of Frost Walker II (only that enchantment)"]
 			id: "313F224B0F3DD485"
 			rewards: [
-				{ count: 7, id: "611500E1373EF19F", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 6, id: "016979AB548B3967", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 5, id: "52FB3CD3A02F6593", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 1, id: "5E1D4995542E9A12", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 82 of 100 • 7 Iron, 6 Copper"
+			subtitle: "Entry 82 of 100 • 5 Diamond, 1 Emerald"
 			tasks: [{ count: 1L, id: "1A5F745662E1C4EF", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:frost_walker": 2 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Frost Walker II"
 			x: 3.0d
@@ -1172,10 +1173,10 @@
 			description: ["Bring a book of Soul Speed III, enchanted, traded or found.", "", "&bObjective:&r Have an Enchanted Book of Soul Speed III (only that enchantment)"]
 			id: "34344B92F9C30CA0"
 			rewards: [
-				{ count: 7, id: "7491213FAA5AB199", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 7, id: "44A3EF3463CF8AF0", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 5, id: "0BC04899EFEF2A70", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "4A435FA9306FDC21", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 83 of 100 • 7 Iron, 7 Copper"
+			subtitle: "Entry 83 of 100 • 5 Diamond, 2 Emerald"
 			tasks: [{ count: 1L, id: "1B620151A799E0BE", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:soul_speed": 3 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Soul Speed III"
 			x: 1.5d
@@ -1186,10 +1187,10 @@
 			description: ["Obtain an enchanted book of Density V.", "", "&bObjective:&r Have an Enchanted Book of Density V (only that enchantment)"]
 			id: "04EA42DE89158D79"
 			rewards: [
-				{ count: 7, id: "13D3F24FC76B6A70", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 7, id: "2CEC84E98F92F23E", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 5, id: "6E7ECBADFCFD5F71", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "69A2641E2EF154EE", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 84 of 100 • 7 Iron, 7 Copper"
+			subtitle: "Entry 84 of 100 • 5 Diamond, 2 Emerald"
 			tasks: [{ count: 1L, id: "277021C0CBA98A9B", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:density": 5 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Density V"
 			x: 0.0d
@@ -1200,10 +1201,10 @@
 			description: ["Bring a book of Breach IV, enchanted, traded or found.", "", "&bObjective:&r Have an Enchanted Book of Breach IV (only that enchantment)"]
 			id: "4DF1008354FEB975"
 			rewards: [
-				{ count: 7, id: "3E96035AD3E2A11D", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 7, id: "2D17AC11C7316B09", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 5, id: "12CE69B52F5CA443", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "1F5F7B15EFA51C87", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 85 of 100 • 7 Iron, 7 Copper"
+			subtitle: "Entry 85 of 100 • 5 Diamond, 2 Emerald"
 			tasks: [{ count: 1L, id: "76588AAC7EB5F02E", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:breach": 4 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Breach IV"
 			x: 0.0d
@@ -1214,10 +1215,10 @@
 			description: ["Obtain an enchanted book of Wind Burst I.", "", "&bObjective:&r Have an Enchanted Book of Wind Burst I (only that enchantment)"]
 			id: "31AC6F4DB6330D13"
 			rewards: [
-				{ count: 7, id: "7702106C1F224E52", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 8, id: "449C945C05EEAD22", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 5, id: "1E131B3FF6739AF1", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 3, id: "3E36A92679955E83", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 86 of 100 • 7 Iron, 8 Copper"
+			subtitle: "Entry 86 of 100 • 5 Diamond, 3 Emerald"
 			tasks: [{ count: 1L, id: "658ADDF08C891B7D", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:wind_burst": 1 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Wind Burst"
 			x: 1.5d
@@ -1228,10 +1229,10 @@
 			description: ["Bring a book of Swift Sneak III, enchanted, traded or found.", "", "&bObjective:&r Have an Enchanted Book of Swift Sneak III (only that enchantment)"]
 			id: "56DDD5A66B26B5FF"
 			rewards: [
-				{ count: 7, id: "302C01F69532D63D", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 8, id: "1932DB5EDDC27CC0", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 5, id: "3087222D8C297023", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 3, id: "6536086FB4FA2DF0", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 87 of 100 • 7 Iron, 8 Copper"
+			subtitle: "Entry 87 of 100 • 5 Diamond, 3 Emerald"
 			tasks: [{ count: 1L, id: "686E5DA856F2628D", item: { components: { "minecraft:stored_enchantments": { levels: { "minecraft:swift_sneak": 3 } } }, count: 1, id: "minecraft:enchanted_book" }, match_components: "fuzzy", type: "item" }]
 			title: "Swift Sneak III"
 			x: 3.0d
@@ -1242,10 +1243,10 @@
 			description: ["Reach 50 for enchant item.", "", "&bObjective:&r Reach enchant item: 50", "&7Counts your total since you first joined."]
 			id: "426FA91D3532E969"
 			rewards: [
-				{ count: 7, id: "069DB9DF2808DD55", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 8, id: "35F4A1C788A8BCD2", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 5, id: "666F955865FB113E", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 3, id: "55204D9EE2DD1682", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 88 of 100 • 7 Iron, 8 Copper"
+			subtitle: "Entry 88 of 100 • 5 Diamond, 3 Emerald"
 			tasks: [{ id: "7EA3DEE4552C38DF", stat: "minecraft:enchant_item", type: "stat", value: 50 }]
 			title: "Journeyman Enchanter"
 			x: 4.5d
@@ -1256,10 +1257,10 @@
 			description: ["Experience is the true currency. Offer 35 levels.", "", "&bObjective:&r Spend 35 XP levels", "&7The levels are taken when you complete the quest."]
 			id: "61683A5D15FA0BDE"
 			rewards: [
-				{ count: 7, id: "18B6600F1D7CF96D", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 9, id: "3802D43D0EC6754D", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 5, id: "1F45BAD52AFBD11C", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 4, id: "561EE9144E8B4207", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 89 of 100 • 7 Iron, 9 Copper"
+			subtitle: "Entry 89 of 100 • 5 Diamond, 4 Emerald"
 			tasks: [{ id: "37153C74C630849F", points: false, type: "xp", value: 35L }]
 			title: "Level Thirty-Five"
 			x: 6.0d
@@ -1267,14 +1268,16 @@
 		}
 		{
 			dependencies: ["61683A5D15FA0BDE"]
-			description: ["Reports of Vex sightings. Thin them out: 15 kills.", "", "&bObjective:&r Slay 15 Vex", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["Reports of Vex sightings. Thin them out: 15 kills.", "", "&bObjective:&r Slay 15 Vex", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Graybeard Staff&7 (enchanted)"]
 			id: "71246EE6600F19A2"
 			rewards: [
-				{ count: 2, id: "3BCDE38354B5FBB7", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 1, id: "7D039B03B053A0AC", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 4, id: "532719589768641E", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ id: "0A5ABBE4A3630B0E", item: { components: { "minecraft:enchantments": { levels: { "minecraft:unbreaking": 3 } } }, count: 1, id: "irons_spellbooks:graybeard_staff" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 90 of 100 • 2 Gold"
+			subtitle: "Entry 90 of 100 • 1 Netherite, 4 Diamond + Gear"
 			tasks: [{ entity: "minecraft:vex", id: "78952665921CB4DD", type: "kill", value: 15L }]
 			title: "&6&lSpirits of the Evoker"
 			x: 7.5d
@@ -1285,10 +1288,10 @@
 			description: ["Keep 1 Enchanted Golden Apple in your pack. The clerk only needs to see them.", "", "&bObjective:&r Have 1 Enchanted Golden Apple in your inventory"]
 			id: "2B74C5BFA1D1079F"
 			rewards: [
-				{ count: 7, id: "78167176DFF17F2F", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 9, id: "28E104DE42EF4CDB", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 5, id: "00C77F01E0F9B963", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "035C8218CD65701E", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 91 of 100 • 7 Iron, 9 Copper"
+			subtitle: "Entry 91 of 100 • 5 Diamond, 5 Emerald"
 			tasks: [{ count: 1L, id: "3FF930128AE02CFF", item: { count: 1, id: "minecraft:enchanted_golden_apple" }, type: "item" }]
 			title: "Notch's Apple"
 			x: 9.0d
@@ -1299,9 +1302,10 @@
 			description: ["The guild stores are low on Glowstone Dust. Hand in 64.", "", "&bObjective:&r Hand in 64 Glowstone Dust", "&7The items are taken when you complete the quest."]
 			id: "52DF79A98D275DFA"
 			rewards: [
-				{ count: 8, id: "4CD257726986C8B1", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 5, id: "7AEB192A3FD0E7E6", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "13091C35A5E62A5B", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 92 of 100 • 8 Iron"
+			subtitle: "Entry 92 of 100 • 5 Diamond, 5 Emerald"
 			tasks: [{ count: 64L, consume_items: true, id: "38EA13752B57A446", item: { count: 1, id: "minecraft:glowstone_dust" }, type: "item" }]
 			title: "Amplifier Stock"
 			x: 9.0d
@@ -1312,9 +1316,10 @@
 			description: ["A merchant has ordered 64 Nether Wart. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 64 Nether Wart", "&7The items are taken when you complete the quest."]
 			id: "5094A08CF2306983"
 			rewards: [
-				{ count: 8, id: "52E358CF15B74DAF", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 5, id: "1BDC1B46046AEB58", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "5BD8CB2BE6593443", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 93 of 100 • 8 Iron"
+			subtitle: "Entry 93 of 100 • 5 Diamond, 5 Emerald"
 			tasks: [{ count: 64L, consume_items: true, id: "1AA411826CAD6A6D", item: { count: 1, id: "minecraft:nether_wart" }, type: "item" }]
 			title: "Brewer's Stock"
 			x: 7.5d
@@ -1325,9 +1330,10 @@
 			description: ["Supply run: 32 Blaze Powder, taken on hand-in.", "", "&bObjective:&r Hand in 32 Blaze Powder", "&7The items are taken when you complete the quest."]
 			id: "3E2E81EA001DE103"
 			rewards: [
-				{ count: 8, id: "327FE0A3F9878ECE", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 5, id: "57A2472183CE5A18", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "398699A6D02B604C", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 94 of 100 • 8 Iron"
+			subtitle: "Entry 94 of 100 • 5 Diamond, 6 Emerald"
 			tasks: [{ count: 32L, consume_items: true, id: "52E00D18673FE775", item: { count: 1, id: "minecraft:blaze_powder" }, type: "item" }]
 			title: "Fuel Stock"
 			x: 6.0d
@@ -1338,10 +1344,10 @@
 			description: ["The realm needs Fermented Spider Eye. Bring 8 and they're yours no more.", "", "&bObjective:&r Hand in 8 Fermented Spider Eye", "&7The items are taken when you complete the quest."]
 			id: "77F4EF9C67BB6F8F"
 			rewards: [
-				{ count: 8, id: "2AE144572C2C6938", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 1, id: "465D9FF9AF8BD3E7", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 5, id: "08283010CBBF1681", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "4C2AC757E61668ED", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 95 of 100 • 8 Iron, 1 Copper"
+			subtitle: "Entry 95 of 100 • 5 Diamond, 6 Emerald"
 			tasks: [{ count: 8L, consume_items: true, id: "2E02C57C84DB7FA7", item: { count: 1, id: "minecraft:fermented_spider_eye" }, type: "item" }]
 			title: "Corruption Stock"
 			x: 4.5d
@@ -1352,10 +1358,10 @@
 			description: ["Reach 100 for interact with brewingstand.", "", "&bObjective:&r Reach interact with brewingstand: 100", "&7Counts your total since you first joined."]
 			id: "13174A1D757A6EB4"
 			rewards: [
-				{ count: 8, id: "70B3BBA13B74F854", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 1, id: "0CFEEB4802717E71", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 5, id: "41538593BE3AD333", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "5879E25D4D4948D3", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 96 of 100 • 8 Iron, 1 Copper"
+			subtitle: "Entry 96 of 100 • 5 Diamond, 6 Emerald"
 			tasks: [{ id: "1C920EB5DC070D45", stat: "minecraft:interact_with_brewingstand", type: "stat", value: 100 }]
 			title: "Potion Factory"
 			x: 3.0d
@@ -1366,10 +1372,10 @@
 			description: ["The Ledger tracks everything. Push enchant item to 150.", "", "&bObjective:&r Reach enchant item: 150", "&7Counts your total since you first joined."]
 			id: "6630B40915F1BAFA"
 			rewards: [
-				{ count: 8, id: "332D48F2E1FFF15D", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 2, id: "554856DF3CAA7543", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 5, id: "4AAA3637BD5F1279", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 7, id: "2FC4CBC54324DBD5", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 97 of 100 • 8 Iron, 2 Copper"
+			subtitle: "Entry 97 of 100 • 5 Diamond, 7 Emerald"
 			tasks: [{ id: "7C319AEAD2149E47", stat: "minecraft:enchant_item", type: "stat", value: 150 }]
 			title: "Archmage of the Table"
 			x: 1.5d
@@ -1380,10 +1386,10 @@
 			description: ["Gather 40 levels and spend them here.", "", "&bObjective:&r Spend 40 XP levels", "&7The levels are taken when you complete the quest."]
 			id: "22193856205FF4B8"
 			rewards: [
-				{ count: 8, id: "43B9C91C8441106A", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 2, id: "02C43AADAE8D03CD", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 5, id: "563C19AF9502B0A4", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 7, id: "403ADE091473D005", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 98 of 100 • 8 Iron, 2 Copper"
+			subtitle: "Entry 98 of 100 • 5 Diamond, 7 Emerald"
 			tasks: [{ id: "2B161AB8C1BD0CFF", points: false, type: "xp", value: 40L }]
 			title: "Arcane Ascension"
 			x: 0.0d
@@ -1394,10 +1400,10 @@
 			description: ["Accomplish \"A Furious Cocktail\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"A Furious Cocktail\""]
 			id: "74F49056566A2229"
 			rewards: [
-				{ count: 8, id: "53B4A01B381361D8", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 2, id: "6AA148C4B152502D", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 5, id: "1482ACADCF108450", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "4AAEE3C70AB6E2D8", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 99 of 100 • 8 Iron, 2 Copper"
+			subtitle: "Entry 99 of 100 • 5 Diamond, 8 Emerald"
 			tasks: [{ advancement: "minecraft:nether/all_potions", criterion: "", id: "52AB361039F0A8A0", type: "advancement" }]
 			title: "A Furious Cocktail"
 			x: 0.0d
@@ -1405,15 +1411,16 @@
 		}
 		{
 			dependencies: ["74F49056566A2229"]
-			description: ["Gather 50 levels and spend them here.", "", "&bObjective:&r Spend 50 XP levels", "&7The levels are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coin reward.", "&6&lFinal entry of this Ledger."]
+			description: ["Gather 50 levels and spend them here.", "", "&bObjective:&r Spend 50 XP levels", "&7The levels are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Diamond Spell Book", "&6&lFinal entry of this Ledger."]
 			id: "7323D7CE50BAFA30"
 			rewards: [
-				{ count: 3, id: "29CBC382C5AB0D01", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 3, id: "7731F380AD787D4E", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 2, id: "07302772AB9F8A90", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 3, id: "2045D3C6FDFF8FBE", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ id: "30F043551C92D5B7", item: { count: 1, id: "irons_spellbooks:diamond_spell_book" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 2.0d
-			subtitle: "Entry 100 of 100 • 3 Gold, 3 Iron"
+			subtitle: "Entry 100 of 100 • 2 Netherite, 3 Diamond + Gear"
 			tasks: [{ id: "1AD5BAA76ABC8277", points: false, type: "xp", value: 50L }]
 			title: "&6&lFifty Levels Deep"
 			x: 1.5d

@@ -14,10 +14,10 @@
 			description: ["Accomplish \"Monster Hunter's Oath\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Monster Hunter's Oath\""]
 			id: "07EEC7D3D5D52410"
 			rewards: [
-				{ count: 1, id: "2C496FF9675E58C6", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 3, id: "3372955167D87DF7", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "1B158FAE4F25EABF", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 2, id: "5BC49EBC8396784A", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 1 of 95 • 1 Gold, 3 Iron"
+			subtitle: "Entry 1 of 95 • 1 Netherite, 2 Diamond"
 			tasks: [{ advancement: "minecraft:adventure/kill_a_mob", criterion: "", id: "52AEFA5ECC70DD29", type: "advancement" }]
 			title: "Monster Hunter's Oath"
 			x: 0.0d
@@ -28,10 +28,10 @@
 			description: ["Earn the advancement \"Take Aim\".", "", "&bObjective:&r Earn the advancement \"Take Aim\""]
 			id: "24D80F0D7A83852D"
 			rewards: [
-				{ count: 1, id: "089681E75D59C7F1", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 3, id: "74E5B87224045DA1", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "24E4DCED2E3E68FD", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 2, id: "1DC5C4F283B18DFA", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 2 of 95 • 1 Gold, 3 Iron"
+			subtitle: "Entry 2 of 95 • 1 Netherite, 2 Diamond"
 			tasks: [{ advancement: "minecraft:adventure/shoot_arrow", criterion: "", id: "1615DABF06AD4103", type: "advancement" }]
 			title: "Take Aim"
 			x: 1.5d
@@ -42,10 +42,10 @@
 			description: ["Prove your hands are skilled: craft 64 Arrow yourself.", "", "&bObjective:&r Craft 64 Arrow", "&7Only items you craft yourself count."]
 			id: "19C49F928DF53713"
 			rewards: [
-				{ count: 1, id: "5E7C76DD877C841E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 3, id: "443DE13837DC103E", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "5FF5AA0C6BC0CE2C", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 2, id: "1F9EF731C1004AAF", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 3 of 95 • 1 Gold, 3 Iron"
+			subtitle: "Entry 3 of 95 • 1 Netherite, 2 Diamond"
 			tasks: [{ count: 64L, only_from_crafting: true, id: "36DAE95A32F93345", item: { count: 1, id: "minecraft:arrow" }, type: "item" }]
 			title: "Quiver Full"
 			x: 3.0d
@@ -56,10 +56,10 @@
 			description: ["Workshop order: 16 Spectral Arrow, made by you.", "", "&bObjective:&r Craft 16 Spectral Arrow", "&7Only items you craft yourself count."]
 			id: "14460CFDED8B325B"
 			rewards: [
-				{ count: 1, id: "7D1295BBDCE73ED3", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 3, id: "4FB14CFF07513378", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "03815DC65FD75DB3", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 2, id: "0AD2E2E297C1E434", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 4 of 95 • 1 Gold, 3 Iron"
+			subtitle: "Entry 4 of 95 • 1 Netherite, 2 Diamond"
 			tasks: [{ count: 16L, only_from_crafting: true, id: "3FE20B79474134F7", item: { count: 1, id: "minecraft:spectral_arrow" }, type: "item" }]
 			title: "Spectral Arrows"
 			x: 4.5d
@@ -70,10 +70,10 @@
 			description: ["The guild wants 2 freshly crafted Target.", "", "&bObjective:&r Craft 2 Target", "&7Only items you craft yourself count."]
 			id: "58D9C978A616FE24"
 			rewards: [
-				{ count: 1, id: "539251153E8382C3", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 3, id: "79295E2C4CDE07A1", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "1CED5F530C32F672", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 2, id: "408426BBC9F325A7", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 5 of 95 • 1 Gold, 3 Iron"
+			subtitle: "Entry 5 of 95 • 1 Netherite, 2 Diamond"
 			tasks: [{ count: 2L, only_from_crafting: true, id: "2FD0E8983FD679F0", item: { count: 1, id: "minecraft:target" }, type: "item" }]
 			title: "Archery Range"
 			x: 6.0d
@@ -84,10 +84,10 @@
 			description: ["Reach 20 for target hit.", "", "&bObjective:&r Reach target hit: 20", "&7Counts your total since you first joined."]
 			id: "353ECB6B6AA03F16"
 			rewards: [
-				{ count: 1, id: "628D636C42881F96", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 4, id: "5D697C91877F4E08", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "434C5AC748D651BC", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 2, id: "3AC2ADCB1B384F4E", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 6 of 95 • 1 Gold, 4 Iron"
+			subtitle: "Entry 6 of 95 • 1 Netherite, 2 Diamond"
 			tasks: [{ id: "48EC55E1E25044AE", stat: "minecraft:target_hit", type: "stat", value: 20 }]
 			title: "Bullseye Practice"
 			x: 7.5d
@@ -98,10 +98,10 @@
 			description: ["Accomplish \"Bullseye\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Bullseye\""]
 			id: "78058B5E928F410A"
 			rewards: [
-				{ count: 1, id: "15F1899F367CB1D9", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 4, id: "1E8837B4E96B6DF3", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "2A091FF7EC3ACBC4", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 2, id: "5F349DE33F880E71", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 7 of 95 • 1 Gold, 4 Iron"
+			subtitle: "Entry 7 of 95 • 1 Netherite, 2 Diamond"
 			tasks: [{ advancement: "minecraft:adventure/bullseye", criterion: "", id: "754C59ED9983FD13", type: "advancement" }]
 			title: "Bullseye"
 			x: 9.0d
@@ -112,10 +112,10 @@
 			description: ["The guild wants 1 freshly crafted Iron Helmet.", "", "&bObjective:&r Craft 1 Iron Helmet", "&7Only items you craft yourself count."]
 			id: "3F6E4D562FCB14E0"
 			rewards: [
-				{ count: 1, id: "4B58161B5C4261AE", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 4, id: "0F2BAA257FFFD328", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "049CFBF68C719E6D", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 2, id: "188DBB2D62774645", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 8 of 95 • 1 Gold, 4 Iron"
+			subtitle: "Entry 8 of 95 • 1 Netherite, 2 Diamond"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "3C737F780E1BAADE", item: { count: 1, id: "minecraft:iron_helmet" }, type: "item" }]
 			title: "Iron Helm"
 			x: 9.0d
@@ -126,10 +126,10 @@
 			description: ["Prove your hands are skilled: craft 1 Iron Leggings yourself.", "", "&bObjective:&r Craft 1 Iron Leggings", "&7Only items you craft yourself count."]
 			id: "5883253694DEDE6A"
 			rewards: [
-				{ count: 1, id: "18623357F2CB1158", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 4, id: "08DC1936751692DD", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "02651BDA05842395", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 2, id: "0AE0DCEE1B8C8880", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 9 of 95 • 1 Gold, 4 Iron"
+			subtitle: "Entry 9 of 95 • 1 Netherite, 2 Diamond"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "75F875255E69C0B9", item: { count: 1, id: "minecraft:iron_leggings" }, type: "item" }]
 			title: "Iron Greaves"
 			x: 7.5d
@@ -137,15 +137,16 @@
 		}
 		{
 			dependencies: ["5883253694DEDE6A"]
-			description: ["Workshop order: 1 Iron Boots, made by you.", "", "&bObjective:&r Craft 1 Iron Boots", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["Workshop order: 1 Iron Boots, made by you.", "", "&bObjective:&r Craft 1 Iron Boots", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Valkyrie Helmet&7 (enchanted)"]
 			id: "699D5EB2BBE2B4DC"
 			rewards: [
-				{ count: 3, id: "405CE37878D4CD15", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 4, id: "7F266CC99CE04130", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 3, id: "20EA5B32A248504A", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 1, id: "4FA2D7A112B2E0B0", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ id: "07C91E9A871CDD91", item: { components: { "minecraft:enchantments": { levels: { "minecraft:protection": 3, "minecraft:unbreaking": 3 } } }, count: 1, id: "aether:valkyrie_helmet" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 10 of 95 • 3 Gold, 4 Iron"
+			subtitle: "Entry 10 of 95 • 3 Netherite, 1 Diamond + Gear"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "552674895FEDE333", item: { count: 1, id: "minecraft:iron_boots" }, type: "item" }]
 			title: "&6&lIron Boots"
 			x: 6.0d
@@ -156,10 +157,10 @@
 			description: ["The guild wants 1 freshly crafted Iron Sword.", "", "&bObjective:&r Craft 1 Iron Sword", "&7Only items you craft yourself count."]
 			id: "35F45C5DE233B823"
 			rewards: [
-				{ count: 1, id: "388C47AE76BFB29E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 4, id: "49C5E6A04F47E1ED", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "5BEE5C8148507623", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 3, id: "7BB1F7F9C5696BC2", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 11 of 95 • 1 Gold, 4 Iron"
+			subtitle: "Entry 11 of 95 • 1 Netherite, 3 Diamond"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "0073C7ACAEF82170", item: { count: 1, id: "minecraft:iron_sword" }, type: "item" }]
 			title: "Iron Sword"
 			x: 4.5d
@@ -170,10 +171,10 @@
 			description: ["Prove your hands are skilled: craft 1 Iron Axe yourself.", "", "&bObjective:&r Craft 1 Iron Axe", "&7Only items you craft yourself count."]
 			id: "511648CD7544CB51"
 			rewards: [
-				{ count: 1, id: "4231D4E80BD0C579", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 4, id: "2ECA338EE9BE9865", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "2B34FE2F6C9AD551", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 3, id: "6321ACB5B178BB9D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 12 of 95 • 1 Gold, 4 Iron"
+			subtitle: "Entry 12 of 95 • 1 Netherite, 3 Diamond"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "36CBB28D3BCAC98D", item: { count: 1, id: "minecraft:iron_axe" }, type: "item" }]
 			title: "Iron Axe"
 			x: 3.0d
@@ -184,10 +185,10 @@
 			description: ["A collector is asking around for Chainmail Chestplate. Bring 1 and prove you have them.", "", "&bObjective:&r Have 1 Chainmail Chestplate in your inventory"]
 			id: "184AF977098BF73A"
 			rewards: [
-				{ count: 1, id: "5A889484AB0CDCBE", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 4, id: "55B4AF1713429165", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "34EB6FFB6DB5D7D3", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 3, id: "73543EB029F96FE5", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 13 of 95 • 1 Gold, 4 Iron"
+			subtitle: "Entry 13 of 95 • 1 Netherite, 3 Diamond"
 			tasks: [{ count: 1L, id: "49B10F83451D7528", item: { count: 1, id: "minecraft:chainmail_chestplate" }, type: "item" }]
 			title: "Chainmail"
 			x: 1.5d
@@ -198,10 +199,10 @@
 			description: ["The guild wants 1 freshly crafted Golden Helmet.", "", "&bObjective:&r Craft 1 Golden Helmet", "&7Only items you craft yourself count."]
 			id: "7BFC32E8856106F6"
 			rewards: [
-				{ count: 1, id: "38C1822E68B5445B", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 4, id: "031F548BE573925C", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "39EFFBAC32F05FA0", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 3, id: "13565C6EDAF2C20E", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 14 of 95 • 1 Gold, 4 Iron"
+			subtitle: "Entry 14 of 95 • 1 Netherite, 3 Diamond"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "22E3FAF1BC3746A7", item: { count: 1, id: "minecraft:golden_helmet" }, type: "item" }]
 			title: "Golden Crown"
 			x: 0.0d
@@ -212,10 +213,10 @@
 			description: ["Prove your hands are skilled: craft 1 Golden Sword yourself.", "", "&bObjective:&r Craft 1 Golden Sword", "&7Only items you craft yourself count."]
 			id: "1BF06119C668B5FA"
 			rewards: [
-				{ count: 1, id: "4BF8F4F7129C08C0", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 4, id: "51FC5CFC4E344E91", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "4B02212E66167691", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 3, id: "5491DBFB31505F72", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 15 of 95 • 1 Gold, 4 Iron"
+			subtitle: "Entry 15 of 95 • 1 Netherite, 3 Diamond"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "45EEAD5694A0A6CF", item: { count: 1, id: "minecraft:golden_sword" }, type: "item" }]
 			title: "Gilded Blade"
 			x: 0.0d
@@ -226,10 +227,10 @@
 			description: ["Supply run: 64 Rotten Flesh, taken on hand-in.", "", "&bObjective:&r Hand in 64 Rotten Flesh", "&7The items are taken when you complete the quest."]
 			id: "22BCF116BCE38D38"
 			rewards: [
-				{ count: 1, id: "558E9F397287E102", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 4, id: "323D2F1553B30732", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "713F0D48749308E5", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 3, id: "4889ABBD77345632", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 16 of 95 • 1 Gold, 4 Iron"
+			subtitle: "Entry 16 of 95 • 1 Netherite, 3 Diamond"
 			tasks: [{ count: 64L, consume_items: true, id: "70BDC6B39C91DDDA", item: { count: 1, id: "minecraft:rotten_flesh" }, type: "item" }]
 			title: "Rotten Spoils"
 			x: 1.5d
@@ -240,10 +241,10 @@
 			description: ["The realm needs Bone. Bring 64 and they're yours no more.", "", "&bObjective:&r Hand in 64 Bone", "&7The items are taken when you complete the quest."]
 			id: "5B62D2A0B2FACDDB"
 			rewards: [
-				{ count: 1, id: "586DD95D1F7AEA6C", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 4, id: "31091C0068816CAD", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "769ACCB836C5B566", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 3, id: "6AC052CC2FFA5BA0", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 17 of 95 • 1 Gold, 4 Iron"
+			subtitle: "Entry 17 of 95 • 1 Netherite, 3 Diamond"
 			tasks: [{ count: 64L, consume_items: true, id: "2643EFF763F6950D", item: { count: 1, id: "minecraft:bone" }, type: "item" }]
 			title: "Bone Pile"
 			x: 3.0d
@@ -254,10 +255,10 @@
 			description: ["The guild stores are low on Gunpowder. Hand in 64.", "", "&bObjective:&r Hand in 64 Gunpowder", "&7The items are taken when you complete the quest."]
 			id: "10B44CBC91C8163B"
 			rewards: [
-				{ count: 1, id: "011743F5886ACF95", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 4, id: "234D02784B1DBA78", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "36FDF0DE05464D7C", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 3, id: "7AC6C8466BF7E383", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 18 of 95 • 1 Gold, 4 Iron"
+			subtitle: "Entry 18 of 95 • 1 Netherite, 3 Diamond"
 			tasks: [{ count: 64L, consume_items: true, id: "75FF16326980875A", item: { count: 1, id: "minecraft:gunpowder" }, type: "item" }]
 			title: "Powder Keg"
 			x: 4.5d
@@ -268,10 +269,10 @@
 			description: ["A merchant has ordered 32 Spider Eye. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 32 Spider Eye", "&7The items are taken when you complete the quest."]
 			id: "4E3DA51D2723D085"
 			rewards: [
-				{ count: 1, id: "312EDB18CF69179F", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 4, id: "1D2E7421D7B36D95", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "15E01F94F7D253AA", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 3, id: "4C8093D5301D0A9F", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 19 of 95 • 1 Gold, 4 Iron"
+			subtitle: "Entry 19 of 95 • 1 Netherite, 3 Diamond"
 			tasks: [{ count: 32L, consume_items: true, id: "57EFDCD26D3B63D5", item: { count: 1, id: "minecraft:spider_eye" }, type: "item" }]
 			title: "Eyes of the Swarm"
 			x: 6.0d
@@ -279,15 +280,16 @@
 		}
 		{
 			dependencies: ["4E3DA51D2723D085"]
-			description: ["Supply run: 32 Slime Ball, taken on hand-in.", "", "&bObjective:&r Hand in 32 Slime Ball", "&7The items are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["Supply run: 32 Slime Ball, taken on hand-in.", "", "&bObjective:&r Hand in 32 Slime Ball", "&7The items are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Valkyrie Chestplate&7 (enchanted)"]
 			id: "2B7B3C8673783B99"
 			rewards: [
-				{ count: 3, id: "42C9D25740D5F97D", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 6, id: "4E5702EDAC87BA5F", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 3, id: "2726999EF6105E6D", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 3, id: "272024FB08D46DA0", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ id: "049F84A3F67D5966", item: { components: { "minecraft:enchantments": { levels: { "minecraft:protection": 3, "minecraft:unbreaking": 3 } } }, count: 1, id: "aether:valkyrie_chestplate" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 20 of 95 • 3 Gold, 6 Iron"
+			subtitle: "Entry 20 of 95 • 3 Netherite, 3 Diamond + Gear"
 			tasks: [{ count: 32L, consume_items: true, id: "1E61637AC7F485FB", item: { count: 1, id: "minecraft:slime_ball" }, type: "item" }]
 			title: "&6&lSlime Balls"
 			x: 7.5d
@@ -298,10 +300,10 @@
 			description: ["The realm needs Arrow. Bring 64 and they're yours no more.", "", "&bObjective:&r Hand in 64 Arrow", "&7The items are taken when you complete the quest."]
 			id: "1DACE8B341B9108D"
 			rewards: [
-				{ count: 1, id: "0AEE74B2A6FBA70B", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 4, id: "65AF919C195190AE", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "70340443FD2F59A4", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 3, id: "2824AB528FFE3A69", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 21 of 95 • 1 Gold, 4 Iron"
+			subtitle: "Entry 21 of 95 • 1 Netherite, 3 Diamond"
 			tasks: [{ count: 64L, consume_items: true, id: "7F3869226B247671", item: { count: 1, id: "minecraft:arrow" }, type: "item" }]
 			title: "Spent Arrows"
 			x: 9.0d
@@ -312,10 +314,10 @@
 			description: ["Reports of Zombie Villager sightings. Thin them out: 10 kills.", "", "&bObjective:&r Slay 10 Zombie Villager"]
 			id: "76B2384A3F94F496"
 			rewards: [
-				{ count: 1, id: "574F615B3DB78B84", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 5, id: "70D9376E081F031D", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "6A7E914F5CC53CF9", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 4, id: "45B6B93C26D7E3F0", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 22 of 95 • 1 Gold, 5 Iron"
+			subtitle: "Entry 22 of 95 • 1 Netherite, 4 Diamond"
 			tasks: [{ entity: "minecraft:zombie_villager", id: "40FDB25EAFA10409", type: "kill", value: 10L }]
 			title: "Lost Villagers"
 			x: 9.0d
@@ -326,10 +328,10 @@
 			description: ["Hunt down 3 Endermite and claim the bounty.", "", "&bObjective:&r Slay 3 Endermite"]
 			id: "3AABDA1084A95184"
 			rewards: [
-				{ count: 1, id: "6C1B0A5DC56F08DC", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 5, id: "7624850709357958", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "3E126FD94F28F84D", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 4, id: "3DA077B7558EB9FD", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 23 of 95 • 1 Gold, 5 Iron"
+			subtitle: "Entry 23 of 95 • 1 Netherite, 4 Diamond"
 			tasks: [{ entity: "minecraft:endermite", id: "6DADBFD4F793BD36", type: "kill", value: 3L }]
 			title: "Endermites"
 			x: 7.5d
@@ -340,10 +342,10 @@
 			description: ["Reach 100 for mob kills.", "", "&bObjective:&r Reach mob kills: 100", "&7Counts your total since you first joined."]
 			id: "464B3F5B345BBFCC"
 			rewards: [
-				{ count: 1, id: "53294695A22A4D01", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 5, id: "77C6D2215E8A3ED9", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "6DDBCC10639FCE4A", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 4, id: "718534C44A7A895D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 24 of 95 • 1 Gold, 5 Iron"
+			subtitle: "Entry 24 of 95 • 1 Netherite, 4 Diamond"
 			tasks: [{ id: "4C7B11CD6F0A19EC", stat: "minecraft:mob_kills", type: "stat", value: 100 }]
 			title: "Hundred Kills"
 			x: 6.0d
@@ -354,10 +356,10 @@
 			description: ["The Ledger tracks everything. Push damage dealt to 500 hearts.", "", "&bObjective:&r Reach damage dealt: 500 hearts", "&7Counts your total since you first joined."]
 			id: "64721A46DA10EC8E"
 			rewards: [
-				{ count: 1, id: "7DDCA4D456400DD2", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 5, id: "4E64052AFDF0DE2C", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "61A323B97384662C", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 4, id: "25C20100C4587FBA", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 25 of 95 • 1 Gold, 5 Iron"
+			subtitle: "Entry 25 of 95 • 1 Netherite, 4 Diamond"
 			tasks: [{ id: "287C8CB84479E81D", stat: "minecraft:damage_dealt", type: "stat", value: 10000 }]
 			title: "Heavy Hitter"
 			x: 4.5d
@@ -368,10 +370,10 @@
 			description: ["Reach 50 hearts for damage blocked by shield.", "", "&bObjective:&r Reach damage blocked by shield: 50 hearts", "&7Counts your total since you first joined."]
 			id: "0A61CAF59863E0D6"
 			rewards: [
-				{ count: 1, id: "788E5E708880E13F", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 5, id: "0B9A63D489732751", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "6556E1C30394D795", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 4, id: "666948EC8F49C50C", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 26 of 95 • 1 Gold, 5 Iron"
+			subtitle: "Entry 26 of 95 • 1 Netherite, 4 Diamond"
 			tasks: [{ id: "218DC3C5ADE14AD5", stat: "minecraft:damage_blocked_by_shield", type: "stat", value: 1000 }]
 			title: "Shield Wall"
 			x: 3.0d
@@ -382,10 +384,10 @@
 			description: ["Accomplish \"Sniper Duel\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Sniper Duel\""]
 			id: "657A4182089C3F42"
 			rewards: [
-				{ count: 1, id: "472D368AF25178AB", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 5, id: "0DF6BE17A112032F", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "15715898FA63ACF6", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 4, id: "5E26B8F0E91B0E1D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 27 of 95 • 1 Gold, 5 Iron"
+			subtitle: "Entry 27 of 95 • 1 Netherite, 4 Diamond"
 			tasks: [{ advancement: "minecraft:adventure/sniper_duel", criterion: "", id: "350AB7711FA7CBF6", type: "advancement" }]
 			title: "Sniper Duel"
 			x: 1.5d
@@ -396,10 +398,10 @@
 			description: ["Earn the advancement \"Two Birds, One Arrow\".", "", "&bObjective:&r Earn the advancement \"Two Birds, One Arrow\""]
 			id: "64BE5656F116DB25"
 			rewards: [
-				{ count: 1, id: "1BA8AB27EB1CD591", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 5, id: "01284F4335BF0125", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "5D09326B7547A4AF", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 4, id: "1EC7C0D77E74968D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 28 of 95 • 1 Gold, 5 Iron"
+			subtitle: "Entry 28 of 95 • 1 Netherite, 4 Diamond"
 			tasks: [{ advancement: "minecraft:adventure/two_birds_one_arrow", criterion: "", id: "21B1F39D35ACB32E", type: "advancement" }]
 			title: "Two Birds, One Arrow"
 			x: 0.0d
@@ -410,10 +412,10 @@
 			description: ["Accomplish \"Ol' Betsy\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Ol' Betsy\""]
 			id: "584524B458244BAD"
 			rewards: [
-				{ count: 1, id: "4A170BEBFED3301A", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 5, id: "32C626137C7A5E29", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "49605BEB5699A570", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 4, id: "68A16FDF8043A63C", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 29 of 95 • 1 Gold, 5 Iron"
+			subtitle: "Entry 29 of 95 • 1 Netherite, 4 Diamond"
 			tasks: [{ advancement: "minecraft:adventure/ol_betsy", criterion: "", id: "76AAB3B82B7EBD68", type: "advancement" }]
 			title: "Ol' Betsy"
 			x: 0.0d
@@ -421,15 +423,16 @@
 		}
 		{
 			dependencies: ["584524B458244BAD"]
-			description: ["Earn the advancement \"Who's the Pillager Now?\".", "", "&bObjective:&r Earn the advancement \"Who's the Pillager Now?\"", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["Earn the advancement \"Who's the Pillager Now?\".", "", "&bObjective:&r Earn the advancement \"Who's the Pillager Now?\"", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Valkyrie Leggings&7 (enchanted)"]
 			id: "553BDBA091C64615"
 			rewards: [
-				{ count: 3, id: "5B042E1D117DB800", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 8, id: "1192D6F8479E05C2", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 3, id: "52302989959770D0", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 6, id: "480178A976DDA2C5", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ id: "6ABA3371708FC0EA", item: { components: { "minecraft:enchantments": { levels: { "minecraft:protection": 3, "minecraft:unbreaking": 3 } } }, count: 1, id: "aether:valkyrie_leggings" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 30 of 95 • 3 Gold, 8 Iron"
+			subtitle: "Entry 30 of 95 • 3 Netherite, 6 Diamond + Gear"
 			tasks: [{ advancement: "minecraft:adventure/whos_the_pillager_now", criterion: "", id: "64C9CF7E83AB03A1", type: "advancement" }]
 			title: "&6&lWho's the Pillager Now?"
 			x: 1.5d
@@ -440,10 +443,10 @@
 			description: ["Accomplish \"Arbalistic\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Arbalistic\""]
 			id: "3DC09105518387AF"
 			rewards: [
-				{ count: 1, id: "17E6A3F3320796C7", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 5, id: "0F916B3048A3BDBE", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "2963305FD4D4C918", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 4, id: "2FE0D349CD04A056", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 31 of 95 • 1 Gold, 5 Iron"
+			subtitle: "Entry 31 of 95 • 1 Netherite, 4 Diamond"
 			tasks: [{ advancement: "minecraft:adventure/arbalistic", criterion: "", id: "323086FDF2431758", type: "advancement" }]
 			title: "Arbalistic"
 			x: 3.0d
@@ -454,10 +457,10 @@
 			description: ["Earn the advancement \"A Throwaway Joke\".", "", "&bObjective:&r Earn the advancement \"A Throwaway Joke\""]
 			id: "43B3B4E7D1BCCC89"
 			rewards: [
-				{ count: 1, id: "12C79FF27F3BEFA2", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 5, id: "62CE2FB4A79B41BC", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "11F8CD20038EAA13", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 4, id: "029A90BC1ED8C336", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 32 of 95 • 1 Gold, 5 Iron"
+			subtitle: "Entry 32 of 95 • 1 Netherite, 4 Diamond"
 			tasks: [{ advancement: "minecraft:adventure/throw_trident", criterion: "", id: "6E1E844D2BCF3716", type: "advancement" }]
 			title: "A Throwaway Joke"
 			x: 4.5d
@@ -468,10 +471,10 @@
 			description: ["The Ledger wants proof: carry 1 Trident and show it.", "", "&bObjective:&r Have 1 Trident in your inventory"]
 			id: "3808328BF658CD7E"
 			rewards: [
-				{ count: 1, id: "32B09AC58C800D45", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 5, id: "1DAFD4B2BA1083C7", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "063438EB59E0A5BE", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 5, id: "5471D1D69BC0B10F", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 33 of 95 • 1 Gold, 5 Iron"
+			subtitle: "Entry 33 of 95 • 1 Netherite, 5 Diamond"
 			tasks: [{ count: 1L, id: "7D03868B94321038", item: { count: 1, id: "minecraft:trident" }, type: "item" }]
 			title: "Trident"
 			x: 6.0d
@@ -482,10 +485,10 @@
 			description: ["Earn the advancement \"Very Very Frightening\".", "", "&bObjective:&r Earn the advancement \"Very Very Frightening\""]
 			id: "7C76F189FA651EA9"
 			rewards: [
-				{ count: 1, id: "4472E5390E3C0D45", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 5, id: "7447FB4A5630977F", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "467850CCB60E4EF9", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 5, id: "3AAFB54800B3B367", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 34 of 95 • 1 Gold, 5 Iron"
+			subtitle: "Entry 34 of 95 • 1 Netherite, 5 Diamond"
 			tasks: [{ advancement: "minecraft:adventure/very_very_frightening", criterion: "", id: "1598509F440A3EC4", type: "advancement" }]
 			title: "Very Very Frightening"
 			x: 7.5d
@@ -496,10 +499,10 @@
 			description: ["Accomplish \"Hired Help\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Hired Help\""]
 			id: "058BAD24994A9379"
 			rewards: [
-				{ count: 1, id: "6022B54FB5A0ABF2", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 5, id: "20FE57BC337E44FB", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "57596888A2FFD6FA", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 5, id: "673DC1DBCE4FB216", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 35 of 95 • 1 Gold, 5 Iron"
+			subtitle: "Entry 35 of 95 • 1 Netherite, 5 Diamond"
 			tasks: [{ advancement: "minecraft:adventure/summon_iron_golem", criterion: "", id: "59F7B375809B7F4F", type: "advancement" }]
 			title: "Hired Help"
 			x: 9.0d
@@ -510,10 +513,10 @@
 			description: ["Earn the advancement \"Voluntary Exile\".", "", "&bObjective:&r Earn the advancement \"Voluntary Exile\""]
 			id: "12B8A4329A81B5A4"
 			rewards: [
-				{ count: 1, id: "0F8F4D6419D21308", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 6, id: "356764E015D8C873", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "6AA044AC00A1D238", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 5, id: "50D5609E30C66105", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 36 of 95 • 1 Gold, 6 Iron"
+			subtitle: "Entry 36 of 95 • 1 Netherite, 5 Diamond"
 			tasks: [{ advancement: "minecraft:adventure/voluntary_exile", criterion: "", id: "64E091CBFC9F33D9", type: "advancement" }]
 			title: "Voluntary Exile"
 			x: 9.0d
@@ -524,10 +527,10 @@
 			description: ["The Ledger tracks everything. Push raid trigger to 1.", "", "&bObjective:&r Reach raid trigger: 1", "&7Counts your total since you first joined."]
 			id: "40FFB421F31DA35C"
 			rewards: [
-				{ count: 1, id: "4C02BB5E93F373D5", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 6, id: "2BB6CE8E935FB6AA", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "6CB3EE1B59542929", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 5, id: "548A52E95CE33A97", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 37 of 95 • 1 Gold, 6 Iron"
+			subtitle: "Entry 37 of 95 • 1 Netherite, 5 Diamond"
 			tasks: [{ id: "07A5FAE0EB841453", stat: "minecraft:raid_trigger", type: "stat", value: 1 }]
 			title: "Bad Omen"
 			x: 7.5d
@@ -538,10 +541,10 @@
 			description: ["Reach 1 for raid win.", "", "&bObjective:&r Reach raid win: 1", "&7Counts your total since you first joined."]
 			id: "358336E5AD8C176D"
 			rewards: [
-				{ count: 1, id: "79645C6CBABB0ED4", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 6, id: "62E4D7B30A63C7AE", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "71F666CCC0D3194D", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 5, id: "59E5DEACC5FF3CBC", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 38 of 95 • 1 Gold, 6 Iron"
+			subtitle: "Entry 38 of 95 • 1 Netherite, 5 Diamond"
 			tasks: [{ id: "72EFEBC270B5406E", stat: "minecraft:raid_win", type: "stat", value: 1 }]
 			title: "Raid Victor"
 			x: 6.0d
@@ -552,10 +555,10 @@
 			description: ["Accomplish \"Hero of the Village\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Hero of the Village\""]
 			id: "48DAF85A6A0DBB5B"
 			rewards: [
-				{ count: 1, id: "58146D98036DD269", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 6, id: "52F6AC8C6F0073E7", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "2AB2533F4DDA51BE", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 5, id: "2F86BFA8C14DFDD2", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 39 of 95 • 1 Gold, 6 Iron"
+			subtitle: "Entry 39 of 95 • 1 Netherite, 5 Diamond"
 			tasks: [{ advancement: "minecraft:adventure/hero_of_the_village", criterion: "", id: "1587CE5A7052D57F", type: "advancement" }]
 			title: "Hero of the Village"
 			x: 4.5d
@@ -563,15 +566,16 @@
 		}
 		{
 			dependencies: ["48DAF85A6A0DBB5B"]
-			description: ["A collector is asking around for Bell. Bring 1 and prove you have them.", "", "&bObjective:&r Have 1 Bell in your inventory", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["A collector is asking around for Bell. Bring 1 and prove you have them.", "", "&bObjective:&r Have 1 Bell in your inventory", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Valkyrie Boots&7 (enchanted)"]
 			id: "4054893D14E28757"
 			rewards: [
-				{ count: 3, id: "304989278D034A7B", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 9, id: "430B0D46E6DD5E3E", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 3, id: "36567E49F45E8A10", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 8, id: "41F7AA1106B75C7A", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ id: "4DCDEE89AED4543D", item: { components: { "minecraft:enchantments": { levels: { "minecraft:protection": 3, "minecraft:unbreaking": 3, "minecraft:feather_falling": 4 } } }, count: 1, id: "aether:valkyrie_boots" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 40 of 95 • 3 Gold, 9 Iron"
+			subtitle: "Entry 40 of 95 • 3 Netherite, 8 Diamond + Gear"
 			tasks: [{ count: 1L, id: "7411D2112EA72D65", item: { count: 1, id: "minecraft:bell" }, type: "item" }]
 			title: "&6&lRing the Alarm"
 			x: 3.0d
@@ -582,10 +586,10 @@
 			description: ["Accomplish \"Postmortal\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Postmortal\""]
 			id: "584E708747B2D345"
 			rewards: [
-				{ count: 1, id: "1A9DA8BBA2738950", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 6, id: "26B80BAFB381ED2D", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "7624F9DC621B6C13", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 5, id: "47113616DF0871AD", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 41 of 95 • 1 Gold, 6 Iron"
+			subtitle: "Entry 41 of 95 • 1 Netherite, 5 Diamond"
 			tasks: [{ advancement: "minecraft:adventure/totem_of_undying", criterion: "", id: "76ED95E3DE788BD8", type: "advancement" }]
 			title: "Postmortal"
 			x: 1.5d
@@ -596,10 +600,10 @@
 			description: ["The Ledger wants proof: carry 1 White Banner and show it.", "", "&bObjective:&r Have 1 White Banner in your inventory"]
 			id: "05178CE29DEC6934"
 			rewards: [
-				{ count: 1, id: "0AED413A149536BD", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 6, id: "13A14A998680ABDE", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "22B120B1DCF2312B", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 6, id: "12AEDB01334C93E6", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 42 of 95 • 1 Gold, 6 Iron"
+			subtitle: "Entry 42 of 95 • 1 Netherite, 6 Diamond"
 			tasks: [{ count: 1L, id: "694596C11E364DCD", item: { count: 1, id: "minecraft:white_banner" }, type: "item" }]
 			title: "Captured Banner"
 			x: 0.0d
@@ -610,10 +614,10 @@
 			description: ["A collector is asking around for Skeleton Skull. Bring 1 and prove you have them.", "", "&bObjective:&r Have 1 Skeleton Skull in your inventory"]
 			id: "4BC65FEB657DE98D"
 			rewards: [
-				{ count: 1, id: "0192511607E9AC6F", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 6, id: "1363EC26CA91DD19", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "70C49E12143CBF9A", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 6, id: "14BA82180ABB5E06", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 43 of 95 • 1 Gold, 6 Iron"
+			subtitle: "Entry 43 of 95 • 1 Netherite, 6 Diamond"
 			tasks: [{ count: 1L, id: "301EA4B3577BF6B3", item: { count: 1, id: "minecraft:skeleton_skull" }, type: "item" }]
 			title: "Skeleton Skull"
 			x: 0.0d
@@ -624,10 +628,10 @@
 			description: ["Keep 1 Zombie Head in your pack. The clerk only needs to see them.", "", "&bObjective:&r Have 1 Zombie Head in your inventory"]
 			id: "0778FCAE1D3AA74B"
 			rewards: [
-				{ count: 1, id: "3C60BF999F3748DD", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 6, id: "1BC554B08752C1C9", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "2ADD6AC407968614", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 6, id: "4A06464A4C05E007", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 44 of 95 • 1 Gold, 6 Iron"
+			subtitle: "Entry 44 of 95 • 1 Netherite, 6 Diamond"
 			tasks: [{ count: 1L, id: "2EB69D73301CFDF1", item: { count: 1, id: "minecraft:zombie_head" }, type: "item" }]
 			title: "Zombie Head"
 			x: 1.5d
@@ -638,10 +642,10 @@
 			description: ["The Ledger wants proof: carry 1 Creeper Head and show it.", "", "&bObjective:&r Have 1 Creeper Head in your inventory"]
 			id: "2F80C8AED86FCF79"
 			rewards: [
-				{ count: 1, id: "47044398C043DC8A", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 6, id: "18DCCE96C0543ABB", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "6C0337E7291AD7A0", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 6, id: "200B39A894A26898", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 45 of 95 • 1 Gold, 6 Iron"
+			subtitle: "Entry 45 of 95 • 1 Netherite, 6 Diamond"
 			tasks: [{ count: 1L, id: "76EC02D5FFD6FC52", item: { count: 1, id: "minecraft:creeper_head" }, type: "item" }]
 			title: "Creeper Head"
 			x: 3.0d
@@ -652,10 +656,10 @@
 			description: ["A collector is asking around for Piglin Head. Bring 1 and prove you have them.", "", "&bObjective:&r Have 1 Piglin Head in your inventory"]
 			id: "66E959F45BAD37EE"
 			rewards: [
-				{ count: 1, id: "2239C13C28227F65", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 6, id: "5EDC310DF18144A1", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "08961A884EB31005", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 6, id: "520564F66E93EAFB", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 46 of 95 • 1 Gold, 6 Iron"
+			subtitle: "Entry 46 of 95 • 1 Netherite, 6 Diamond"
 			tasks: [{ count: 1L, id: "0655FD401076943A", item: { count: 1, id: "minecraft:piglin_head" }, type: "item" }]
 			title: "Piglin Head"
 			x: 4.5d
@@ -666,10 +670,10 @@
 			description: ["The guild wants 1 freshly crafted Diamond Helmet.", "", "&bObjective:&r Craft 1 Diamond Helmet", "&7Only items you craft yourself count."]
 			id: "4B9BE33D240B96E5"
 			rewards: [
-				{ count: 1, id: "18BAD42FD715988F", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 6, id: "54F8F972AD4A1D85", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "3F1FE9ED128D304C", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 6, id: "166F28A3ED1A9E93", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 47 of 95 • 1 Gold, 6 Iron"
+			subtitle: "Entry 47 of 95 • 1 Netherite, 6 Diamond"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "1FF2CC8BE7EBB3FC", item: { count: 1, id: "minecraft:diamond_helmet" }, type: "item" }]
 			title: "Diamond Helm"
 			x: 6.0d
@@ -680,10 +684,10 @@
 			description: ["Prove your hands are skilled: craft 1 Diamond Leggings yourself.", "", "&bObjective:&r Craft 1 Diamond Leggings", "&7Only items you craft yourself count."]
 			id: "3659C86CCB224BB9"
 			rewards: [
-				{ count: 1, id: "0C6D1334822F04AE", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 6, id: "493111895796964C", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "739D1DD19FC3676C", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 6, id: "1D0D7F2D233DAAD5", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 48 of 95 • 1 Gold, 6 Iron"
+			subtitle: "Entry 48 of 95 • 1 Netherite, 6 Diamond"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "7EF801A25B4D3D15", item: { count: 1, id: "minecraft:diamond_leggings" }, type: "item" }]
 			title: "Diamond Greaves"
 			x: 7.5d
@@ -694,10 +698,10 @@
 			description: ["Workshop order: 1 Diamond Boots, made by you.", "", "&bObjective:&r Craft 1 Diamond Boots", "&7Only items you craft yourself count."]
 			id: "358032E7419251ED"
 			rewards: [
-				{ count: 1, id: "704AE70FD607A982", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 6, id: "13D91F3DE3907540", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "4FBCB5C563E19E78", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 6, id: "6159648C2A79520D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 49 of 95 • 1 Gold, 6 Iron"
+			subtitle: "Entry 49 of 95 • 1 Netherite, 6 Diamond"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "048FE1ABAF2CF81B", item: { count: 1, id: "minecraft:diamond_boots" }, type: "item" }]
 			title: "Diamond Boots"
 			x: 9.0d
@@ -705,15 +709,16 @@
 		}
 		{
 			dependencies: ["358032E7419251ED"]
-			description: ["The guild wants 1 freshly crafted Diamond Axe.", "", "&bObjective:&r Craft 1 Diamond Axe", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["The guild wants 1 freshly crafted Diamond Axe.", "", "&bObjective:&r Craft 1 Diamond Axe", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Valkyrie Gloves&7 (enchanted)"]
 			id: "69F2F37B729CC6D7"
 			rewards: [
-				{ count: 4, id: "760851256FB6EB8C", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 1, id: "77ED1C9D6B8B3374", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 4, id: "1D9547EA5E1F63CF", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 1, id: "2BDA13AF14A76835", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ id: "1A21E09FE5D70879", item: { components: { "minecraft:enchantments": { levels: { "minecraft:unbreaking": 3 } } }, count: 1, id: "aether:valkyrie_gloves" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 50 of 95 • 4 Gold, 1 Iron"
+			subtitle: "Entry 50 of 95 • 4 Netherite, 1 Diamond + Gear"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "1EC0879644F06EC3", item: { count: 1, id: "minecraft:diamond_axe" }, type: "item" }]
 			title: "&6&lDiamond Axe"
 			x: 9.0d
@@ -724,10 +729,10 @@
 			description: ["Prove your hands are skilled: craft 1 Diamond Pickaxe yourself.", "", "&bObjective:&r Craft 1 Diamond Pickaxe", "&7Only items you craft yourself count."]
 			id: "7E93484CAD2FEABD"
 			rewards: [
-				{ count: 1, id: "7970756798A638C8", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 7, id: "13F1F04FE4A3F7CB", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "64CDBD7202A8A702", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 6, id: "06D9DE1FEE3A03B7", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 51 of 95 • 1 Gold, 7 Iron"
+			subtitle: "Entry 51 of 95 • 1 Netherite, 6 Diamond"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "1C5E630D569B73C7", item: { count: 1, id: "minecraft:diamond_pickaxe" }, type: "item" }]
 			title: "Diamond Pickaxe"
 			x: 7.5d
@@ -738,10 +743,10 @@
 			description: ["Workshop order: 1 Diamond Shovel, made by you.", "", "&bObjective:&r Craft 1 Diamond Shovel", "&7Only items you craft yourself count."]
 			id: "2783E3940D69183B"
 			rewards: [
-				{ count: 1, id: "4D730F6CA353E845", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 7, id: "5415EC2DAE05780A", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "142E8B3EAC7763A4", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 7, id: "23E7E274D49F241C", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 52 of 95 • 1 Gold, 7 Iron"
+			subtitle: "Entry 52 of 95 • 1 Netherite, 7 Diamond"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "2A99314DD1765CEF", item: { count: 1, id: "minecraft:diamond_shovel" }, type: "item" }]
 			title: "Diamond Shovel"
 			x: 6.0d
@@ -752,10 +757,10 @@
 			description: ["The guild wants 1 freshly crafted Diamond Hoe.", "", "&bObjective:&r Craft 1 Diamond Hoe", "&7Only items you craft yourself count."]
 			id: "573E7490F7778FE0"
 			rewards: [
-				{ count: 1, id: "6510DD458926CE63", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 7, id: "5982EAF8863B4B40", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "66C51633B78DA9E9", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 7, id: "5D08F365F1B7D736", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 53 of 95 • 1 Gold, 7 Iron"
+			subtitle: "Entry 53 of 95 • 1 Netherite, 7 Diamond"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "317A1952C59EA751", item: { count: 1, id: "minecraft:diamond_hoe" }, type: "item" }]
 			title: "Diamond Hoe"
 			x: 4.5d
@@ -766,10 +771,10 @@
 			description: ["Reach 250 for mob kills.", "", "&bObjective:&r Reach mob kills: 250", "&7Counts your total since you first joined."]
 			id: "5A0591EEA9D195DF"
 			rewards: [
-				{ count: 1, id: "77A2E9B109209270", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 7, id: "666D99144621BC87", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "6BA5FBAD01127E05", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 7, id: "520A55E4D9F1A3C8", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 54 of 95 • 1 Gold, 7 Iron"
+			subtitle: "Entry 54 of 95 • 1 Netherite, 7 Diamond"
 			tasks: [{ id: "70292AAF487720CB", stat: "minecraft:mob_kills", type: "stat", value: 250 }]
 			title: "Quarter Thousand"
 			x: 3.0d
@@ -780,10 +785,10 @@
 			description: ["The Ledger tracks everything. Push damage taken to 500 hearts.", "", "&bObjective:&r Reach damage taken: 500 hearts", "&7Counts your total since you first joined."]
 			id: "14BCE4929CB2DB42"
 			rewards: [
-				{ count: 1, id: "636495DFA3C4E433", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 7, id: "0EED5B3E97C25A23", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "148E4CBD0AD783EA", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 7, id: "602DC3F2835E3BF2", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 55 of 95 • 1 Gold, 7 Iron"
+			subtitle: "Entry 55 of 95 • 1 Netherite, 7 Diamond"
 			tasks: [{ id: "7D326B798BA03185", stat: "minecraft:damage_taken", type: "stat", value: 10000 }]
 			title: "Battle Scars"
 			x: 1.5d
@@ -794,10 +799,10 @@
 			description: ["Hunt down 30 Zombie Villager and claim the bounty.", "", "&bObjective:&r Slay 30 Zombie Villager"]
 			id: "0C096BCA80074551"
 			rewards: [
-				{ count: 1, id: "42809636642011D5", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 7, id: "517946CB70448866", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "531CE79628FF7030", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 7, id: "1BDA103015208D28", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 56 of 95 • 1 Gold, 7 Iron"
+			subtitle: "Entry 56 of 95 • 1 Netherite, 7 Diamond"
 			tasks: [{ entity: "minecraft:zombie_villager", id: "24251B868D95FE86", type: "kill", value: 30L }]
 			title: "Outbreak"
 			x: 0.0d
@@ -808,10 +813,10 @@
 			description: ["A bounty is posted: 40 Vex.", "", "&bObjective:&r Slay 40 Vex"]
 			id: "46C6079740144B76"
 			rewards: [
-				{ count: 1, id: "3CD31B7416485F76", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 7, id: "6D020AD0F96FD179", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "1E9456BD37547F3E", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 7, id: "10BFF27EE3F77E23", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 57 of 95 • 1 Gold, 7 Iron"
+			subtitle: "Entry 57 of 95 • 1 Netherite, 7 Diamond"
 			tasks: [{ entity: "minecraft:vex", id: "4CFA6757AD981045", type: "kill", value: 40L }]
 			title: "Vex Exorcist"
 			x: 0.0d
@@ -822,10 +827,10 @@
 			description: ["Reports of Endermite sightings. Thin them out: 15 kills.", "", "&bObjective:&r Slay 15 Endermite"]
 			id: "52785C0E9AEFC375"
 			rewards: [
-				{ count: 1, id: "48A8AC7943C8B5BB", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 7, id: "3AC45DE8A4133E6E", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "74DD6F9A759A7EE5", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 7, id: "39F303CC3AC5BA47", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 58 of 95 • 1 Gold, 7 Iron"
+			subtitle: "Entry 58 of 95 • 1 Netherite, 7 Diamond"
 			tasks: [{ entity: "minecraft:endermite", id: "16EA786A58543ACC", type: "kill", value: 15L }]
 			title: "Pest Control"
 			x: 1.5d
@@ -836,10 +841,10 @@
 			description: ["The Ledger tracks everything. Push raid win to 3.", "", "&bObjective:&r Reach raid win: 3", "&7Counts your total since you first joined."]
 			id: "3CEA43C2A020D989"
 			rewards: [
-				{ count: 1, id: "021E86B6B8959A00", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 7, id: "4F82F7C684DD80FE", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "517A8447FF7699C4", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 7, id: "6C61AC74C9ACF25D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 59 of 95 • 1 Gold, 7 Iron"
+			subtitle: "Entry 59 of 95 • 1 Netherite, 7 Diamond"
 			tasks: [{ id: "7F708097ACAED339", stat: "minecraft:raid_win", type: "stat", value: 3 }]
 			title: "Raid Veteran"
 			x: 3.0d
@@ -847,15 +852,16 @@
 		}
 		{
 			dependencies: ["3CEA43C2A020D989"]
-			description: ["Reach 3 for raid trigger.", "", "&bObjective:&r Reach raid trigger: 3", "&7Counts your total since you first joined.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["Reach 3 for raid trigger.", "", "&bObjective:&r Reach raid trigger: 3", "&7Counts your total since you first joined.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Vampire Blade&7 (enchanted)"]
 			id: "3E88375811D2AC94"
 			rewards: [
-				{ count: 4, id: "4B22A90FB6C916E4", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 3, id: "0A8E3DF659ABAA24", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 4, id: "685F4EE9C8EB31F8", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 4, id: "5AB5585ABDC6317D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ id: "578AF28708D43F2D", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 5, "minecraft:unbreaking": 3, "minecraft:looting": 3, "minecraft:sweeping_edge": 3 } } }, count: 1, id: "aether:vampire_blade" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 60 of 95 • 4 Gold, 3 Iron"
+			subtitle: "Entry 60 of 95 • 4 Netherite, 4 Diamond + Gear"
 			tasks: [{ id: "66DE3FD4F6A37D0C", stat: "minecraft:raid_trigger", type: "stat", value: 3 }]
 			title: "&6&lOmen Seeker"
 			x: 4.5d
@@ -866,10 +872,10 @@
 			description: ["The realm needs Rotten Flesh. Bring 256 and they're yours no more.", "", "&bObjective:&r Hand in 256 Rotten Flesh", "&7The items are taken when you complete the quest."]
 			id: "269BBD1D4DE56D08"
 			rewards: [
-				{ count: 1, id: "25F582BA3352641B", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 7, id: "101647724B27A1B7", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "7B2E6C76AE0D24E2", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 8, id: "63683FCDF9F753F8", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 61 of 95 • 1 Gold, 7 Iron"
+			subtitle: "Entry 61 of 95 • 1 Netherite, 8 Diamond"
 			tasks: [{ count: 256L, consume_items: true, id: "28A70D183687D531", item: { count: 1, id: "minecraft:rotten_flesh" }, type: "item" }]
 			title: "Zombie Graveyard"
 			x: 6.0d
@@ -880,10 +886,10 @@
 			description: ["The guild stores are low on Bone. Hand in 256.", "", "&bObjective:&r Hand in 256 Bone", "&7The items are taken when you complete the quest."]
 			id: "13E4AB8F3DF390D1"
 			rewards: [
-				{ count: 1, id: "7FF559AE07F50910", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 7, id: "0A9044311BF38B00", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "707E41C6E68CD90B", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 8, id: "4B42696130F44F04", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 62 of 95 • 1 Gold, 7 Iron"
+			subtitle: "Entry 62 of 95 • 1 Netherite, 8 Diamond"
 			tasks: [{ count: 256L, consume_items: true, id: "620EB1163C5B2874", item: { count: 1, id: "minecraft:bone" }, type: "item" }]
 			title: "Ossuary"
 			x: 7.5d
@@ -894,10 +900,10 @@
 			description: ["A merchant has ordered 256 Gunpowder. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 256 Gunpowder", "&7The items are taken when you complete the quest."]
 			id: "386429376960A0A2"
 			rewards: [
-				{ count: 1, id: "0CDC5F6DBCA5A6D9", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 8, id: "599856252481C5A1", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "22410388B392C97A", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 8, id: "543DD37063236400", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 63 of 95 • 1 Gold, 8 Iron"
+			subtitle: "Entry 63 of 95 • 1 Netherite, 8 Diamond"
 			tasks: [{ count: 256L, consume_items: true, id: "230BF8EB7DB004DE", item: { count: 1, id: "minecraft:gunpowder" }, type: "item" }]
 			title: "Powder Magazine"
 			x: 9.0d
@@ -908,10 +914,10 @@
 			description: ["Supply run: 64 Slime Ball, taken on hand-in.", "", "&bObjective:&r Hand in 64 Slime Ball", "&7The items are taken when you complete the quest."]
 			id: "114CD50844F51EAB"
 			rewards: [
-				{ count: 1, id: "326B3AB56C2D4D3A", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 8, id: "1980CDA9C02A9CE0", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "6D744AD1F4A8E186", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 8, id: "0AF3EF16CD22166D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 64 of 95 • 1 Gold, 8 Iron"
+			subtitle: "Entry 64 of 95 • 1 Netherite, 8 Diamond"
 			tasks: [{ count: 64L, consume_items: true, id: "7BDB82F8462E1268", item: { count: 1, id: "minecraft:slime_ball" }, type: "item" }]
 			title: "Slime Vat"
 			x: 9.0d
@@ -922,10 +928,10 @@
 			description: ["The realm needs Spider Eye. Bring 64 and they're yours no more.", "", "&bObjective:&r Hand in 64 Spider Eye", "&7The items are taken when you complete the quest."]
 			id: "1C24C81304006A10"
 			rewards: [
-				{ count: 1, id: "25D3AAC15374475F", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 8, id: "67114BB1146B9559", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "0A47034A1530A130", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 8, id: "03B4E1AC95E1BE2C", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 65 of 95 • 1 Gold, 8 Iron"
+			subtitle: "Entry 65 of 95 • 1 Netherite, 8 Diamond"
 			tasks: [{ count: 64L, consume_items: true, id: "0CFC21BF3AE3E643", item: { count: 1, id: "minecraft:spider_eye" }, type: "item" }]
 			title: "Eye Collection"
 			x: 7.5d
@@ -936,10 +942,10 @@
 			description: ["The guild stores are low on Cobweb. Hand in 16.", "", "&bObjective:&r Hand in 16 Cobweb", "&7The items are taken when you complete the quest."]
 			id: "4BC4BDF61FB38E48"
 			rewards: [
-				{ count: 1, id: "6C7F711135057894", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 8, id: "6340E3394EA1AEA5", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "57EBCE7DAA07D68D", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 8, id: "1DEFFA1A1C743BFD", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 66 of 95 • 1 Gold, 8 Iron"
+			subtitle: "Entry 66 of 95 • 1 Netherite, 8 Diamond"
 			tasks: [{ count: 16L, consume_items: true, id: "7F4EB07DCC737144", item: { count: 1, id: "minecraft:cobweb" }, type: "item" }]
 			title: "Web Weaver"
 			x: 6.0d
@@ -950,10 +956,10 @@
 			description: ["A merchant has ordered 24 Phantom Membrane. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 24 Phantom Membrane", "&7The items are taken when you complete the quest."]
 			id: "469795478143CA94"
 			rewards: [
-				{ count: 1, id: "2FECF471BCB89180", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 8, id: "39ACCB7F58B19EB6", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "7D26B64C939C8BC5", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 8, id: "2153AD38B825F6D0", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 67 of 95 • 1 Gold, 8 Iron"
+			subtitle: "Entry 67 of 95 • 1 Netherite, 8 Diamond"
 			tasks: [{ count: 24L, consume_items: true, id: "6AAA7A12C3B43B17", item: { count: 1, id: "minecraft:phantom_membrane" }, type: "item" }]
 			title: "Night Hunter"
 			x: 4.5d
@@ -964,10 +970,10 @@
 			description: ["Supply run: 64 Flint, taken on hand-in.", "", "&bObjective:&r Hand in 64 Flint", "&7The items are taken when you complete the quest."]
 			id: "5E0E7EA18EFFC347"
 			rewards: [
-				{ count: 1, id: "2327A6E085E9E3D5", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 8, id: "0A0C5A8F6AE4FB9B", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "569B39BF1A49B934", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 9, id: "19918B859E8BA8B4", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 68 of 95 • 1 Gold, 8 Iron"
+			subtitle: "Entry 68 of 95 • 1 Netherite, 9 Diamond"
 			tasks: [{ count: 64L, consume_items: true, id: "2A635015C353E083", item: { count: 1, id: "minecraft:flint" }, type: "item" }]
 			title: "Flint Knapper"
 			x: 3.0d
@@ -978,10 +984,10 @@
 			description: ["Prove your hands are skilled: craft 16 Tipped Arrow yourself.", "", "&bObjective:&r Craft 16 Tipped Arrow", "&7Only items you craft yourself count."]
 			id: "0EA1B212DD153234"
 			rewards: [
-				{ count: 1, id: "6D351D5D234DF796", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 8, id: "5FE2E3DB84708AB6", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "22F57E3CAD4ED843", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 9, id: "1252004E495ADEDF", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 69 of 95 • 1 Gold, 8 Iron"
+			subtitle: "Entry 69 of 95 • 1 Netherite, 9 Diamond"
 			tasks: [{ count: 16L, only_from_crafting: true, id: "7CB1B7DD30043B21", item: { count: 1, id: "minecraft:tipped_arrow" }, type: "item" }]
 			title: "Tipped Arrows"
 			x: 1.5d
@@ -989,15 +995,16 @@
 		}
 		{
 			dependencies: ["0EA1B212DD153234"]
-			description: ["Reach 100 for target hit.", "", "&bObjective:&r Reach target hit: 100", "&7Counts your total since you first joined.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["Reach 100 for target hit.", "", "&bObjective:&r Reach target hit: 100", "&7Counts your total since you first joined.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Lightning Sword&7 (enchanted)"]
 			id: "57B2AF4D7D21EE31"
 			rewards: [
-				{ count: 4, id: "240C6E1FB703D051", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 5, id: "5ACB037120807682", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 4, id: "54011B887F69D263", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 7, id: "42D0C09ED4EB013D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ id: "28E3B614BEBAB677", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 5, "minecraft:unbreaking": 3, "minecraft:looting": 3, "minecraft:sweeping_edge": 3 } } }, count: 1, id: "aether:lightning_sword" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 70 of 95 • 4 Gold, 5 Iron"
+			subtitle: "Entry 70 of 95 • 4 Netherite, 7 Diamond + Gear"
 			tasks: [{ id: "7D0281940BC21608", stat: "minecraft:target_hit", type: "stat", value: 100 }]
 			title: "&6&lSharpshooter"
 			x: 0.0d
@@ -1008,10 +1015,10 @@
 			description: ["The Ledger tracks everything. Push mob kills to 500.", "", "&bObjective:&r Reach mob kills: 500", "&7Counts your total since you first joined."]
 			id: "04810F13316AC181"
 			rewards: [
-				{ count: 1, id: "1CE9D38BE9482EB3", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 8, id: "6912EC07B40EDBF9", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "2901679FFB59D93E", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 9, id: "058DDD97DD297654", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 71 of 95 • 1 Gold, 8 Iron"
+			subtitle: "Entry 71 of 95 • 1 Netherite, 9 Diamond"
 			tasks: [{ id: "78AECB53F1C59D92", stat: "minecraft:mob_kills", type: "stat", value: 500 }]
 			title: "Five Hundred"
 			x: 0.0d
@@ -1022,10 +1029,10 @@
 			description: ["Reach 2500 hearts for damage dealt.", "", "&bObjective:&r Reach damage dealt: 2500 hearts", "&7Counts your total since you first joined."]
 			id: "3913FB3B13159A4E"
 			rewards: [
-				{ count: 1, id: "35EECDB59BD747C7", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 8, id: "516CBDD774E01430", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "38E10D4D6285CEEF", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 9, id: "28777D403C840C6C", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 72 of 95 • 1 Gold, 8 Iron"
+			subtitle: "Entry 72 of 95 • 1 Netherite, 9 Diamond"
 			tasks: [{ id: "5021F164982305E6", stat: "minecraft:damage_dealt", type: "stat", value: 50000 }]
 			title: "Warlord's Strength"
 			x: 1.5d
@@ -1036,10 +1043,10 @@
 			description: ["The Ledger tracks everything. Push damage blocked by shield to 250 hearts.", "", "&bObjective:&r Reach damage blocked by shield: 250 hearts", "&7Counts your total since you first joined."]
 			id: "0C294A910829FEC0"
 			rewards: [
-				{ count: 1, id: "0E9AE1BAD0CC36B7", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 8, id: "508817AA76EA65CD", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "4968DD73A8663C3C", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 9, id: "6F87D390259F3B68", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 73 of 95 • 1 Gold, 8 Iron"
+			subtitle: "Entry 73 of 95 • 1 Netherite, 9 Diamond"
 			tasks: [{ id: "744F8ACE94260DB3", stat: "minecraft:damage_blocked_by_shield", type: "stat", value: 5000 }]
 			title: "Iron Bulwark"
 			x: 3.0d
@@ -1050,10 +1057,10 @@
 			description: ["Reach 2500 hearts for damage taken.", "", "&bObjective:&r Reach damage taken: 2500 hearts", "&7Counts your total since you first joined."]
 			id: "3A82A53A078868E3"
 			rewards: [
-				{ count: 1, id: "04D70EFA8F163D69", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 8, id: "00E0B0EF0A4AEF18", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "180A9974F46FE356", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 9, id: "6902667C1E1330F8", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 74 of 95 • 1 Gold, 8 Iron"
+			subtitle: "Entry 74 of 95 • 1 Netherite, 9 Diamond"
 			tasks: [{ id: "35FEFFE2D47BAD2E", stat: "minecraft:damage_taken", type: "stat", value: 50000 }]
 			title: "Unbreakable"
 			x: 4.5d
@@ -1064,10 +1071,10 @@
 			description: ["A merchant has ordered 4 Wither Rose. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 4 Wither Rose", "&7The items are taken when you complete the quest."]
 			id: "7CF613C2F6079F72"
 			rewards: [
-				{ count: 1, id: "407330A9469A1694", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 9, id: "16DB5A27BF28F2D0", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 1, id: "7B9324B708F6F21E", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 9, id: "60B951B9C00953AD", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 75 of 95 • 1 Gold, 9 Iron"
+			subtitle: "Entry 75 of 95 • 1 Netherite, 9 Diamond"
 			tasks: [{ count: 4L, consume_items: true, id: "6EAFCF8EF3E8D4A4", item: { count: 1, id: "minecraft:wither_rose" }, type: "item" }]
 			title: "Wither Roses"
 			x: 6.0d
@@ -1078,10 +1085,9 @@
 			description: ["A collector is asking around for Soul Sand. Bring 4 and prove you have them.", "", "&bObjective:&r Have 4 Soul Sand in your inventory"]
 			id: "6304E06E6F47C3D1"
 			rewards: [
-				{ count: 1, id: "7BAE14225E45455A", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 9, id: "75E66E6295A0B161", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 2, id: "007562601924CD92", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
 			]
-			subtitle: "Entry 76 of 95 • 1 Gold, 9 Iron"
+			subtitle: "Entry 76 of 95 • 2 Netherite"
 			tasks: [{ count: 4L, id: "2B3432C225D3E69E", item: { count: 1, id: "minecraft:soul_sand" }, type: "item" }]
 			title: "Soul Altar"
 			x: 7.5d
@@ -1092,10 +1098,9 @@
 			description: ["Accomplish \"Withering Heights\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Withering Heights\""]
 			id: "4A9D7F20018F22A7"
 			rewards: [
-				{ count: 1, id: "5CD6461D4E9EA278", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 9, id: "0976F153E429A405", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 2, id: "60654FA7E4C12030", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
 			]
-			subtitle: "Entry 77 of 95 • 1 Gold, 9 Iron"
+			subtitle: "Entry 77 of 95 • 2 Netherite"
 			tasks: [{ advancement: "minecraft:nether/summon_wither", criterion: "", id: "37AB3D3D148AD252", type: "advancement" }]
 			title: "Withering Heights"
 			x: 9.0d
@@ -1106,10 +1111,9 @@
 			description: ["A bounty is posted: 1 Wither.", "", "&bObjective:&r Slay 1 Wither"]
 			id: "0F3F18A9968F59ED"
 			rewards: [
-				{ count: 1, id: "67FD4A2DD2577E36", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 9, id: "20E4158574C17944", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 2, id: "47778738BF449CB2", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
 			]
-			subtitle: "Entry 78 of 95 • 1 Gold, 9 Iron"
+			subtitle: "Entry 78 of 95 • 2 Netherite"
 			tasks: [{ entity: "minecraft:wither", id: "75B32C27B14052AB", type: "kill", value: 1L }]
 			title: "The Wither"
 			x: 9.0d
@@ -1120,10 +1124,9 @@
 			description: ["A collector is asking around for Nether Star. Bring 1 and prove you have them.", "", "&bObjective:&r Have 1 Nether Star in your inventory"]
 			id: "408F964CDADE3AAA"
 			rewards: [
-				{ count: 1, id: "06E8643D2CA2AE76", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 9, id: "6EF49EA756D18406", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 2, id: "071C9DBF4597AA4A", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
 			]
-			subtitle: "Entry 79 of 95 • 1 Gold, 9 Iron"
+			subtitle: "Entry 79 of 95 • 2 Netherite"
 			tasks: [{ count: 1L, id: "2988C6167AB0AFA4", item: { count: 1, id: "minecraft:nether_star" }, type: "item" }]
 			title: "Nether Star"
 			x: 7.5d
@@ -1131,15 +1134,15 @@
 		}
 		{
 			dependencies: ["408F964CDADE3AAA"]
-			description: ["Reach 5 for raid win.", "", "&bObjective:&r Reach raid win: 5", "&7Counts your total since you first joined.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["Reach 5 for raid win.", "", "&bObjective:&r Reach raid win: 5", "&7Counts your total since you first joined.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Keeper Flamberge&7 (enchanted)"]
 			id: "3DF514C9572B47E7"
 			rewards: [
-				{ count: 4, id: "5DD6E2250BDA847E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 7, id: "4E6FB7ABD50938EC", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 5, id: "74E2ABC7D29DA879", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ id: "2A888C55DA2F9B72", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 5, "minecraft:unbreaking": 3, "minecraft:looting": 3, "minecraft:sweeping_edge": 3 } } }, count: 1, id: "irons_spellbooks:keeper_flamberge" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 80 of 95 • 4 Gold, 7 Iron"
+			subtitle: "Entry 80 of 95 • 5 Netherite + Gear"
 			tasks: [{ id: "2C37CDBE394D3831", stat: "minecraft:raid_win", type: "stat", value: 5 }]
 			title: "&6&lRaid Lord"
 			x: 6.0d
@@ -1150,10 +1153,9 @@
 			description: ["The Ledger tracks everything. Push mob kills to 1000.", "", "&bObjective:&r Reach mob kills: 1000", "&7Counts your total since you first joined."]
 			id: "12CB5CE0A7CF43F7"
 			rewards: [
-				{ count: 1, id: "2F9ED31A71484006", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 9, id: "34603B7B57F4243F", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 2, id: "64CF6CA7EAB752D8", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
 			]
-			subtitle: "Entry 81 of 95 • 1 Gold, 9 Iron"
+			subtitle: "Entry 81 of 95 • 2 Netherite"
 			tasks: [{ id: "0EFB3169F9F8C03A", stat: "minecraft:mob_kills", type: "stat", value: 1000 }]
 			title: "One Thousand Kills"
 			x: 4.5d
@@ -1164,10 +1166,9 @@
 			description: ["Reports of Wither sightings. Thin them out: 3 kills.", "", "&bObjective:&r Slay 3 Wither"]
 			id: "07A2DAA0E6690B84"
 			rewards: [
-				{ count: 1, id: "787265A183DB0541", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 9, id: "4B2FAD8AC9B833FF", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 2, id: "6150DF2678DD1748", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
 			]
-			subtitle: "Entry 82 of 95 • 1 Gold, 9 Iron"
+			subtitle: "Entry 82 of 95 • 2 Netherite"
 			tasks: [{ entity: "minecraft:wither", id: "7279A077368AFD49", type: "kill", value: 3L }]
 			title: "Wither Slayer"
 			x: 3.0d
@@ -1178,10 +1179,10 @@
 			description: ["Keep 3 Nether Star in your pack. The clerk only needs to see them.", "", "&bObjective:&r Have 3 Nether Star in your inventory"]
 			id: "226FD4402594D3FB"
 			rewards: [
-				{ count: 1, id: "43D9B4EF2B6CDFDD", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 9, id: "30A6A11001D0C103", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 2, id: "6CD59EF827053245", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 1, id: "6812BAC49C69EA81", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 83 of 95 • 1 Gold, 9 Iron"
+			subtitle: "Entry 83 of 95 • 2 Netherite, 1 Diamond"
 			tasks: [{ count: 3L, id: "01D5026C806C0716", item: { count: 1, id: "minecraft:nether_star" }, type: "item" }]
 			title: "Star Collector"
 			x: 1.5d
@@ -1192,10 +1193,10 @@
 			description: ["Reach 2500 for mob kills.", "", "&bObjective:&r Reach mob kills: 2500", "&7Counts your total since you first joined."]
 			id: "2C0D1F8EC58D2C53"
 			rewards: [
-				{ count: 1, id: "240CBC080995EE32", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 9, id: "5AE7C711AE984B4C", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 2, id: "24426E629D5D75E5", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 1, id: "6DFB941B864EFC38", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 84 of 95 • 1 Gold, 9 Iron"
+			subtitle: "Entry 84 of 95 • 2 Netherite, 1 Diamond"
 			tasks: [{ id: "2F5A117180511723", stat: "minecraft:mob_kills", type: "stat", value: 2500 }]
 			title: "Living Legend"
 			x: 0.0d
@@ -1206,10 +1207,10 @@
 			description: ["The Ledger tracks everything. Push damage dealt to 10000 hearts.", "", "&bObjective:&r Reach damage dealt: 10000 hearts", "&7Counts your total since you first joined."]
 			id: "73CA219AD538F129"
 			rewards: [
-				{ count: 1, id: "48FCA655513681F1", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 9, id: "4C3D9CB9B6A99E9F", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 2, id: "2B8068ACD0D0C52C", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 1, id: "3DECA9DAF4F7AC73", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 85 of 95 • 1 Gold, 9 Iron"
+			subtitle: "Entry 85 of 95 • 2 Netherite, 1 Diamond"
 			tasks: [{ id: "0C00366481EA8027", stat: "minecraft:damage_dealt", type: "stat", value: 200000 }]
 			title: "Unstoppable"
 			x: 0.0d
@@ -1220,10 +1221,10 @@
 			description: ["Keep 1 Chainmail Helmet in your pack. The clerk only needs to see them.", "", "&bObjective:&r Have 1 Chainmail Helmet in your inventory"]
 			id: "62C186FCE15561E2"
 			rewards: [
-				{ count: 1, id: "51222113AB6FB660", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 9, id: "3ADD40AACB931A0F", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 2, id: "07BC3A0227670D9C", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 1, id: "424979BCD61038EE", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 86 of 95 • 1 Gold, 9 Iron"
+			subtitle: "Entry 86 of 95 • 2 Netherite, 1 Diamond"
 			tasks: [{ count: 1L, id: "19F9095200CFB9BA", item: { count: 1, id: "minecraft:chainmail_helmet" }, type: "item" }]
 			title: "Chain Coif"
 			x: 1.5d
@@ -1234,9 +1235,10 @@
 			description: ["The Ledger wants proof: carry 1 Chainmail Leggings and show it.", "", "&bObjective:&r Have 1 Chainmail Leggings in your inventory"]
 			id: "4CDC8FF8AEF21367"
 			rewards: [
-				{ count: 2, id: "56DD4C3D666C4630", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 2, id: "34517B0C93B6FF3C", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 1, id: "710B4795156BC18D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 87 of 95 • 2 Gold"
+			subtitle: "Entry 87 of 95 • 2 Netherite, 1 Diamond"
 			tasks: [{ count: 1L, id: "7BBAECFF1228E027", item: { count: 1, id: "minecraft:chainmail_leggings" }, type: "item" }]
 			title: "Chain Leggings"
 			x: 3.0d
@@ -1247,9 +1249,10 @@
 			description: ["A collector is asking around for Chainmail Boots. Bring 1 and prove you have them.", "", "&bObjective:&r Have 1 Chainmail Boots in your inventory"]
 			id: "32D294BAC5FD712C"
 			rewards: [
-				{ count: 2, id: "2E1F809205319EB2", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 2, id: "6C753805673CEE6E", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 1, id: "30BAD9871C439F6C", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 88 of 95 • 2 Gold"
+			subtitle: "Entry 88 of 95 • 2 Netherite, 1 Diamond"
 			tasks: [{ count: 1L, id: "7A70A9A8060954F8", item: { count: 1, id: "minecraft:chainmail_boots" }, type: "item" }]
 			title: "Chain Boots"
 			x: 4.5d
@@ -1260,9 +1263,10 @@
 			description: ["The realm needs Arrow. Bring 256 and they're yours no more.", "", "&bObjective:&r Hand in 256 Arrow", "&7The items are taken when you complete the quest."]
 			id: "1DEE0B26A763F35F"
 			rewards: [
-				{ count: 2, id: "24A8A6BDD4DF5902", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 2, id: "15124CE418D4FD2E", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 1, id: "7D5706294486460F", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 89 of 95 • 2 Gold"
+			subtitle: "Entry 89 of 95 • 2 Netherite, 1 Diamond"
 			tasks: [{ count: 256L, consume_items: true, id: "36190FA46D269E9C", item: { count: 1, id: "minecraft:arrow" }, type: "item" }]
 			title: "Armoury Arrows"
 			x: 6.0d
@@ -1270,14 +1274,16 @@
 		}
 		{
 			dependencies: ["1DEE0B26A763F35F"]
-			description: ["Prove your hands are skilled: craft 1 Iron Pickaxe yourself.", "", "&bObjective:&r Craft 1 Iron Pickaxe", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["Prove your hands are skilled: craft 1 Iron Pickaxe yourself.", "", "&bObjective:&r Craft 1 Iron Pickaxe", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Storms Edge&7 (enchanted)"]
 			id: "19E1195B40979609"
 			rewards: [
-				{ count: 5, id: "7EB7F1342D8398B6", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 5, id: "10FBA2933FAE971D", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 4, id: "0BB7806874D2D9FF", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ id: "4F88AAFB7DA9C86E", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 5, "minecraft:unbreaking": 3, "minecraft:looting": 3, "minecraft:sweeping_edge": 3 } } }, count: 1, id: "simplyswords:storms_edge" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 90 of 95 • 5 Gold"
+			subtitle: "Entry 90 of 95 • 5 Netherite, 4 Diamond + Gear"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "63075C08F5467C96", item: { count: 1, id: "minecraft:iron_pickaxe" }, type: "item" }]
 			title: "&6&lIron Pickaxe"
 			x: 7.5d
@@ -1288,9 +1294,10 @@
 			description: ["Workshop order: 1 Golden Chestplate, made by you.", "", "&bObjective:&r Craft 1 Golden Chestplate", "&7Only items you craft yourself count."]
 			id: "0614F0B9D5132703"
 			rewards: [
-				{ count: 2, id: "283CB6F0F0774403", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 2, id: "32347D98A0F331ED", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 2, id: "7FE711819FB98725", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 91 of 95 • 2 Gold"
+			subtitle: "Entry 91 of 95 • 2 Netherite, 2 Diamond"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "7015F967003C6A22", item: { count: 1, id: "minecraft:golden_chestplate" }, type: "item" }]
 			title: "Gilded Chestplate"
 			x: 9.0d
@@ -1301,9 +1308,10 @@
 			description: ["Supply run: 32 Firework Rocket, taken on hand-in.", "", "&bObjective:&r Hand in 32 Firework Rocket", "&7The items are taken when you complete the quest."]
 			id: "5E8F8F2BFEA24869"
 			rewards: [
-				{ count: 2, id: "79F0020228DAAD99", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 2, id: "36343781B9DF376A", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 2, id: "1A368082E168434D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 92 of 95 • 2 Gold"
+			subtitle: "Entry 92 of 95 • 2 Netherite, 2 Diamond"
 			tasks: [{ count: 32L, consume_items: true, id: "69284ABC2EF1AD1A", item: { count: 1, id: "minecraft:firework_rocket" }, type: "item" }]
 			title: "Crossbow Fireworks"
 			x: 9.0d
@@ -1314,9 +1322,10 @@
 			description: ["The realm needs Tnt. Bring 16 and they're yours no more.", "", "&bObjective:&r Hand in 16 Tnt", "&7The items are taken when you complete the quest."]
 			id: "0966865240542DC2"
 			rewards: [
-				{ count: 2, id: "486E8572AC4EB8FD", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 2, id: "3544B23DE9BEB5A4", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 2, id: "55071AFA7BF837AF", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 93 of 95 • 2 Gold"
+			subtitle: "Entry 93 of 95 • 2 Netherite, 2 Diamond"
 			tasks: [{ count: 16L, consume_items: true, id: "143A7F4F2A23EBF7", item: { count: 1, id: "minecraft:tnt" }, type: "item" }]
 			title: "Demolition Crew"
 			x: 7.5d
@@ -1327,9 +1336,10 @@
 			description: ["Reach 5000 for mob kills.", "", "&bObjective:&r Reach mob kills: 5000", "&7Counts your total since you first joined."]
 			id: "03229F4A036361FA"
 			rewards: [
-				{ count: 2, id: "15ED835030129667", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 2, id: "07A23E582855D17A", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 2, id: "6CBF3C93E7380370", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
 			]
-			subtitle: "Entry 94 of 95 • 2 Gold"
+			subtitle: "Entry 94 of 95 • 2 Netherite, 2 Diamond"
 			tasks: [{ id: "66FC43B17D85C6FE", stat: "minecraft:mob_kills", type: "stat", value: 5000 }]
 			title: "Bounty King"
 			x: 6.0d
@@ -1337,15 +1347,17 @@
 		}
 		{
 			dependencies: ["03229F4A036361FA"]
-			description: ["Experience is the true currency. Offer 55 levels.", "", "&bObjective:&r Spend 55 XP levels", "&7The levels are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coin reward.", "&6&lFinal entry of this Ledger."]
+			description: ["Experience is the true currency. Offer 55 levels.", "", "&bObjective:&r Spend 55 XP levels", "&7The levels are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Valkyrie Lance&7 (enchanted)", "&d  ✦ Hammer Of Kingbdogz&7 (enchanted)", "&6&lFinal entry of this Ledger."]
 			id: "7268467F213EA357"
 			rewards: [
-				{ count: 8, id: "6C6D41A3A5301196", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
-				{ count: 1, id: "3C3F85E1630CB00B", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 8, id: "52810185495BD28F", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 9, id: "31A698F16A9C3C0B", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ id: "34BD89721EB033E4", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 5, "minecraft:unbreaking": 3, "minecraft:looting": 3, "minecraft:sweeping_edge": 3 } } }, count: 1, id: "aether:valkyrie_lance" }, type: "item" }
+				{ id: "6D6CD4E6AC7A3BD0", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 5, "minecraft:unbreaking": 3, "minecraft:looting": 3, "minecraft:sweeping_edge": 3 } } }, count: 1, id: "aether:hammer_of_kingbdogz" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 2.0d
-			subtitle: "Entry 95 of 95 • 8 Gold, 1 Iron"
+			subtitle: "Entry 95 of 95 • 8 Netherite, 9 Diamond + Gear"
 			tasks: [{ id: "29551D591E54DDCD", points: false, type: "xp", value: 55L }]
 			title: "&6&lBattle Hardened"
 			x: 4.5d

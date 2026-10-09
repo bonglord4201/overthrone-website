@@ -12,7 +12,7 @@ copper at the start to a few gold at the very end.
 """
 import hashlib, json, os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from ledger_content import CHAPTERS
+from ledger_content import CHAPTERS, GEAR
 
 REG, RECIPES, EXISTING, OUT = sys.argv[1:5]
 reg = json.load(open(REG))
@@ -32,6 +32,8 @@ CRAFTABLE = {"minecraft:" + id2name[int(k)] for k in rec}
 CRAFTABLE |= {"minecraft:suspicious_stew", "minecraft:tipped_arrow"} | {"minecraft:%s_shulker_box" % c for c in
     "white orange magenta light_blue yellow lime pink gray light_gray cyan purple blue brown green red black".split()}
 
+MOD_ITEMS = set(x for v in json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "mod_items.json"))).values() for x in v)
+TARGET_COPPER = 150_000_000   # all 1,012 quests together ~ 1,500 Netherite coins
 COINS = [("netherite", 100000), ("diamond", 10000), ("emerald", 1000), ("gold", 100), ("iron", 10), ("copper", 1)]
 
 # ---------- ids that must not collide with anything already on the server
@@ -80,17 +82,32 @@ for ci, ch in enumerate(CHAPTERS):
         key = (kind, str(target), count)
         check(key not in seen, where + ": duplicate of " + seen.get(key, ""))
         seen[key] = where
+for ci, (ch, gear) in enumerate(zip(CHAPTERS, GEAR)):
+    slots = sum(1 for qi in range(len(ch["rows"])) if (qi + 1) % 10 == 0 or qi == len(ch["rows"]) - 1)
+    check(len(gear) == slots, "%s: %d gear slots for %d trials" % (ch["name"], len(gear), slots))
+    for slot in gear:
+        for item, ench in slot:
+            check(item in ITEMS or item in MOD_ITEMS, ch["name"] + ": unknown gear item " + item)
+            for e in filter(None, ench.split(",")):
+                check("minecraft:" + e.split(":")[0] in ENCHANTS, ch["name"] + ": unknown enchantment " + e)
 if errors:
     print("\n".join(errors)); sys.exit(1)
 
 # ---------- rewards
 TOTAL = sum(len(c["rows"]) for c in CHAPTERS)
-def reward_value(gi, last_in_chapter, milestone):
-    v = 5 * (100 ** (gi / (TOTAL - 1)))          # 5 copper -> 500 copper (5 gold)
-    if last_in_chapter: v *= 4
-    elif milestone: v *= 2.5
+RATIO = 1000                       # the last quest pays ~1000x the first
+def raw_value(gi, last_in_chapter, milestone):
+    v = RATIO ** (gi / (TOTAL - 1))
+    return v * (4 if last_in_chapter else 2.5 if milestone else 1)
+def round2(v):
     mag = 10 ** max(0, len(str(int(v))) - 2)       # keep 2 significant figures
     return max(1, int(round(v / mag) * mag))
+_flags = [((qi + 1) % 10 == 0, qi == len(c["rows"]) - 1) for c in CHAPTERS for qi in range(len(c["rows"]))]
+_scale = TARGET_COPPER / sum(raw_value(i, l, m) for i, (m, l) in enumerate(_flags))
+for _ in range(5):   # correct for rounding so the grand total lands on the target
+    _scale *= TARGET_COPPER / sum(round2(_scale * raw_value(i, l, m)) for i, (m, l) in enumerate(_flags))
+def reward_value(gi, last_in_chapter, milestone):
+    return round2(_scale * raw_value(gi, last_in_chapter, milestone))
 def coins(v):
     out = []
     for name, val in COINS:
@@ -197,7 +214,7 @@ summary = []
 for ci, ch in enumerate(CHAPTERS):
     ch_id = qid("chapter", ci)
     rows = ch["rows"]; N = len(rows)
-    blocks, first_q, unlock_q, ch_copper = [], None, None, 0
+    blocks, first_q, unlock_q, ch_copper, slot = [], None, None, 0, 0
     prev = None
     for qi, (kind, target, n, title) in enumerate(rows):
         q_id = qid("quest", ci, qi)
@@ -206,10 +223,20 @@ for ci, ch in enumerate(CHAPTERS):
         total_copper += val; ch_copper += val
         rewards = ["{ count: %d, id: %s, item: { count: 1, id: \"lightmanscurrency:coin_%s\" }, type: \"item\" }" % (cnt, s(qid("reward", ci, qi, name)), name)
                    for name, cnt in cs]
+        gear = GEAR[ci][slot] if (milestone or last) else []
+        if milestone or last: slot += 1
+        for gi2, (item, ench) in enumerate(gear):
+            comp = ""
+            if ench:
+                comp = 'components: { "minecraft:enchantments": { levels: { %s } } }, ' % ", ".join(
+                    '%s: %s' % (s("minecraft:" + e.split(":")[0]), e.split(":")[1]) for e in ench.split(","))
+            rewards.append("{ id: %s, item: { %scount: 1, id: %s }, type: \"item\" }" % (s(qid("gear", ci, qi, gi2)), comp, s(item)))
         lore, obj, note = describe(kind, target, n, title, qi + ci)
         desc = [lore, "", "&bObjective:&r " + obj]
         if note: desc.append(note)
-        if milestone or last: desc += ["", "&6Ledger Trial! &7Bonus coin reward."]
+        if milestone or last: desc += ["", "&6Ledger Trial! &7Bonus coins" + (" and gear:" if gear else ".")]
+        for item, ench in gear:
+            desc.append("&d  ✦ " + pretty(item) + ("&7 (enchanted)" if ench else ""))
         if last: desc += ["&6&lFinal entry of this Ledger."]
         deps = [prev] if prev else ([prev_unlock] if prev_unlock else [])
         row, col = divmod(qi, 7)
@@ -222,7 +249,7 @@ for ci, ch in enumerate(CHAPTERS):
         fields.append("rewards: [\n\t\t\t\t%s\n\t\t\t]" % "\n\t\t\t\t".join(rewards))
         if milestone or last:
             fields.append('shape: "hexagon"'); fields.append("size: %sd" % ("2.0" if last else "1.4"))
-        fields.append("subtitle: %s" % s("Entry %d of %d • %s" % (qi + 1, N, coin_text(cs))))
+        fields.append("subtitle: %s" % s("Entry %d of %d • %s%s" % (qi + 1, N, coin_text(cs), " + Gear" if gear else "")))
         fields.append("tasks: [%s]" % task_snbt(kind, target, n, qid("task", ci, qi)))
         fields.append("title: %s" % s(("&6&l" if (milestone or last) else "") + title))
         fields.append("x: %.1fd" % x); fields.append("y: %.1fd" % y)

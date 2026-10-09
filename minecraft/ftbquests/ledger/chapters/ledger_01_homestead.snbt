@@ -13,9 +13,10 @@
 			description: ["Prove your hands are skilled: craft 1 Crafting Table yourself.", "", "&bObjective:&r Craft 1 Crafting Table", "&7Only items you craft yourself count."]
 			id: "091AA6E51A287FD9"
 			rewards: [
-				{ count: 5, id: "7DF43FD0513EE012", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 8, id: "1EED4AB72755E97E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 6, id: "30F64C6271D344DA", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
 			]
-			subtitle: "Entry 1 of 104 • 5 Copper"
+			subtitle: "Entry 1 of 104 • 8 Gold, 6 Iron"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "6867E462338A067B", item: { count: 1, id: "minecraft:crafting_table" }, type: "item" }]
 			title: "A Place to Work"
 			x: 0.0d
@@ -26,9 +27,10 @@
 			description: ["Workshop order: 1 Wooden Hoe, made by you.", "", "&bObjective:&r Craft 1 Wooden Hoe", "&7Only items you craft yourself count."]
 			id: "4CB54725815689DE"
 			rewards: [
-				{ count: 5, id: "1661361961F56516", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 8, id: "7C5B5747563117B6", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 7, id: "5B103219877287F7", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
 			]
-			subtitle: "Entry 2 of 104 • 5 Copper"
+			subtitle: "Entry 2 of 104 • 8 Gold, 7 Iron"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "28FB0A39506D99F0", item: { count: 1, id: "minecraft:wooden_hoe" }, type: "item" }]
 			title: "Tiller of Soil"
 			x: 1.5d
@@ -39,9 +41,10 @@
 			description: ["Keep 32 Wheat Seeds in your pack. The clerk only needs to see them.", "", "&bObjective:&r Have 32 Wheat Seeds in your inventory"]
 			id: "1116C7259E55B9E1"
 			rewards: [
-				{ count: 5, id: "62A086DEAB26297A", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 8, id: "632AF144C851F6ED", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 7, id: "52E995A41911301B", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
 			]
-			subtitle: "Entry 3 of 104 • 5 Copper"
+			subtitle: "Entry 3 of 104 • 8 Gold, 7 Iron"
 			tasks: [{ count: 32L, id: "5BE730F09236A0E0", item: { count: 1, id: "minecraft:wheat_seeds" }, type: "item" }]
 			title: "Seed Bag"
 			x: 3.0d
@@ -52,9 +55,10 @@
 			description: ["Accomplish \"A Seedy Place\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"A Seedy Place\""]
 			id: "1927E8B229672881"
 			rewards: [
-				{ count: 5, id: "7F8F5F1CEDB81E75", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 8, id: "7CF04893BDC9E63D", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 8, id: "155A8B26345B98E3", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
 			]
-			subtitle: "Entry 4 of 104 • 5 Copper"
+			subtitle: "Entry 4 of 104 • 8 Gold, 8 Iron"
 			tasks: [{ advancement: "minecraft:husbandry/plant_seed", criterion: "", id: "2E13F44AAF0C4453", type: "advancement" }]
 			title: "A Seedy Place"
 			x: 4.5d
@@ -65,9 +69,10 @@
 			description: ["The guild stores are low on Carrot. Hand in 16.", "", "&bObjective:&r Hand in 16 Carrot", "&7The items are taken when you complete the quest."]
 			id: "7DA34B09F4223912"
 			rewards: [
-				{ count: 5, id: "20B7E9D0BE0B068A", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 8, id: "3C1A50F0C41C8A67", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 9, id: "7D8CF229FFD221D8", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
 			]
-			subtitle: "Entry 5 of 104 • 5 Copper"
+			subtitle: "Entry 5 of 104 • 8 Gold, 9 Iron"
 			tasks: [{ count: 16L, consume_items: true, id: "334EF3C11B993C89", item: { count: 1, id: "minecraft:carrot" }, type: "item" }]
 			title: "Carrot Patch"
 			x: 6.0d
@@ -78,9 +83,10 @@
 			description: ["A merchant has ordered 16 Potato. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 16 Potato", "&7The items are taken when you complete the quest."]
 			id: "673FDF6F7FBEBA05"
 			rewards: [
-				{ count: 5, id: "3A6F107CB9D2870A", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 8, id: "1A813788CD94F355", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 9, id: "6070E31FADDFCAB2", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
 			]
-			subtitle: "Entry 6 of 104 • 5 Copper"
+			subtitle: "Entry 6 of 104 • 8 Gold, 9 Iron"
 			tasks: [{ count: 16L, consume_items: true, id: "353AA88615C97D83", item: { count: 1, id: "minecraft:potato" }, type: "item" }]
 			title: "Spud Season"
 			x: 7.5d
@@ -91,9 +97,9 @@
 			description: ["Supply run: 16 Beetroot, taken on hand-in.", "", "&bObjective:&r Hand in 16 Beetroot", "&7The items are taken when you complete the quest."]
 			id: "1C6E696738A2FF4C"
 			rewards: [
-				{ count: 5, id: "7A4B0E4E661C05AB", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 9, id: "4DD6A4AAAD7FBB87", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 7 of 104 • 5 Copper"
+			subtitle: "Entry 7 of 104 • 9 Gold"
 			tasks: [{ count: 16L, consume_items: true, id: "7A6C2C9F51833A39", item: { count: 1, id: "minecraft:beetroot" }, type: "item" }]
 			title: "Red Roots"
 			x: 9.0d
@@ -104,9 +110,9 @@
 			description: ["Workshop order: 2 Furnace, made by you.", "", "&bObjective:&r Craft 2 Furnace", "&7Only items you craft yourself count."]
 			id: "580412F0684E3984"
 			rewards: [
-				{ count: 5, id: "189D5077E52E3A90", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 9, id: "329606F28D802988", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 8 of 104 • 5 Copper"
+			subtitle: "Entry 8 of 104 • 9 Gold"
 			tasks: [{ count: 2L, only_from_crafting: true, id: "446C8A5500448026", item: { count: 1, id: "minecraft:furnace" }, type: "item" }]
 			title: "The Hearth"
 			x: 9.0d
@@ -117,9 +123,10 @@
 			description: ["The guild stores are low on Baked Potato. Hand in 16.", "", "&bObjective:&r Hand in 16 Baked Potato", "&7The items are taken when you complete the quest."]
 			id: "26AE211F8C5E0FF4"
 			rewards: [
-				{ count: 5, id: "4F40A6CD523B0B01", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 9, id: "606D3C4611C1CB20", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 1, id: "64A1BA212D35CE52", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
 			]
-			subtitle: "Entry 9 of 104 • 5 Copper"
+			subtitle: "Entry 9 of 104 • 9 Gold, 1 Iron"
 			tasks: [{ count: 16L, consume_items: true, id: "1DE2C713F89FC203", item: { count: 1, id: "minecraft:baked_potato" }, type: "item" }]
 			title: "Hot Potatoes"
 			x: 7.5d
@@ -127,15 +134,16 @@
 		}
 		{
 			dependencies: ["26AE211F8C5E0FF4"]
-			description: ["Prove your hands are skilled: craft 16 Bread yourself.", "", "&bObjective:&r Craft 16 Bread", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["Prove your hands are skilled: craft 16 Bread yourself.", "", "&bObjective:&r Craft 16 Bread", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Iron Hoe&7 (enchanted)"]
 			id: "3049E36AC6601A1C"
 			rewards: [
-				{ count: 1, id: "35917FB7900F5FE3", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 3, id: "2B2BD674A860019B", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 2, id: "47EEE392B812A993", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "1DCAF90511EC4F5F", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ id: "1587BA25ECC887DB", item: { components: { "minecraft:enchantments": { levels: { "minecraft:efficiency": 2, "minecraft:unbreaking": 1 } } }, count: 1, id: "minecraft:iron_hoe" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 10 of 104 • 1 Iron, 3 Copper"
+			subtitle: "Entry 10 of 104 • 2 Emerald, 3 Gold + Gear"
 			tasks: [{ count: 16L, only_from_crafting: true, id: "59A17CA57A3FC623", item: { count: 1, id: "minecraft:bread" }, type: "item" }]
 			title: "&6&lDaily Bread"
 			x: 6.0d
@@ -146,9 +154,10 @@
 			description: ["Supply run: 8 Apple, taken on hand-in.", "", "&bObjective:&r Hand in 8 Apple", "&7The items are taken when you complete the quest."]
 			id: "42A2BBCFD20A59C2"
 			rewards: [
-				{ count: 5, id: "33B36149BB7D5E50", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 9, id: "3ECF2EDFAA84D33C", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 2, id: "6E557E80401AE059", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
 			]
-			subtitle: "Entry 11 of 104 • 5 Copper"
+			subtitle: "Entry 11 of 104 • 9 Gold, 2 Iron"
 			tasks: [{ count: 8L, consume_items: true, id: "735558CE10665990", item: { count: 1, id: "minecraft:apple" }, type: "item" }]
 			title: "An Apple a Day"
 			x: 4.5d
@@ -159,9 +168,10 @@
 			description: ["The realm needs Egg. Bring 16 and they're yours no more.", "", "&bObjective:&r Hand in 16 Egg", "&7The items are taken when you complete the quest."]
 			id: "05CDB228B7FBDBD3"
 			rewards: [
-				{ count: 5, id: "2402FBEA28C5DCEF", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 9, id: "46F18316321ACAD3", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 3, id: "389A051E49233506", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
 			]
-			subtitle: "Entry 12 of 104 • 5 Copper"
+			subtitle: "Entry 12 of 104 • 9 Gold, 3 Iron"
 			tasks: [{ count: 16L, consume_items: true, id: "2DF293A2D7547C7A", item: { count: 1, id: "minecraft:egg" }, type: "item" }]
 			title: "Egg Hunt"
 			x: 3.0d
@@ -172,9 +182,10 @@
 			description: ["The guild stores are low on Feather. Hand in 32.", "", "&bObjective:&r Hand in 32 Feather", "&7The items are taken when you complete the quest."]
 			id: "7165E0498A98D6A6"
 			rewards: [
-				{ count: 5, id: "4801D57B650B93DC", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 9, id: "689812D01CD0AC70", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 4, id: "575C9E0C10682FD4", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
 			]
-			subtitle: "Entry 13 of 104 • 5 Copper"
+			subtitle: "Entry 13 of 104 • 9 Gold, 4 Iron"
 			tasks: [{ count: 32L, consume_items: true, id: "5D785F8CEB639F3E", item: { count: 1, id: "minecraft:feather" }, type: "item" }]
 			title: "Feather Pillows"
 			x: 1.5d
@@ -185,9 +196,10 @@
 			description: ["A collector is asking around for Milk Bucket. Bring 1 and prove you have them.", "", "&bObjective:&r Have 1 Milk Bucket in your inventory"]
 			id: "195BD52D0B42C3FF"
 			rewards: [
-				{ count: 5, id: "5CEC9A3C791EB76C", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 9, id: "4C2885D67287EE35", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 4, id: "256F2D2F6A230C58", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
 			]
-			subtitle: "Entry 14 of 104 • 5 Copper"
+			subtitle: "Entry 14 of 104 • 9 Gold, 4 Iron"
 			tasks: [{ count: 1L, id: "5671A3F14BAF4A39", item: { count: 1, id: "minecraft:milk_bucket" }, type: "item" }]
 			title: "Fresh Milk"
 			x: 0.0d
@@ -198,9 +210,10 @@
 			description: ["The guild wants 3 freshly crafted Bucket.", "", "&bObjective:&r Craft 3 Bucket", "&7Only items you craft yourself count."]
 			id: "651F1ACF3D190A62"
 			rewards: [
-				{ count: 5, id: "569F5D8628637688", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 9, id: "7C02798AFDF566FB", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 5, id: "5D130D9D48AAA66A", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
 			]
-			subtitle: "Entry 15 of 104 • 5 Copper"
+			subtitle: "Entry 15 of 104 • 9 Gold, 5 Iron"
 			tasks: [{ count: 3L, only_from_crafting: true, id: "0C891C5D87E94474", item: { count: 1, id: "minecraft:bucket" }, type: "item" }]
 			title: "Bucket Brigade"
 			x: 0.0d
@@ -211,9 +224,10 @@
 			description: ["The Ledger wants proof: carry 1 Water Bucket and show it.", "", "&bObjective:&r Have 1 Water Bucket in your inventory"]
 			id: "6F90B549E80BEEEB"
 			rewards: [
-				{ count: 5, id: "71ACCDBA935A50A0", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 9, id: "7A3557888C4211FB", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 5, id: "57DA8051DDE6E18B", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
 			]
-			subtitle: "Entry 16 of 104 • 5 Copper"
+			subtitle: "Entry 16 of 104 • 9 Gold, 5 Iron"
 			tasks: [{ count: 1L, id: "73FEFFF587DF5A4B", item: { count: 1, id: "minecraft:water_bucket" }, type: "item" }]
 			title: "Well Water"
 			x: 1.5d
@@ -224,9 +238,10 @@
 			description: ["Workshop order: 1 Shears, made by you.", "", "&bObjective:&r Craft 1 Shears", "&7Only items you craft yourself count."]
 			id: "53737E07210BF193"
 			rewards: [
-				{ count: 5, id: "3641610F1862D3B6", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 9, id: "43250B35A2F6FDAE", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 6, id: "4005E5B267D55085", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
 			]
-			subtitle: "Entry 17 of 104 • 5 Copper"
+			subtitle: "Entry 17 of 104 • 9 Gold, 6 Iron"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "19028408B7132044", item: { count: 1, id: "minecraft:shears" }, type: "item" }]
 			title: "Shepherd's Shears"
 			x: 3.0d
@@ -237,9 +252,10 @@
 			description: ["A merchant has ordered 32 White Wool. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 32 White Wool", "&7The items are taken when you complete the quest."]
 			id: "19022C6AC9CD2581"
 			rewards: [
-				{ count: 5, id: "0CFF4CFC9889B2A8", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 9, id: "161518421C4142FE", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 7, id: "4DD1CC20CCBF26EA", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
 			]
-			subtitle: "Entry 18 of 104 • 5 Copper"
+			subtitle: "Entry 18 of 104 • 9 Gold, 7 Iron"
 			tasks: [{ count: 32L, consume_items: true, id: "6E05C1B677F808CE", item: { count: 1, id: "minecraft:white_wool" }, type: "item" }]
 			title: "Shearing Day"
 			x: 4.5d
@@ -250,9 +266,10 @@
 			description: ["Prove your hands are skilled: craft 1 Red Bed yourself.", "", "&bObjective:&r Craft 1 Red Bed", "&7Only items you craft yourself count."]
 			id: "2DA23A58B785A5EC"
 			rewards: [
-				{ count: 5, id: "37B74568A720A417", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 9, id: "0BDCCE0D6E17169A", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 7, id: "4D287564ACE14439", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
 			]
-			subtitle: "Entry 19 of 104 • 5 Copper"
+			subtitle: "Entry 19 of 104 • 9 Gold, 7 Iron"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "0FD7D30D92A58866", item: { count: 1, id: "minecraft:red_bed" }, type: "item" }]
 			title: "Sweet Dreams"
 			x: 6.0d
@@ -260,15 +277,16 @@
 		}
 		{
 			dependencies: ["2DA23A58B785A5EC"]
-			description: ["The Ledger tracks everything. Push sleep in bed to 5.", "", "&bObjective:&r Reach sleep in bed: 5", "&7Counts your total since you first joined.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["The Ledger tracks everything. Push sleep in bed to 5.", "", "&bObjective:&r Reach sleep in bed: 5", "&7Counts your total since you first joined.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Iron Shovel&7 (enchanted)"]
 			id: "5CD0D3ED2D3A8558"
 			rewards: [
-				{ count: 1, id: "6BA88E48F53AEA5F", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 4, id: "447588A6DF8FFD9B", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 2, id: "5D444883513C6630", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "63265A4EEB819D61", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ id: "4631893293D1439C", item: { components: { "minecraft:enchantments": { levels: { "minecraft:efficiency": 3, "minecraft:unbreaking": 1 } } }, count: 1, id: "minecraft:iron_shovel" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 20 of 104 • 1 Iron, 4 Copper"
+			subtitle: "Entry 20 of 104 • 2 Emerald, 5 Gold + Gear"
 			tasks: [{ id: "6D00D82BE3079818", stat: "minecraft:sleep_in_bed", type: "stat", value: 5 }]
 			title: "&6&lWell Rested"
 			x: 7.5d
@@ -279,9 +297,10 @@
 			description: ["The guild wants 4 freshly crafted Lead.", "", "&bObjective:&r Craft 4 Lead", "&7Only items you craft yourself count."]
 			id: "775E0302E14463B4"
 			rewards: [
-				{ count: 5, id: "37E2F4B6BC7C5185", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 9, id: "759CDE3844B0E71B", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 9, id: "07FBF607B6F23DEA", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
 			]
-			subtitle: "Entry 21 of 104 • 5 Copper"
+			subtitle: "Entry 21 of 104 • 9 Gold, 9 Iron"
 			tasks: [{ count: 4L, only_from_crafting: true, id: "339DAAD81F7546CB", item: { count: 1, id: "minecraft:lead" }, type: "item" }]
 			title: "On a Leash"
 			x: 9.0d
@@ -292,9 +311,10 @@
 			description: ["Accomplish \"The Parrots and the Bats\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"The Parrots and the Bats\""]
 			id: "5CD7EF7CA88ED3B2"
 			rewards: [
-				{ count: 6, id: "7762F84359D8A9E8", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 9, id: "04FD2D3D4B817967", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 9, id: "609B99D51B95880D", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
 			]
-			subtitle: "Entry 22 of 104 • 6 Copper"
+			subtitle: "Entry 22 of 104 • 9 Gold, 9 Iron"
 			tasks: [{ advancement: "minecraft:husbandry/breed_an_animal", criterion: "", id: "4D383C4D20669984", type: "advancement" }]
 			title: "The Parrots and the Bats"
 			x: 9.0d
@@ -305,9 +325,9 @@
 			description: ["Reach 10 for animals bred.", "", "&bObjective:&r Reach animals bred: 10", "&7Counts your total since you first joined."]
 			id: "4E1A50B9982AD6B6"
 			rewards: [
-				{ count: 6, id: "0C99BC1435F9BC2F", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "623CC1C47EFF939F", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 23 of 104 • 6 Copper"
+			subtitle: "Entry 23 of 104 • 1 Emerald"
 			tasks: [{ id: "30E25B11271E0FC0", stat: "minecraft:animals_bred", type: "stat", value: 10 }]
 			title: "Matchmaker"
 			x: 7.5d
@@ -318,9 +338,9 @@
 			description: ["The realm needs Cooked Chicken. Bring 16 and they're yours no more.", "", "&bObjective:&r Hand in 16 Cooked Chicken", "&7The items are taken when you complete the quest."]
 			id: "2123E384DDB820E0"
 			rewards: [
-				{ count: 6, id: "273D80E5ADD81943", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "434AA3DBB27434BD", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 24 of 104 • 6 Copper"
+			subtitle: "Entry 24 of 104 • 1 Emerald"
 			tasks: [{ count: 16L, consume_items: true, id: "64F58D252EAA6920", item: { count: 1, id: "minecraft:cooked_chicken" }, type: "item" }]
 			title: "Roast Chicken"
 			x: 6.0d
@@ -331,9 +351,9 @@
 			description: ["The guild stores are low on Cooked Porkchop. Hand in 16.", "", "&bObjective:&r Hand in 16 Cooked Porkchop", "&7The items are taken when you complete the quest."]
 			id: "0BE5CD928A47DCE2"
 			rewards: [
-				{ count: 6, id: "77E2E66C9EF2F29B", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "709D15486E1998C4", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 25 of 104 • 6 Copper"
+			subtitle: "Entry 25 of 104 • 1 Emerald"
 			tasks: [{ count: 16L, consume_items: true, id: "6EE249A5129A3959", item: { count: 1, id: "minecraft:cooked_porkchop" }, type: "item" }]
 			title: "Pork Roast"
 			x: 4.5d
@@ -344,9 +364,9 @@
 			description: ["A merchant has ordered 16 Cooked Mutton. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 16 Cooked Mutton", "&7The items are taken when you complete the quest."]
 			id: "6D3630B8F107C834"
 			rewards: [
-				{ count: 6, id: "01DEFCD61BEB405D", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "36028BB00AA8CE02", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 26 of 104 • 6 Copper"
+			subtitle: "Entry 26 of 104 • 1 Emerald"
 			tasks: [{ count: 16L, consume_items: true, id: "14F79C7CB9EC0D04", item: { count: 1, id: "minecraft:cooked_mutton" }, type: "item" }]
 			title: "Mutton Supper"
 			x: 3.0d
@@ -357,9 +377,9 @@
 			description: ["Supply run: 8 Cooked Rabbit, taken on hand-in.", "", "&bObjective:&r Hand in 8 Cooked Rabbit", "&7The items are taken when you complete the quest."]
 			id: "448B5AA802DE145D"
 			rewards: [
-				{ count: 6, id: "4021D41DEB900FC9", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "6C3E3552CA3B2E18", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 27 of 104 • 6 Copper"
+			subtitle: "Entry 27 of 104 • 1 Emerald"
 			tasks: [{ count: 8L, consume_items: true, id: "2A9C690977BBB555", item: { count: 1, id: "minecraft:cooked_rabbit" }, type: "item" }]
 			title: "Hunter's Rabbit"
 			x: 1.5d
@@ -370,9 +390,9 @@
 			description: ["The realm needs Rabbit Hide. Bring 8 and they're yours no more.", "", "&bObjective:&r Hand in 8 Rabbit Hide", "&7The items are taken when you complete the quest."]
 			id: "3C9A8E03308CF284"
 			rewards: [
-				{ count: 6, id: "4FF22ADE1B597A95", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "16BE3D4044E53575", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 28 of 104 • 6 Copper"
+			subtitle: "Entry 28 of 104 • 1 Emerald"
 			tasks: [{ count: 8L, consume_items: true, id: "56BB586216B55665", item: { count: 1, id: "minecraft:rabbit_hide" }, type: "item" }]
 			title: "Soft Hides"
 			x: 0.0d
@@ -383,9 +403,9 @@
 			description: ["The guild stores are low on Melon Slice. Hand in 32.", "", "&bObjective:&r Hand in 32 Melon Slice", "&7The items are taken when you complete the quest."]
 			id: "0BDB216FEC1C46AF"
 			rewards: [
-				{ count: 6, id: "590906F6F7716FAA", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "37556655C20C2310", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
 			]
-			subtitle: "Entry 29 of 104 • 6 Copper"
+			subtitle: "Entry 29 of 104 • 1 Emerald"
 			tasks: [{ count: 32L, consume_items: true, id: "45D9C2A66A89CBF8", item: { count: 1, id: "minecraft:melon_slice" }, type: "item" }]
 			title: "Melon Mornings"
 			x: 0.0d
@@ -393,15 +413,16 @@
 		}
 		{
 			dependencies: ["0BDB216FEC1C46AF"]
-			description: ["A merchant has ordered 8 Melon. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 8 Melon", "&7The items are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["A merchant has ordered 8 Melon. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 8 Melon", "&7The items are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Iron Axe&7 (enchanted)"]
 			id: "45DD42901B29BDF8"
 			rewards: [
-				{ count: 1, id: "293B09467F37E6B8", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 4, id: "1F9436D2C37B405E", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 2, id: "2E94E7A65239AC1C", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "526B3DA46F261CD4", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ id: "4BE3D981B34E8755", item: { components: { "minecraft:enchantments": { levels: { "minecraft:efficiency": 3, "minecraft:unbreaking": 2 } } }, count: 1, id: "minecraft:iron_axe" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 30 of 104 • 1 Iron, 4 Copper"
+			subtitle: "Entry 30 of 104 • 2 Emerald, 6 Gold + Gear"
 			tasks: [{ count: 8L, consume_items: true, id: "5A1C3D92999A961E", item: { count: 1, id: "minecraft:melon" }, type: "item" }]
 			title: "&6&lWhole Melons"
 			x: 1.5d
@@ -412,9 +433,10 @@
 			description: ["Supply run: 8 Pumpkin, taken on hand-in.", "", "&bObjective:&r Hand in 8 Pumpkin", "&7The items are taken when you complete the quest."]
 			id: "7B4978818F91E48F"
 			rewards: [
-				{ count: 6, id: "610B173EE0372724", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "78140B9A8C447C10", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "3716AED5175A6446", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 31 of 104 • 6 Copper"
+			subtitle: "Entry 31 of 104 • 1 Emerald, 1 Gold"
 			tasks: [{ count: 8L, consume_items: true, id: "238F8DF14920698F", item: { count: 1, id: "minecraft:pumpkin" }, type: "item" }]
 			title: "Pumpkin Patch"
 			x: 3.0d
@@ -425,9 +447,10 @@
 			description: ["A collector is asking around for Carved Pumpkin. Bring 4 and prove you have them.", "", "&bObjective:&r Have 4 Carved Pumpkin in your inventory"]
 			id: "573351C421F85A3D"
 			rewards: [
-				{ count: 6, id: "1C92A9069D927B2A", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "2A3784E773D07CBD", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "3997A44765740B0E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 32 of 104 • 6 Copper"
+			subtitle: "Entry 32 of 104 • 1 Emerald, 1 Gold"
 			tasks: [{ count: 4L, id: "0F5F94CF87A8E19B", item: { count: 1, id: "minecraft:carved_pumpkin" }, type: "item" }]
 			title: "Spooky Faces"
 			x: 4.5d
@@ -438,9 +461,10 @@
 			description: ["The guild wants 8 freshly crafted Jack O Lantern.", "", "&bObjective:&r Craft 8 Jack O Lantern", "&7Only items you craft yourself count."]
 			id: "57B127652607DE56"
 			rewards: [
-				{ count: 6, id: "3B7CB82C46E01EBB", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "1F8F18F7F66BCD9A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "6C49C037A9DE8825", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 33 of 104 • 6 Copper"
+			subtitle: "Entry 33 of 104 • 1 Emerald, 1 Gold"
 			tasks: [{ count: 8L, only_from_crafting: true, id: "6DAC526F302704F6", item: { count: 1, id: "minecraft:jack_o_lantern" }, type: "item" }]
 			title: "Lantern Faces"
 			x: 6.0d
@@ -451,9 +475,10 @@
 			description: ["Prove your hands are skilled: craft 8 Pumpkin Pie yourself.", "", "&bObjective:&r Craft 8 Pumpkin Pie", "&7Only items you craft yourself count."]
 			id: "5B1325B2B4938A23"
 			rewards: [
-				{ count: 6, id: "22A126DAC6423B5F", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "79097588E508F3F8", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "3A984A1182231302", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 34 of 104 • 6 Copper"
+			subtitle: "Entry 34 of 104 • 1 Emerald, 1 Gold"
 			tasks: [{ count: 8L, only_from_crafting: true, id: "10E0C231F40FEB5C", item: { count: 1, id: "minecraft:pumpkin_pie" }, type: "item" }]
 			title: "Harvest Pie"
 			x: 7.5d
@@ -464,9 +489,10 @@
 			description: ["Supply run: 32 Sugar Cane, taken on hand-in.", "", "&bObjective:&r Hand in 32 Sugar Cane", "&7The items are taken when you complete the quest."]
 			id: "2BCF4C6831E9F4D8"
 			rewards: [
-				{ count: 6, id: "5525F9B15C44FE51", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "592EF343D3E95988", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "01EBAAA66F19E1BE", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 35 of 104 • 6 Copper"
+			subtitle: "Entry 35 of 104 • 1 Emerald, 1 Gold"
 			tasks: [{ count: 32L, consume_items: true, id: "6EAB46113B210D6A", item: { count: 1, id: "minecraft:sugar_cane" }, type: "item" }]
 			title: "Sweet Stalks"
 			x: 9.0d
@@ -477,9 +503,10 @@
 			description: ["The guild wants 32 freshly crafted Sugar.", "", "&bObjective:&r Craft 32 Sugar", "&7Only items you craft yourself count."]
 			id: "12D56566A3109C82"
 			rewards: [
-				{ count: 6, id: "2E2D20C29F7E796D", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "16644D1C030ABC2A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "5A58D1CB4ABB4BBF", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 36 of 104 • 6 Copper"
+			subtitle: "Entry 36 of 104 • 1 Emerald, 1 Gold"
 			tasks: [{ count: 32L, only_from_crafting: true, id: "1BC0D70EB43D561D", item: { count: 1, id: "minecraft:sugar" }, type: "item" }]
 			title: "Sugar Rush"
 			x: 9.0d
@@ -490,9 +517,10 @@
 			description: ["The guild stores are low on Cocoa Beans. Hand in 16.", "", "&bObjective:&r Hand in 16 Cocoa Beans", "&7The items are taken when you complete the quest."]
 			id: "0BFE101DF8744886"
 			rewards: [
-				{ count: 6, id: "6D904C10FB5FF47B", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "024312E42A88038F", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "635AA66E839CCFED", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 37 of 104 • 6 Copper"
+			subtitle: "Entry 37 of 104 • 1 Emerald, 1 Gold"
 			tasks: [{ count: 16L, consume_items: true, id: "398A920FA90CA9E0", item: { count: 1, id: "minecraft:cocoa_beans" }, type: "item" }]
 			title: "Jungle Beans"
 			x: 7.5d
@@ -503,9 +531,10 @@
 			description: ["Workshop order: 32 Cookie, made by you.", "", "&bObjective:&r Craft 32 Cookie", "&7Only items you craft yourself count."]
 			id: "3728BB3F187B4798"
 			rewards: [
-				{ count: 6, id: "760E6E19D3AB1ABA", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "6CA9D231104FA3F5", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "255D23877A6F1716", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 38 of 104 • 6 Copper"
+			subtitle: "Entry 38 of 104 • 1 Emerald, 1 Gold"
 			tasks: [{ count: 32L, only_from_crafting: true, id: "08C9906702131C30", item: { count: 1, id: "minecraft:cookie" }, type: "item" }]
 			title: "Cookie Jar"
 			x: 6.0d
@@ -516,9 +545,10 @@
 			description: ["The guild wants 1 freshly crafted Cake.", "", "&bObjective:&r Craft 1 Cake", "&7Only items you craft yourself count."]
 			id: "0D9F587E141FA2C1"
 			rewards: [
-				{ count: 6, id: "7FAB5B0833234A2E", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "305EE52FC75E65F5", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "41E184BB273260B4", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 39 of 104 • 6 Copper"
+			subtitle: "Entry 39 of 104 • 1 Emerald, 1 Gold"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "22F719D25E7A92D6", item: { count: 1, id: "minecraft:cake" }, type: "item" }]
 			title: "Celebration Cake"
 			x: 4.5d
@@ -526,15 +556,16 @@
 		}
 		{
 			dependencies: ["0D9F587E141FA2C1"]
-			description: ["The Ledger tracks everything. Push eat cake slice to 7.", "", "&bObjective:&r Reach eat cake slice: 7", "&7Counts your total since you first joined.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["The Ledger tracks everything. Push eat cake slice to 7.", "", "&bObjective:&r Reach eat cake slice: 7", "&7Counts your total since you first joined.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Shears&7 (enchanted)"]
 			id: "1717ED79CD47FD94"
 			rewards: [
-				{ count: 1, id: "32C1E521418BA50F", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 5, id: "69F15692444B4465", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 2, id: "6A73ED66CDE1030D", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "0551D62EDD8836F3", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ id: "4483CA9D7FF8DF4D", item: { components: { "minecraft:enchantments": { levels: { "minecraft:efficiency": 3, "minecraft:unbreaking": 2 } } }, count: 1, id: "minecraft:shears" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 40 of 104 • 1 Iron, 5 Copper"
+			subtitle: "Entry 40 of 104 • 2 Emerald, 8 Gold + Gear"
 			tasks: [{ id: "7654B61670CC93E7", stat: "minecraft:eat_cake_slice", type: "stat", value: 7 }]
 			title: "&6&lSlice of Life"
 			x: 3.0d
@@ -545,9 +576,10 @@
 			description: ["The guild stores are low on Sweet Berries. Hand in 32.", "", "&bObjective:&r Hand in 32 Sweet Berries", "&7The items are taken when you complete the quest."]
 			id: "3AC0C8697392AF37"
 			rewards: [
-				{ count: 6, id: "5289D799C4940F32", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "6528C3000172A502", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "7C592F01BEE65CBE", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 41 of 104 • 6 Copper"
+			subtitle: "Entry 41 of 104 • 1 Emerald, 1 Gold"
 			tasks: [{ count: 32L, consume_items: true, id: "20D286268177CE40", item: { count: 1, id: "minecraft:sweet_berries" }, type: "item" }]
 			title: "Berry Picker"
 			x: 1.5d
@@ -558,9 +590,10 @@
 			description: ["A merchant has ordered 16 Glow Berries. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 16 Glow Berries", "&7The items are taken when you complete the quest."]
 			id: "7D4306516F9A6B1A"
 			rewards: [
-				{ count: 6, id: "3D3938E91DC54790", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "7C10A4CD04073080", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "3E4561D19A375415", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 42 of 104 • 6 Copper"
+			subtitle: "Entry 42 of 104 • 1 Emerald, 1 Gold"
 			tasks: [{ count: 16L, consume_items: true, id: "10E255913E670A92", item: { count: 1, id: "minecraft:glow_berries" }, type: "item" }]
 			title: "Cave Candy"
 			x: 0.0d
@@ -571,9 +604,10 @@
 			description: ["Supply run: 64 Bamboo, taken on hand-in.", "", "&bObjective:&r Hand in 64 Bamboo", "&7The items are taken when you complete the quest."]
 			id: "1678D7E9A34F227F"
 			rewards: [
-				{ count: 6, id: "258A84C7249BC1F7", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "2AFAC69F50710C39", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "22F1489BFD59ABA1", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 43 of 104 • 6 Copper"
+			subtitle: "Entry 43 of 104 • 1 Emerald, 1 Gold"
 			tasks: [{ count: 64L, consume_items: true, id: "1051201106B79A42", item: { count: 1, id: "minecraft:bamboo" }, type: "item" }]
 			title: "Panda's Pantry"
 			x: 0.0d
@@ -584,9 +618,10 @@
 			description: ["The realm needs Cactus. Bring 16 and they're yours no more.", "", "&bObjective:&r Hand in 16 Cactus", "&7The items are taken when you complete the quest."]
 			id: "28F04B0B576D4519"
 			rewards: [
-				{ count: 6, id: "59E62C2E0B683E78", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "3C69D575B27E2652", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "5AEF245969B901A6", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 44 of 104 • 6 Copper"
+			subtitle: "Entry 44 of 104 • 1 Emerald, 2 Gold"
 			tasks: [{ count: 16L, consume_items: true, id: "1317D66CF65971A9", item: { count: 1, id: "minecraft:cactus" }, type: "item" }]
 			title: "Prickly Business"
 			x: 1.5d
@@ -597,9 +632,10 @@
 			description: ["The guild stores are low on Brown Mushroom. Hand in 16.", "", "&bObjective:&r Hand in 16 Brown Mushroom", "&7The items are taken when you complete the quest."]
 			id: "0EEEC717744374B2"
 			rewards: [
-				{ count: 6, id: "2C264E7ED02BF257", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "72764D14E1787CDC", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "703C52D54518FD67", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 45 of 104 • 6 Copper"
+			subtitle: "Entry 45 of 104 • 1 Emerald, 2 Gold"
 			tasks: [{ count: 16L, consume_items: true, id: "796A424722D0B068", item: { count: 1, id: "minecraft:brown_mushroom" }, type: "item" }]
 			title: "Brown Caps"
 			x: 3.0d
@@ -610,9 +646,10 @@
 			description: ["A merchant has ordered 16 Red Mushroom. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 16 Red Mushroom", "&7The items are taken when you complete the quest."]
 			id: "4A21B585B60B2F20"
 			rewards: [
-				{ count: 6, id: "44E537588B9316F2", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "4437A1A20CC046CF", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "4F7B561D51D32E38", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 46 of 104 • 6 Copper"
+			subtitle: "Entry 46 of 104 • 1 Emerald, 2 Gold"
 			tasks: [{ count: 16L, consume_items: true, id: "0AECA63FE129F814", item: { count: 1, id: "minecraft:red_mushroom" }, type: "item" }]
 			title: "Red Caps"
 			x: 4.5d
@@ -623,9 +660,10 @@
 			description: ["Workshop order: 4 Mushroom Stew, made by you.", "", "&bObjective:&r Craft 4 Mushroom Stew", "&7Only items you craft yourself count."]
 			id: "0B6ECE6C299B7219"
 			rewards: [
-				{ count: 6, id: "3B8250FFFE6377AC", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "32C6438B91AD9C61", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "4CECD77CD3277EFD", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 47 of 104 • 6 Copper"
+			subtitle: "Entry 47 of 104 • 1 Emerald, 2 Gold"
 			tasks: [{ count: 4L, only_from_crafting: true, id: "18ECD591027FE81E", item: { count: 1, id: "minecraft:mushroom_stew" }, type: "item" }]
 			title: "Forager's Stew"
 			x: 6.0d
@@ -636,9 +674,10 @@
 			description: ["The guild wants 4 freshly crafted Beetroot Soup.", "", "&bObjective:&r Craft 4 Beetroot Soup", "&7Only items you craft yourself count."]
 			id: "779127060A7551A2"
 			rewards: [
-				{ count: 6, id: "6887F909D26FE739", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "763D81635DE9D9AE", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "0E62B0A4CDB6145E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 48 of 104 • 6 Copper"
+			subtitle: "Entry 48 of 104 • 1 Emerald, 2 Gold"
 			tasks: [{ count: 4L, only_from_crafting: true, id: "10EE6E87C139C857", item: { count: 1, id: "minecraft:beetroot_soup" }, type: "item" }]
 			title: "Beet Soup"
 			x: 7.5d
@@ -649,9 +688,10 @@
 			description: ["Prove your hands are skilled: craft 2 Rabbit Stew yourself.", "", "&bObjective:&r Craft 2 Rabbit Stew", "&7Only items you craft yourself count."]
 			id: "160983019B1CF0A9"
 			rewards: [
-				{ count: 6, id: "5C9D58D12C61418A", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "68F7B28E1BE7001C", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "4BD616421199E6A7", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 49 of 104 • 6 Copper"
+			subtitle: "Entry 49 of 104 • 1 Emerald, 2 Gold"
 			tasks: [{ count: 2L, only_from_crafting: true, id: "0C203F6882B4E088", item: { count: 1, id: "minecraft:rabbit_stew" }, type: "item" }]
 			title: "Rabbit Stew"
 			x: 9.0d
@@ -659,15 +699,15 @@
 		}
 		{
 			dependencies: ["160983019B1CF0A9"]
-			description: ["Workshop order: 1 Suspicious Stew, made by you.", "", "&bObjective:&r Craft 1 Suspicious Stew", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["Workshop order: 1 Suspicious Stew, made by you.", "", "&bObjective:&r Craft 1 Suspicious Stew", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Bow&7 (enchanted)"]
 			id: "77CE907D06EB4DAA"
 			rewards: [
-				{ count: 1, id: "49D1464937367E38", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 6, id: "176C1CB9F11D2C3C", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "5AAA8730BC724E10", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "64137198EB68C277", item: { components: { "minecraft:enchantments": { levels: { "minecraft:power": 2, "minecraft:unbreaking": 1 } } }, count: 1, id: "minecraft:bow" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 50 of 104 • 1 Iron, 6 Copper"
+			subtitle: "Entry 50 of 104 • 3 Emerald + Gear"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "3915774F48DDD866", item: { count: 1, id: "minecraft:suspicious_stew" }, type: "item" }]
 			title: "&6&lMystery Stew"
 			x: 9.0d
@@ -678,9 +718,10 @@
 			description: ["The guild wants 1 freshly crafted Smoker.", "", "&bObjective:&r Craft 1 Smoker", "&7Only items you craft yourself count."]
 			id: "4DCD0C2AB63A5CB8"
 			rewards: [
-				{ count: 6, id: "41C4466074884949", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "5D8C81B7186A5C41", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "7B83A83B9380BB64", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 51 of 104 • 6 Copper"
+			subtitle: "Entry 51 of 104 • 1 Emerald, 2 Gold"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "516FD3F2F67DC1E8", item: { count: 1, id: "minecraft:smoker" }, type: "item" }]
 			title: "Smokehouse"
 			x: 7.5d
@@ -691,9 +732,10 @@
 			description: ["The Ledger tracks everything. Push interact with smoker to 10.", "", "&bObjective:&r Reach interact with smoker: 10", "&7Counts your total since you first joined."]
 			id: "32A9C937E750A4F7"
 			rewards: [
-				{ count: 6, id: "5E4715EFA2C6F026", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "3FE1FF8E4DC6C965", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "0AC14C7A39B97019", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 52 of 104 • 6 Copper"
+			subtitle: "Entry 52 of 104 • 1 Emerald, 2 Gold"
 			tasks: [{ id: "1EB6624D132E00D8", stat: "minecraft:interact_with_smoker", type: "stat", value: 10 }]
 			title: "Smoked Goods"
 			x: 6.0d
@@ -704,9 +746,10 @@
 			description: ["Workshop order: 1 Campfire, made by you.", "", "&bObjective:&r Craft 1 Campfire", "&7Only items you craft yourself count."]
 			id: "48881372608B5565"
 			rewards: [
-				{ count: 6, id: "2AD3EB0471EB3E3F", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "07930888C2F94963", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "2723B1D5D5AF5A27", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 53 of 104 • 6 Copper"
+			subtitle: "Entry 53 of 104 • 1 Emerald, 2 Gold"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "65C573D7EC47D013", item: { count: 1, id: "minecraft:campfire" }, type: "item" }]
 			title: "Campfire Stories"
 			x: 4.5d
@@ -717,9 +760,10 @@
 			description: ["The Ledger tracks everything. Push interact with campfire to 5.", "", "&bObjective:&r Reach interact with campfire: 5", "&7Counts your total since you first joined."]
 			id: "76C640DCEBE32417"
 			rewards: [
-				{ count: 6, id: "2C7CF2821482CD3D", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "5A462876E2DB25E5", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "1545E8F43302853F", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 54 of 104 • 6 Copper"
+			subtitle: "Entry 54 of 104 • 1 Emerald, 2 Gold"
 			tasks: [{ id: "6B00AAD496C6A376", stat: "minecraft:interact_with_campfire", type: "stat", value: 5 }]
 			title: "Campfire Cook"
 			x: 3.0d
@@ -730,9 +774,10 @@
 			description: ["Supply run: 32 Dried Kelp, taken on hand-in.", "", "&bObjective:&r Hand in 32 Dried Kelp", "&7The items are taken when you complete the quest."]
 			id: "7D5B1E1D0FEF0563"
 			rewards: [
-				{ count: 6, id: "37C1C0771BD47D22", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "656BA3D2FDA48B98", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "5541D0C40BA8612B", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 55 of 104 • 6 Copper"
+			subtitle: "Entry 55 of 104 • 1 Emerald, 2 Gold"
 			tasks: [{ count: 32L, consume_items: true, id: "1319434CADD007E7", item: { count: 1, id: "minecraft:dried_kelp" }, type: "item" }]
 			title: "Seaside Snacks"
 			x: 1.5d
@@ -743,9 +788,10 @@
 			description: ["Workshop order: 4 Dried Kelp Block, made by you.", "", "&bObjective:&r Craft 4 Dried Kelp Block", "&7Only items you craft yourself count."]
 			id: "4C6F18E23BB1A853"
 			rewards: [
-				{ count: 6, id: "4EFB0AB1A0ED3BBD", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "741658E1E096153F", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "58DE7BDCCA57F050", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 56 of 104 • 6 Copper"
+			subtitle: "Entry 56 of 104 • 1 Emerald, 3 Gold"
 			tasks: [{ count: 4L, only_from_crafting: true, id: "2B15D4B2D26DA321", item: { count: 1, id: "minecraft:dried_kelp_block" }, type: "item" }]
 			title: "Kelp Bales"
 			x: 0.0d
@@ -756,9 +802,10 @@
 			description: ["The guild wants 16 freshly crafted Hay Block.", "", "&bObjective:&r Craft 16 Hay Block", "&7Only items you craft yourself count."]
 			id: "3993E8FAB128A51B"
 			rewards: [
-				{ count: 6, id: "3EE793F94BB68725", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "42CE15A737BDE449", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "1A5A5424244D3F91", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 57 of 104 • 6 Copper"
+			subtitle: "Entry 57 of 104 • 1 Emerald, 3 Gold"
 			tasks: [{ count: 16L, only_from_crafting: true, id: "566B1F428C4D81CE", item: { count: 1, id: "minecraft:hay_block" }, type: "item" }]
 			title: "Haystacks"
 			x: 0.0d
@@ -769,9 +816,10 @@
 			description: ["Prove your hands are skilled: craft 1 Composter yourself.", "", "&bObjective:&r Craft 1 Composter", "&7Only items you craft yourself count."]
 			id: "733C29FEDAE0797B"
 			rewards: [
-				{ count: 6, id: "30903C6A63C0620B", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "01EAB565FF844FA3", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "1880D56940F6927B", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 58 of 104 • 6 Copper"
+			subtitle: "Entry 58 of 104 • 1 Emerald, 3 Gold"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "5D4BD0C614AE0763", item: { count: 1, id: "minecraft:composter" }, type: "item" }]
 			title: "Nothing Wasted"
 			x: 1.5d
@@ -782,9 +830,10 @@
 			description: ["Supply run: 32 Bone Meal, taken on hand-in.", "", "&bObjective:&r Hand in 32 Bone Meal", "&7The items are taken when you complete the quest."]
 			id: "584CAC972B740CF0"
 			rewards: [
-				{ count: 7, id: "5E25BBC8EFF7AC74", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "375B40793E8A36F1", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "13CFD78FCF998D17", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 59 of 104 • 7 Copper"
+			subtitle: "Entry 59 of 104 • 1 Emerald, 3 Gold"
 			tasks: [{ count: 32L, consume_items: true, id: "13BBEFAB7A8CB5AE", item: { count: 1, id: "minecraft:bone_meal" }, type: "item" }]
 			title: "Green Thumb"
 			x: 3.0d
@@ -792,15 +841,16 @@
 		}
 		{
 			dependencies: ["584CAC972B740CF0"]
-			description: ["The guild wants 1 freshly crafted Beehive.", "", "&bObjective:&r Craft 1 Beehive", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["The guild wants 1 freshly crafted Beehive.", "", "&bObjective:&r Craft 1 Beehive", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Fishing Rod&7 (enchanted)"]
 			id: "2F80FD8A32BC0518"
 			rewards: [
-				{ count: 1, id: "132274DF68C3AD37", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 6, id: "4F87BE2EEDEC2FE9", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "63C427830F76D5C7", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "6906791844ED7362", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ id: "5E6372E21EEA4E1F", item: { components: { "minecraft:enchantments": { levels: { "minecraft:lure": 2, "minecraft:luck_of_the_sea": 1 } } }, count: 1, id: "minecraft:fishing_rod" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 60 of 104 • 1 Iron, 6 Copper"
+			subtitle: "Entry 60 of 104 • 3 Emerald, 2 Gold + Gear"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "399A26DB2F687C46", item: { count: 1, id: "minecraft:beehive" }, type: "item" }]
 			title: "&6&lBee Keeper"
 			x: 4.5d
@@ -811,9 +861,10 @@
 			description: ["Earn the advancement \"Bee Our Guest\".", "", "&bObjective:&r Earn the advancement \"Bee Our Guest\""]
 			id: "599F49A73E66EED9"
 			rewards: [
-				{ count: 7, id: "7093D1BD6A705C7A", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "4081B6238835E18B", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "726780637D355CEE", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 61 of 104 • 7 Copper"
+			subtitle: "Entry 61 of 104 • 1 Emerald, 3 Gold"
 			tasks: [{ advancement: "minecraft:husbandry/safely_harvest_honey", criterion: "", id: "219F6947AE23505B", type: "advancement" }]
 			title: "Bee Our Guest"
 			x: 6.0d
@@ -824,9 +875,10 @@
 			description: ["A merchant has ordered 4 Honey Bottle. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 4 Honey Bottle", "&7The items are taken when you complete the quest."]
 			id: "2F8E06EB4021E677"
 			rewards: [
-				{ count: 7, id: "2C28C38375DC5230", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "54C7E309EC8FF9DD", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "375C71AC074E36F5", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 62 of 104 • 7 Copper"
+			subtitle: "Entry 62 of 104 • 1 Emerald, 3 Gold"
 			tasks: [{ count: 4L, consume_items: true, id: "0D26F7F3AF028FE0", item: { count: 1, id: "minecraft:honey_bottle" }, type: "item" }]
 			title: "Liquid Gold"
 			x: 7.5d
@@ -837,9 +889,10 @@
 			description: ["Supply run: 8 Honeycomb, taken on hand-in.", "", "&bObjective:&r Hand in 8 Honeycomb", "&7The items are taken when you complete the quest."]
 			id: "390F491AB33F6B4E"
 			rewards: [
-				{ count: 7, id: "48FC28BDDCFA4D62", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "0879E2A7E5378BD8", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "478EC726904C376E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 63 of 104 • 7 Copper"
+			subtitle: "Entry 63 of 104 • 1 Emerald, 3 Gold"
 			tasks: [{ count: 8L, consume_items: true, id: "46089E8447F40A38", item: { count: 1, id: "minecraft:honeycomb" }, type: "item" }]
 			title: "Waxworks"
 			x: 9.0d
@@ -850,9 +903,10 @@
 			description: ["Prove your hands are skilled: craft 8 Candle yourself.", "", "&bObjective:&r Craft 8 Candle", "&7Only items you craft yourself count."]
 			id: "28076FC3A9C04AC4"
 			rewards: [
-				{ count: 7, id: "3BA5E8D6AC3C3184", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "3F699C99D77C0153", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "6A328CAE956597E8", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 64 of 104 • 7 Copper"
+			subtitle: "Entry 64 of 104 • 1 Emerald, 3 Gold"
 			tasks: [{ count: 8L, only_from_crafting: true, id: "2B810A82D2E426DD", item: { count: 1, id: "minecraft:candle" }, type: "item" }]
 			title: "Candlelight"
 			x: 9.0d
@@ -863,9 +917,10 @@
 			description: ["Workshop order: 8 Lantern, made by you.", "", "&bObjective:&r Craft 8 Lantern", "&7Only items you craft yourself count."]
 			id: "580F0207A1C7560F"
 			rewards: [
-				{ count: 7, id: "250CF5B289B49078", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "45E1CAFDE82F5332", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "7D110B04C4EB5D52", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 65 of 104 • 7 Copper"
+			subtitle: "Entry 65 of 104 • 1 Emerald, 3 Gold"
 			tasks: [{ count: 8L, only_from_crafting: true, id: "77469DCACC26B338", item: { count: 1, id: "minecraft:lantern" }, type: "item" }]
 			title: "Warm Glow"
 			x: 7.5d
@@ -876,9 +931,10 @@
 			description: ["The guild wants 4 freshly crafted Flower Pot.", "", "&bObjective:&r Craft 4 Flower Pot", "&7Only items you craft yourself count."]
 			id: "18BACE89556634B8"
 			rewards: [
-				{ count: 7, id: "0B807F7B5332F169", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "0ECA6C71E38AA84D", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "3F2816C86ACDE464", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 66 of 104 • 7 Copper"
+			subtitle: "Entry 66 of 104 • 1 Emerald, 3 Gold"
 			tasks: [{ count: 4L, only_from_crafting: true, id: "1478FC8FCBEB1A06", item: { count: 1, id: "minecraft:flower_pot" }, type: "item" }]
 			title: "Window Boxes"
 			x: 6.0d
@@ -889,9 +945,10 @@
 			description: ["Reach 5 for pot flower.", "", "&bObjective:&r Reach pot flower: 5", "&7Counts your total since you first joined."]
 			id: "5F4E6F3016B0844D"
 			rewards: [
-				{ count: 7, id: "19BA79A05336CC25", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "03A47A186912162A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "3EA47D4F3A2979F9", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 67 of 104 • 7 Copper"
+			subtitle: "Entry 67 of 104 • 1 Emerald, 4 Gold"
 			tasks: [{ id: "32CAF36A177AC1CF", stat: "minecraft:pot_flower", type: "stat", value: 5 }]
 			title: "Potted Garden"
 			x: 4.5d
@@ -902,9 +959,10 @@
 			description: ["The realm needs Poppy. Bring 16 and they're yours no more.", "", "&bObjective:&r Hand in 16 Poppy", "&7The items are taken when you complete the quest."]
 			id: "34B2FE2E4F6CAE90"
 			rewards: [
-				{ count: 7, id: "17BEE2C005B8A308", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "0D580A9DE9BBFE98", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "274CB3443F0AA00D", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 68 of 104 • 7 Copper"
+			subtitle: "Entry 68 of 104 • 1 Emerald, 4 Gold"
 			tasks: [{ count: 16L, consume_items: true, id: "02E1825BB54E7C51", item: { count: 1, id: "minecraft:poppy" }, type: "item" }]
 			title: "Poppy Field"
 			x: 3.0d
@@ -915,9 +973,10 @@
 			description: ["The guild stores are low on Dandelion. Hand in 16.", "", "&bObjective:&r Hand in 16 Dandelion", "&7The items are taken when you complete the quest."]
 			id: "158282FBB631C80B"
 			rewards: [
-				{ count: 7, id: "32A981B16C4C1BD5", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "20C8C2FCF6AA7002", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "510FD8A0727F6DB4", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 69 of 104 • 7 Copper"
+			subtitle: "Entry 69 of 104 • 1 Emerald, 4 Gold"
 			tasks: [{ count: 16L, consume_items: true, id: "27F616253ABA86C2", item: { count: 1, id: "minecraft:dandelion" }, type: "item" }]
 			title: "Dandelion Wishes"
 			x: 1.5d
@@ -925,15 +984,16 @@
 		}
 		{
 			dependencies: ["158282FBB631C80B"]
-			description: ["A merchant has ordered 8 Cornflower. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 8 Cornflower", "&7The items are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["A merchant has ordered 8 Cornflower. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 8 Cornflower", "&7The items are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Iron Pickaxe&7 (enchanted)"]
 			id: "77909339E552C113"
 			rewards: [
-				{ count: 1, id: "3222119234DADC94", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 7, id: "1B8FBB253ACC7A0F", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "6359082059B0A58A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "7F4BB808440A1E6B", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ id: "2906D8ED0ECEA37C", item: { components: { "minecraft:enchantments": { levels: { "minecraft:efficiency": 3, "minecraft:unbreaking": 2 } } }, count: 1, id: "minecraft:iron_pickaxe" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 70 of 104 • 1 Iron, 7 Copper"
+			subtitle: "Entry 70 of 104 • 3 Emerald, 5 Gold + Gear"
 			tasks: [{ count: 8L, consume_items: true, id: "43EBFE788123EA2A", item: { count: 1, id: "minecraft:cornflower" }, type: "item" }]
 			title: "&6&lCornflower Blue"
 			x: 0.0d
@@ -944,9 +1004,10 @@
 			description: ["Supply run: 8 Oxeye Daisy, taken on hand-in.", "", "&bObjective:&r Hand in 8 Oxeye Daisy", "&7The items are taken when you complete the quest."]
 			id: "093292259F958C42"
 			rewards: [
-				{ count: 7, id: "2C52C30317FAC646", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "1EFBC734077F0970", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "70E63D4329ECC741", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 71 of 104 • 7 Copper"
+			subtitle: "Entry 71 of 104 • 1 Emerald, 4 Gold"
 			tasks: [{ count: 8L, consume_items: true, id: "5D5436A1034BF44E", item: { count: 1, id: "minecraft:oxeye_daisy" }, type: "item" }]
 			title: "Daisy Chain"
 			x: 0.0d
@@ -957,9 +1018,10 @@
 			description: ["The realm needs Azure Bluet. Bring 8 and they're yours no more.", "", "&bObjective:&r Hand in 8 Azure Bluet", "&7The items are taken when you complete the quest."]
 			id: "0CF8390A8D8FB197"
 			rewards: [
-				{ count: 7, id: "1D1FD16F188FE8AC", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "2A886FA3F54DAD06", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "3F22E89F11FCE999", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 72 of 104 • 7 Copper"
+			subtitle: "Entry 72 of 104 • 1 Emerald, 4 Gold"
 			tasks: [{ count: 8L, consume_items: true, id: "584EC50CBA7E5352", item: { count: 1, id: "minecraft:azure_bluet" }, type: "item" }]
 			title: "Bluets"
 			x: 1.5d
@@ -970,9 +1032,10 @@
 			description: ["The guild stores are low on Allium. Hand in 4.", "", "&bObjective:&r Hand in 4 Allium", "&7The items are taken when you complete the quest."]
 			id: "0FF2B90C10F783FC"
 			rewards: [
-				{ count: 7, id: "40F07BF79678055F", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "30109E79BA1061E6", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "26FEE0182FA2BFC2", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 73 of 104 • 7 Copper"
+			subtitle: "Entry 73 of 104 • 1 Emerald, 4 Gold"
 			tasks: [{ count: 4L, consume_items: true, id: "7413460E512D1CB1", item: { count: 1, id: "minecraft:allium" }, type: "item" }]
 			title: "Allium Bouquet"
 			x: 3.0d
@@ -983,9 +1046,10 @@
 			description: ["A merchant has ordered 4 Lily Of The Valley. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 4 Lily Of The Valley", "&7The items are taken when you complete the quest."]
 			id: "1ED686750F9EB785"
 			rewards: [
-				{ count: 7, id: "2414B149D0C7D442", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "20983CF7520D3C46", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "07EAA52299066214", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 74 of 104 • 7 Copper"
+			subtitle: "Entry 74 of 104 • 1 Emerald, 4 Gold"
 			tasks: [{ count: 4L, consume_items: true, id: "228720286B787CF0", item: { count: 1, id: "minecraft:lily_of_the_valley" }, type: "item" }]
 			title: "Lily of the Valley"
 			x: 4.5d
@@ -996,9 +1060,10 @@
 			description: ["Supply run: 4 Sunflower, taken on hand-in.", "", "&bObjective:&r Hand in 4 Sunflower", "&7The items are taken when you complete the quest."]
 			id: "7D8F6EF23E95BAD6"
 			rewards: [
-				{ count: 7, id: "3B49ED2250A957CA", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "2A4BAFD1FCE948D8", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "03CA8B8D52AAD1EC", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 75 of 104 • 7 Copper"
+			subtitle: "Entry 75 of 104 • 1 Emerald, 4 Gold"
 			tasks: [{ count: 4L, consume_items: true, id: "0259DB41A8C44B2B", item: { count: 1, id: "minecraft:sunflower" }, type: "item" }]
 			title: "Sunflowers"
 			x: 6.0d
@@ -1009,9 +1074,10 @@
 			description: ["The realm needs Lilac. Bring 4 and they're yours no more.", "", "&bObjective:&r Hand in 4 Lilac", "&7The items are taken when you complete the quest."]
 			id: "2D77A98B41ED7830"
 			rewards: [
-				{ count: 7, id: "3DAD0F96EF6EC30A", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "70D30FC668DF17BE", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "42DD88B5E4F8BAED", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 76 of 104 • 7 Copper"
+			subtitle: "Entry 76 of 104 • 1 Emerald, 4 Gold"
 			tasks: [{ count: 4L, consume_items: true, id: "50C03588A248F698", item: { count: 1, id: "minecraft:lilac" }, type: "item" }]
 			title: "Lilac Hedge"
 			x: 7.5d
@@ -1022,9 +1088,10 @@
 			description: ["The guild stores are low on Rose Bush. Hand in 4.", "", "&bObjective:&r Hand in 4 Rose Bush", "&7The items are taken when you complete the quest."]
 			id: "7D7FE07817C08D6D"
 			rewards: [
-				{ count: 7, id: "2022F1F8DC66E0B0", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "215229893ACA16B4", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "3ECA3A0BDF83E8BD", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 77 of 104 • 7 Copper"
+			subtitle: "Entry 77 of 104 • 1 Emerald, 4 Gold"
 			tasks: [{ count: 4L, consume_items: true, id: "5BF9367054F7D2F4", item: { count: 1, id: "minecraft:rose_bush" }, type: "item" }]
 			title: "Rose Garden"
 			x: 9.0d
@@ -1035,9 +1102,10 @@
 			description: ["A merchant has ordered 8 Oak Sapling. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 8 Oak Sapling", "&7The items are taken when you complete the quest."]
 			id: "29501D26B0E29A3C"
 			rewards: [
-				{ count: 7, id: "7E137B33841790BB", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "2268E5D1FB5B5755", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "0F270E2CC355D457", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 78 of 104 • 7 Copper"
+			subtitle: "Entry 78 of 104 • 1 Emerald, 5 Gold"
 			tasks: [{ count: 8L, consume_items: true, id: "20B22870EC063D02", item: { count: 1, id: "minecraft:oak_sapling" }, type: "item" }]
 			title: "Oak Grove"
 			x: 9.0d
@@ -1048,9 +1116,10 @@
 			description: ["Supply run: 8 Birch Sapling, taken on hand-in.", "", "&bObjective:&r Hand in 8 Birch Sapling", "&7The items are taken when you complete the quest."]
 			id: "484208BCB732BCBD"
 			rewards: [
-				{ count: 7, id: "217E66ED7FC46BA9", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "1D9A6FDB1EDDF46B", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "4205E247AC978850", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 79 of 104 • 7 Copper"
+			subtitle: "Entry 79 of 104 • 1 Emerald, 5 Gold"
 			tasks: [{ count: 8L, consume_items: true, id: "57570975C14722A0", item: { count: 1, id: "minecraft:birch_sapling" }, type: "item" }]
 			title: "Birch Grove"
 			x: 7.5d
@@ -1058,15 +1127,16 @@
 		}
 		{
 			dependencies: ["484208BCB732BCBD"]
-			description: ["The realm needs Spruce Sapling. Bring 8 and they're yours no more.", "", "&bObjective:&r Hand in 8 Spruce Sapling", "&7The items are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["The realm needs Spruce Sapling. Bring 8 and they're yours no more.", "", "&bObjective:&r Hand in 8 Spruce Sapling", "&7The items are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Leather Boots&7 (enchanted)"]
 			id: "3C5E14E86D9F674F"
 			rewards: [
-				{ count: 1, id: "407E35708F1D8A23", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 8, id: "2BF05B990926D261", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 3, id: "298325312068D7D2", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "476402A017B6E7DF", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ id: "7ECF7614F6E54C28", item: { components: { "minecraft:enchantments": { levels: { "minecraft:feather_falling": 3, "minecraft:unbreaking": 2 } } }, count: 1, id: "minecraft:leather_boots" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 80 of 104 • 1 Iron, 8 Copper"
+			subtitle: "Entry 80 of 104 • 3 Emerald, 7 Gold + Gear"
 			tasks: [{ count: 8L, consume_items: true, id: "42194B887A66A397", item: { count: 1, id: "minecraft:spruce_sapling" }, type: "item" }]
 			title: "&6&lSpruce Grove"
 			x: 6.0d
@@ -1077,9 +1147,10 @@
 			description: ["The guild stores are low on Jungle Sapling. Hand in 4.", "", "&bObjective:&r Hand in 4 Jungle Sapling", "&7The items are taken when you complete the quest."]
 			id: "4838C417C4F51B61"
 			rewards: [
-				{ count: 7, id: "0258E85F48D15087", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "7CFAFDAD29DC28DC", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "3A6C5BBF339A2C20", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 81 of 104 • 7 Copper"
+			subtitle: "Entry 81 of 104 • 1 Emerald, 5 Gold"
 			tasks: [{ count: 4L, consume_items: true, id: "0AFB125EE546EC69", item: { count: 1, id: "minecraft:jungle_sapling" }, type: "item" }]
 			title: "Jungle Seedlings"
 			x: 4.5d
@@ -1090,9 +1161,10 @@
 			description: ["A merchant has ordered 4 Acacia Sapling. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 4 Acacia Sapling", "&7The items are taken when you complete the quest."]
 			id: "5A29A84E3B3D854B"
 			rewards: [
-				{ count: 7, id: "517F5E0C2FD8E2C0", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "013B01DA6BC235F0", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "4E205E0EE137DE05", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 82 of 104 • 7 Copper"
+			subtitle: "Entry 82 of 104 • 1 Emerald, 5 Gold"
 			tasks: [{ count: 4L, consume_items: true, id: "27440FAA5ADEB775", item: { count: 1, id: "minecraft:acacia_sapling" }, type: "item" }]
 			title: "Savanna Seedlings"
 			x: 3.0d
@@ -1103,9 +1175,10 @@
 			description: ["Supply run: 4 Dark Oak Sapling, taken on hand-in.", "", "&bObjective:&r Hand in 4 Dark Oak Sapling", "&7The items are taken when you complete the quest."]
 			id: "551923A7C42C06F2"
 			rewards: [
-				{ count: 7, id: "3CE44CD22F4CB120", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "733F210F4FB11257", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "078F77AD6025AD95", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 83 of 104 • 7 Copper"
+			subtitle: "Entry 83 of 104 • 1 Emerald, 5 Gold"
 			tasks: [{ count: 4L, consume_items: true, id: "08CB526453A60BFC", item: { count: 1, id: "minecraft:dark_oak_sapling" }, type: "item" }]
 			title: "Dark Oak Seedlings"
 			x: 1.5d
@@ -1116,9 +1189,10 @@
 			description: ["The realm needs Cherry Sapling. Bring 4 and they're yours no more.", "", "&bObjective:&r Hand in 4 Cherry Sapling", "&7The items are taken when you complete the quest."]
 			id: "062C9D154C12FFE3"
 			rewards: [
-				{ count: 7, id: "394B6868340B2943", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "319AC0E3052C800A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "27C24BED5470CED9", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 84 of 104 • 7 Copper"
+			subtitle: "Entry 84 of 104 • 1 Emerald, 5 Gold"
 			tasks: [{ count: 4L, consume_items: true, id: "77596A4623CEBC1D", item: { count: 1, id: "minecraft:cherry_sapling" }, type: "item" }]
 			title: "Blossom Seedlings"
 			x: 0.0d
@@ -1129,9 +1203,10 @@
 			description: ["The guild stores are low on Mangrove Propagule. Hand in 4.", "", "&bObjective:&r Hand in 4 Mangrove Propagule", "&7The items are taken when you complete the quest."]
 			id: "75EB15EBC66849F7"
 			rewards: [
-				{ count: 7, id: "244414B166326618", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "19C7D4009449DF1D", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "3752389B0E728345", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 85 of 104 • 7 Copper"
+			subtitle: "Entry 85 of 104 • 1 Emerald, 5 Gold"
 			tasks: [{ count: 4L, consume_items: true, id: "7D81561C7029CC4B", item: { count: 1, id: "minecraft:mangrove_propagule" }, type: "item" }]
 			title: "Mangrove Roots"
 			x: 0.0d
@@ -1142,9 +1217,10 @@
 			description: ["Workshop order: 32 Oak Fence, made by you.", "", "&bObjective:&r Craft 32 Oak Fence", "&7Only items you craft yourself count."]
 			id: "04A42F1767794BEA"
 			rewards: [
-				{ count: 7, id: "7473CE0FA7589763", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "2D47489BE57B3FB7", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "4603BE4F59986807", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 86 of 104 • 7 Copper"
+			subtitle: "Entry 86 of 104 • 1 Emerald, 5 Gold"
 			tasks: [{ count: 32L, only_from_crafting: true, id: "280F4E4F92EBC635", item: { count: 1, id: "minecraft:oak_fence" }, type: "item" }]
 			title: "Fence Line"
 			x: 1.5d
@@ -1155,9 +1231,10 @@
 			description: ["The guild wants 4 freshly crafted Oak Fence Gate.", "", "&bObjective:&r Craft 4 Oak Fence Gate", "&7Only items you craft yourself count."]
 			id: "2D253571692D8B8D"
 			rewards: [
-				{ count: 7, id: "6DBB2B02B24670EA", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "0588ED804756A6EB", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "71A1B82B7D266C01", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 87 of 104 • 7 Copper"
+			subtitle: "Entry 87 of 104 • 1 Emerald, 6 Gold"
 			tasks: [{ count: 4L, only_from_crafting: true, id: "1EBD478169F5F430", item: { count: 1, id: "minecraft:oak_fence_gate" }, type: "item" }]
 			title: "Gatehouse"
 			x: 3.0d
@@ -1168,9 +1245,10 @@
 			description: ["Prove your hands are skilled: craft 2 Oak Door yourself.", "", "&bObjective:&r Craft 2 Oak Door", "&7Only items you craft yourself count."]
 			id: "5EE4D0264BCBD7A6"
 			rewards: [
-				{ count: 7, id: "3832481D1D20A968", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "4EE7B1D5109C94CD", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "20797EF94324C421", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 88 of 104 • 7 Copper"
+			subtitle: "Entry 88 of 104 • 1 Emerald, 6 Gold"
 			tasks: [{ count: 2L, only_from_crafting: true, id: "3DB982DE84CB4137", item: { count: 1, id: "minecraft:oak_door" }, type: "item" }]
 			title: "Front Door"
 			x: 4.5d
@@ -1181,9 +1259,10 @@
 			description: ["Workshop order: 8 Chest, made by you.", "", "&bObjective:&r Craft 8 Chest", "&7Only items you craft yourself count."]
 			id: "09D1D3F477035441"
 			rewards: [
-				{ count: 7, id: "41B73B252ABB4B66", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "26A23CC1660A7ABD", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "16B3923CAF816D48", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 89 of 104 • 7 Copper"
+			subtitle: "Entry 89 of 104 • 1 Emerald, 6 Gold"
 			tasks: [{ count: 8L, only_from_crafting: true, id: "75C178B0D40F3BC5", item: { count: 1, id: "minecraft:chest" }, type: "item" }]
 			title: "Pantry Shelves"
 			x: 6.0d
@@ -1191,15 +1270,15 @@
 		}
 		{
 			dependencies: ["09D1D3F477035441"]
-			description: ["The guild wants 4 freshly crafted Barrel.", "", "&bObjective:&r Craft 4 Barrel", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["The guild wants 4 freshly crafted Barrel.", "", "&bObjective:&r Craft 4 Barrel", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Iron Sword&7 (enchanted)"]
 			id: "4F93F80F4A905B70"
 			rewards: [
-				{ count: 1, id: "0668CEA5A137726E", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 9, id: "0F69A7E6197F6A03", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 4, id: "08FD590433F6F794", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "72579C76D743E8CA", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 3, "minecraft:unbreaking": 2 } } }, count: 1, id: "minecraft:iron_sword" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 90 of 104 • 1 Iron, 9 Copper"
+			subtitle: "Entry 90 of 104 • 4 Emerald + Gear"
 			tasks: [{ count: 4L, only_from_crafting: true, id: "63293F53883A7A7D", item: { count: 1, id: "minecraft:barrel" }, type: "item" }]
 			title: "&6&lRoot Cellar"
 			x: 7.5d
@@ -1210,9 +1289,10 @@
 			description: ["Prove your hands are skilled: craft 4 Bookshelf yourself.", "", "&bObjective:&r Craft 4 Bookshelf", "&7Only items you craft yourself count."]
 			id: "758E7D70BB33BD3C"
 			rewards: [
-				{ count: 8, id: "60E0B7B0297347BB", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "624EB842E47C1AD2", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "10933AFD85EF5AEB", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 91 of 104 • 8 Copper"
+			subtitle: "Entry 91 of 104 • 1 Emerald, 6 Gold"
 			tasks: [{ count: 4L, only_from_crafting: true, id: "73AC10BDEC634BC4", item: { count: 1, id: "minecraft:bookshelf" }, type: "item" }]
 			title: "Home Library"
 			x: 9.0d
@@ -1223,9 +1303,10 @@
 			description: ["Workshop order: 4 Painting, made by you.", "", "&bObjective:&r Craft 4 Painting", "&7Only items you craft yourself count."]
 			id: "072084A76F671BC9"
 			rewards: [
-				{ count: 8, id: "7F21B36701F24278", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "159807788CF6D1F2", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "2D732125489522BE", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 92 of 104 • 8 Copper"
+			subtitle: "Entry 92 of 104 • 1 Emerald, 6 Gold"
 			tasks: [{ count: 4L, only_from_crafting: true, id: "02F6DE8F1158124D", item: { count: 1, id: "minecraft:painting" }, type: "item" }]
 			title: "Home Gallery"
 			x: 9.0d
@@ -1236,9 +1317,10 @@
 			description: ["The guild wants 8 freshly crafted Item Frame.", "", "&bObjective:&r Craft 8 Item Frame", "&7Only items you craft yourself count."]
 			id: "1D80862E91F72C45"
 			rewards: [
-				{ count: 8, id: "144F2F1203A99534", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "460ACBF249966D16", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "20360BF7944C11A9", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 93 of 104 • 8 Copper"
+			subtitle: "Entry 93 of 104 • 1 Emerald, 6 Gold"
 			tasks: [{ count: 8L, only_from_crafting: true, id: "0729C8C21313D4EE", item: { count: 1, id: "minecraft:item_frame" }, type: "item" }]
 			title: "Trophy Frames"
 			x: 7.5d
@@ -1249,9 +1331,10 @@
 			description: ["Prove your hands are skilled: craft 2 Armor Stand yourself.", "", "&bObjective:&r Craft 2 Armor Stand", "&7Only items you craft yourself count."]
 			id: "0C95250D0EB02CF3"
 			rewards: [
-				{ count: 8, id: "36ACCEA7764A5DF7", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "5636DE835302C733", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "3D4A28818319B790", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 94 of 104 • 8 Copper"
+			subtitle: "Entry 94 of 104 • 1 Emerald, 6 Gold"
 			tasks: [{ count: 2L, only_from_crafting: true, id: "11A044512382C64A", item: { count: 1, id: "minecraft:armor_stand" }, type: "item" }]
 			title: "Display Stand"
 			x: 6.0d
@@ -1262,9 +1345,10 @@
 			description: ["Workshop order: 1 Loom, made by you.", "", "&bObjective:&r Craft 1 Loom", "&7Only items you craft yourself count."]
 			id: "1CB5E6A9D6CB74C1"
 			rewards: [
-				{ count: 8, id: "52B0D5DE879F18B7", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "45E15D8F9A2FB5E1", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "55777F89B98601BF", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 95 of 104 • 8 Copper"
+			subtitle: "Entry 95 of 104 • 1 Emerald, 6 Gold"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "4A1733F7F31F4459", item: { count: 1, id: "minecraft:loom" }, type: "item" }]
 			title: "The Weaver"
 			x: 4.5d
@@ -1275,9 +1359,10 @@
 			description: ["The guild wants 2 freshly crafted White Banner.", "", "&bObjective:&r Craft 2 White Banner", "&7Only items you craft yourself count."]
 			id: "32A1E15EECD86DFE"
 			rewards: [
-				{ count: 8, id: "4D0D2D6BC55B2341", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "229AC95B45944AD9", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "65616B74D2B68453", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 96 of 104 • 8 Copper"
+			subtitle: "Entry 96 of 104 • 1 Emerald, 6 Gold"
 			tasks: [{ count: 2L, only_from_crafting: true, id: "1B55B50DBA61E887", item: { count: 1, id: "minecraft:white_banner" }, type: "item" }]
 			title: "Family Banner"
 			x: 3.0d
@@ -1288,9 +1373,10 @@
 			description: ["Prove your hands are skilled: craft 16 Red Carpet yourself.", "", "&bObjective:&r Craft 16 Red Carpet", "&7Only items you craft yourself count."]
 			id: "197FF2C2CD7E0D31"
 			rewards: [
-				{ count: 8, id: "25A02464B088D613", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "554D9A135F5ED412", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "5A0E6B7141815033", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 97 of 104 • 8 Copper"
+			subtitle: "Entry 97 of 104 • 1 Emerald, 7 Gold"
 			tasks: [{ count: 16L, only_from_crafting: true, id: "18DFC0A4D6A98FA5", item: { count: 1, id: "minecraft:red_carpet" }, type: "item" }]
 			title: "Rolled Rugs"
 			x: 1.5d
@@ -1301,9 +1387,10 @@
 			description: ["Workshop order: 16 Packed Mud, made by you.", "", "&bObjective:&r Craft 16 Packed Mud", "&7Only items you craft yourself count."]
 			id: "002BD692CB12F309"
 			rewards: [
-				{ count: 8, id: "7787B05809813EB0", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "06CA7A58419803E7", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "7ABF183AAD551890", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 98 of 104 • 8 Copper"
+			subtitle: "Entry 98 of 104 • 1 Emerald, 7 Gold"
 			tasks: [{ count: 16L, only_from_crafting: true, id: "486A2B6FAEB1F6BD", item: { count: 1, id: "minecraft:packed_mud" }, type: "item" }]
 			title: "Mud and Straw"
 			x: 0.0d
@@ -1314,9 +1401,10 @@
 			description: ["The guild wants 32 freshly crafted Mud Bricks.", "", "&bObjective:&r Craft 32 Mud Bricks", "&7Only items you craft yourself count."]
 			id: "2AF63C14CDB6057D"
 			rewards: [
-				{ count: 8, id: "07E27F2AD5A6FB38", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "15AF2C9CB2E87CA6", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "0D07D64D0A220BF6", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 99 of 104 • 8 Copper"
+			subtitle: "Entry 99 of 104 • 1 Emerald, 7 Gold"
 			tasks: [{ count: 32L, only_from_crafting: true, id: "1803BA3385D5631B", item: { count: 1, id: "minecraft:mud_bricks" }, type: "item" }]
 			title: "Mud Brick Cottage"
 			x: 0.0d
@@ -1324,14 +1412,16 @@
 		}
 		{
 			dependencies: ["2AF63C14CDB6057D"]
-			description: ["Prove your hands are skilled: craft 1 Cauldron yourself.", "", "&bObjective:&r Craft 1 Cauldron", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			description: ["Prove your hands are skilled: craft 1 Cauldron yourself.", "", "&bObjective:&r Craft 1 Cauldron", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Iron Longsword&7 (enchanted)"]
 			id: "3211DEBA0BBA9A68"
 			rewards: [
-				{ count: 2, id: "6EB8684660106660", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+				{ count: 4, id: "38FA5B8B4850AE01", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "54ED1429572F41A9", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ id: "197E88CC176C6D31", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 3, "minecraft:unbreaking": 2 } } }, count: 1, id: "simplyswords:iron_longsword" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 1.4d
-			subtitle: "Entry 100 of 104 • 2 Iron"
+			subtitle: "Entry 100 of 104 • 4 Emerald, 2 Gold + Gear"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "0A9CF562D3FC1E0C", item: { count: 1, id: "minecraft:cauldron" }, type: "item" }]
 			title: "&6&lKitchen Cauldron"
 			x: 1.5d
@@ -1342,9 +1432,10 @@
 			description: ["Reach 5 for fill cauldron.", "", "&bObjective:&r Reach fill cauldron: 5", "&7Counts your total since you first joined."]
 			id: "0A4FED0BFF3BC7F8"
 			rewards: [
-				{ count: 8, id: "250684442459E06A", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "6B33D98C49ECDB5B", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "0A3DAA7BA30A8F19", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 101 of 104 • 8 Copper"
+			subtitle: "Entry 101 of 104 • 1 Emerald, 7 Gold"
 			tasks: [{ id: "39DB1233A72B54E1", stat: "minecraft:fill_cauldron", type: "stat", value: 5 }]
 			title: "Bath Day"
 			x: 3.0d
@@ -1355,9 +1446,10 @@
 			description: ["The guild wants 1 freshly crafted Writable Book.", "", "&bObjective:&r Craft 1 Writable Book", "&7Only items you craft yourself count."]
 			id: "4447BA6E4D2D73FC"
 			rewards: [
-				{ count: 8, id: "00D686966727E994", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "11CE71B39D989374", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "7D3BB0AD562C2D06", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 102 of 104 • 8 Copper"
+			subtitle: "Entry 102 of 104 • 1 Emerald, 7 Gold"
 			tasks: [{ count: 1L, only_from_crafting: true, id: "70E894AE048724C1", item: { count: 1, id: "minecraft:writable_book" }, type: "item" }]
 			title: "Farm Journal"
 			x: 4.5d
@@ -1368,9 +1460,10 @@
 			description: ["Reach 40 for animals bred.", "", "&bObjective:&r Reach animals bred: 40", "&7Counts your total since you first joined."]
 			id: "7BEF451F72C98327"
 			rewards: [
-				{ count: 8, id: "44F8E254F3F0C798", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 1, id: "556449EB0BA3CFD9", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "733905529395A87A", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
 			]
-			subtitle: "Entry 103 of 104 • 8 Copper"
+			subtitle: "Entry 103 of 104 • 1 Emerald, 7 Gold"
 			tasks: [{ id: "5AC26C7B458C63AB", stat: "minecraft:animals_bred", type: "stat", value: 40 }]
 			title: "Full Barn"
 			x: 6.0d
@@ -1378,15 +1471,15 @@
 		}
 		{
 			dependencies: ["7BEF451F72C98327"]
-			description: ["Experience is the true currency. Offer 10 levels.", "", "&bObjective:&r Spend 10 XP levels", "&7The levels are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coin reward.", "&6&lFinal entry of this Ledger."]
+			description: ["Experience is the true currency. Offer 10 levels.", "", "&bObjective:&r Spend 10 XP levels", "&7The levels are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Iron Katana&7 (enchanted)", "&6&lFinal entry of this Ledger."]
 			id: "28C12FD378E3F06E"
 			rewards: [
-				{ count: 3, id: "4DD41569FB90322A", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
-				{ count: 2, id: "63E8EF8670594752", item: { count: 1, id: "lightmanscurrency:coin_copper" }, type: "item" }
+				{ count: 7, id: "40DB8087A3E5DAA3", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "65DF83372D9A69E9", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 3, "minecraft:unbreaking": 2 } } }, count: 1, id: "simplyswords:iron_katana" }, type: "item" }
 			]
 			shape: "hexagon"
 			size: 2.0d
-			subtitle: "Entry 104 of 104 • 3 Iron, 2 Copper"
+			subtitle: "Entry 104 of 104 • 7 Emerald + Gear"
 			tasks: [{ id: "7742BF5759B082B3", points: false, type: "xp", value: 10L }]
 			title: "&6&lFarmhand's Wisdom"
 			x: 7.5d

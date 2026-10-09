@@ -1048,3 +1048,83 @@ chapter("Ledger X: Legends of the Realm", "&6&l", "minecraft:beacon", "Only true
     ("give", "minecraft:netherite_block", 2, "Throne of Netherite"),
     ("have", "minecraft:enchanted_golden_apple", 5, "Legend of the Ledger"),
 ])
+
+# ------------------------------------------------------------------ GEAR REWARDS
+# One slot per Ledger Trial (every 10th entry) plus the chapter finale, in order. Each slot is a list of
+# (item id, "enchant:level,..." or "") given on top of the coins. Better gear later; the craziest only in Ledger X.
+# Modded IDs come from the mods' own lang files (mod_items.json); vanilla IDs from the 1.21.1 registry.
+W1 = "sharpness:3,unbreaking:2"
+W2 = "sharpness:4,unbreaking:3,looting:2"
+W3 = "sharpness:5,unbreaking:3,looting:3,sweeping_edge:3"
+W4 = "sharpness:5,unbreaking:3,looting:3,sweeping_edge:3,fire_aspect:2,mending:1"
+A2 = "protection:2,unbreaking:2"
+A3 = "protection:3,unbreaking:3"
+A4 = "protection:4,unbreaking:3,mending:1"
+GEAR = [
+  [  # I Homestead
+    [("minecraft:iron_hoe", "efficiency:2,unbreaking:1")], [("minecraft:iron_shovel", "efficiency:3,unbreaking:1")],
+    [("minecraft:iron_axe", "efficiency:3,unbreaking:2")], [("minecraft:shears", "efficiency:3,unbreaking:2")],
+    [("minecraft:bow", "power:2,unbreaking:1")], [("minecraft:fishing_rod", "lure:2,luck_of_the_sea:1")],
+    [("minecraft:iron_pickaxe", "efficiency:3,unbreaking:2")], [("minecraft:leather_boots", "feather_falling:3,unbreaking:2")],
+    [("minecraft:iron_sword", W1)], [("simplyswords:iron_longsword", W1)], [("simplyswords:iron_katana", W1)],
+  ],
+  [  # II Wanderlust
+    [("minecraft:iron_boots", "feather_falling:3,unbreaking:2")], [("minecraft:iron_helmet", A2)],
+    [("minecraft:iron_leggings", A2)], [("minecraft:iron_chestplate", A2)], [("simplyswords:iron_rapier", W1)],
+    [("aether:zanite_sword", W1)], [("aether:iron_ring", "")], [("simplyswords:iron_spear", W1)],
+    [("aether:leather_gloves", "unbreaking:2")], [("simplyswords:iron_twinblade", W1)], [("aether:agility_cape", "")],
+  ],
+  [  # III Artisan's Guild
+    [("minecraft:diamond_shovel", "efficiency:4,unbreaking:3")], [("minecraft:diamond_axe", "efficiency:4,unbreaking:3")],
+    [("simplyswords:iron_greathammer", W1)], [("aether:zanite_pickaxe", "efficiency:4,unbreaking:3")],
+    [("simplyswords:iron_halberd", W1)], [("aether:zanite_ring", "")], [("simplyswords:iron_claymore", W1)],
+    [("minecraft:diamond_pickaxe", "efficiency:4,unbreaking:3,fortune:2")], [("aether:zanite_pendant", "")],
+    [("simplyswords:iron_glaive", W2)], [("simplyswords:diamond_longsword", W2)],
+  ],
+  [  # IV Tides & Tails
+    [("minecraft:fishing_rod", "lure:3,luck_of_the_sea:3,unbreaking:3")], [("minecraft:trident", "loyalty:3,impaling:3,unbreaking:2")],
+    [("simplyswords:diamond_cutlass", W2)], [("aether:neptune_boots", "depth_strider:3,protection:3,unbreaking:3")],
+    [("aether:neptune_leggings", A3)], [("aether:neptune_chestplate", A3)],
+    [("aether:neptune_helmet", "respiration:3,aqua_affinity:1,protection:3,unbreaking:3")], [("aether:neptune_gloves", "unbreaking:3")],
+    [("simplyswords:diamond_sai", W2)], [("minecraft:trident", "riptide:3,impaling:4,unbreaking:3")], [("simplyswords:livyatan", W2)],
+  ],
+  [  # V Into the Nether
+    [("simplyswords:diamond_katana", W2)], [("aether:flaming_sword", "unbreaking:3,looting:2")], [("simplyswords:diamond_scythe", W2)],
+    [("aether:obsidian_helmet", A3)], [("aether:obsidian_chestplate", A3)], [("aether:obsidian_leggings", A3)],
+    [("aether:obsidian_boots", "protection:3,unbreaking:3,feather_falling:3")], [("simplyswords:hearthflame", W2)],
+    [("simplyswords:brimstone_claymore", W3)], [("simplyswords:emberblade", W3)], [("simplyswords:soulpyre", W3)],
+  ],
+  [  # VI Arcane Arts
+    [("irons_spellbooks:copper_spell_book", "")], [("irons_spellbooks:wandering_magician_helmet", A2)],
+    [("irons_spellbooks:wandering_magician_chestplate", A2)], [("irons_spellbooks:wandering_magician_leggings", A2)],
+    [("irons_spellbooks:wandering_magician_boots", A2)], [("irons_spellbooks:iron_spell_book", "")],
+    [("irons_spellbooks:ice_staff", "unbreaking:3")], [("irons_spellbooks:gold_spell_book", "")],
+    [("irons_spellbooks:graybeard_staff", "unbreaking:3")], [("irons_spellbooks:diamond_spell_book", "")],
+  ],
+  [  # VII The Deep Below
+    [("simplyswords:netherite_longsword", W3)], [("aether:gravitite_helmet", A3)], [("aether:gravitite_chestplate", A3)],
+    [("aether:gravitite_leggings", A3)], [("aether:gravitite_boots", "protection:3,unbreaking:3,feather_falling:4")],
+    [("aether:gravitite_gloves", "unbreaking:3")], [("simplyswords:netherite_glaive", W3)],
+    [("irons_spellbooks:boreal_blade", W3)], [("simplyswords:netherite_halberd", W3)],
+    [("aether:gravitite_pickaxe", "efficiency:5,unbreaking:3,fortune:3")], [("simplyswords:watcher_claymore", W3)],
+  ],
+  [  # VIII Bounty Board
+    [("aether:valkyrie_helmet", A3)], [("aether:valkyrie_chestplate", A3)], [("aether:valkyrie_leggings", A3)],
+    [("aether:valkyrie_boots", "protection:3,unbreaking:3,feather_falling:4")], [("aether:valkyrie_gloves", "unbreaking:3")],
+    [("aether:vampire_blade", W3)], [("aether:lightning_sword", W3)], [("irons_spellbooks:keeper_flamberge", W3)],
+    [("simplyswords:storms_edge", W3)], [("aether:valkyrie_lance", W3), ("aether:hammer_of_kingbdogz", W3)],
+  ],
+  [  # IX The Far End
+    [("aether:phoenix_helmet", A4)], [("aether:phoenix_chestplate", A4)], [("aether:phoenix_leggings", A4)],
+    [("aether:phoenix_boots", "protection:4,unbreaking:3,mending:1,feather_falling:4")], [("aether:phoenix_gloves", "unbreaking:3,mending:1")],
+    [("aether:phoenix_bow", "power:5,punch:2,flame:1,infinity:1,unbreaking:3")], [("irons_spellbooks:netherite_spell_book", "")],
+    [("simplyswords:twisted_blade", W4)], [("simplyswords:stars_edge", W4)], [("simplyswords:caelestis", W4)],
+  ],
+  [  # X Legends of the Realm - the craziest gear on the server
+    [("irons_spellbooks:netherite_mage_helmet", A4)], [("irons_spellbooks:netherite_mage_chestplate", A4)],
+    [("irons_spellbooks:netherite_mage_leggings", A4)], [("irons_spellbooks:netherite_mage_boots", "protection:4,unbreaking:3,mending:1,feather_falling:4")],
+    [("irons_spellbooks:dragonskin_spell_book", "")], [("simplyswords:harbinger", W4)], [("simplyswords:sunfire", W4)],
+    [("simplyswords:the_devourer", W4)], [("simplyswords:stormbringer", W4)], [("simplyswords:awakened_lichblade", W4)],
+    [("simplyswords:soulkeeper", W4), ("irons_spellbooks:necronomicon_spell_book", ""), ("simplyswords:mjolnir", W4)],
+  ],
+]
