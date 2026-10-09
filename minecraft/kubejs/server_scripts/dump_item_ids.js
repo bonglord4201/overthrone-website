@@ -1,12 +1,19 @@
-// OVERTHRONE - one-time helper: writes every modded item ID on the server to kubejs/exported/item_ids.json
-// (and to logs/kubejs/server.log). Upload it, run /reload, send the file to Claude, then delete this script.
+// OVERTHRONE - one-time helper. Upload, run /reload, then type /dumpitems in game.
+// Writes every modded item ID to kubejs/exported/item_ids.json (and logs/kubejs/server.log). Delete this script afterwards.
 
-ServerEvents.loaded(event => {
-  const BuiltInRegistries = Java.loadClass('net.minecraft.core.registries.BuiltInRegistries')
+function overthroneItemIds() {
+  try {
+    return Item.getTypeList().toArray().map(id => String(id))
+  } catch (e) {
+    const BuiltInRegistries = Java.loadClass('net.minecraft.core.registries.BuiltInRegistries')
+    return BuiltInRegistries.ITEM.keySet().toArray().map(key => String(key))
+  }
+}
+
+function overthroneDump() {
   const byMod = {}
   let total = 0
-  BuiltInRegistries.ITEM.keySet().forEach(key => {
-    const id = String(key)
+  overthroneItemIds().forEach(id => {
     const mod = id.split(':')[0]
     if (mod === 'minecraft') return
     if (!byMod[mod]) byMod[mod] = []
@@ -17,4 +24,21 @@ ServerEvents.loaded(event => {
   JsonIO.write('kubejs/exported/item_ids.json', byMod)
   console.info('[OVERTHRONE] item_ids: ' + total + ' modded items from ' + Object.keys(byMod).length + ' mods')
   Object.keys(byMod).sort().forEach(mod => console.info('[OVERTHRONE] ' + mod + ': ' + byMod[mod].join(' ')))
+  return total
+}
+
+ServerEvents.commandRegistry(event => {
+  const { commands: Commands } = event
+  event.register(Commands.literal('dumpitems')
+    .requires(src => src.hasPermission(2))
+    .executes(ctx => {
+      try {
+        const total = overthroneDump()
+        ctx.source.sendSystemMessage(Text.green('Saved ' + total + ' modded item IDs to kubejs/exported/item_ids.json'))
+      } catch (e) {
+        ctx.source.sendSystemMessage(Text.red('dumpitems failed: ' + e))
+        console.error('[OVERTHRONE] dumpitems failed: ' + e)
+      }
+      return 1
+    }))
 })
