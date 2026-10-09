@@ -89,8 +89,48 @@ def tensura_guide():  # Sage with slime-blue hair and a core gem
     s.paint("rpants", robe); s.paint("lpants", robe)
     return s.save("tensura_guide")
 
+
+
+
+def rebirth_keeper():  # Seris the Rebirth Keeper: hooded archivist in violet and black with gold
+    s = Skin(23)
+    skin, hair, eye = hx("e8cdb6"), hx("e8e4f0"), hx("b04aff")
+    violet, violet_d = hx("5a1a8a"), hx("34104f")
+    s.paint("head", hair_head(hair, skin, fringe=2, sides=7, back=8))
+    face_detail(s, skin, eye, hair, brow=hair, mouth=hx("a86a70"))
+    def hood(f, u, v, w, h):
+        if f == "front": return violet_d if (v < 1 or u in (0, 7)) else None
+        if f == "bottom": return None
+        return violet_d if f != "top" else violet
+    s.paint("hat", hood)
+    x, y, w, h = PARTS["hat"]["front"]
+    s.px(x + 3, y + 0, GOLD); s.px(x + 4, y + 0, GOLD)
+    def body(f, u, v, w, h):
+        if f == "front":
+            if v == 7: return GOLD_D
+            if u in (3, 4): return GOLD if v in (2, 4) else BLACK
+            return violet
+        return violet
+    s.paint("body", body)
+    def robe(f, u, v, w, h):  # scroll satchel strap + mantle
+        if f == "front": return GOLD_D if u == v or u == v - 1 else None
+        if f == "back": return violet_d
+        if f in ("left", "right"): return violet_d if v < 10 else None
+        return None
+    s.paint("jacket", robe)
+    arm = lambda f, u, v, w, h: skin if v >= 11 else (GOLD_D if v == 10 else violet)
+    s.paint("rarm", arm); s.paint("larm", arm)
+    sleeve = lambda f, u, v, w, h: violet_d if 6 <= v <= 9 else None
+    s.paint("rsleeve", sleeve); s.paint("lsleeve", sleeve)
+    leg = lambda f, u, v, w, h: BLACK
+    s.paint("rleg", leg); s.paint("lleg", leg)
+    skirt = lambda f, u, v, w, h: (GOLD_D if v == 11 else violet_d)
+    s.paint("rpants", skirt); s.paint("lpants", skirt)
+    return s.save("rebirth_keeper")
+
+
 if __name__ == "__main__":
-    skins = [slr_guide(), tensura_guide()]
+    skins = [slr_guide(), tensura_guide(), rebirth_keeper()]
     sheet = Image.new("RGBA", (len(skins) * 160, 34 * 8), (40, 34, 38, 255))
     for i, sk in enumerate(skins):
         sheet.alpha_composite(front_view(sk).resize((128, 256), Image.NEAREST), (i * 160 + 16, 8))

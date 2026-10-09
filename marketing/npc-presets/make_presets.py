@@ -147,6 +147,16 @@ NPCS = {
    page("aeonia", "AEONIA, the Realm of the Divine. Ancient temples, marble halls and celestial skies, where the gods once walked. Only the worthy may ascend, and the gods do not forgive arrogance.", [BACK()]),
    page("netherfall", "NETHERFALL, the Realm of the Dead. Volcanic wastes, ancient ruins and the endless abyss. Lost souls wander there, hungry. Many enter. Few return. Do not go unprepared, @initiator.", [BACK()]),
  ]),
+ # Gives a Tensura Race Reset Scroll once every 12 hours (cooldown lives in minecraft/kubejs/server_scripts/race_scroll.js)
+ "rebirth_keeper": ("Seris the Rebirth Keeper", "#AA00AA", [
+   page("main", "Ah... @initiator. I am Seris, keeper of the Rebirth Archive. Every soul is born into a race it never chose. I can offer you a second chance: one Race Reset Scroll, every twelve hours.",
+        [run("✦ Claim my Race Reset Scroll", "racescroll claim"), to("? What does the scroll do", "what"),
+         run("⌛ When can I claim again?", "racescroll time"), BYE("Not today")], default=True),
+   page("what", "Read the Race Reset Scroll and you are reborn. It resets your Statistics, Naming status, Awakening status, Spirits, Resistances and your Race, along with its Intrinsic Skills. Then you choose a new race.",
+        [to("☠ Is there a catch?", "catch"), BACK()]),
+   page("catch", "There is always a catch, child. Whatever your old race gave you is gone: its intrinsic skills, your awakening, your spirits. Don't read it on a whim. Keep it until you are sure... and you only get one every twelve hours.",
+        [run("✦ I understand. Give me the scroll", "racescroll claim"), BACK()]),
+ ]),
 }
 
 # Ryo's custom skin that was already uploaded in-game (from the export); the others start with the default skin.
