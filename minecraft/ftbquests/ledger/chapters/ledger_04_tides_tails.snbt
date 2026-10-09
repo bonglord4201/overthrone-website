@@ -1122,7 +1122,7 @@
 			]
 			subtitle: "Entry 79 of 103 • 1 Diamond, 2 Emerald"
 			tasks: [{ count: 32L, consume_items: true, id: "6E521FFDD9BCE3A4", item: { count: 1, id: "minecraft:cooked_cod" }, type: "item" }]
-			title: "Fish & Chips"
+			title: "Fish \\& Chips"
 			x: 7.5d
 			y: 16.5d
 		}
@@ -1476,5 +1476,5 @@
 		}
 	]
 	subtitle: ["Anglers, tamers and riders: the sea and the wild pay well. &7(Unlocks after entry 50 of the previous Ledger.)"]
-	title: "&bLedger IV: Tides & Tails"
+	title: "&bLedger IV: Tides \\& Tails"
 }

@@ -674,7 +674,7 @@
 		}
 		{
 			dependencies: ["168F904628C30E17"]
-			description: ["Earn the advancement \"Caves & Cliffs\".", "", "&bObjective:&r Earn the advancement \"Caves & Cliffs\""]
+			description: ["Earn the advancement \"Caves \\& Cliffs\".", "", "&bObjective:&r Earn the advancement \"Caves \\& Cliffs\""]
 			id: "218E800796BB84F2"
 			rewards: [
 				{ count: 2, id: "12DDA744A74EB584", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
@@ -682,7 +682,7 @@
 			]
 			subtitle: "Entry 48 of 104 • 2 Emerald, 4 Gold"
 			tasks: [{ advancement: "minecraft:adventure/fall_from_world_height", criterion: "", id: "70912438C4872779", type: "advancement" }]
-			title: "Caves & Cliffs"
+			title: "Caves \\& Cliffs"
 			x: 7.5d
 			y: 9.0d
 		}

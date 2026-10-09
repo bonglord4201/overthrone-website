@@ -745,7 +745,7 @@ chapter("Ledger VII: The Deep Below", "&3", "minecraft:sculk_shrieker", "Caves, 
 ])
 
 # ------------------------------------------------------------------ VIII. BOUNTY BOARD
-chapter("Ledger VIII: Bounty Board", "&4", "minecraft:iron_sword", "Raids, trophies and battle-tested gear. Combat pays.", [
+chapter("Ledger VIII: Bounty Board", "&c", "minecraft:iron_sword", "Raids, trophies and battle-tested gear. Combat pays.", [
     ("adv", "minecraft:adventure/kill_a_mob", 1, "Monster Hunter's Oath"),
     ("adv", "minecraft:adventure/shoot_arrow", 1, "Take Aim"),
     ("craft", "minecraft:arrow", 64, "Quiver Full"),
@@ -844,7 +844,7 @@ chapter("Ledger VIII: Bounty Board", "&4", "minecraft:iron_sword", "Raids, troph
 ])
 
 # ------------------------------------------------------------------ IX. THE FAR END
-chapter("Ledger IX: The Far End", "&5", "minecraft:end_crystal", "Beyond the stronghold lies the void, a dragon and the cities of the End.", [
+chapter("Ledger IX: The Far End", "&d", "minecraft:end_crystal", "Beyond the stronghold lies the void, a dragon and the cities of the End.", [
     ("craft", "minecraft:ender_eye", 12, "Eyes of Ender"),
     ("struct", "minecraft:stronghold", 1, "The Stronghold"),
     ("adv", "minecraft:story/follow_ender_eye", 1, "Eye Spy"),

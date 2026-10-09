@@ -52,6 +52,9 @@ def qid(*parts):
             used.add(h); return h
         salt += 1
 
+def amp(x):
+    """FTB Quests reads '&' as a colour code; a plain ampersand must be written as '\\&'."""
+    return re.sub(r"&(?![0-9a-fk-orA-FK-OR])", r"\\&", x)
 def s(x): return '"' + x.replace("\\", "\\\\").replace('"', '\\"') + '"'
 def pretty(rid):
     base = rid.split(":")[-1].replace("_", " ")
@@ -170,7 +173,7 @@ def describe(kind, target, n, title, seed):
     elif kind == "pot": item, nn = pretty(target[0]) + " of " + pretty(target[1]).replace("Long ", "Long ").replace("Strong ", "Strong "), 1
     elif kind == "book": item, nn = pretty(target[0]) + " " + ["", "I", "II", "III", "IV", "V"][target[1]], 1
     else: item, nn = "", n
-    lore = pick(LORE[kind]).format(n=nn, item=item, title=title)
+    lore = amp(pick(LORE[kind]).format(n=nn, item=item, title=title))
     if kind == "kill": obj = "Slay %d %s" % (n, item)
     elif kind == "give": obj = "Hand in %d %s" % (n, item)
     elif kind == "craft": obj = "Craft %d %s" % (n, item)
@@ -183,6 +186,7 @@ def describe(kind, target, n, title, seed):
     elif kind == "dim": obj = "Enter %s" % item
     elif kind == "pot": obj = "Have a %s" % item
     elif kind == "book": obj = "Have an Enchanted Book of %s (only that enchantment)" % item
+    obj = amp(obj)
     notes = {"give": "&7The items are taken when you complete the quest.", "craft": "&7Only items you craft yourself count.",
              "xp": "&7The levels are taken when you complete the quest.", "stat": "&7Counts your total since you first joined."}
     return lore, obj, notes.get(kind)
@@ -251,7 +255,7 @@ for ci, ch in enumerate(CHAPTERS):
             fields.append('shape: "hexagon"'); fields.append("size: %sd" % ("2.0" if last else "1.4"))
         fields.append("subtitle: %s" % s("Entry %d of %d • %s%s" % (qi + 1, N, coin_text(cs), " + Gear" if gear else "")))
         fields.append("tasks: [%s]" % task_snbt(kind, target, n, qid("task", ci, qi)))
-        fields.append("title: %s" % s(("&6&l" if (milestone or last) else "") + title))
+        fields.append("title: %s" % s(("&6&l" if (milestone or last) else "") + amp(title)))
         fields.append("x: %.1fd" % x); fields.append("y: %.1fd" % y)
         blocks.append("\t\t{\n\t\t\t" + "\n\t\t\t".join(fields) + "\n\t\t}")
         if qi == 49: unlock_q = q_id
@@ -260,7 +264,7 @@ for ci, ch in enumerate(CHAPTERS):
     fname = "ledger_%02d_%s" % (ci + 1, re.sub(r"[^a-z]+", "_", ch["name"].split(":")[1].strip().lower()).strip("_"))
     text = "{\n\tdefault_hide_dependency_lines: false\n\tdefault_quest_shape: \"\"\n\tfilename: %s\n\tgroup: \"\"\n\ticon: { id: %s }\n\tid: %s\n\timages: [ ]\n\torder_index: %d\n\tquest_links: [ ]\n\tquests: [\n%s\n\t]\n\tsubtitle: [%s]\n\ttitle: %s\n}\n" % (
         s(fname), s(ch["icon"]), s(ch_id), 20 + ci, "\n".join(blocks),
-        s(ch["intro"] + (" &7(Unlocks after entry 50 of the previous Ledger.)" if ci else "")), s(ch["color"] + ch["name"]))
+        s(amp(ch["intro"]) + (" &7(Unlocks after entry 50 of the previous Ledger.)" if ci else "")), s(ch["color"] + amp(ch["name"])))
     open(os.path.join(OUT, fname + ".snbt"), "w").write(text)
     summary.append((ch["name"], N, ch_copper))
 
