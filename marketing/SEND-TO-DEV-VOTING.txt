@@ -1,0 +1,46 @@
+OVERTHRONE SMP - Voting rewards (for the dev)
+
+ALREADY DONE (by the owner)
+- "Votifier for Neoforge" 1.2 is installed in mods/ and working.
+- Votifier listens on port 25745 (extra allocation on MintServers, IP 51.161.196.66).
+- Test vote from MinecraftServers.org arrived in the console:
+  "Received: Vote (from:MinecraftServers.org username:... )"
+- config/votifier/votifier.json is set to run this command on every vote:
+
+    execute as %player% run function overthrone:vote_reward
+
+WHAT YOU NEED TO DO
+The reward for each vote is:  1x Vote Key  +  $50,000 in-game balance
+
+1. Add a CRATE / KEY mod (NeoForge 1.21.1) with a crate called "vote" and a "Vote Key".
+
+2. Add an ECONOMY mod (NeoForge 1.21.1) so players have an in-game balance.
+   (This is also needed for chest shops, auction house, /bal etc. on the ranks.)
+
+3. Create the reward function as a datapack in the world:
+
+   world/datapacks/overthrone/pack.mcmeta
+     {"pack":{"pack_format":48,"description":"OVERTHRONE server functions"}}
+
+   world/datapacks/overthrone/data/overthrone/function/vote_reward.mcfunction
+     # Runs as the voting player (@s). Replace with your mods' real commands:
+     <crate mod command to give @s 1 vote key>
+     <economy mod command to give @s 50000>
+     tellraw @s {"text":"Thanks for voting! You received 1x Vote Key and $50,000.","color":"gold"}
+
+   Example (depends on the mods you pick):
+     crate key give @s vote 1
+     eco give @s 50000
+
+   Then run /reload and test with:  execute as <yourname> run function overthrone:vote_reward
+
+4. Votifier only runs the command if the player is online. If you want offline
+   votes saved and given on next join, use a vote mod that queues rewards, or tell
+   the owner it's online-only.
+
+5. Test: vote on a site while online and check the key + money arrive.
+
+NOTES
+- Don't change the Votifier port/keys - the vote sites are already set up with them.
+- Never share the private key in mods/votifier/.
+- The in-game /vote menu is configured in config/votifier/voting_sites.json.

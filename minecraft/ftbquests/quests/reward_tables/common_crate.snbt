@@ -1,0 +1,44 @@
+{
+	id: "5E0DDFCE0735C9C9"
+	loot_crate: {
+		color: 11184810
+		drops: {
+			boss: 0
+			monster: 0
+			passive: 0
+		}
+		string_id: "common"
+	}
+	loot_size: 1
+	order_index: 0
+	rewards: [
+		{
+			count: 8
+			id: "10A1A5F1EBF87ED6"
+			item: {
+				count: 1
+				id: "minecraft:iron_ingot"
+			}
+			weight: 10.0f
+		}
+		{
+			count: 16
+			id: "7BBD065A24B63937"
+			item: {
+				count: 1
+				id: "minecraft:bread"
+			}
+			weight: 10.0f
+		}
+		{
+			count: 4
+			id: "34EBB9D57F6F0E52"
+			item: {
+				count: 1
+				id: "minecraft:experience_bottle"
+			}
+			weight: 5.0f
+		}
+	]
+	use_title: true
+}

@@ -1,0 +1,28 @@
+Board at x=46 in multiworld:rpg (text faces west). Run from anywhere nearby.
+
+Delete the old one first:
+/kill @e[type=text_display,tag=rpg_info,distance=..15]
+
+/summon text_display 45.9 21.05 13.7 {Rotation:[90f,0f],shadow:1b,background:0,Tags:["rpg_info"],transformation:[1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'{"text":"✦ WELCOME TO THE ✦","color":"red","bold":true}'}
+
+/summon text_display 45.9 20.4 13.7 {Rotation:[90f,0f],shadow:1b,background:0,Tags:["rpg_info"],transformation:[2.2f,0f,0f,0f,0f,2.2f,0f,0f,0f,0f,2.2f,0f,0f,0f,0f,1f],text:'{"text":"RPG WORLD","color":"gold","bold":true}'}
+
+/summon text_display 45.9 20.15 13.7 {Rotation:[90f,0f],shadow:1b,background:0,Tags:["rpg_info"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"Monsters, magic & glory await","color":"gray"}'}
+
+/summon text_display 45.9 19.9 13.7 {Rotation:[90f,0f],shadow:1b,background:0,Tags:["rpg_info"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"━━━━━━━━━━━━━━━━━━","color":"dark_red"}'}
+
+/summon text_display 45.9 19.6 13.7 {Rotation:[90f,0f],shadow:1b,background:0,Tags:["rpg_info"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"⚔ ","color":"red"},"Hunt monsters & bosses"]'}
+
+/summon text_display 45.9 19.35 13.7 {Rotation:[90f,0f],shadow:1b,background:0,Tags:["rpg_info"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"✦ Talk to Questmaster Orin","color":"green"}'}
+
+/summon text_display 45.9 19.1 13.7 {Rotation:[90f,0f],shadow:1b,background:0,Tags:["rpg_info"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"☰ ","color":"aqua"},"100 quests: E to S-Rank"]'}
+
+/summon text_display 45.9 18.85 13.7 {Rotation:[90f,0f],shadow:1b,background:0,Tags:["rpg_info"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"♦ ","color":"gold"},"Coins, gear, XP & crates"]'}
+
+/summon text_display 45.9 18.6 13.7 {Rotation:[90f,0f],shadow:1b,background:0,Tags:["rpg_info"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"✪ ","color":"light_purple"},"Rank Trial every 10 quests"]'}
+
+/summon text_display 45.9 18.15 13.7 {Rotation:[90f,0f],shadow:1b,background:0,Tags:["rpg_info"],transformation:[1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'[{"text":"Exit: ","color":"gray"},{"text":"/hub or the portal","color":"green"}]'}
+
+ADJUST (stand within 15 blocks):
+Left/right:  /execute as @e[type=text_display,tag=rpg_info,distance=..15] at @s run tp @s ~ ~ ~0.25   (or ~-0.25)
+Up/down:     /execute as @e[type=text_display,tag=rpg_info,distance=..15] at @s run tp @s ~ ~0.2 ~   (or ~-0.2)

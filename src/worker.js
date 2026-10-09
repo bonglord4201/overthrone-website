@@ -2,13 +2,15 @@
 //
 // Static files in public/ are still served by Workers Static Assets. This
 // Worker only runs first for the routes listed in wrangler.jsonc
-// (assets.run_worker_first): the JSON API, uploaded media, the admin panel and
+// (assets.run_worker_first): the JSON API, uploaded media, the trailer video
+// (for byte-range requests), the admin panel and
 // the main HTML pages, into which it writes the editable site settings.
 
 import { handleApi, serveMedia } from "./api.js";
 import { getAdmin, authConfigured } from "./auth.js";
 import { getSettings, isHttpUrl, isLink, VOTE_SLOTS, voteName, voteHost } from "./settings.js";
 import { secure } from "./http.js";
+import { serveVideo } from "./video.js";
 
 const isAdminPath = (p) => p === "/admin" || p === "/admin/" || p === "/admin.html" || p.startsWith("/admin/");
 
@@ -18,6 +20,8 @@ export default {
     const path = url.pathname;
 
     if (path.startsWith("/api/")) return secure(await handleApi(request, env, url));
+
+    if (path.startsWith("/video/")) return secure(await serveVideo(request, env));
 
     if (path.startsWith("/media/")) {
       try {

@@ -1,0 +1,1493 @@
+{
+	default_hide_dependency_lines: false
+	default_quest_shape: ""
+	filename: "ledger_02_wanderlust"
+	group: ""
+	icon: { id: "minecraft:compass" }
+	id: "096495E307536654"
+	images: [ ]
+	order_index: 21
+	quest_links: [ ]
+	quests: [
+		{
+			dependencies: ["77CE907D06EB4DAA"]
+			description: ["Workshop order: 1 Compass, made by you.", "", "&bObjective:&r Craft 1 Compass", "&7Only items you craft yourself count."]
+			id: "6F34AA8943A08080"
+			rewards: [
+				{ count: 1, id: "509618D874A97B61", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "797EA71C7CF0E4EC", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 1 of 104 • 1 Emerald, 8 Gold"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "7AAF7CCD594404E3", item: { count: 1, id: "minecraft:compass" }, type: "item" }]
+			title: "True North"
+			x: 0.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["6F34AA8943A08080"]
+			description: ["The guild wants 1 freshly crafted Map.", "", "&bObjective:&r Craft 1 Map", "&7Only items you craft yourself count."]
+			id: "21006D33C9D2BABC"
+			rewards: [
+				{ count: 1, id: "0D22C609C6467E9B", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "51F47C409BEFEFDF", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 2 of 104 • 1 Emerald, 8 Gold"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "027BE3E6F672CFA6", item: { count: 1, id: "minecraft:map" }, type: "item" }]
+			title: "Blank Map"
+			x: 1.5d
+			y: 0.0d
+		}
+		{
+			dependencies: ["21006D33C9D2BABC"]
+			description: ["The Ledger tracks everything. Push distance walked to 1 km.", "", "&bObjective:&r Reach distance walked: 1 km", "&7Counts your total since you first joined."]
+			id: "7D78B3389732DEC6"
+			rewards: [
+				{ count: 1, id: "6FBE478C6F11ED6D", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "7B73AA89614FB9B7", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 3 of 104 • 1 Emerald, 8 Gold"
+			tasks: [{ id: "4E66504948B8B6C1", stat: "minecraft:walk_one_cm", type: "stat", value: 100000 }]
+			title: "First Kilometre"
+			x: 3.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["7D78B3389732DEC6"]
+			description: ["Set foot in the Plains and live to tell of it.", "", "&bObjective:&r Visit the Plains biome"]
+			id: "76FAD3B20F1C5879"
+			rewards: [
+				{ count: 1, id: "1477FFB2EABE0971", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "27CD45AC640B96BF", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 4 of 104 • 1 Emerald, 8 Gold"
+			tasks: [{ biome: "minecraft:plains", id: "4244A2E9EE4F984A", type: "biome" }]
+			title: "Open Fields"
+			x: 4.5d
+			y: 0.0d
+		}
+		{
+			dependencies: ["76FAD3B20F1C5879"]
+			description: ["Explore the Forest.", "", "&bObjective:&r Visit the Forest biome"]
+			id: "14B089938C4E2746"
+			rewards: [
+				{ count: 1, id: "71B28F53279CA29F", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "5D2503822D342D7F", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 5 of 104 • 1 Emerald, 8 Gold"
+			tasks: [{ biome: "minecraft:forest", id: "28DF4AB79DF3CAE7", type: "biome" }]
+			title: "Into the Woods"
+			x: 6.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["14B089938C4E2746"]
+			description: ["Cartographers need a first-hand report from the Birch Forest.", "", "&bObjective:&r Visit the Birch Forest biome"]
+			id: "0B1609C920B9977F"
+			rewards: [
+				{ count: 1, id: "00434F7F171E5BD5", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "4A93FB9E7E3BC34C", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 6 of 104 • 1 Emerald, 8 Gold"
+			tasks: [{ biome: "minecraft:birch_forest", id: "44FF8306FF6F1C86", type: "biome" }]
+			title: "White Bark"
+			x: 7.5d
+			y: 0.0d
+		}
+		{
+			dependencies: ["0B1609C920B9977F"]
+			description: ["Set foot in the River and live to tell of it.", "", "&bObjective:&r Visit the River biome"]
+			id: "17295F2EFB2756C3"
+			rewards: [
+				{ count: 1, id: "17E25654D9C95021", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "22E881C543BE6C5B", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 7 of 104 • 1 Emerald, 8 Gold"
+			tasks: [{ biome: "minecraft:river", id: "22D045C5D637CD09", type: "biome" }]
+			title: "Down by the River"
+			x: 9.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["17295F2EFB2756C3"]
+			description: ["Explore the Beach.", "", "&bObjective:&r Visit the Beach biome"]
+			id: "6B8C55DA1FD194F6"
+			rewards: [
+				{ count: 1, id: "5F7F3379CF8A1B3A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "1DEB0F803D410DC2", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 8 of 104 • 1 Emerald, 8 Gold"
+			tasks: [{ biome: "minecraft:beach", id: "13D1B67FA49CA4F4", type: "biome" }]
+			title: "Sandy Toes"
+			x: 9.0d
+			y: 1.5d
+		}
+		{
+			dependencies: ["6B8C55DA1FD194F6"]
+			description: ["Cartographers need a first-hand report from the Taiga.", "", "&bObjective:&r Visit the Taiga biome"]
+			id: "3018A0CAC4B60F8F"
+			rewards: [
+				{ count: 1, id: "08AD5BA3D9F9BAFB", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "7AAD778D896C4DB9", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 9 of 104 • 1 Emerald, 9 Gold"
+			tasks: [{ biome: "minecraft:taiga", id: "434D787D211B927F", type: "biome" }]
+			title: "Pine Country"
+			x: 7.5d
+			y: 1.5d
+		}
+		{
+			dependencies: ["3018A0CAC4B60F8F"]
+			description: ["Set foot in the Swamp and live to tell of it.", "", "&bObjective:&r Visit the Swamp biome", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Iron Boots&7 (enchanted)"]
+			id: "211D6CE8C24128E3"
+			rewards: [
+				{ count: 4, id: "541B596A6FE6A044", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "353737D308C4CBB5", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ id: "510014837B771852", item: { components: { "minecraft:enchantments": { levels: { "minecraft:feather_falling": 3, "minecraft:unbreaking": 2 } } }, count: 1, id: "minecraft:iron_boots" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 10 of 104 • 4 Emerald, 7 Gold + Gear"
+			tasks: [{ biome: "minecraft:swamp", id: "54B3700F944579D7", type: "biome" }]
+			title: "&6&lBog Trotter"
+			x: 6.0d
+			y: 1.5d
+		}
+		{
+			dependencies: ["211D6CE8C24128E3"]
+			description: ["The Ledger tracks everything. Push jump to 500.", "", "&bObjective:&r Reach jump: 500", "&7Counts your total since you first joined."]
+			id: "4038E16C4219A600"
+			rewards: [
+				{ count: 1, id: "2B7E868E1FB3C218", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "312AD21FB98A8F4C", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 11 of 104 • 1 Emerald, 9 Gold"
+			tasks: [{ id: "4F9F4222641F0E8B", stat: "minecraft:jump", type: "stat", value: 500 }]
+			title: "Spring in Your Step"
+			x: 4.5d
+			y: 1.5d
+		}
+		{
+			dependencies: ["4038E16C4219A600"]
+			description: ["Cartographers need a first-hand report from the Desert.", "", "&bObjective:&r Visit the Desert biome"]
+			id: "75213453E5A09F28"
+			rewards: [
+				{ count: 1, id: "3CFA99D734C6FF06", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "23F899AA866EBEEF", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 12 of 104 • 1 Emerald, 9 Gold"
+			tasks: [{ biome: "minecraft:desert", id: "444C77E3E490C6F8", type: "biome" }]
+			title: "Sea of Sand"
+			x: 3.0d
+			y: 1.5d
+		}
+		{
+			dependencies: ["75213453E5A09F28"]
+			description: ["A merchant has ordered 64 Sand. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 64 Sand", "&7The items are taken when you complete the quest."]
+			id: "29694DAE8D148306"
+			rewards: [
+				{ count: 1, id: "75721CED504C558A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "479739E8C10BCE58", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 13 of 104 • 1 Emerald, 9 Gold"
+			tasks: [{ count: 64L, consume_items: true, id: "27A87CAB90A1E328", item: { count: 1, id: "minecraft:sand" }, type: "item" }]
+			title: "Hourglass Sand"
+			x: 1.5d
+			y: 1.5d
+		}
+		{
+			dependencies: ["29694DAE8D148306"]
+			description: ["Supply run: 32 Sandstone, taken on hand-in.", "", "&bObjective:&r Hand in 32 Sandstone", "&7The items are taken when you complete the quest."]
+			id: "05871622723F281A"
+			rewards: [
+				{ count: 1, id: "613A5FB291CD56D8", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "10B4661B8C29D64F", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 14 of 104 • 1 Emerald, 9 Gold"
+			tasks: [{ count: 32L, consume_items: true, id: "4DAA082B54BDC1B3", item: { count: 1, id: "minecraft:sandstone" }, type: "item" }]
+			title: "Desert Stone"
+			x: 0.0d
+			y: 1.5d
+		}
+		{
+			dependencies: ["05871622723F281A"]
+			description: ["Cartographers need a first-hand report from the Savanna.", "", "&bObjective:&r Visit the Savanna biome"]
+			id: "69A1C440EEDBC621"
+			rewards: [
+				{ count: 1, id: "2F035CB75537068D", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "6470749D73701675", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 15 of 104 • 1 Emerald, 9 Gold"
+			tasks: [{ biome: "minecraft:savanna", id: "4860FDE3793B0A21", type: "biome" }]
+			title: "Acacia Horizon"
+			x: 0.0d
+			y: 3.0d
+		}
+		{
+			dependencies: ["69A1C440EEDBC621"]
+			description: ["The guild stores are low on Acacia Log. Hand in 32.", "", "&bObjective:&r Hand in 32 Acacia Log", "&7The items are taken when you complete the quest."]
+			id: "079E960B0A1A82E9"
+			rewards: [
+				{ count: 1, id: "06E778E4A330B3D7", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "13B85153E54A71BB", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 16 of 104 • 1 Emerald, 9 Gold"
+			tasks: [{ count: 32L, consume_items: true, id: "00EEB48135B73678", item: { count: 1, id: "minecraft:acacia_log" }, type: "item" }]
+			title: "Flat-Top Timber"
+			x: 1.5d
+			y: 3.0d
+		}
+		{
+			dependencies: ["079E960B0A1A82E9"]
+			description: ["Explore the Jungle.", "", "&bObjective:&r Visit the Jungle biome"]
+			id: "48439257A1169FFE"
+			rewards: [
+				{ count: 2, id: "76F77513A01AC106", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 17 of 104 • 2 Emerald"
+			tasks: [{ biome: "minecraft:jungle", id: "38FD33047567F990", type: "biome" }]
+			title: "Welcome to the Jungle"
+			x: 3.0d
+			y: 3.0d
+		}
+		{
+			dependencies: ["48439257A1169FFE"]
+			description: ["Supply run: 32 Jungle Log, taken on hand-in.", "", "&bObjective:&r Hand in 32 Jungle Log", "&7The items are taken when you complete the quest."]
+			id: "08C52B7E4ECEB252"
+			rewards: [
+				{ count: 2, id: "1DB263ABB8E1CB50", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 18 of 104 • 2 Emerald"
+			tasks: [{ count: 32L, consume_items: true, id: "26668857EAA9A211", item: { count: 1, id: "minecraft:jungle_log" }, type: "item" }]
+			title: "Vine-Wrapped Logs"
+			x: 4.5d
+			y: 3.0d
+		}
+		{
+			dependencies: ["08C52B7E4ECEB252"]
+			description: ["Set foot in the Bamboo Jungle and live to tell of it.", "", "&bObjective:&r Visit the Bamboo Jungle biome"]
+			id: "4302B788CDA9F410"
+			rewards: [
+				{ count: 2, id: "0996814A7ED03782", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 19 of 104 • 2 Emerald"
+			tasks: [{ biome: "minecraft:bamboo_jungle", id: "50ED856855E85E34", type: "biome" }]
+			title: "Bamboo Thicket"
+			x: 6.0d
+			y: 3.0d
+		}
+		{
+			dependencies: ["4302B788CDA9F410"]
+			description: ["Explore the Dark Forest.", "", "&bObjective:&r Visit the Dark Forest biome", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Iron Helmet&7 (enchanted)"]
+			id: "34D2A4974D2DD0F4"
+			rewards: [
+				{ count: 5, id: "4DB8CE4BFE4386A9", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "2280A96F70C2E20A", item: { components: { "minecraft:enchantments": { levels: { "minecraft:protection": 2, "minecraft:unbreaking": 2 } } }, count: 1, id: "minecraft:iron_helmet" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 20 of 104 • 5 Emerald + Gear"
+			tasks: [{ biome: "minecraft:dark_forest", id: "376966E73C303D80", type: "biome" }]
+			title: "&6&lUnder the Canopy"
+			x: 7.5d
+			y: 3.0d
+		}
+		{
+			dependencies: ["34D2A4974D2DD0F4"]
+			description: ["A merchant has ordered 32 Dark Oak Log. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 32 Dark Oak Log", "&7The items are taken when you complete the quest."]
+			id: "2532844584445391"
+			rewards: [
+				{ count: 2, id: "4F18A7D99E9A2CF7", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 21 of 104 • 2 Emerald"
+			tasks: [{ count: 32L, consume_items: true, id: "6AD795869A45BF2A", item: { count: 1, id: "minecraft:dark_oak_log" }, type: "item" }]
+			title: "Dark Timber"
+			x: 9.0d
+			y: 3.0d
+		}
+		{
+			dependencies: ["2532844584445391"]
+			description: ["Locate a Plains Village.", "", "&bObjective:&r Find a Plains Village"]
+			id: "17C3339B111B9779"
+			rewards: [
+				{ count: 2, id: "1279F10634D85EBA", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 22 of 104 • 2 Emerald"
+			tasks: [{ id: "661A0CC3B014E8E6", structure: "minecraft:village_plains", type: "structure" }]
+			title: "Plains Village"
+			x: 9.0d
+			y: 4.5d
+		}
+		{
+			dependencies: ["17C3339B111B9779"]
+			description: ["The Ledger tracks everything. Push talked to villager to 10.", "", "&bObjective:&r Reach talked to villager: 10", "&7Counts your total since you first joined."]
+			id: "4588C08CDA30C297"
+			rewards: [
+				{ count: 2, id: "70C3143287784A97", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 23 of 104 • 2 Emerald"
+			tasks: [{ id: "32D9E795B9A71B25", stat: "minecraft:talked_to_villager", type: "stat", value: 10 }]
+			title: "Small Talk"
+			x: 7.5d
+			y: 4.5d
+		}
+		{
+			dependencies: ["4588C08CDA30C297"]
+			description: ["Reach 10 for traded with villager.", "", "&bObjective:&r Reach traded with villager: 10", "&7Counts your total since you first joined."]
+			id: "5EE60FDE345BE45E"
+			rewards: [
+				{ count: 2, id: "4A54E5723A0B3C1F", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "76359A480E5951AF", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 24 of 104 • 2 Emerald, 1 Gold"
+			tasks: [{ id: "0E1F8E4534EA2460", stat: "minecraft:traded_with_villager", type: "stat", value: 10 }]
+			title: "Market Day"
+			x: 6.0d
+			y: 4.5d
+		}
+		{
+			dependencies: ["5EE60FDE345BE45E"]
+			description: ["Accomplish \"What a Deal!\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"What a Deal!\""]
+			id: "0C8980A1A084BC0E"
+			rewards: [
+				{ count: 2, id: "501F322AE61C8ED5", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "3B5A7F90642FB603", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 25 of 104 • 2 Emerald, 1 Gold"
+			tasks: [{ advancement: "minecraft:adventure/trade", criterion: "", id: "3D94BFDE179AC3C1", type: "advancement" }]
+			title: "What a Deal!"
+			x: 4.5d
+			y: 4.5d
+		}
+		{
+			dependencies: ["0C8980A1A084BC0E"]
+			description: ["Track down a Desert Village. The map is yours to fill.", "", "&bObjective:&r Find a Desert Village"]
+			id: "5677E7D4791597B1"
+			rewards: [
+				{ count: 2, id: "14052A36D1F19859", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "152F55E06F7B6F03", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 26 of 104 • 2 Emerald, 1 Gold"
+			tasks: [{ id: "12770E43C6A9652C", structure: "minecraft:village_desert", type: "structure" }]
+			title: "Desert Village"
+			x: 3.0d
+			y: 4.5d
+		}
+		{
+			dependencies: ["5677E7D4791597B1"]
+			description: ["Scouts mention a Savanna Village. Find it and step inside its walls.", "", "&bObjective:&r Find a Savanna Village"]
+			id: "2BD43B6C83CFAAB1"
+			rewards: [
+				{ count: 2, id: "60990A9977E4E3D6", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "039CD1E2BC44F107", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 27 of 104 • 2 Emerald, 1 Gold"
+			tasks: [{ id: "1BA8EA2C63ECDEC4", structure: "minecraft:village_savanna", type: "structure" }]
+			title: "Savanna Village"
+			x: 1.5d
+			y: 4.5d
+		}
+		{
+			dependencies: ["2BD43B6C83CFAAB1"]
+			description: ["Locate a Taiga Village.", "", "&bObjective:&r Find a Taiga Village"]
+			id: "78EBF687CCBF4F6D"
+			rewards: [
+				{ count: 2, id: "291A2267D3EE36D9", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "7D539220D5F7F6F8", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 28 of 104 • 2 Emerald, 1 Gold"
+			tasks: [{ id: "75C108598B398DC9", structure: "minecraft:village_taiga", type: "structure" }]
+			title: "Taiga Village"
+			x: 0.0d
+			y: 4.5d
+		}
+		{
+			dependencies: ["78EBF687CCBF4F6D"]
+			description: ["Track down a Snowy Village. The map is yours to fill.", "", "&bObjective:&r Find a Snowy Village"]
+			id: "65C1FBF5EA83396A"
+			rewards: [
+				{ count: 2, id: "1DAF9171C0ADA6E8", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "69841634209AE3B9", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 29 of 104 • 2 Emerald, 1 Gold"
+			tasks: [{ id: "675B03E60B08539C", structure: "minecraft:village_snowy", type: "structure" }]
+			title: "Snowy Village"
+			x: 0.0d
+			y: 6.0d
+		}
+		{
+			dependencies: ["65C1FBF5EA83396A"]
+			description: ["Cartographers need a first-hand report from the Snowy Plains.", "", "&bObjective:&r Visit the Snowy Plains biome", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Iron Leggings&7 (enchanted)"]
+			id: "6CB3C4437FA86FB6"
+			rewards: [
+				{ count: 5, id: "687839A723377B39", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "440ADC764E6075BC", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ id: "6E8CE9957B16DBE4", item: { components: { "minecraft:enchantments": { levels: { "minecraft:protection": 2, "minecraft:unbreaking": 2 } } }, count: 1, id: "minecraft:iron_leggings" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 30 of 104 • 5 Emerald, 3 Gold + Gear"
+			tasks: [{ biome: "minecraft:snowy_plains", id: "70BCF9A1A9FB7692", type: "biome" }]
+			title: "&6&lWhiteout"
+			x: 1.5d
+			y: 6.0d
+		}
+		{
+			dependencies: ["6CB3C4437FA86FB6"]
+			description: ["The realm needs Snowball. Bring 32 and they're yours no more.", "", "&bObjective:&r Hand in 32 Snowball", "&7The items are taken when you complete the quest."]
+			id: "4E04CC8CFF131726"
+			rewards: [
+				{ count: 2, id: "15BE3ABFEA8FDC4F", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "75895F10C203E943", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 31 of 104 • 2 Emerald, 2 Gold"
+			tasks: [{ count: 32L, consume_items: true, id: "555BC909B409E9F7", item: { count: 1, id: "minecraft:snowball" }, type: "item" }]
+			title: "Snowball Fight"
+			x: 3.0d
+			y: 6.0d
+		}
+		{
+			dependencies: ["4E04CC8CFF131726"]
+			description: ["The guild stores are low on Ice. Hand in 32.", "", "&bObjective:&r Hand in 32 Ice", "&7The items are taken when you complete the quest."]
+			id: "700AE848BF2BD594"
+			rewards: [
+				{ count: 2, id: "69B0324B1297B731", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "56C25AF4F2895D17", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 32 of 104 • 2 Emerald, 2 Gold"
+			tasks: [{ count: 32L, consume_items: true, id: "320F44B8830A01C1", item: { count: 1, id: "minecraft:ice" }, type: "item" }]
+			title: "Ice Harvest"
+			x: 4.5d
+			y: 6.0d
+		}
+		{
+			dependencies: ["700AE848BF2BD594"]
+			description: ["Cartographers need a first-hand report from the Ice Spikes.", "", "&bObjective:&r Visit the Ice Spikes biome"]
+			id: "2D62D20085E6449A"
+			rewards: [
+				{ count: 2, id: "2547BB96727D18D2", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "4F0EFC09C813C474", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 33 of 104 • 2 Emerald, 2 Gold"
+			tasks: [{ biome: "minecraft:ice_spikes", id: "38024447F10CEBEE", type: "biome" }]
+			title: "Frozen Spires"
+			x: 6.0d
+			y: 6.0d
+		}
+		{
+			dependencies: ["2D62D20085E6449A"]
+			description: ["Supply run: 16 Packed Ice, taken on hand-in.", "", "&bObjective:&r Hand in 16 Packed Ice", "&7The items are taken when you complete the quest."]
+			id: "44DDF20905C3FCF1"
+			rewards: [
+				{ count: 2, id: "21E0875ABCC090A4", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "41130185F1890562", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 34 of 104 • 2 Emerald, 2 Gold"
+			tasks: [{ count: 16L, consume_items: true, id: "4333799B4A98FC6A", item: { count: 1, id: "minecraft:packed_ice" }, type: "item" }]
+			title: "Packed Ice"
+			x: 7.5d
+			y: 6.0d
+		}
+		{
+			dependencies: ["44DDF20905C3FCF1"]
+			description: ["Explore the Snowy Taiga.", "", "&bObjective:&r Visit the Snowy Taiga biome"]
+			id: "1B03C146DD8ABE2D"
+			rewards: [
+				{ count: 2, id: "53D2140C615002E1", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "50F97D3DC3288E83", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 35 of 104 • 2 Emerald, 2 Gold"
+			tasks: [{ biome: "minecraft:snowy_taiga", id: "5E2BC2185DC3D40F", type: "biome" }]
+			title: "Winter Pines"
+			x: 9.0d
+			y: 6.0d
+		}
+		{
+			dependencies: ["1B03C146DD8ABE2D"]
+			description: ["Cartographers need a first-hand report from the Frozen River.", "", "&bObjective:&r Visit the Frozen River biome"]
+			id: "1E94EBE75F11A457"
+			rewards: [
+				{ count: 2, id: "0A051A122C4E73FB", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "058AE16F9A26337B", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 36 of 104 • 2 Emerald, 2 Gold"
+			tasks: [{ biome: "minecraft:frozen_river", id: "1D42EBBBBAF7D7C0", type: "biome" }]
+			title: "Frozen River"
+			x: 9.0d
+			y: 7.5d
+		}
+		{
+			dependencies: ["1E94EBE75F11A457"]
+			description: ["Accomplish \"Light as a Rabbit\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Light as a Rabbit\""]
+			id: "3992A3555DBA7329"
+			rewards: [
+				{ count: 2, id: "016E869747D0DE5E", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "0B16AB95377D23C3", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 37 of 104 • 2 Emerald, 2 Gold"
+			tasks: [{ advancement: "minecraft:adventure/walk_on_powder_snow_with_leather_boots", criterion: "", id: "6C77F796F087B30C", type: "advancement" }]
+			title: "Light as a Rabbit"
+			x: 7.5d
+			y: 7.5d
+		}
+		{
+			dependencies: ["3992A3555DBA7329"]
+			description: ["Explore the Meadow.", "", "&bObjective:&r Visit the Meadow biome"]
+			id: "222307199882C531"
+			rewards: [
+				{ count: 2, id: "76A5683CF1B0882D", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "32BE9FD45EB86034", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 38 of 104 • 2 Emerald, 3 Gold"
+			tasks: [{ biome: "minecraft:meadow", id: "60AB24C9EDFDC57E", type: "biome" }]
+			title: "Mountain Meadow"
+			x: 6.0d
+			y: 7.5d
+		}
+		{
+			dependencies: ["222307199882C531"]
+			description: ["Cartographers need a first-hand report from the Cherry Grove.", "", "&bObjective:&r Visit the Cherry Grove biome"]
+			id: "653C98C0CC86478A"
+			rewards: [
+				{ count: 2, id: "038367DA30366821", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "036BB39A640C07C0", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 39 of 104 • 2 Emerald, 3 Gold"
+			tasks: [{ biome: "minecraft:cherry_grove", id: "5FDDAEE791C0975A", type: "biome" }]
+			title: "Blossom Season"
+			x: 4.5d
+			y: 7.5d
+		}
+		{
+			dependencies: ["653C98C0CC86478A"]
+			description: ["The guild stores are low on Cherry Log. Hand in 32.", "", "&bObjective:&r Hand in 32 Cherry Log", "&7The items are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Iron Chestplate&7 (enchanted)"]
+			id: "0B5B567FCA8BF545"
+			rewards: [
+				{ count: 5, id: "11CCF8667C389033", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "3611A348E378E099", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ id: "56D30822F24A94DD", item: { components: { "minecraft:enchantments": { levels: { "minecraft:protection": 2, "minecraft:unbreaking": 2 } } }, count: 1, id: "minecraft:iron_chestplate" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 40 of 104 • 5 Emerald, 7 Gold + Gear"
+			tasks: [{ count: 32L, consume_items: true, id: "4B880DBE6DAC6B85", item: { count: 1, id: "minecraft:cherry_log" }, type: "item" }]
+			title: "&6&lPink Timber"
+			x: 3.0d
+			y: 7.5d
+		}
+		{
+			dependencies: ["0B5B567FCA8BF545"]
+			description: ["Explore the Grove.", "", "&bObjective:&r Visit the Grove biome"]
+			id: "056C1C4DD9D0582E"
+			rewards: [
+				{ count: 2, id: "709368C663E608EB", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "33FBB197379AB2CE", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 41 of 104 • 2 Emerald, 3 Gold"
+			tasks: [{ biome: "minecraft:grove", id: "3AE45832C5ACF14F", type: "biome" }]
+			title: "Snowy Grove"
+			x: 1.5d
+			y: 7.5d
+		}
+		{
+			dependencies: ["056C1C4DD9D0582E"]
+			description: ["Cartographers need a first-hand report from the Snowy Slopes.", "", "&bObjective:&r Visit the Snowy Slopes biome"]
+			id: "4D318F8102E27BB7"
+			rewards: [
+				{ count: 2, id: "41E71C02F83CC814", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "4A67BF71B7C2C885", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 42 of 104 • 2 Emerald, 3 Gold"
+			tasks: [{ biome: "minecraft:snowy_slopes", id: "0178868E3C9B42ED", type: "biome" }]
+			title: "Snowy Slopes"
+			x: 0.0d
+			y: 7.5d
+		}
+		{
+			dependencies: ["4D318F8102E27BB7"]
+			description: ["Set foot in the Stony Peaks and live to tell of it.", "", "&bObjective:&r Visit the Stony Peaks biome"]
+			id: "0BBF5F2682FD53F0"
+			rewards: [
+				{ count: 2, id: "03F4EC555218D7CE", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "513EA3EE0FBF9842", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 43 of 104 • 2 Emerald, 3 Gold"
+			tasks: [{ biome: "minecraft:stony_peaks", id: "4F39FE8634157986", type: "biome" }]
+			title: "Stony Peaks"
+			x: 0.0d
+			y: 9.0d
+		}
+		{
+			dependencies: ["0BBF5F2682FD53F0"]
+			description: ["The guild stores are low on Calcite. Hand in 16.", "", "&bObjective:&r Hand in 16 Calcite", "&7The items are taken when you complete the quest."]
+			id: "21328CE37786975A"
+			rewards: [
+				{ count: 2, id: "038B86F44EADD004", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "0A361E394FD40ECD", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 44 of 104 • 2 Emerald, 4 Gold"
+			tasks: [{ count: 16L, consume_items: true, id: "3ABA1F2399038129", item: { count: 1, id: "minecraft:calcite" }, type: "item" }]
+			title: "Calcite Cliffs"
+			x: 1.5d
+			y: 9.0d
+		}
+		{
+			dependencies: ["21328CE37786975A"]
+			description: ["Cartographers need a first-hand report from the Jagged Peaks.", "", "&bObjective:&r Visit the Jagged Peaks biome"]
+			id: "28D9948416017CEA"
+			rewards: [
+				{ count: 2, id: "6B5A137966752907", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "05C5E4F85C1CF21E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 45 of 104 • 2 Emerald, 4 Gold"
+			tasks: [{ biome: "minecraft:jagged_peaks", id: "54BA3DF1F8EBD1E9", type: "biome" }]
+			title: "Jagged Peaks"
+			x: 3.0d
+			y: 9.0d
+		}
+		{
+			dependencies: ["28D9948416017CEA"]
+			description: ["Set foot in the Frozen Peaks and live to tell of it.", "", "&bObjective:&r Visit the Frozen Peaks biome"]
+			id: "351BE48C722A497F"
+			rewards: [
+				{ count: 2, id: "57800DCDAECF7178", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "691B939C7B0DB5CD", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 46 of 104 • 2 Emerald, 4 Gold"
+			tasks: [{ biome: "minecraft:frozen_peaks", id: "1CE3BE0584964DC8", type: "biome" }]
+			title: "Frozen Peaks"
+			x: 4.5d
+			y: 9.0d
+		}
+		{
+			dependencies: ["351BE48C722A497F"]
+			description: ["The Ledger tracks everything. Push distance climbed to 50 blocks.", "", "&bObjective:&r Reach distance climbed: 50 blocks", "&7Counts your total since you first joined."]
+			id: "168F904628C30E17"
+			rewards: [
+				{ count: 2, id: "590C59A66999DCB4", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "3E76444160E77314", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 47 of 104 • 2 Emerald, 4 Gold"
+			tasks: [{ id: "0FD217C02B4A18CE", stat: "minecraft:climb_one_cm", type: "stat", value: 5000 }]
+			title: "Ladder Climber"
+			x: 6.0d
+			y: 9.0d
+		}
+		{
+			dependencies: ["168F904628C30E17"]
+			description: ["Earn the advancement \"Caves \\& Cliffs\".", "", "&bObjective:&r Earn the advancement \"Caves \\& Cliffs\""]
+			id: "218E800796BB84F2"
+			rewards: [
+				{ count: 2, id: "12DDA744A74EB584", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "04B9F01BD5E0A1F2", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 48 of 104 • 2 Emerald, 4 Gold"
+			tasks: [{ advancement: "minecraft:adventure/fall_from_world_height", criterion: "", id: "70912438C4872779", type: "advancement" }]
+			title: "Caves \\& Cliffs"
+			x: 7.5d
+			y: 9.0d
+		}
+		{
+			dependencies: ["218E800796BB84F2"]
+			description: ["Set foot in the Windswept Hills and live to tell of it.", "", "&bObjective:&r Visit the Windswept Hills biome"]
+			id: "6BC7AFCBF2911F68"
+			rewards: [
+				{ count: 2, id: "4DD9BC27B97772EF", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "01971C20C3A18CC8", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 49 of 104 • 2 Emerald, 4 Gold"
+			tasks: [{ biome: "minecraft:windswept_hills", id: "45248079C23C47A3", type: "biome" }]
+			title: "Windswept Hills"
+			x: 9.0d
+			y: 9.0d
+		}
+		{
+			dependencies: ["6BC7AFCBF2911F68"]
+			description: ["Explore the Windswept Forest.", "", "&bObjective:&r Visit the Windswept Forest biome", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Iron Rapier&7 (enchanted)"]
+			id: "50A0A6A4EBB74F80"
+			rewards: [
+				{ count: 6, id: "7336E2C9EA462D86", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "5C0E6A13D57C5CFA", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ id: "311C61C4FCB59906", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 3, "minecraft:unbreaking": 2 } } }, count: 1, id: "simplyswords:iron_rapier" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 50 of 104 • 6 Emerald, 1 Gold + Gear"
+			tasks: [{ biome: "minecraft:windswept_forest", id: "4883DC374FE10482", type: "biome" }]
+			title: "&6&lWindswept Forest"
+			x: 9.0d
+			y: 10.5d
+		}
+		{
+			dependencies: ["50A0A6A4EBB74F80"]
+			description: ["Cartographers need a first-hand report from the Windswept Gravelly Hills.", "", "&bObjective:&r Visit the Windswept Gravelly Hills biome"]
+			id: "1879434DA8408E29"
+			rewards: [
+				{ count: 2, id: "01B81FA077B02323", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "18E9555A6136385E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 51 of 104 • 2 Emerald, 5 Gold"
+			tasks: [{ biome: "minecraft:windswept_gravelly_hills", id: "61ED7FA2FD31CC21", type: "biome" }]
+			title: "Gravel Hills"
+			x: 7.5d
+			y: 10.5d
+		}
+		{
+			dependencies: ["1879434DA8408E29"]
+			description: ["Set foot in the Old Growth Spruce Taiga and live to tell of it.", "", "&bObjective:&r Visit the Old Growth Spruce Taiga biome"]
+			id: "23F49F85C7E8F526"
+			rewards: [
+				{ count: 2, id: "278D7D71E7126ED8", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "39FC55371A28FF51", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 52 of 104 • 2 Emerald, 5 Gold"
+			tasks: [{ biome: "minecraft:old_growth_spruce_taiga", id: "55DDB09BAC529CAE", type: "biome" }]
+			title: "Ancient Spruce"
+			x: 6.0d
+			y: 10.5d
+		}
+		{
+			dependencies: ["23F49F85C7E8F526"]
+			description: ["Explore the Old Growth Pine Taiga.", "", "&bObjective:&r Visit the Old Growth Pine Taiga biome"]
+			id: "1125C3239014CA2B"
+			rewards: [
+				{ count: 2, id: "3026D2794717119D", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "3594258013EF34E3", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 53 of 104 • 2 Emerald, 5 Gold"
+			tasks: [{ biome: "minecraft:old_growth_pine_taiga", id: "6D5FE131FDC2D035", type: "biome" }]
+			title: "Ancient Pines"
+			x: 4.5d
+			y: 10.5d
+		}
+		{
+			dependencies: ["1125C3239014CA2B"]
+			description: ["Cartographers need a first-hand report from the Old Growth Birch Forest.", "", "&bObjective:&r Visit the Old Growth Birch Forest biome"]
+			id: "58E2EA60232E659F"
+			rewards: [
+				{ count: 2, id: "06B26BD9CE2275B9", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "301993BAFF469D54", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 54 of 104 • 2 Emerald, 5 Gold"
+			tasks: [{ biome: "minecraft:old_growth_birch_forest", id: "60B52AB3EB87748E", type: "biome" }]
+			title: "Tall Birches"
+			x: 3.0d
+			y: 10.5d
+		}
+		{
+			dependencies: ["58E2EA60232E659F"]
+			description: ["Set foot in the Flower Forest and live to tell of it.", "", "&bObjective:&r Visit the Flower Forest biome"]
+			id: "43CD920F8504C128"
+			rewards: [
+				{ count: 2, id: "029A2BC097E190B5", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "0A71CD333BDF1C6E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 55 of 104 • 2 Emerald, 5 Gold"
+			tasks: [{ biome: "minecraft:flower_forest", id: "429A8248258F6401", type: "biome" }]
+			title: "Flower Forest"
+			x: 1.5d
+			y: 10.5d
+		}
+		{
+			dependencies: ["43CD920F8504C128"]
+			description: ["Explore the Sunflower Plains.", "", "&bObjective:&r Visit the Sunflower Plains biome"]
+			id: "35A4DF962420F777"
+			rewards: [
+				{ count: 2, id: "0BFFEF9D431DE0F1", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "037BEF524AB5B86F", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 56 of 104 • 2 Emerald, 6 Gold"
+			tasks: [{ biome: "minecraft:sunflower_plains", id: "088F5A416F13E40F", type: "biome" }]
+			title: "Sunflower Plains"
+			x: 0.0d
+			y: 10.5d
+		}
+		{
+			dependencies: ["35A4DF962420F777"]
+			description: ["Cartographers need a first-hand report from the Mangrove Swamp.", "", "&bObjective:&r Visit the Mangrove Swamp biome"]
+			id: "5E89BB385C71312C"
+			rewards: [
+				{ count: 2, id: "370FCDFFECC62286", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "7E728A1D92B0D8BC", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 57 of 104 • 2 Emerald, 6 Gold"
+			tasks: [{ biome: "minecraft:mangrove_swamp", id: "1D805734FFB1FD6B", type: "biome" }]
+			title: "Mangrove Maze"
+			x: 0.0d
+			y: 12.0d
+		}
+		{
+			dependencies: ["5E89BB385C71312C"]
+			description: ["Supply run: 32 Mangrove Log, taken on hand-in.", "", "&bObjective:&r Hand in 32 Mangrove Log", "&7The items are taken when you complete the quest."]
+			id: "05BEF4DFB3511886"
+			rewards: [
+				{ count: 2, id: "11AB1564163EFD24", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "7EA9D9E2DD3EF614", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 58 of 104 • 2 Emerald, 6 Gold"
+			tasks: [{ count: 32L, consume_items: true, id: "4BDF601AA8916BE7", item: { count: 1, id: "minecraft:mangrove_log" }, type: "item" }]
+			title: "Mangrove Timber"
+			x: 1.5d
+			y: 12.0d
+		}
+		{
+			dependencies: ["05BEF4DFB3511886"]
+			description: ["The realm needs Mud. Bring 32 and they're yours no more.", "", "&bObjective:&r Hand in 32 Mud", "&7The items are taken when you complete the quest."]
+			id: "0A135922B384E7B1"
+			rewards: [
+				{ count: 2, id: "3D0BC0FF8E71925F", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "091FE3F2DBB095D7", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 59 of 104 • 2 Emerald, 6 Gold"
+			tasks: [{ count: 32L, consume_items: true, id: "4031151243A53612", item: { count: 1, id: "minecraft:mud" }, type: "item" }]
+			title: "Knee-Deep Mud"
+			x: 3.0d
+			y: 12.0d
+		}
+		{
+			dependencies: ["0A135922B384E7B1"]
+			description: ["Cartographers need a first-hand report from the Sparse Jungle.", "", "&bObjective:&r Visit the Sparse Jungle biome", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Zanite Sword&7 (enchanted)"]
+			id: "795434DC89C22C9E"
+			rewards: [
+				{ count: 6, id: "273C889D9A20B962", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "4D914C494359CD96", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ id: "284F7E990A0B9714", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 3, "minecraft:unbreaking": 2 } } }, count: 1, id: "aether:zanite_sword" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 60 of 104 • 6 Emerald, 6 Gold + Gear"
+			tasks: [{ biome: "minecraft:sparse_jungle", id: "2D5898E074B3B473", type: "biome" }]
+			title: "&6&lJungle's Edge"
+			x: 4.5d
+			y: 12.0d
+		}
+		{
+			dependencies: ["795434DC89C22C9E"]
+			description: ["Set foot in the Savanna Plateau and live to tell of it.", "", "&bObjective:&r Visit the Savanna Plateau biome"]
+			id: "4109C2AD9E958C64"
+			rewards: [
+				{ count: 2, id: "6640B40BDA35667D", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "33D4DBF43ED2CBE4", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 61 of 104 • 2 Emerald, 6 Gold"
+			tasks: [{ biome: "minecraft:savanna_plateau", id: "760313A9EC144BFE", type: "biome" }]
+			title: "Savanna Plateau"
+			x: 6.0d
+			y: 12.0d
+		}
+		{
+			dependencies: ["4109C2AD9E958C64"]
+			description: ["Explore the Windswept Savanna.", "", "&bObjective:&r Visit the Windswept Savanna biome"]
+			id: "6591476F8417D6D6"
+			rewards: [
+				{ count: 2, id: "25286826BD64026A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "41745319FE313751", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 62 of 104 • 2 Emerald, 7 Gold"
+			tasks: [{ biome: "minecraft:windswept_savanna", id: "71BDA8E947514AA4", type: "biome" }]
+			title: "Shattered Savanna"
+			x: 7.5d
+			y: 12.0d
+		}
+		{
+			dependencies: ["6591476F8417D6D6"]
+			description: ["Cartographers need a first-hand report from the Badlands.", "", "&bObjective:&r Visit the Badlands biome"]
+			id: "6CF531D0B0D05065"
+			rewards: [
+				{ count: 2, id: "3C3830FADB030D88", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "255AF76A637027E7", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 63 of 104 • 2 Emerald, 7 Gold"
+			tasks: [{ biome: "minecraft:badlands", id: "66A8186186367164", type: "biome" }]
+			title: "The Badlands"
+			x: 9.0d
+			y: 12.0d
+		}
+		{
+			dependencies: ["6CF531D0B0D05065"]
+			description: ["The guild stores are low on Red Sand. Hand in 64.", "", "&bObjective:&r Hand in 64 Red Sand", "&7The items are taken when you complete the quest."]
+			id: "117DF09CA9C3AABF"
+			rewards: [
+				{ count: 2, id: "7997F1A3F860BCC2", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "582FD102A487DCB5", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 64 of 104 • 2 Emerald, 7 Gold"
+			tasks: [{ count: 64L, consume_items: true, id: "159EBE2E49CB15C2", item: { count: 1, id: "minecraft:red_sand" }, type: "item" }]
+			title: "Red Sands"
+			x: 9.0d
+			y: 13.5d
+		}
+		{
+			dependencies: ["117DF09CA9C3AABF"]
+			description: ["A merchant has ordered 32 Terracotta. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 32 Terracotta", "&7The items are taken when you complete the quest."]
+			id: "784AD8260715A6D1"
+			rewards: [
+				{ count: 2, id: "5F301993B8F3F053", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "6CBD8E451DC13E3F", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 65 of 104 • 2 Emerald, 7 Gold"
+			tasks: [{ count: 32L, consume_items: true, id: "17552C6DFBC50902", item: { count: 1, id: "minecraft:terracotta" }, type: "item" }]
+			title: "Clay Canyons"
+			x: 7.5d
+			y: 13.5d
+		}
+		{
+			dependencies: ["784AD8260715A6D1"]
+			description: ["Cartographers need a first-hand report from the Eroded Badlands.", "", "&bObjective:&r Visit the Eroded Badlands biome"]
+			id: "228BE7171882DC50"
+			rewards: [
+				{ count: 2, id: "00EB33879EFB101F", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "2209D6F8B29F9FE8", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 66 of 104 • 2 Emerald, 7 Gold"
+			tasks: [{ biome: "minecraft:eroded_badlands", id: "4869C84CC5A781F9", type: "biome" }]
+			title: "Eroded Spires"
+			x: 6.0d
+			y: 13.5d
+		}
+		{
+			dependencies: ["228BE7171882DC50"]
+			description: ["Set foot in the Wooded Badlands and live to tell of it.", "", "&bObjective:&r Visit the Wooded Badlands biome"]
+			id: "3E784F0006E51328"
+			rewards: [
+				{ count: 2, id: "1B27A21DE0AA89A6", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "5FC8F91A2F84257E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 67 of 104 • 2 Emerald, 8 Gold"
+			tasks: [{ biome: "minecraft:wooded_badlands", id: "2E72A71D00B4FC9D", type: "biome" }]
+			title: "Wooded Badlands"
+			x: 4.5d
+			y: 13.5d
+		}
+		{
+			dependencies: ["3E784F0006E51328"]
+			description: ["Track down a Badlands Mineshaft. The map is yours to fill.", "", "&bObjective:&r Find a Badlands Mineshaft"]
+			id: "18E0C20B96616252"
+			rewards: [
+				{ count: 2, id: "293B5E2FED98FDF6", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "178517E7D4C72898", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 68 of 104 • 2 Emerald, 8 Gold"
+			tasks: [{ id: "20D2F319B7F75EA4", structure: "minecraft:mineshaft_mesa", type: "structure" }]
+			title: "Mesa Mineshaft"
+			x: 3.0d
+			y: 13.5d
+		}
+		{
+			dependencies: ["18E0C20B96616252"]
+			description: ["Cartographers need a first-hand report from the Stony Shore.", "", "&bObjective:&r Visit the Stony Shore biome"]
+			id: "6B1FB917C3D5E87A"
+			rewards: [
+				{ count: 2, id: "2C9A4B4B4A0B7AEA", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "263068AA0DEA6CAE", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 69 of 104 • 2 Emerald, 8 Gold"
+			tasks: [{ biome: "minecraft:stony_shore", id: "2D764A339B57BE15", type: "biome" }]
+			title: "Stony Shore"
+			x: 1.5d
+			y: 13.5d
+		}
+		{
+			dependencies: ["6B1FB917C3D5E87A"]
+			description: ["Set foot in the Snowy Beach and live to tell of it.", "", "&bObjective:&r Visit the Snowy Beach biome", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Iron Ring"]
+			id: "000C19187AA4D5A1"
+			rewards: [
+				{ count: 7, id: "703B9365D5727191", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "3F41F46662DEE028", item: { count: 1, id: "aether:iron_ring" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 70 of 104 • 7 Emerald + Gear"
+			tasks: [{ biome: "minecraft:snowy_beach", id: "24ED3281CD44E3AC", type: "biome" }]
+			title: "&6&lSnowy Beach"
+			x: 0.0d
+			y: 13.5d
+		}
+		{
+			dependencies: ["000C19187AA4D5A1"]
+			description: ["Explore the Mushroom Fields.", "", "&bObjective:&r Visit the Mushroom Fields biome"]
+			id: "61C4396557263605"
+			rewards: [
+				{ count: 2, id: "0DF63174387A8CC9", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "3121EA865619DD64", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 71 of 104 • 2 Emerald, 8 Gold"
+			tasks: [{ biome: "minecraft:mushroom_fields", id: "06B94B935106D21E", type: "biome" }]
+			title: "Mushroom Island"
+			x: 0.0d
+			y: 15.0d
+		}
+		{
+			dependencies: ["61C4396557263605"]
+			description: ["The guild stores are low on Mycelium. Hand in 8.", "", "&bObjective:&r Hand in 8 Mycelium", "&7The items are taken when you complete the quest."]
+			id: "5C1BF6476F64E0B5"
+			rewards: [
+				{ count: 2, id: "4F4147CF11EB73CF", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "4C606BA16460F198", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 72 of 104 • 2 Emerald, 8 Gold"
+			tasks: [{ count: 8L, consume_items: true, id: "09E7B1B1D8CC9F3A", item: { count: 1, id: "minecraft:mycelium" }, type: "item" }]
+			title: "Mycelium Mat"
+			x: 1.5d
+			y: 15.0d
+		}
+		{
+			dependencies: ["5C1BF6476F64E0B5"]
+			description: ["Locate a Desert Temple.", "", "&bObjective:&r Find a Desert Temple"]
+			id: "41E34862388FE812"
+			rewards: [
+				{ count: 2, id: "1CE65B9FC13B6AD9", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "759A2252B1C50307", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 73 of 104 • 2 Emerald, 9 Gold"
+			tasks: [{ id: "3E7609DF4E58A3F8", structure: "minecraft:desert_pyramid", type: "structure" }]
+			title: "Desert Temple"
+			x: 3.0d
+			y: 15.0d
+		}
+		{
+			dependencies: ["41E34862388FE812"]
+			description: ["Track down a Jungle Temple. The map is yours to fill.", "", "&bObjective:&r Find a Jungle Temple"]
+			id: "11A283CC1023D0CA"
+			rewards: [
+				{ count: 2, id: "5ADD9F207A9DF722", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "471F4D64DF4D2DB0", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 74 of 104 • 2 Emerald, 9 Gold"
+			tasks: [{ id: "1C3E1BD24B10EDE1", structure: "minecraft:jungle_pyramid", type: "structure" }]
+			title: "Jungle Temple"
+			x: 4.5d
+			y: 15.0d
+		}
+		{
+			dependencies: ["11A283CC1023D0CA"]
+			description: ["Scouts mention a Witch Hut. Find it and step inside its walls.", "", "&bObjective:&r Find a Witch Hut"]
+			id: "0FD185DB104DAC9E"
+			rewards: [
+				{ count: 2, id: "367257AD63C5E846", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "626A3D69D76756C9", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 75 of 104 • 2 Emerald, 9 Gold"
+			tasks: [{ id: "55D157F2752B579B", structure: "minecraft:swamp_hut", type: "structure" }]
+			title: "Witch's Hut"
+			x: 6.0d
+			y: 15.0d
+		}
+		{
+			dependencies: ["0FD185DB104DAC9E"]
+			description: ["Locate a Igloo.", "", "&bObjective:&r Find a Igloo"]
+			id: "2515FBFC67F8844B"
+			rewards: [
+				{ count: 2, id: "25C81FB7D29B4F05", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "25C38276EB8D321E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 76 of 104 • 2 Emerald, 9 Gold"
+			tasks: [{ id: "5EB623D03186493D", structure: "minecraft:igloo", type: "structure" }]
+			title: "Igloo"
+			x: 7.5d
+			y: 15.0d
+		}
+		{
+			dependencies: ["2515FBFC67F8844B"]
+			description: ["Track down a Pillager Outpost. The map is yours to fill.", "", "&bObjective:&r Find a Pillager Outpost"]
+			id: "7D9D809F93F4337B"
+			rewards: [
+				{ count: 2, id: "026131FACF0D3717", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "358952C663D69B98", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 77 of 104 • 2 Emerald, 9 Gold"
+			tasks: [{ id: "7C85085453753914", structure: "minecraft:pillager_outpost", type: "structure" }]
+			title: "Outpost Spotted"
+			x: 9.0d
+			y: 15.0d
+		}
+		{
+			dependencies: ["7D9D809F93F4337B"]
+			description: ["Scouts mention a Ruined Portal. Find it and step inside its walls.", "", "&bObjective:&r Find a Ruined Portal"]
+			id: "3714A053954FA26C"
+			rewards: [
+				{ count: 3, id: "336CD54AAA107BB7", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 78 of 104 • 3 Emerald"
+			tasks: [{ id: "423DD66453C3D350", structure: "minecraft:ruined_portal", type: "structure" }]
+			title: "Ruined Portal"
+			x: 9.0d
+			y: 16.5d
+		}
+		{
+			dependencies: ["3714A053954FA26C"]
+			description: ["Locate a Trail Ruins.", "", "&bObjective:&r Find a Trail Ruins"]
+			id: "0DAD9137FFCBBD29"
+			rewards: [
+				{ count: 3, id: "03E6F3B3699B9CFB", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 79 of 104 • 3 Emerald"
+			tasks: [{ id: "5E387F1E0B14CD55", structure: "minecraft:trail_ruins", type: "structure" }]
+			title: "Trail Ruins"
+			x: 7.5d
+			y: 16.5d
+		}
+		{
+			dependencies: ["0DAD9137FFCBBD29"]
+			description: ["The guild wants 1 freshly crafted Spyglass.", "", "&bObjective:&r Craft 1 Spyglass", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Iron Spear&7 (enchanted)"]
+			id: "79C13F7AAC1F8C5B"
+			rewards: [
+				{ count: 7, id: "4884796620CAF47A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "6B4EA92582F40841", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ id: "473E730600C5E344", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 3, "minecraft:unbreaking": 2 } } }, count: 1, id: "simplyswords:iron_spear" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 80 of 104 • 7 Emerald, 5 Gold + Gear"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "4F5386B850FB185F", item: { count: 1, id: "minecraft:spyglass" }, type: "item" }]
+			title: "&6&lSpyglass"
+			x: 6.0d
+			y: 16.5d
+		}
+		{
+			dependencies: ["79C13F7AAC1F8C5B"]
+			description: ["Accomplish \"Is It a Bird?\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Is It a Bird?\""]
+			id: "20FEA93ADA0AED63"
+			rewards: [
+				{ count: 3, id: "32E533D076F117F0", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 81 of 104 • 3 Emerald"
+			tasks: [{ advancement: "minecraft:adventure/spyglass_at_parrot", criterion: "", id: "46F3F6FD5420AED8", type: "advancement" }]
+			title: "Is It a Bird?"
+			x: 4.5d
+			y: 16.5d
+		}
+		{
+			dependencies: ["20FEA93ADA0AED63"]
+			description: ["Workshop order: 1 Clock, made by you.", "", "&bObjective:&r Craft 1 Clock", "&7Only items you craft yourself count."]
+			id: "1EF86EFADAF4E823"
+			rewards: [
+				{ count: 3, id: "2C524171CF613CFC", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "6219FBA6CA640687", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 82 of 104 • 3 Emerald, 1 Gold"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "174A3FE93C46246A", item: { count: 1, id: "minecraft:clock" }, type: "item" }]
+			title: "Pocket Clock"
+			x: 3.0d
+			y: 16.5d
+		}
+		{
+			dependencies: ["1EF86EFADAF4E823"]
+			description: ["Keep 3 Filled Map in your pack. The clerk only needs to see them.", "", "&bObjective:&r Have 3 Filled Map in your inventory"]
+			id: "3AF17825CF38A212"
+			rewards: [
+				{ count: 3, id: "4E779DE55D8FCA74", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "6DB492081BA8E594", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 83 of 104 • 3 Emerald, 1 Gold"
+			tasks: [{ count: 3L, id: "6B2E77B2808DFD69", item: { count: 1, id: "minecraft:filled_map" }, type: "item" }]
+			title: "Mapmaker"
+			x: 1.5d
+			y: 16.5d
+		}
+		{
+			dependencies: ["3AF17825CF38A212"]
+			description: ["Prove your hands are skilled: craft 1 Cartography Table yourself.", "", "&bObjective:&r Craft 1 Cartography Table", "&7Only items you craft yourself count."]
+			id: "5EE6FAFAB2F034F8"
+			rewards: [
+				{ count: 3, id: "41D794A18D6A45D1", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "46332EA6A6E37672", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 84 of 104 • 3 Emerald, 1 Gold"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "5CA12A3A61F0F2F7", item: { count: 1, id: "minecraft:cartography_table" }, type: "item" }]
+			title: "Cartographer's Desk"
+			x: 0.0d
+			y: 16.5d
+		}
+		{
+			dependencies: ["5EE6FAFAB2F034F8"]
+			description: ["The Ledger tracks everything. Push interact with cartography table to 5.", "", "&bObjective:&r Reach interact with cartography table: 5", "&7Counts your total since you first joined."]
+			id: "3BB0BCB6024FA3DA"
+			rewards: [
+				{ count: 3, id: "5431CD717CCDF457", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "534CE66C0D3104B0", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 85 of 104 • 3 Emerald, 1 Gold"
+			tasks: [{ id: "56DF781106BBB10D", stat: "minecraft:interact_with_cartography_table", type: "stat", value: 5 }]
+			title: "Charting the Land"
+			x: 0.0d
+			y: 18.0d
+		}
+		{
+			dependencies: ["3BB0BCB6024FA3DA"]
+			description: ["Reach 2 km for distance sprinted.", "", "&bObjective:&r Reach distance sprinted: 2 km", "&7Counts your total since you first joined."]
+			id: "2D35A565B297813B"
+			rewards: [
+				{ count: 3, id: "21E8B46E1E0FD5CF", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "2572BD4367EDAD15", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 86 of 104 • 3 Emerald, 1 Gold"
+			tasks: [{ id: "53E9727EFE1156EF", stat: "minecraft:sprint_one_cm", type: "stat", value: 200000 }]
+			title: "Marathon"
+			x: 1.5d
+			y: 18.0d
+		}
+		{
+			dependencies: ["2D35A565B297813B"]
+			description: ["The Ledger tracks everything. Push distance by minecart to 200 blocks.", "", "&bObjective:&r Reach distance by minecart: 200 blocks", "&7Counts your total since you first joined."]
+			id: "1CDA03FC67419248"
+			rewards: [
+				{ count: 3, id: "41E35C81D4DCCEBE", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "646D8E862D003739", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 87 of 104 • 3 Emerald, 2 Gold"
+			tasks: [{ id: "554592B3927899C7", stat: "minecraft:minecart_one_cm", type: "stat", value: 20000 }]
+			title: "Rail Rider"
+			x: 3.0d
+			y: 18.0d
+		}
+		{
+			dependencies: ["1CDA03FC67419248"]
+			description: ["Reach 50 blocks for distance crouched.", "", "&bObjective:&r Reach distance crouched: 50 blocks", "&7Counts your total since you first joined."]
+			id: "2BD27549436E6327"
+			rewards: [
+				{ count: 3, id: "475AFBA31E8CA824", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "2597D5561793EC63", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 88 of 104 • 3 Emerald, 2 Gold"
+			tasks: [{ id: "5B04D7EE517515F4", stat: "minecraft:crouch_one_cm", type: "stat", value: 5000 }]
+			title: "Sneaky Steps"
+			x: 4.5d
+			y: 18.0d
+		}
+		{
+			dependencies: ["2BD27549436E6327"]
+			description: ["The Ledger tracks everything. Push jump to 2000.", "", "&bObjective:&r Reach jump: 2000", "&7Counts your total since you first joined."]
+			id: "1582380F570F0956"
+			rewards: [
+				{ count: 3, id: "32067B50BF418357", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "2129769A3E7BEF50", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 89 of 104 • 3 Emerald, 2 Gold"
+			tasks: [{ id: "7018F0C397E2147C", stat: "minecraft:jump", type: "stat", value: 2000 }]
+			title: "Parkour"
+			x: 6.0d
+			y: 18.0d
+		}
+		{
+			dependencies: ["1582380F570F0956"]
+			description: ["Reach 50 for traded with villager.", "", "&bObjective:&r Reach traded with villager: 50", "&7Counts your total since you first joined.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Leather Gloves&7 (enchanted)"]
+			id: "54CCF0F2D34D0A3E"
+			rewards: [
+				{ count: 8, id: "5142E9F7E5C0327A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "08613CEFF8BF49BB", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ id: "59CB83A287E8AA8E", item: { components: { "minecraft:enchantments": { levels: { "minecraft:unbreaking": 2 } } }, count: 1, id: "aether:leather_gloves" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 90 of 104 • 8 Emerald, 1 Gold + Gear"
+			tasks: [{ id: "19A880870393E7F4", stat: "minecraft:traded_with_villager", type: "stat", value: 50 }]
+			title: "&6&lTrade Baron"
+			x: 7.5d
+			y: 18.0d
+		}
+		{
+			dependencies: ["54CCF0F2D34D0A3E"]
+			description: ["The Ledger tracks everything. Push talked to villager to 50.", "", "&bObjective:&r Reach talked to villager: 50", "&7Counts your total since you first joined."]
+			id: "7AE1FA8BB5602A63"
+			rewards: [
+				{ count: 3, id: "3085D943B2EC191A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "31441F66B9EC6FF7", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 91 of 104 • 3 Emerald, 2 Gold"
+			tasks: [{ id: "577D4F33AEB2495A", stat: "minecraft:talked_to_villager", type: "stat", value: 50 }]
+			title: "Town Gossip"
+			x: 9.0d
+			y: 18.0d
+		}
+		{
+			dependencies: ["7AE1FA8BB5602A63"]
+			description: ["Track down a Woodland Mansion. The map is yours to fill.", "", "&bObjective:&r Find a Woodland Mansion"]
+			id: "360ABA5505D304ED"
+			rewards: [
+				{ count: 3, id: "174B8D66C8AD8E0F", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "7624455A5628DC28", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 92 of 104 • 3 Emerald, 3 Gold"
+			tasks: [{ id: "326B45B5923AF571", structure: "minecraft:mansion", type: "structure" }]
+			title: "Woodland Mansion"
+			x: 9.0d
+			y: 19.5d
+		}
+		{
+			dependencies: ["360ABA5505D304ED"]
+			description: ["A merchant has ordered 64 Spruce Log. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 64 Spruce Log", "&7The items are taken when you complete the quest."]
+			id: "6E20643CDB8AED6B"
+			rewards: [
+				{ count: 3, id: "1E6EE1D359B54AA8", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "79FE90CFE5ACFE04", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 93 of 104 • 3 Emerald, 3 Gold"
+			tasks: [{ count: 64L, consume_items: true, id: "06057C3042338FD8", item: { count: 1, id: "minecraft:spruce_log" }, type: "item" }]
+			title: "Spruce Stockpile"
+			x: 7.5d
+			y: 19.5d
+		}
+		{
+			dependencies: ["6E20643CDB8AED6B"]
+			description: ["Supply run: 64 Birch Log, taken on hand-in.", "", "&bObjective:&r Hand in 64 Birch Log", "&7The items are taken when you complete the quest."]
+			id: "6070E6AC422525DD"
+			rewards: [
+				{ count: 3, id: "04A4390B6BFCF479", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "78F3AC8E2E525FFB", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 94 of 104 • 3 Emerald, 3 Gold"
+			tasks: [{ count: 64L, consume_items: true, id: "320C8BFE3C255034", item: { count: 1, id: "minecraft:birch_log" }, type: "item" }]
+			title: "Birch Stockpile"
+			x: 6.0d
+			y: 19.5d
+		}
+		{
+			dependencies: ["6070E6AC422525DD"]
+			description: ["The realm needs Oak Log. Bring 64 and they're yours no more.", "", "&bObjective:&r Hand in 64 Oak Log", "&7The items are taken when you complete the quest."]
+			id: "7590A78AF87FF515"
+			rewards: [
+				{ count: 3, id: "7C42052E8D41755D", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "49FD90683756A711", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 95 of 104 • 3 Emerald, 3 Gold"
+			tasks: [{ count: 64L, consume_items: true, id: "055A9891CB77D2EC", item: { count: 1, id: "minecraft:oak_log" }, type: "item" }]
+			title: "Oak Stockpile"
+			x: 4.5d
+			y: 19.5d
+		}
+		{
+			dependencies: ["7590A78AF87FF515"]
+			description: ["Reach 5 km for distance walked.", "", "&bObjective:&r Reach distance walked: 5 km", "&7Counts your total since you first joined."]
+			id: "7B14755AC0229B67"
+			rewards: [
+				{ count: 3, id: "414BB33E382E1D3C", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "391965C6C91319CF", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 96 of 104 • 3 Emerald, 4 Gold"
+			tasks: [{ id: "6C7460AB988B4C68", stat: "minecraft:walk_one_cm", type: "stat", value: 500000 }]
+			title: "Five Kilometres"
+			x: 3.0d
+			y: 19.5d
+		}
+		{
+			dependencies: ["7B14755AC0229B67"]
+			description: ["The Ledger tracks everything. Push distance walked to 10 km.", "", "&bObjective:&r Reach distance walked: 10 km", "&7Counts your total since you first joined."]
+			id: "40DD36C51CEF6050"
+			rewards: [
+				{ count: 3, id: "720E348F4F13A8CC", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "5D9871A2B3CA5F5B", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 97 of 104 • 3 Emerald, 4 Gold"
+			tasks: [{ id: "7553C8B684FB98CE", stat: "minecraft:walk_one_cm", type: "stat", value: 1000000 }]
+			title: "Ten Kilometres"
+			x: 1.5d
+			y: 19.5d
+		}
+		{
+			dependencies: ["40DD36C51CEF6050"]
+			description: ["Reach 50 blocks for distance walked on water.", "", "&bObjective:&r Reach distance walked on water: 50 blocks", "&7Counts your total since you first joined."]
+			id: "4E9B3E7735806715"
+			rewards: [
+				{ count: 3, id: "5FBF9D70EBB76161", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "2F157A06609B50C3", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 98 of 104 • 3 Emerald, 4 Gold"
+			tasks: [{ id: "216E38E39B587DB5", stat: "minecraft:walk_on_water_one_cm", type: "stat", value: 5000 }]
+			title: "Water Strider"
+			x: 0.0d
+			y: 19.5d
+		}
+		{
+			dependencies: ["4E9B3E7735806715"]
+			description: ["Cartographers need a first-hand report from the Ocean.", "", "&bObjective:&r Visit the Ocean biome"]
+			id: "0480DEAEB391319F"
+			rewards: [
+				{ count: 3, id: "7D66BE0C166A33E9", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "09E664586613D68C", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 99 of 104 • 3 Emerald, 4 Gold"
+			tasks: [{ biome: "minecraft:ocean", id: "57CB30B0A1A64A7E", type: "biome" }]
+			title: "Open Ocean"
+			x: 0.0d
+			y: 21.0d
+		}
+		{
+			dependencies: ["0480DEAEB391319F"]
+			description: ["Set foot in the Deep Ocean and live to tell of it.", "", "&bObjective:&r Visit the Deep Ocean biome", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Iron Twinblade&7 (enchanted)"]
+			id: "14A003E3131270CE"
+			rewards: [
+				{ count: 8, id: "569584F7F06E8053", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "1E7AA7EECD8EAA90", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ id: "18E914EA6B3D096D", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 3, "minecraft:unbreaking": 2 } } }, count: 1, id: "simplyswords:iron_twinblade" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 100 of 104 • 8 Emerald, 6 Gold + Gear"
+			tasks: [{ biome: "minecraft:deep_ocean", id: "2192CA5984A3D26F", type: "biome" }]
+			title: "&6&lThe Deep Blue"
+			x: 1.5d
+			y: 21.0d
+		}
+		{
+			dependencies: ["14A003E3131270CE"]
+			description: ["Explore the Warm Ocean.", "", "&bObjective:&r Visit the Warm Ocean biome"]
+			id: "0653AB2608B02EF3"
+			rewards: [
+				{ count: 3, id: "1807F1053AF653D6", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "423DC09E3C00E44B", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 101 of 104 • 3 Emerald, 5 Gold"
+			tasks: [{ biome: "minecraft:warm_ocean", id: "2148F7EAB1324058", type: "biome" }]
+			title: "Coral Waters"
+			x: 3.0d
+			y: 21.0d
+		}
+		{
+			dependencies: ["0653AB2608B02EF3"]
+			description: ["Cartographers need a first-hand report from the Frozen Ocean.", "", "&bObjective:&r Visit the Frozen Ocean biome"]
+			id: "4852105FC154F24D"
+			rewards: [
+				{ count: 3, id: "5764E705952F0BBC", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "57E7BD593620F946", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 102 of 104 • 3 Emerald, 5 Gold"
+			tasks: [{ biome: "minecraft:frozen_ocean", id: "7E3FEBFB07BCAEA8", type: "biome" }]
+			title: "Arctic Sea"
+			x: 4.5d
+			y: 21.0d
+		}
+		{
+			dependencies: ["4852105FC154F24D"]
+			description: ["The Ledger tracks everything. Push distance sprinted to 10 km.", "", "&bObjective:&r Reach distance sprinted: 10 km", "&7Counts your total since you first joined."]
+			id: "08A9518C2C752647"
+			rewards: [
+				{ count: 3, id: "5B7F3047893F4403", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "5FDDAB8F9CB787E4", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 103 of 104 • 3 Emerald, 5 Gold"
+			tasks: [{ id: "3C2A61AE64AF68B4", stat: "minecraft:sprint_one_cm", type: "stat", value: 1000000 }]
+			title: "Ultra Marathon"
+			x: 6.0d
+			y: 21.0d
+		}
+		{
+			dependencies: ["08A9518C2C752647"]
+			description: ["Gather 15 levels and spend them here.", "", "&bObjective:&r Spend 15 XP levels", "&7The levels are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Agility Cape", "&6&lFinal entry of this Ledger."]
+			id: "5C2977C219CE9AEE"
+			rewards: [
+				{ count: 1, id: "5F66A12958DC0E9A", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 4, id: "7D16A94854E661AE", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "0F293C80B9C0FD5A", item: { count: 1, id: "aether:agility_cape" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 2.0d
+			subtitle: "Entry 104 of 104 • 1 Diamond, 4 Emerald + Gear"
+			tasks: [{ id: "16EB5D20C231FF68", points: false, type: "xp", value: 15L }]
+			title: "&6&lTraveller's Tales"
+			x: 7.5d
+			y: 21.0d
+		}
+	]
+	subtitle: ["The world is wide. The Ledger pays those who see it. &7(Unlocks after entry 50 of the previous Ledger.)"]
+	title: "&eLedger II: Wanderlust"
+}

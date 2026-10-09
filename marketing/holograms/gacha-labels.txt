@@ -1,0 +1,25 @@
+### yellow machine = ⚔ WEAPONS
+/execute positioned ^ ^ ^0.8 run summon text_display ~ ~2.05 ~ {billboard:"center",shadow:1b,Tags:["gacha_lbl"],transformation:[1.1f,0f,0f,0f,0f,1.1f,0f,0f,0f,0f,1.1f,0f,0f,0f,0f,1f],text:'{"text":"⚔ WEAPONS","color":"gold","bold":true}'}
+/execute positioned ^ ^ ^0.8 run summon text_display ~ ~1.82 ~ {billboard:"center",shadow:1b,Tags:["gacha_lbl"],transformation:[0.65f,0f,0f,0f,0f,0.65f,0f,0f,0f,0f,0.65f,0f,0f,0f,0f,1f],text:'{"text":"Blades, bows & more","color":"gray"}'}
+
+### red machine = ◈ ARMOUR
+/execute positioned ^ ^ ^0.8 run summon text_display ~ ~2.05 ~ {billboard:"center",shadow:1b,Tags:["gacha_lbl"],transformation:[1.1f,0f,0f,0f,0f,1.1f,0f,0f,0f,0f,1.1f,0f,0f,0f,0f,1f],text:'{"text":"◈ ARMOUR","color":"red","bold":true}'}
+/execute positioned ^ ^ ^0.8 run summon text_display ~ ~1.82 ~ {billboard:"center",shadow:1b,Tags:["gacha_lbl"],transformation:[0.65f,0f,0f,0f,0f,0.65f,0f,0f,0f,0f,0.65f,0f,0f,0f,0f,1f],text:'{"text":"Helms, plates & boots","color":"gray"}'}
+
+### green machine = ✦ ENCHANTS
+/execute positioned ^ ^ ^0.8 run summon text_display ~ ~2.05 ~ {billboard:"center",shadow:1b,Tags:["gacha_lbl"],transformation:[1.1f,0f,0f,0f,0f,1.1f,0f,0f,0f,0f,1.1f,0f,0f,0f,0f,1f],text:'{"text":"✦ ENCHANTS","color":"green","bold":true}'}
+/execute positioned ^ ^ ^0.8 run summon text_display ~ ~1.82 ~ {billboard:"center",shadow:1b,Tags:["gacha_lbl"],transformation:[0.65f,0f,0f,0f,0f,0.65f,0f,0f,0f,0f,0.65f,0f,0f,0f,0f,1f],text:'{"text":"Books & power-ups","color":"gray"}'}
+
+### purple machine = ✧ RUNES
+/execute positioned ^ ^ ^0.8 run summon text_display ~ ~2.05 ~ {billboard:"center",shadow:1b,Tags:["gacha_lbl"],transformation:[1.1f,0f,0f,0f,0f,1.1f,0f,0f,0f,0f,1.1f,0f,0f,0f,0f,1f],text:'{"text":"✧ RUNES","color":"light_purple","bold":true}'}
+/execute positioned ^ ^ ^0.8 run summon text_display ~ ~1.82 ~ {billboard:"center",shadow:1b,Tags:["gacha_lbl"],transformation:[0.65f,0f,0f,0f,0f,0.65f,0f,0f,0f,0f,0.65f,0f,0f,0f,0f,1f],text:'{"text":"Ancient rune stones","color":"gray"}'}
+
+### cyan machine = ❖ MISC
+/execute positioned ^ ^ ^0.8 run summon text_display ~ ~2.05 ~ {billboard:"center",shadow:1b,Tags:["gacha_lbl"],transformation:[1.1f,0f,0f,0f,0f,1.1f,0f,0f,0f,0f,1.1f,0f,0f,0f,0f,1f],text:'{"text":"❖ MISC","color":"aqua","bold":true}'}
+/execute positioned ^ ^ ^0.8 run summon text_display ~ ~1.82 ~ {billboard:"center",shadow:1b,Tags:["gacha_lbl"],transformation:[0.65f,0f,0f,0f,0f,0.65f,0f,0f,0f,0f,0.65f,0f,0f,0f,0f,1f],text:'{"text":"Mystery goodies","color":"gray"}'}
+
+### glow (once, after all 5)
+/execute as @e[type=text_display,tag=gacha_lbl] run data merge entity @s {brightness:{sky:15,block:15}}
+
+Too low/high: /execute as @e[type=text_display,tag=gacha_lbl,distance=..3] at @s run tp @s ~ ~0.2 ~   (or ~-0.2)
+Delete all 5: /kill @e[type=text_display,tag=gacha_lbl]

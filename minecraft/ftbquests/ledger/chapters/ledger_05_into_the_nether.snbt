@@ -1,0 +1,1469 @@
+{
+	default_hide_dependency_lines: false
+	default_quest_shape: ""
+	filename: "ledger_05_into_the_nether"
+	group: ""
+	icon: { id: "minecraft:netherrack" }
+	id: "6518CF38CBF4C26B"
+	images: [ ]
+	order_index: 24
+	quest_links: [ ]
+	quests: [
+		{
+			dependencies: ["1EF67AB01C1C8DC5"]
+			description: ["Workshop order: 1 Flint And Steel, made by you.", "", "&bObjective:&r Craft 1 Flint And Steel", "&7Only items you craft yourself count."]
+			id: "7D38497BB5FE6206"
+			rewards: [
+				{ count: 1, id: "7CB68F9506FE9471", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "3D03B25762438864", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 1 of 102 • 1 Diamond, 5 Emerald"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "0DE178C9D51673AF", item: { count: 1, id: "minecraft:flint_and_steel" }, type: "item" }]
+			title: "Strike a Light"
+			x: 0.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["7D38497BB5FE6206"]
+			description: ["Cross into the Nether.", "", "&bObjective:&r Enter the Nether"]
+			id: "01618AD3FF232DA3"
+			rewards: [
+				{ count: 1, id: "32C193DB1F409D27", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "27F9E03E6F231641", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 2 of 102 • 1 Diamond, 5 Emerald"
+			tasks: [{ dimension: "minecraft:the_nether", id: "44DD9807AD15763D", type: "dimension" }]
+			title: "Gateway to the Nether"
+			x: 1.5d
+			y: 0.0d
+		}
+		{
+			dependencies: ["01618AD3FF232DA3"]
+			description: ["Cartographers need a first-hand report from the Nether Wastes.", "", "&bObjective:&r Visit the Nether Wastes biome"]
+			id: "3CF44DBC4488CEA3"
+			rewards: [
+				{ count: 1, id: "528169FA46B575A8", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "19BF08CAC66C4CEB", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 3 of 102 • 1 Diamond, 5 Emerald"
+			tasks: [{ biome: "minecraft:nether_wastes", id: "6BD63BF2289E7973", type: "biome" }]
+			title: "Nether Wastes"
+			x: 3.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["3CF44DBC4488CEA3"]
+			description: ["The realm needs Netherrack. Bring 128 and they're yours no more.", "", "&bObjective:&r Hand in 128 Netherrack", "&7The items are taken when you complete the quest."]
+			id: "28DDBB6929820EA0"
+			rewards: [
+				{ count: 1, id: "0A62C6889C38129B", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "70731809D2FE9BD7", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 4 of 102 • 1 Diamond, 5 Emerald"
+			tasks: [{ count: 128L, consume_items: true, id: "7601FBB098D32011", item: { count: 1, id: "minecraft:netherrack" }, type: "item" }]
+			title: "Netherrack Haul"
+			x: 4.5d
+			y: 0.0d
+		}
+		{
+			dependencies: ["28DDBB6929820EA0"]
+			description: ["Hunt down 20 Zombified Piglin and claim the bounty.", "", "&bObjective:&r Slay 20 Zombified Piglin"]
+			id: "0100EE5F76D57724"
+			rewards: [
+				{ count: 1, id: "7C97BABFD8E516BA", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "5ECFD85663885DE1", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 5 of 102 • 1 Diamond, 5 Emerald"
+			tasks: [{ entity: "minecraft:zombified_piglin", id: "481C5C912AED9B2C", type: "kill", value: 20L }]
+			title: "Pigmen Patrol"
+			x: 6.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["0100EE5F76D57724"]
+			description: ["A merchant has ordered 64 Quartz. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 64 Quartz", "&7The items are taken when you complete the quest."]
+			id: "0BE298871C31532F"
+			rewards: [
+				{ count: 1, id: "5974D1232EE41EAD", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "5A002759F8619EF8", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 6 of 102 • 1 Diamond, 5 Emerald"
+			tasks: [{ count: 64L, consume_items: true, id: "1142786FC9AD7AAC", item: { count: 1, id: "minecraft:quartz" }, type: "item" }]
+			title: "Nether Quartz"
+			x: 7.5d
+			y: 0.0d
+		}
+		{
+			dependencies: ["0BE298871C31532F"]
+			description: ["Workshop order: 16 Quartz Block, made by you.", "", "&bObjective:&r Craft 16 Quartz Block", "&7Only items you craft yourself count."]
+			id: "246453E24792F91A"
+			rewards: [
+				{ count: 1, id: "475AA37A5FC8A146", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "777570229226DAE5", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 7 of 102 • 1 Diamond, 5 Emerald"
+			tasks: [{ count: 16L, only_from_crafting: true, id: "3953FC2807FCDE20", item: { count: 1, id: "minecraft:quartz_block" }, type: "item" }]
+			title: "Quartz Blocks"
+			x: 9.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["246453E24792F91A"]
+			description: ["The guild wants 8 freshly crafted Quartz Pillar.", "", "&bObjective:&r Craft 8 Quartz Pillar", "&7Only items you craft yourself count."]
+			id: "33C346FACCF70FB3"
+			rewards: [
+				{ count: 1, id: "4C41F1BE53856A62", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "14C61D2F332249C5", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 8 of 102 • 1 Diamond, 5 Emerald"
+			tasks: [{ count: 8L, only_from_crafting: true, id: "7E43E82C8CE9F301", item: { count: 1, id: "minecraft:quartz_pillar" }, type: "item" }]
+			title: "Quartz Pillars"
+			x: 9.0d
+			y: 1.5d
+		}
+		{
+			dependencies: ["33C346FACCF70FB3"]
+			description: ["The Ledger wants proof: carry 16 Smooth Quartz and show it.", "", "&bObjective:&r Have 16 Smooth Quartz in your inventory"]
+			id: "48515C1C7391A494"
+			rewards: [
+				{ count: 1, id: "0324CCD8B0F3A030", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "45B8E9A07AD8FF56", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 9 of 102 • 1 Diamond, 6 Emerald"
+			tasks: [{ count: 16L, id: "4CF648FF0E0B17BC", item: { count: 1, id: "minecraft:smooth_quartz" }, type: "item" }]
+			title: "Smooth Quartz"
+			x: 7.5d
+			y: 1.5d
+		}
+		{
+			dependencies: ["48515C1C7391A494"]
+			description: ["A merchant has ordered 32 Glowstone Dust. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 32 Glowstone Dust", "&7The items are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Diamond Katana&7 (enchanted)"]
+			id: "4AD593DB76BEB4FE"
+			rewards: [
+				{ count: 3, id: "2F6B929585FC745A", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 9, id: "7FB19D2DC95107ED", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "1C4E351F3F867C36", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 4, "minecraft:unbreaking": 3, "minecraft:looting": 2 } } }, count: 1, id: "simplyswords:diamond_katana" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 10 of 102 • 3 Diamond, 9 Emerald + Gear"
+			tasks: [{ count: 32L, consume_items: true, id: "587676A8E3076F94", item: { count: 1, id: "minecraft:glowstone_dust" }, type: "item" }]
+			title: "&6&lGlowstone Dust"
+			x: 6.0d
+			y: 1.5d
+		}
+		{
+			dependencies: ["4AD593DB76BEB4FE"]
+			description: ["Supply run: 16 Glowstone, taken on hand-in.", "", "&bObjective:&r Hand in 16 Glowstone", "&7The items are taken when you complete the quest."]
+			id: "4541448522ED4911"
+			rewards: [
+				{ count: 1, id: "7B49738F4D295A05", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "04B4924987423ED9", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 11 of 102 • 1 Diamond, 6 Emerald"
+			tasks: [{ count: 16L, consume_items: true, id: "1F062618CB8E8C53", item: { count: 1, id: "minecraft:glowstone" }, type: "item" }]
+			title: "Glowstone Blocks"
+			x: 4.5d
+			y: 1.5d
+		}
+		{
+			dependencies: ["4541448522ED4911"]
+			description: ["The realm needs Magma Block. Bring 16 and they're yours no more.", "", "&bObjective:&r Hand in 16 Magma Block", "&7The items are taken when you complete the quest."]
+			id: "2C55A4CA0E3A985E"
+			rewards: [
+				{ count: 1, id: "027A8DEA49240140", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "0C3755B20997B9D3", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 12 of 102 • 1 Diamond, 6 Emerald"
+			tasks: [{ count: 16L, consume_items: true, id: "68ABE1C9ECB93670", item: { count: 1, id: "minecraft:magma_block" }, type: "item" }]
+			title: "Magma Blocks"
+			x: 3.0d
+			y: 1.5d
+		}
+		{
+			dependencies: ["2C55A4CA0E3A985E"]
+			description: ["Reports of Magma Cube sightings. Thin them out: 15 kills.", "", "&bObjective:&r Slay 15 Magma Cube"]
+			id: "166A516CBE37A19A"
+			rewards: [
+				{ count: 1, id: "364A6ABB28EEDA64", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "66EDF060DD558FA9", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 13 of 102 • 1 Diamond, 6 Emerald"
+			tasks: [{ entity: "minecraft:magma_cube", id: "7FB55B9B3289ECC3", type: "kill", value: 15L }]
+			title: "Magma Cubes"
+			x: 1.5d
+			y: 1.5d
+		}
+		{
+			dependencies: ["166A516CBE37A19A"]
+			description: ["A merchant has ordered 8 Magma Cream. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 8 Magma Cream", "&7The items are taken when you complete the quest."]
+			id: "462BFB0E4E81576B"
+			rewards: [
+				{ count: 1, id: "0263A3173F217316", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "7690825FB2E571B2", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 14 of 102 • 1 Diamond, 6 Emerald"
+			tasks: [{ count: 8L, consume_items: true, id: "57A3E67E1444727F", item: { count: 1, id: "minecraft:magma_cream" }, type: "item" }]
+			title: "Magma Cream"
+			x: 0.0d
+			y: 1.5d
+		}
+		{
+			dependencies: ["462BFB0E4E81576B"]
+			description: ["Cartographers need a first-hand report from the Crimson Forest.", "", "&bObjective:&r Visit the Crimson Forest biome"]
+			id: "111A39B4DC65082B"
+			rewards: [
+				{ count: 1, id: "0D4D73A7752FBE08", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "310E11D6DCFD77BE", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 15 of 102 • 1 Diamond, 6 Emerald"
+			tasks: [{ biome: "minecraft:crimson_forest", id: "552CBE46FF0B15B3", type: "biome" }]
+			title: "Crimson Forest"
+			x: 0.0d
+			y: 3.0d
+		}
+		{
+			dependencies: ["111A39B4DC65082B"]
+			description: ["The realm needs Crimson Stem. Bring 64 and they're yours no more.", "", "&bObjective:&r Hand in 64 Crimson Stem", "&7The items are taken when you complete the quest."]
+			id: "1627AC8B109321F2"
+			rewards: [
+				{ count: 1, id: "53B86C64C3E4A170", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "15F12E85A201C82D", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 16 of 102 • 1 Diamond, 6 Emerald"
+			tasks: [{ count: 64L, consume_items: true, id: "3750B241D55B7529", item: { count: 1, id: "minecraft:crimson_stem" }, type: "item" }]
+			title: "Crimson Stems"
+			x: 1.5d
+			y: 3.0d
+		}
+		{
+			dependencies: ["1627AC8B109321F2"]
+			description: ["The guild stores are low on Crimson Fungus. Hand in 8.", "", "&bObjective:&r Hand in 8 Crimson Fungus", "&7The items are taken when you complete the quest."]
+			id: "497F83F089C7A3ED"
+			rewards: [
+				{ count: 1, id: "4C70D235CDC798C5", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "6FA5D5E862208150", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 17 of 102 • 1 Diamond, 6 Emerald"
+			tasks: [{ count: 8L, consume_items: true, id: "01A5CB40786F116A", item: { count: 1, id: "minecraft:crimson_fungus" }, type: "item" }]
+			title: "Crimson Fungus"
+			x: 3.0d
+			y: 3.0d
+		}
+		{
+			dependencies: ["497F83F089C7A3ED"]
+			description: ["A merchant has ordered 16 Nether Wart Block. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 16 Nether Wart Block", "&7The items are taken when you complete the quest."]
+			id: "6EB05804D0A57A66"
+			rewards: [
+				{ count: 1, id: "7D325134D78F2492", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "77E921786E183E73", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 18 of 102 • 1 Diamond, 6 Emerald"
+			tasks: [{ count: 16L, consume_items: true, id: "7F2B82403962FA12", item: { count: 1, id: "minecraft:nether_wart_block" }, type: "item" }]
+			title: "Wart Blocks"
+			x: 4.5d
+			y: 3.0d
+		}
+		{
+			dependencies: ["6EB05804D0A57A66"]
+			description: ["Supply run: 16 Weeping Vines, taken on hand-in.", "", "&bObjective:&r Hand in 16 Weeping Vines", "&7The items are taken when you complete the quest."]
+			id: "6AB473EB336A64D8"
+			rewards: [
+				{ count: 1, id: "31B8F205AAA4F85D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 7, id: "65881C1BAADCC734", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 19 of 102 • 1 Diamond, 7 Emerald"
+			tasks: [{ count: 16L, consume_items: true, id: "712617877490B7B9", item: { count: 1, id: "minecraft:weeping_vines" }, type: "item" }]
+			title: "Weeping Vines"
+			x: 6.0d
+			y: 3.0d
+		}
+		{
+			dependencies: ["6AB473EB336A64D8"]
+			description: ["The realm needs Shroomlight. Bring 8 and they're yours no more.", "", "&bObjective:&r Hand in 8 Shroomlight", "&7The items are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Flaming Sword&7 (enchanted)"]
+			id: "6342773625B4781B"
+			rewards: [
+				{ count: 4, id: "2031217F8749306A", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "3835751F0ECC146A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "5DD68DF82E39F0A7", item: { components: { "minecraft:enchantments": { levels: { "minecraft:unbreaking": 3, "minecraft:looting": 2 } } }, count: 1, id: "aether:flaming_sword" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 20 of 102 • 4 Diamond, 2 Emerald + Gear"
+			tasks: [{ count: 8L, consume_items: true, id: "2755B7A027258442", item: { count: 1, id: "minecraft:shroomlight" }, type: "item" }]
+			title: "&6&lShroomlights"
+			x: 7.5d
+			y: 3.0d
+		}
+		{
+			dependencies: ["6342773625B4781B"]
+			description: ["A bounty is posted: 10 Hoglin.", "", "&bObjective:&r Slay 10 Hoglin"]
+			id: "57247599FD6AD607"
+			rewards: [
+				{ count: 1, id: "1B8449421E23DAEB", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 7, id: "57C0BF844C711D7C", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 21 of 102 • 1 Diamond, 7 Emerald"
+			tasks: [{ entity: "minecraft:hoglin", id: "1E9A3EA3A92132A6", type: "kill", value: 10L }]
+			title: "Hoglin Hunt"
+			x: 9.0d
+			y: 3.0d
+		}
+		{
+			dependencies: ["57247599FD6AD607"]
+			description: ["A merchant has ordered 32 Cooked Porkchop. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 32 Cooked Porkchop", "&7The items are taken when you complete the quest."]
+			id: "0868B6071B6E662F"
+			rewards: [
+				{ count: 1, id: "7D25B75EAECB2642", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 7, id: "4F4F7DA51C2068CA", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 22 of 102 • 1 Diamond, 7 Emerald"
+			tasks: [{ count: 32L, consume_items: true, id: "131D11F9EF51C2F1", item: { count: 1, id: "minecraft:cooked_porkchop" }, type: "item" }]
+			title: "Hoglin Roast"
+			x: 9.0d
+			y: 4.5d
+		}
+		{
+			dependencies: ["0868B6071B6E662F"]
+			description: ["Explore the Warped Forest.", "", "&bObjective:&r Visit the Warped Forest biome"]
+			id: "65ED05E359FBC12C"
+			rewards: [
+				{ count: 1, id: "2E1C713872A8DD73", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 7, id: "4DA4C6F9D5B1DA7F", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 23 of 102 • 1 Diamond, 7 Emerald"
+			tasks: [{ biome: "minecraft:warped_forest", id: "181B7A6DF02BAEA9", type: "biome" }]
+			title: "Warped Forest"
+			x: 7.5d
+			y: 4.5d
+		}
+		{
+			dependencies: ["65ED05E359FBC12C"]
+			description: ["The realm needs Warped Stem. Bring 64 and they're yours no more.", "", "&bObjective:&r Hand in 64 Warped Stem", "&7The items are taken when you complete the quest."]
+			id: "00DD820C3F7C0048"
+			rewards: [
+				{ count: 1, id: "480702571A81F828", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 7, id: "0BDBAAC9747FE6B7", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 24 of 102 • 1 Diamond, 7 Emerald"
+			tasks: [{ count: 64L, consume_items: true, id: "286AA6978C5EA87F", item: { count: 1, id: "minecraft:warped_stem" }, type: "item" }]
+			title: "Warped Stems"
+			x: 6.0d
+			y: 4.5d
+		}
+		{
+			dependencies: ["00DD820C3F7C0048"]
+			description: ["The guild stores are low on Warped Fungus. Hand in 8.", "", "&bObjective:&r Hand in 8 Warped Fungus", "&7The items are taken when you complete the quest."]
+			id: "4074D7F309B6A1A4"
+			rewards: [
+				{ count: 1, id: "6A2FBCCC521C9AC1", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 7, id: "154324F42ECF9278", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 25 of 102 • 1 Diamond, 7 Emerald"
+			tasks: [{ count: 8L, consume_items: true, id: "4E85DCC7F8468EEA", item: { count: 1, id: "minecraft:warped_fungus" }, type: "item" }]
+			title: "Warped Fungus"
+			x: 4.5d
+			y: 4.5d
+		}
+		{
+			dependencies: ["4074D7F309B6A1A4"]
+			description: ["A merchant has ordered 16 Warped Wart Block. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 16 Warped Wart Block", "&7The items are taken when you complete the quest."]
+			id: "5D245336ABFA2121"
+			rewards: [
+				{ count: 1, id: "70A33B95DF3A927C", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 7, id: "1C886799D42A0C6B", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 26 of 102 • 1 Diamond, 7 Emerald"
+			tasks: [{ count: 16L, consume_items: true, id: "3BCF260DD44CC6DE", item: { count: 1, id: "minecraft:warped_wart_block" }, type: "item" }]
+			title: "Warped Wart"
+			x: 3.0d
+			y: 4.5d
+		}
+		{
+			dependencies: ["5D245336ABFA2121"]
+			description: ["Supply run: 16 Twisting Vines, taken on hand-in.", "", "&bObjective:&r Hand in 16 Twisting Vines", "&7The items are taken when you complete the quest."]
+			id: "67F574B4CDADD20B"
+			rewards: [
+				{ count: 1, id: "3FD6EC410E453279", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "281A7FF61A822A15", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 27 of 102 • 1 Diamond, 8 Emerald"
+			tasks: [{ count: 16L, consume_items: true, id: "2BE97EA0DDD1BF9D", item: { count: 1, id: "minecraft:twisting_vines" }, type: "item" }]
+			title: "Twisting Vines"
+			x: 1.5d
+			y: 4.5d
+		}
+		{
+			dependencies: ["67F574B4CDADD20B"]
+			description: ["Workshop order: 1 Warped Fungus On A Stick, made by you.", "", "&bObjective:&r Craft 1 Warped Fungus On A Stick", "&7Only items you craft yourself count."]
+			id: "2056B29FD7A80532"
+			rewards: [
+				{ count: 1, id: "61098804C106CAC9", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "3498F986CD2728C3", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 28 of 102 • 1 Diamond, 8 Emerald"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "34F85DED329CC00D", item: { count: 1, id: "minecraft:warped_fungus_on_a_stick" }, type: "item" }]
+			title: "Fungus on a Stick"
+			x: 0.0d
+			y: 4.5d
+		}
+		{
+			dependencies: ["2056B29FD7A80532"]
+			description: ["Earn the advancement \"This Boat Has Legs\".", "", "&bObjective:&r Earn the advancement \"This Boat Has Legs\""]
+			id: "72F6C5AC49E10C7B"
+			rewards: [
+				{ count: 1, id: "6DBB7D956B7824AC", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "613BE5CD41FFF06D", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 29 of 102 • 1 Diamond, 8 Emerald"
+			tasks: [{ advancement: "minecraft:nether/ride_strider", criterion: "", id: "2E099D08A03D0405", type: "advancement" }]
+			title: "This Boat Has Legs"
+			x: 0.0d
+			y: 6.0d
+		}
+		{
+			dependencies: ["72F6C5AC49E10C7B"]
+			description: ["The Ledger tracks everything. Push distance by strider to 100 blocks.", "", "&bObjective:&r Reach distance by strider: 100 blocks", "&7Counts your total since you first joined.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Diamond Scythe&7 (enchanted)"]
+			id: "12F2D4A80FB3D11A"
+			rewards: [
+				{ count: 4, id: "658C4C42D05C3646", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "430BE97B75C515E6", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "4FE510FDB80216E1", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 4, "minecraft:unbreaking": 3, "minecraft:looting": 2 } } }, count: 1, id: "simplyswords:diamond_scythe" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 30 of 102 • 4 Diamond, 5 Emerald + Gear"
+			tasks: [{ id: "325956D3A5B6242A", stat: "minecraft:strider_one_cm", type: "stat", value: 10000 }]
+			title: "&6&lLava Surfer"
+			x: 1.5d
+			y: 6.0d
+		}
+		{
+			dependencies: ["12F2D4A80FB3D11A"]
+			description: ["Set foot in the Soul Sand Valley and live to tell of it.", "", "&bObjective:&r Visit the Soul Sand Valley biome"]
+			id: "1ACBAA62D490C0B4"
+			rewards: [
+				{ count: 1, id: "65FA9D5DAC29C00E", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "4FB6F729EDCC8A88", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 31 of 102 • 1 Diamond, 8 Emerald"
+			tasks: [{ biome: "minecraft:soul_sand_valley", id: "11284F9521933369", type: "biome" }]
+			title: "Soul Sand Valley"
+			x: 3.0d
+			y: 6.0d
+		}
+		{
+			dependencies: ["1ACBAA62D490C0B4"]
+			description: ["The realm needs Soul Sand. Bring 64 and they're yours no more.", "", "&bObjective:&r Hand in 64 Soul Sand", "&7The items are taken when you complete the quest."]
+			id: "5A67AA874D624657"
+			rewards: [
+				{ count: 1, id: "227CBDBC6765DC13", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "17B40EEC1B868621", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 32 of 102 • 1 Diamond, 8 Emerald"
+			tasks: [{ count: 64L, consume_items: true, id: "56A1322544FB4DEF", item: { count: 1, id: "minecraft:soul_sand" }, type: "item" }]
+			title: "Soul Sand"
+			x: 4.5d
+			y: 6.0d
+		}
+		{
+			dependencies: ["5A67AA874D624657"]
+			description: ["The guild stores are low on Soul Soil. Hand in 64.", "", "&bObjective:&r Hand in 64 Soul Soil", "&7The items are taken when you complete the quest."]
+			id: "163293DD1B161641"
+			rewards: [
+				{ count: 1, id: "55817C6621E4018D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "633E5FE73D2A31B3", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 33 of 102 • 1 Diamond, 8 Emerald"
+			tasks: [{ count: 64L, consume_items: true, id: "5D84B06CD6BEF90B", item: { count: 1, id: "minecraft:soul_soil" }, type: "item" }]
+			title: "Soul Soil"
+			x: 6.0d
+			y: 6.0d
+		}
+		{
+			dependencies: ["163293DD1B161641"]
+			description: ["Reports of Ghast sightings. Thin them out: 5 kills.", "", "&bObjective:&r Slay 5 Ghast"]
+			id: "64F9E59069D54073"
+			rewards: [
+				{ count: 1, id: "47F7DDC538525DCE", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "4126ED2849D727E5", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 34 of 102 • 1 Diamond, 8 Emerald"
+			tasks: [{ entity: "minecraft:ghast", id: "69F2360F6A7EAB0B", type: "kill", value: 5L }]
+			title: "Ghast Busters"
+			x: 7.5d
+			y: 6.0d
+		}
+		{
+			dependencies: ["64F9E59069D54073"]
+			description: ["Supply run: 4 Ghast Tear, taken on hand-in.", "", "&bObjective:&r Hand in 4 Ghast Tear", "&7The items are taken when you complete the quest."]
+			id: "61F8FFC269038606"
+			rewards: [
+				{ count: 1, id: "676E4C86FD0C07CC", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 9, id: "1DBC4F15AEF9C967", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 35 of 102 • 1 Diamond, 9 Emerald"
+			tasks: [{ count: 4L, consume_items: true, id: "074CC4F0FF942431", item: { count: 1, id: "minecraft:ghast_tear" }, type: "item" }]
+			title: "Ghast Tears"
+			x: 9.0d
+			y: 6.0d
+		}
+		{
+			dependencies: ["61F8FFC269038606"]
+			description: ["Accomplish \"Return to Sender\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Return to Sender\""]
+			id: "292CDB78BE07566A"
+			rewards: [
+				{ count: 1, id: "1CAB658AD8E69B3B", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 9, id: "57CB48DDC4DABE00", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 36 of 102 • 1 Diamond, 9 Emerald"
+			tasks: [{ advancement: "minecraft:nether/return_to_sender", criterion: "", id: "0A57B7BA03FD23D3", type: "advancement" }]
+			title: "Return to Sender"
+			x: 9.0d
+			y: 7.5d
+		}
+		{
+			dependencies: ["292CDB78BE07566A"]
+			description: ["Earn the advancement \"Is It a Balloon?\".", "", "&bObjective:&r Earn the advancement \"Is It a Balloon?\""]
+			id: "242D9B3C5880B409"
+			rewards: [
+				{ count: 1, id: "15DF9205C955F0C0", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 9, id: "06C4C7C40E708793", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 37 of 102 • 1 Diamond, 9 Emerald"
+			tasks: [{ advancement: "minecraft:adventure/spyglass_at_ghast", criterion: "", id: "1F6D902E38E438A4", type: "advancement" }]
+			title: "Is It a Balloon?"
+			x: 7.5d
+			y: 7.5d
+		}
+		{
+			dependencies: ["242D9B3C5880B409"]
+			description: ["The guild wants 32 freshly crafted Soul Torch.", "", "&bObjective:&r Craft 32 Soul Torch", "&7Only items you craft yourself count."]
+			id: "4353325DAA73BB22"
+			rewards: [
+				{ count: 1, id: "6763D279145040CC", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 9, id: "21B0CC691CA1D6B3", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 38 of 102 • 1 Diamond, 9 Emerald"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "0D8F9D16B8C96A7C", item: { count: 1, id: "minecraft:soul_torch" }, type: "item" }]
+			title: "Soul Torches"
+			x: 6.0d
+			y: 7.5d
+		}
+		{
+			dependencies: ["4353325DAA73BB22"]
+			description: ["Prove your hands are skilled: craft 8 Soul Lantern yourself.", "", "&bObjective:&r Craft 8 Soul Lantern", "&7Only items you craft yourself count."]
+			id: "08E251EA99FD1B3D"
+			rewards: [
+				{ count: 1, id: "437DC81CFD265E0E", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 9, id: "139708906B40831F", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 39 of 102 • 1 Diamond, 9 Emerald"
+			tasks: [{ count: 8L, only_from_crafting: true, id: "157FA60E8621E088", item: { count: 1, id: "minecraft:soul_lantern" }, type: "item" }]
+			title: "Soul Lanterns"
+			x: 4.5d
+			y: 7.5d
+		}
+		{
+			dependencies: ["08E251EA99FD1B3D"]
+			description: ["Workshop order: 2 Soul Campfire, made by you.", "", "&bObjective:&r Craft 2 Soul Campfire", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Obsidian Helmet&7 (enchanted)"]
+			id: "083BFE24F97ED609"
+			rewards: [
+				{ count: 4, id: "1B631251748A861F", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "394D6EC211E38F9B", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "673C1C660D6C3D73", item: { components: { "minecraft:enchantments": { levels: { "minecraft:protection": 3, "minecraft:unbreaking": 3 } } }, count: 1, id: "aether:obsidian_helmet" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 40 of 102 • 4 Diamond, 8 Emerald + Gear"
+			tasks: [{ count: 2L, only_from_crafting: true, id: "7FA402E9D464E3B9", item: { count: 1, id: "minecraft:soul_campfire" }, type: "item" }]
+			title: "&6&lSoul Campfire"
+			x: 3.0d
+			y: 7.5d
+		}
+		{
+			dependencies: ["083BFE24F97ED609"]
+			description: ["Explore the Basalt Deltas.", "", "&bObjective:&r Visit the Basalt Deltas biome"]
+			id: "59EFC18B0077C990"
+			rewards: [
+				{ count: 1, id: "55055468CB870CED", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 9, id: "62009D5FF4597C79", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 41 of 102 • 1 Diamond, 9 Emerald"
+			tasks: [{ biome: "minecraft:basalt_deltas", id: "1AF8701BDBE083DE", type: "biome" }]
+			title: "Basalt Deltas"
+			x: 1.5d
+			y: 7.5d
+		}
+		{
+			dependencies: ["59EFC18B0077C990"]
+			description: ["A merchant has ordered 64 Basalt. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 64 Basalt", "&7The items are taken when you complete the quest."]
+			id: "0ADD85F2E2F2741A"
+			rewards: [
+				{ count: 1, id: "207404056AD45014", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 9, id: "41C86197161D9294", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 42 of 102 • 1 Diamond, 9 Emerald"
+			tasks: [{ count: 64L, consume_items: true, id: "26D8724150E52147", item: { count: 1, id: "minecraft:basalt" }, type: "item" }]
+			title: "Basalt Columns"
+			x: 0.0d
+			y: 7.5d
+		}
+		{
+			dependencies: ["0ADD85F2E2F2741A"]
+			description: ["Supply run: 128 Blackstone, taken on hand-in.", "", "&bObjective:&r Hand in 128 Blackstone", "&7The items are taken when you complete the quest."]
+			id: "3A4BBA9885F6D497"
+			rewards: [
+				{ count: 2, id: "710CE1837A9D1332", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+			]
+			subtitle: "Entry 43 of 102 • 2 Diamond"
+			tasks: [{ count: 128L, consume_items: true, id: "386B4C15839DF735", item: { count: 1, id: "minecraft:blackstone" }, type: "item" }]
+			title: "Blackstone"
+			x: 0.0d
+			y: 9.0d
+		}
+		{
+			dependencies: ["3A4BBA9885F6D497"]
+			description: ["The guild wants 64 freshly crafted Polished Blackstone Bricks.", "", "&bObjective:&r Craft 64 Polished Blackstone Bricks", "&7Only items you craft yourself count."]
+			id: "0C657BC8A437F7CB"
+			rewards: [
+				{ count: 2, id: "6A7EB971718EBA51", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+			]
+			subtitle: "Entry 44 of 102 • 2 Diamond"
+			tasks: [{ count: 64L, only_from_crafting: true, id: "4E945EF53918F529", item: { count: 1, id: "minecraft:polished_blackstone_bricks" }, type: "item" }]
+			title: "Blackstone Bricks"
+			x: 1.5d
+			y: 9.0d
+		}
+		{
+			dependencies: ["0C657BC8A437F7CB"]
+			description: ["Prove your hands are skilled: craft 8 Chiseled Polished Blackstone yourself.", "", "&bObjective:&r Craft 8 Chiseled Polished Blackstone", "&7Only items you craft yourself count."]
+			id: "4FE053A39630AD65"
+			rewards: [
+				{ count: 2, id: "330BE5C62D04F495", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+			]
+			subtitle: "Entry 45 of 102 • 2 Diamond"
+			tasks: [{ count: 8L, only_from_crafting: true, id: "715617480848AE45", item: { count: 1, id: "minecraft:chiseled_polished_blackstone" }, type: "item" }]
+			title: "Carved Blackstone"
+			x: 3.0d
+			y: 9.0d
+		}
+		{
+			dependencies: ["4FE053A39630AD65"]
+			description: ["Accomplish \"Hot Tourist Destinations\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Hot Tourist Destinations\""]
+			id: "424849AFA8AC0E3F"
+			rewards: [
+				{ count: 2, id: "2E7AABFCB0020591", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+			]
+			subtitle: "Entry 46 of 102 • 2 Diamond"
+			tasks: [{ advancement: "minecraft:nether/explore_nether", criterion: "", id: "14B0C04094C31163", type: "advancement" }]
+			title: "Hot Tourist Destinations"
+			x: 4.5d
+			y: 9.0d
+		}
+		{
+			dependencies: ["424849AFA8AC0E3F"]
+			description: ["Track down a Nether Fortress. The map is yours to fill.", "", "&bObjective:&r Find a Nether Fortress"]
+			id: "2EDFE9E8B00DDF4E"
+			rewards: [
+				{ count: 2, id: "219D259513F72015", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+			]
+			subtitle: "Entry 47 of 102 • 2 Diamond"
+			tasks: [{ id: "2671321EB8644BC7", structure: "minecraft:fortress", type: "structure" }]
+			title: "A Terrible Fortress"
+			x: 6.0d
+			y: 9.0d
+		}
+		{
+			dependencies: ["2EDFE9E8B00DDF4E"]
+			description: ["The realm needs Nether Brick. Bring 64 and they're yours no more.", "", "&bObjective:&r Hand in 64 Nether Brick", "&7The items are taken when you complete the quest."]
+			id: "30A7AD3C39B8682F"
+			rewards: [
+				{ count: 2, id: "2F7D6752D6AD67E9", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+			]
+			subtitle: "Entry 48 of 102 • 2 Diamond"
+			tasks: [{ count: 64L, consume_items: true, id: "735CA857A37167D9", item: { count: 1, id: "minecraft:nether_brick" }, type: "item" }]
+			title: "Nether Brick"
+			x: 7.5d
+			y: 9.0d
+		}
+		{
+			dependencies: ["30A7AD3C39B8682F"]
+			description: ["Workshop order: 32 Nether Bricks, made by you.", "", "&bObjective:&r Craft 32 Nether Bricks", "&7Only items you craft yourself count."]
+			id: "4A2564E02FE84211"
+			rewards: [
+				{ count: 2, id: "03A7D231F84AF4D9", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+			]
+			subtitle: "Entry 49 of 102 • 2 Diamond"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "624BBB14621EA616", item: { count: 1, id: "minecraft:nether_bricks" }, type: "item" }]
+			title: "Nether Brick Blocks"
+			x: 9.0d
+			y: 9.0d
+		}
+		{
+			dependencies: ["4A2564E02FE84211"]
+			description: ["A merchant has ordered 32 Nether Wart. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 32 Nether Wart", "&7The items are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Obsidian Chestplate&7 (enchanted)"]
+			id: "0CCF1D59AA031E02"
+			rewards: [
+				{ count: 5, id: "5D85357BF00AFAB7", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 1, id: "2DD8E74FD68B0066", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "43FBAC67D995AB08", item: { components: { "minecraft:enchantments": { levels: { "minecraft:protection": 3, "minecraft:unbreaking": 3 } } }, count: 1, id: "aether:obsidian_chestplate" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 50 of 102 • 5 Diamond, 1 Emerald + Gear"
+			tasks: [{ count: 32L, consume_items: true, id: "3BF38F362A158B5F", item: { count: 1, id: "minecraft:nether_wart" }, type: "item" }]
+			title: "&6&lNether Wart"
+			x: 9.0d
+			y: 10.5d
+		}
+		{
+			dependencies: ["0CCF1D59AA031E02"]
+			description: ["Prove your hands are skilled: craft 32 Red Nether Bricks yourself.", "", "&bObjective:&r Craft 32 Red Nether Bricks", "&7Only items you craft yourself count."]
+			id: "4000132083C7FD64"
+			rewards: [
+				{ count: 2, id: "15F6A72003841C3F", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 1, id: "0F92C2A9A6611329", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 51 of 102 • 2 Diamond, 1 Emerald"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "5AAF4BC68D251C5D", item: { count: 1, id: "minecraft:red_nether_bricks" }, type: "item" }]
+			title: "Red Nether Bricks"
+			x: 7.5d
+			y: 10.5d
+		}
+		{
+			dependencies: ["4000132083C7FD64"]
+			description: ["Reports of Blaze sightings. Thin them out: 10 kills.", "", "&bObjective:&r Slay 10 Blaze"]
+			id: "0802783D63FFF35F"
+			rewards: [
+				{ count: 2, id: "29C42ADD3756430B", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 1, id: "4EC74A31890435D2", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 52 of 102 • 2 Diamond, 1 Emerald"
+			tasks: [{ entity: "minecraft:blaze", id: "2F95DA4DE7BAA38E", type: "kill", value: 10L }]
+			title: "Blaze Runner"
+			x: 6.0d
+			y: 10.5d
+		}
+		{
+			dependencies: ["0802783D63FFF35F"]
+			description: ["The guild stores are low on Blaze Rod. Hand in 16.", "", "&bObjective:&r Hand in 16 Blaze Rod", "&7The items are taken when you complete the quest."]
+			id: "44ACB63C996D6CE6"
+			rewards: [
+				{ count: 2, id: "1539FD8C1DEE6743", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 1, id: "09BA1BEAEA7239AC", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 53 of 102 • 2 Diamond, 1 Emerald"
+			tasks: [{ count: 16L, consume_items: true, id: "181AD95037BA8D40", item: { count: 1, id: "minecraft:blaze_rod" }, type: "item" }]
+			title: "Blaze Rods"
+			x: 4.5d
+			y: 10.5d
+		}
+		{
+			dependencies: ["44ACB63C996D6CE6"]
+			description: ["Prove your hands are skilled: craft 16 Blaze Powder yourself.", "", "&bObjective:&r Craft 16 Blaze Powder", "&7Only items you craft yourself count."]
+			id: "53292ACB89F432D0"
+			rewards: [
+				{ count: 2, id: "1244CE1269136903", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 1, id: "7BABB4BF7B742CB0", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 54 of 102 • 2 Diamond, 1 Emerald"
+			tasks: [{ count: 16L, only_from_crafting: true, id: "7D4E3CDDD606B375", item: { count: 1, id: "minecraft:blaze_powder" }, type: "item" }]
+			title: "Blaze Powder"
+			x: 3.0d
+			y: 10.5d
+		}
+		{
+			dependencies: ["53292ACB89F432D0"]
+			description: ["Reports of Wither Skeleton sightings. Thin them out: 15 kills.", "", "&bObjective:&r Slay 15 Wither Skeleton"]
+			id: "14350DE649C81CDA"
+			rewards: [
+				{ count: 2, id: "31E0FA05BF53C6E8", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 1, id: "7BE7E637A9CE4C1F", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 55 of 102 • 2 Diamond, 1 Emerald"
+			tasks: [{ entity: "minecraft:wither_skeleton", id: "2D870BB3439C7062", type: "kill", value: 15L }]
+			title: "Black Bones"
+			x: 1.5d
+			y: 10.5d
+		}
+		{
+			dependencies: ["14350DE649C81CDA"]
+			description: ["The realm needs Charcoal. Bring 64 and they're yours no more.", "", "&bObjective:&r Hand in 64 Charcoal", "&7The items are taken when you complete the quest."]
+			id: "0ACB6DB7854FDBBA"
+			rewards: [
+				{ count: 2, id: "6695B0340258BB12", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 1, id: "0ABC0B1A54D03012", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 56 of 102 • 2 Diamond, 1 Emerald"
+			tasks: [{ count: 64L, consume_items: true, id: "14BD8D734FDEDD42", item: { count: 1, id: "minecraft:charcoal" }, type: "item" }]
+			title: "Charcoal Burner"
+			x: 0.0d
+			y: 10.5d
+		}
+		{
+			dependencies: ["0ACB6DB7854FDBBA"]
+			description: ["The Ledger wants proof: carry 1 Wither Skeleton Skull and show it.", "", "&bObjective:&r Have 1 Wither Skeleton Skull in your inventory"]
+			id: "2B42B38F87545DF4"
+			rewards: [
+				{ count: 2, id: "109860BBEA8D3C34", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "56C438411442C0FC", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 57 of 102 • 2 Diamond, 2 Emerald"
+			tasks: [{ count: 1L, id: "7167CFDED4772A4E", item: { count: 1, id: "minecraft:wither_skeleton_skull" }, type: "item" }]
+			title: "Spooky Scary Skeleton"
+			x: 0.0d
+			y: 12.0d
+		}
+		{
+			dependencies: ["2B42B38F87545DF4"]
+			description: ["Locate a Bastion Remnant.", "", "&bObjective:&r Find a Bastion Remnant"]
+			id: "0785639E4C8061B8"
+			rewards: [
+				{ count: 2, id: "13CE735977AB62C4", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "341B8AC56FC69868", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 58 of 102 • 2 Diamond, 2 Emerald"
+			tasks: [{ id: "740A3606C65B4FAF", structure: "minecraft:bastion_remnant", type: "structure" }]
+			title: "Those Were the Days"
+			x: 1.5d
+			y: 12.0d
+		}
+		{
+			dependencies: ["0785639E4C8061B8"]
+			description: ["Supply run: 64 Gold Nugget, taken on hand-in.", "", "&bObjective:&r Hand in 64 Gold Nugget", "&7The items are taken when you complete the quest."]
+			id: "10E1E6EA1E6AB763"
+			rewards: [
+				{ count: 2, id: "0B5C45F1A12211CA", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "7421F517392DF464", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 59 of 102 • 2 Diamond, 2 Emerald"
+			tasks: [{ count: 64L, consume_items: true, id: "49B2978F824E1E7F", item: { count: 1, id: "minecraft:gold_nugget" }, type: "item" }]
+			title: "Piglin Bait"
+			x: 3.0d
+			y: 12.0d
+		}
+		{
+			dependencies: ["10E1E6EA1E6AB763"]
+			description: ["Accomplish \"Oh Shiny\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Oh Shiny\"", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Obsidian Leggings&7 (enchanted)"]
+			id: "154781C84AA830BC"
+			rewards: [
+				{ count: 5, id: "2C0742E7CFD9DE6F", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "6F03ADBAD3FAC890", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "6B708FE772DAAD2E", item: { components: { "minecraft:enchantments": { levels: { "minecraft:protection": 3, "minecraft:unbreaking": 3 } } }, count: 1, id: "aether:obsidian_leggings" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 60 of 102 • 5 Diamond, 5 Emerald + Gear"
+			tasks: [{ advancement: "minecraft:nether/distract_piglin", criterion: "", id: "3E26FABAD75D1530", type: "advancement" }]
+			title: "&6&lOh Shiny"
+			x: 4.5d
+			y: 12.0d
+		}
+		{
+			dependencies: ["154781C84AA830BC"]
+			description: ["Reports of Piglin sightings. Thin them out: 20 kills.", "", "&bObjective:&r Slay 20 Piglin"]
+			id: "28B33121D295EEDD"
+			rewards: [
+				{ count: 2, id: "427D4CF7001F5FB8", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "46ABBA6972D8ACAB", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 61 of 102 • 2 Diamond, 2 Emerald"
+			tasks: [{ entity: "minecraft:piglin", id: "0F39E3A145BFDC7E", type: "kill", value: 20L }]
+			title: "Piglin Raid"
+			x: 6.0d
+			y: 12.0d
+		}
+		{
+			dependencies: ["28B33121D295EEDD"]
+			description: ["Hunt down 3 Piglin Brute and claim the bounty.", "", "&bObjective:&r Slay 3 Piglin Brute"]
+			id: "20400CFF3B6931C9"
+			rewards: [
+				{ count: 2, id: "5ED41C55E1E4FFFA", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "795B98D060FBAB7F", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 62 of 102 • 2 Diamond, 2 Emerald"
+			tasks: [{ entity: "minecraft:piglin_brute", id: "76EB8825A35B804A", type: "kill", value: 3L }]
+			title: "Brute Force"
+			x: 7.5d
+			y: 12.0d
+		}
+		{
+			dependencies: ["20400CFF3B6931C9"]
+			description: ["Earn the advancement \"War Pigs\".", "", "&bObjective:&r Earn the advancement \"War Pigs\""]
+			id: "75B54486F3404F6B"
+			rewards: [
+				{ count: 2, id: "71A4F33BAADADCD3", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "185F5ACE80C43672", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 63 of 102 • 2 Diamond, 2 Emerald"
+			tasks: [{ advancement: "minecraft:nether/loot_bastion", criterion: "", id: "313F212870C2DE79", type: "advancement" }]
+			title: "War Pigs"
+			x: 9.0d
+			y: 12.0d
+		}
+		{
+			dependencies: ["75B54486F3404F6B"]
+			description: ["The realm needs Gilded Blackstone. Bring 4 and they're yours no more.", "", "&bObjective:&r Hand in 4 Gilded Blackstone", "&7The items are taken when you complete the quest."]
+			id: "38F599E8C7061F32"
+			rewards: [
+				{ count: 2, id: "2F7FBA89C1ED97B3", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 3, id: "41EBB513AB29ECE3", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 64 of 102 • 2 Diamond, 3 Emerald"
+			tasks: [{ count: 4L, consume_items: true, id: "69F56A04A50DEC63", item: { count: 1, id: "minecraft:gilded_blackstone" }, type: "item" }]
+			title: "Gilded Blackstone"
+			x: 9.0d
+			y: 13.5d
+		}
+		{
+			dependencies: ["38F599E8C7061F32"]
+			description: ["Keep 8 Crying Obsidian in your pack. The clerk only needs to see them.", "", "&bObjective:&r Have 8 Crying Obsidian in your inventory"]
+			id: "545F8AD8D166B184"
+			rewards: [
+				{ count: 2, id: "3A1291DBCA43ED0E", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 3, id: "673B4B5034FF28EC", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 65 of 102 • 2 Diamond, 3 Emerald"
+			tasks: [{ count: 8L, id: "070976117702A9DB", item: { count: 1, id: "minecraft:crying_obsidian" }, type: "item" }]
+			title: "Who is Cutting Onions?"
+			x: 7.5d
+			y: 13.5d
+		}
+		{
+			dependencies: ["545F8AD8D166B184"]
+			description: ["Prove your hands are skilled: craft 1 Respawn Anchor yourself.", "", "&bObjective:&r Craft 1 Respawn Anchor", "&7Only items you craft yourself count."]
+			id: "14647846D29747EF"
+			rewards: [
+				{ count: 2, id: "2B2A3F1DB3455375", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 3, id: "7D52EF2C477F3885", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 66 of 102 • 2 Diamond, 3 Emerald"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "78D0173997A4603F", item: { count: 1, id: "minecraft:respawn_anchor" }, type: "item" }]
+			title: "Respawn Anchor"
+			x: 6.0d
+			y: 13.5d
+		}
+		{
+			dependencies: ["14647846D29747EF"]
+			description: ["Earn the advancement \"Not Quite Nine Lives\".", "", "&bObjective:&r Earn the advancement \"Not Quite Nine Lives\""]
+			id: "53D28F0258BCBD1B"
+			rewards: [
+				{ count: 2, id: "4C1097EE0D2994EF", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 3, id: "73AFE8C3D2BAE380", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 67 of 102 • 2 Diamond, 3 Emerald"
+			tasks: [{ advancement: "minecraft:nether/charge_respawn_anchor", criterion: "", id: "0E3BD2193484DF86", type: "advancement" }]
+			title: "Not Quite Nine Lives"
+			x: 4.5d
+			y: 13.5d
+		}
+		{
+			dependencies: ["53D28F0258BCBD1B"]
+			description: ["The guild wants 1 freshly crafted Lodestone.", "", "&bObjective:&r Craft 1 Lodestone", "&7Only items you craft yourself count."]
+			id: "59215DCE6BD72998"
+			rewards: [
+				{ count: 2, id: "5158BBF5EACF47AD", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 3, id: "0BEEFA220EFE7B59", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 68 of 102 • 2 Diamond, 3 Emerald"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "743C13ADDD10CB64", item: { count: 1, id: "minecraft:lodestone" }, type: "item" }]
+			title: "Lodestone"
+			x: 3.0d
+			y: 13.5d
+		}
+		{
+			dependencies: ["59215DCE6BD72998"]
+			description: ["Earn the advancement \"Country Lode, Take Me Home\".", "", "&bObjective:&r Earn the advancement \"Country Lode, Take Me Home\""]
+			id: "6343757C55CBE933"
+			rewards: [
+				{ count: 2, id: "4E1FEC2BF76782BD", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 3, id: "79079A22CC55E304", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 69 of 102 • 2 Diamond, 3 Emerald"
+			tasks: [{ advancement: "minecraft:nether/use_lodestone", criterion: "", id: "5958941C90CB344D", type: "advancement" }]
+			title: "Country Lode, Take Me Home"
+			x: 1.5d
+			y: 13.5d
+		}
+		{
+			dependencies: ["6343757C55CBE933"]
+			description: ["Accomplish \"Subspace Bubble\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Subspace Bubble\"", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Obsidian Boots&7 (enchanted)"]
+			id: "747B24A43DB4F947"
+			rewards: [
+				{ count: 5, id: "1D8CE1DB12BF2593", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 9, id: "2F9742D5AD1BC68C", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "26F2AC539679D671", item: { components: { "minecraft:enchantments": { levels: { "minecraft:protection": 3, "minecraft:unbreaking": 3, "minecraft:feather_falling": 3 } } }, count: 1, id: "aether:obsidian_boots" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 70 of 102 • 5 Diamond, 9 Emerald + Gear"
+			tasks: [{ advancement: "minecraft:nether/fast_travel", criterion: "", id: "706424C0C5745910", type: "advancement" }]
+			title: "&6&lSubspace Bubble"
+			x: 0.0d
+			y: 13.5d
+		}
+		{
+			dependencies: ["747B24A43DB4F947"]
+			description: ["Track down a Nether Fossil. The map is yours to fill.", "", "&bObjective:&r Find a Nether Fossil"]
+			id: "031047FE59FFDD5D"
+			rewards: [
+				{ count: 2, id: "6C69B820B9C459D5", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 4, id: "46779CEB7CF2926E", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 71 of 102 • 2 Diamond, 4 Emerald"
+			tasks: [{ id: "3F0B5AB56C3CD121", structure: "minecraft:nether_fossil", type: "structure" }]
+			title: "Nether Fossil"
+			x: 0.0d
+			y: 15.0d
+		}
+		{
+			dependencies: ["031047FE59FFDD5D"]
+			description: ["The realm needs Bone Block. Bring 16 and they're yours no more.", "", "&bObjective:&r Hand in 16 Bone Block", "&7The items are taken when you complete the quest."]
+			id: "5D88928D53290575"
+			rewards: [
+				{ count: 2, id: "12E02FB307F9839C", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 4, id: "3A1DC9F734CAA2C2", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 72 of 102 • 2 Diamond, 4 Emerald"
+			tasks: [{ count: 16L, consume_items: true, id: "24D3FE8B3124EB32", item: { count: 1, id: "minecraft:bone_block" }, type: "item" }]
+			title: "Fossil Bones"
+			x: 1.5d
+			y: 15.0d
+		}
+		{
+			dependencies: ["5D88928D53290575"]
+			description: ["Reports of Zoglin sightings. Thin them out: 3 kills.", "", "&bObjective:&r Slay 3 Zoglin"]
+			id: "00F255A11FE927C0"
+			rewards: [
+				{ count: 2, id: "5AAF420D5CB7CE6D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 4, id: "665FB0025931B8A0", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 73 of 102 • 2 Diamond, 4 Emerald"
+			tasks: [{ entity: "minecraft:zoglin", id: "7F8F9F908E2EF99E", type: "kill", value: 3L }]
+			title: "Zoglin Slayer"
+			x: 3.0d
+			y: 15.0d
+		}
+		{
+			dependencies: ["00F255A11FE927C0"]
+			description: ["A merchant has ordered 4 Ancient Debris. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 4 Ancient Debris", "&7The items are taken when you complete the quest."]
+			id: "337F8B4C9DA49DC2"
+			rewards: [
+				{ count: 2, id: "3CFF89315EA854FF", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 4, id: "4B4D5BF6484CDDEC", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 74 of 102 • 2 Diamond, 4 Emerald"
+			tasks: [{ count: 4L, consume_items: true, id: "1FFB042E1C611499", item: { count: 1, id: "minecraft:ancient_debris" }, type: "item" }]
+			title: "Hidden in the Depths"
+			x: 4.5d
+			y: 15.0d
+		}
+		{
+			dependencies: ["337F8B4C9DA49DC2"]
+			description: ["Supply run: 4 Netherite Scrap, taken on hand-in.", "", "&bObjective:&r Hand in 4 Netherite Scrap", "&7The items are taken when you complete the quest."]
+			id: "20450782D5AD355B"
+			rewards: [
+				{ count: 2, id: "79FA6F2922CD9C15", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 4, id: "69C81B155CCE27F5", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 75 of 102 • 2 Diamond, 4 Emerald"
+			tasks: [{ count: 4L, consume_items: true, id: "592938E63D3C24F7", item: { count: 1, id: "minecraft:netherite_scrap" }, type: "item" }]
+			title: "Netherite Scrap"
+			x: 6.0d
+			y: 15.0d
+		}
+		{
+			dependencies: ["20450782D5AD355B"]
+			description: ["A collector is asking around for Netherite Upgrade Smithing Template. Bring 1 and prove you have them.", "", "&bObjective:&r Have 1 Netherite Upgrade Smithing Template in your inventory"]
+			id: "1191201DFDA777E9"
+			rewards: [
+				{ count: 2, id: "6921D95544E28B8E", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "0FDCEE11A52FB0BD", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 76 of 102 • 2 Diamond, 5 Emerald"
+			tasks: [{ count: 1L, id: "408AA847FBE15988", item: { count: 1, id: "minecraft:netherite_upgrade_smithing_template" }, type: "item" }]
+			title: "Upgrade Template"
+			x: 7.5d
+			y: 15.0d
+		}
+		{
+			dependencies: ["1191201DFDA777E9"]
+			description: ["Keep 1 Netherite Sword in your pack. The clerk only needs to see them.", "", "&bObjective:&r Have 1 Netherite Sword in your inventory"]
+			id: "3F5E85D96D0EB4D3"
+			rewards: [
+				{ count: 2, id: "220D272863A5564E", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "169104782FD4C3D4", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 77 of 102 • 2 Diamond, 5 Emerald"
+			tasks: [{ count: 1L, id: "486B7A5B0987C541", item: { count: 1, id: "minecraft:netherite_sword" }, type: "item" }]
+			title: "Netherite Blade"
+			x: 9.0d
+			y: 15.0d
+		}
+		{
+			dependencies: ["3F5E85D96D0EB4D3"]
+			description: ["The Ledger wants proof: carry 1 Netherite Pickaxe and show it.", "", "&bObjective:&r Have 1 Netherite Pickaxe in your inventory"]
+			id: "2C8F98D21673B91B"
+			rewards: [
+				{ count: 2, id: "2D04C8382DA89D27", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "32C26E4204DB6AE9", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 78 of 102 • 2 Diamond, 5 Emerald"
+			tasks: [{ count: 1L, id: "4FF9FCA313B05553", item: { count: 1, id: "minecraft:netherite_pickaxe" }, type: "item" }]
+			title: "Netherite Pick"
+			x: 9.0d
+			y: 16.5d
+		}
+		{
+			dependencies: ["2C8F98D21673B91B"]
+			description: ["Supply run: 64 Crimson Planks, taken on hand-in.", "", "&bObjective:&r Hand in 64 Crimson Planks", "&7The items are taken when you complete the quest."]
+			id: "42B0F367F95A16F3"
+			rewards: [
+				{ count: 2, id: "4DE1E3153CB1624F", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "36F8FBC565A7C234", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 79 of 102 • 2 Diamond, 5 Emerald"
+			tasks: [{ count: 64L, consume_items: true, id: "31200D1D2D591ADF", item: { count: 1, id: "minecraft:crimson_planks" }, type: "item" }]
+			title: "Crimson Carpentry"
+			x: 7.5d
+			y: 16.5d
+		}
+		{
+			dependencies: ["42B0F367F95A16F3"]
+			description: ["The realm needs Warped Planks. Bring 64 and they're yours no more.", "", "&bObjective:&r Hand in 64 Warped Planks", "&7The items are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Hearthflame&7 (enchanted)"]
+			id: "4E394A68272DCA1D"
+			rewards: [
+				{ count: 6, id: "019EC366457077A9", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 3, id: "7848E09F795DA1AA", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "2AE4B344A3796972", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 4, "minecraft:unbreaking": 3, "minecraft:looting": 2 } } }, count: 1, id: "simplyswords:hearthflame" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 80 of 102 • 6 Diamond, 3 Emerald + Gear"
+			tasks: [{ count: 64L, consume_items: true, id: "62811CF4DA574B3E", item: { count: 1, id: "minecraft:warped_planks" }, type: "item" }]
+			title: "&6&lWarped Carpentry"
+			x: 6.0d
+			y: 16.5d
+		}
+		{
+			dependencies: ["4E394A68272DCA1D"]
+			description: ["The guild stores are low on Soul Sand. Hand in 128.", "", "&bObjective:&r Hand in 128 Soul Sand", "&7The items are taken when you complete the quest."]
+			id: "53B4E6DE3FBD1844"
+			rewards: [
+				{ count: 2, id: "0B4765A039AA68C8", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "7B0E95ABF02E6B2A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 81 of 102 • 2 Diamond, 5 Emerald"
+			tasks: [{ count: 128L, consume_items: true, id: "6362F49389F7643F", item: { count: 1, id: "minecraft:soul_sand" }, type: "item" }]
+			title: "Soul Harvest"
+			x: 4.5d
+			y: 16.5d
+		}
+		{
+			dependencies: ["53B4E6DE3FBD1844"]
+			description: ["Reports of Blaze sightings. Thin them out: 30 kills.", "", "&bObjective:&r Slay 30 Blaze"]
+			id: "7B9A6A078BA0D38D"
+			rewards: [
+				{ count: 2, id: "03F0890926DBE559", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "4EA99A1F4141367B", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 82 of 102 • 2 Diamond, 6 Emerald"
+			tasks: [{ entity: "minecraft:blaze", id: "021E78A5FD06DE4B", type: "kill", value: 30L }]
+			title: "Blaze Hunter"
+			x: 3.0d
+			y: 16.5d
+		}
+		{
+			dependencies: ["7B9A6A078BA0D38D"]
+			description: ["Supply run: 48 Blaze Rod, taken on hand-in.", "", "&bObjective:&r Hand in 48 Blaze Rod", "&7The items are taken when you complete the quest."]
+			id: "6696538C9B1B8972"
+			rewards: [
+				{ count: 2, id: "1557685AC1A074A2", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "7A64BA2AF766E6BD", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 83 of 102 • 2 Diamond, 6 Emerald"
+			tasks: [{ count: 48L, consume_items: true, id: "08CB837CC3B7C0F2", item: { count: 1, id: "minecraft:blaze_rod" }, type: "item" }]
+			title: "Rod Collector"
+			x: 1.5d
+			y: 16.5d
+		}
+		{
+			dependencies: ["6696538C9B1B8972"]
+			description: ["A bounty is posted: 15 Ghast.", "", "&bObjective:&r Slay 15 Ghast"]
+			id: "761D7C281850DF3E"
+			rewards: [
+				{ count: 2, id: "0095B146F5116335", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "2362C39EB501846E", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 84 of 102 • 2 Diamond, 6 Emerald"
+			tasks: [{ entity: "minecraft:ghast", id: "5AFF64CBD1D96105", type: "kill", value: 15L }]
+			title: "Sky Wail"
+			x: 0.0d
+			y: 16.5d
+		}
+		{
+			dependencies: ["761D7C281850DF3E"]
+			description: ["Reports of Wither Skeleton sightings. Thin them out: 40 kills.", "", "&bObjective:&r Slay 40 Wither Skeleton"]
+			id: "06C37134763E04F5"
+			rewards: [
+				{ count: 2, id: "7C5A0FFDD5BA827A", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "1983A15F7EF39980", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 85 of 102 • 2 Diamond, 6 Emerald"
+			tasks: [{ entity: "minecraft:wither_skeleton", id: "5107E4702DC0FAD4", type: "kill", value: 40L }]
+			title: "Bone Breaker"
+			x: 0.0d
+			y: 18.0d
+		}
+		{
+			dependencies: ["06C37134763E04F5"]
+			description: ["Keep 3 Wither Skeleton Skull in your pack. The clerk only needs to see them.", "", "&bObjective:&r Have 3 Wither Skeleton Skull in your inventory"]
+			id: "4D76B7326719DDA0"
+			rewards: [
+				{ count: 2, id: "45564E6C0D70FD05", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "29ECB5255A7B3E61", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 86 of 102 • 2 Diamond, 6 Emerald"
+			tasks: [{ count: 3L, id: "024EAC18E1A3B052", item: { count: 1, id: "minecraft:wither_skeleton_skull" }, type: "item" }]
+			title: "Three Skulls"
+			x: 1.5d
+			y: 18.0d
+		}
+		{
+			dependencies: ["4D76B7326719DDA0"]
+			description: ["A bounty is posted: 30 Hoglin.", "", "&bObjective:&r Slay 30 Hoglin"]
+			id: "030BE7B8C974440C"
+			rewards: [
+				{ count: 2, id: "6A6BA899BF8F3D8B", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "2A03706A8242147D", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 87 of 102 • 2 Diamond, 6 Emerald"
+			tasks: [{ entity: "minecraft:hoglin", id: "70593EE147BE78E9", type: "kill", value: 30L }]
+			title: "Hoglin Herd"
+			x: 3.0d
+			y: 18.0d
+		}
+		{
+			dependencies: ["030BE7B8C974440C"]
+			description: ["Reports of Magma Cube sightings. Thin them out: 50 kills.", "", "&bObjective:&r Slay 50 Magma Cube"]
+			id: "3323610141E5BAF5"
+			rewards: [
+				{ count: 2, id: "49CD54CADA692C86", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 7, id: "05483139FDE6CBBB", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 88 of 102 • 2 Diamond, 7 Emerald"
+			tasks: [{ entity: "minecraft:magma_cube", id: "065DAC4389FAFBAA", type: "kill", value: 50L }]
+			title: "Magma Melter"
+			x: 4.5d
+			y: 18.0d
+		}
+		{
+			dependencies: ["3323610141E5BAF5"]
+			description: ["Hunt down 75 Zombified Piglin and claim the bounty.", "", "&bObjective:&r Slay 75 Zombified Piglin"]
+			id: "1ED5EF2C8217CE13"
+			rewards: [
+				{ count: 2, id: "12B5826A155B9617", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 7, id: "1AC8C78858A1F9E9", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 89 of 102 • 2 Diamond, 7 Emerald"
+			tasks: [{ entity: "minecraft:zombified_piglin", id: "1F18A6D0BE1C3277", type: "kill", value: 75L }]
+			title: "Pigmen Purge"
+			x: 6.0d
+			y: 18.0d
+		}
+		{
+			dependencies: ["1ED5EF2C8217CE13"]
+			description: ["A merchant has ordered 256 Quartz. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 256 Quartz", "&7The items are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Brimstone Claymore&7 (enchanted)"]
+			id: "224EE0177CA79F33"
+			rewards: [
+				{ count: 6, id: "392F5B9FC208C17F", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 7, id: "0B2D72B9FE88E01A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "6DBAB057A84F01AA", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 5, "minecraft:unbreaking": 3, "minecraft:looting": 3, "minecraft:sweeping_edge": 3 } } }, count: 1, id: "simplyswords:brimstone_claymore" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 90 of 102 • 6 Diamond, 7 Emerald + Gear"
+			tasks: [{ count: 256L, consume_items: true, id: "6A3F613C29A327C8", item: { count: 1, id: "minecraft:quartz" }, type: "item" }]
+			title: "&6&lQuartz Fortune"
+			x: 7.5d
+			y: 18.0d
+		}
+		{
+			dependencies: ["224EE0177CA79F33"]
+			description: ["Supply run: 64 Glowstone, taken on hand-in.", "", "&bObjective:&r Hand in 64 Glowstone", "&7The items are taken when you complete the quest."]
+			id: "0E78211300B6B5AB"
+			rewards: [
+				{ count: 2, id: "576A3F1CC5743D94", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 7, id: "3B0D360922CA0EF1", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 91 of 102 • 2 Diamond, 7 Emerald"
+			tasks: [{ count: 64L, consume_items: true, id: "226C63E49CCF5032", item: { count: 1, id: "minecraft:glowstone" }, type: "item" }]
+			title: "Glowstone Hoard"
+			x: 9.0d
+			y: 18.0d
+		}
+		{
+			dependencies: ["0E78211300B6B5AB"]
+			description: ["The realm needs Shroomlight. Bring 32 and they're yours no more.", "", "&bObjective:&r Hand in 32 Shroomlight", "&7The items are taken when you complete the quest."]
+			id: "79358E5984E2FAD7"
+			rewards: [
+				{ count: 2, id: "28DEAC9BD646DBE9", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 7, id: "5F4DEFD1B817D621", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 92 of 102 • 2 Diamond, 7 Emerald"
+			tasks: [{ count: 32L, consume_items: true, id: "6018342D2909BC7A", item: { count: 1, id: "minecraft:shroomlight" }, type: "item" }]
+			title: "Shroomlight Garden"
+			x: 9.0d
+			y: 19.5d
+		}
+		{
+			dependencies: ["79358E5984E2FAD7"]
+			description: ["The guild stores are low on Magma Cream. Hand in 32.", "", "&bObjective:&r Hand in 32 Magma Cream", "&7The items are taken when you complete the quest."]
+			id: "191D63F1212F7142"
+			rewards: [
+				{ count: 2, id: "72C5A35FBEE06E3D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "74AC670FE11A2DC5", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 93 of 102 • 2 Diamond, 8 Emerald"
+			tasks: [{ count: 32L, consume_items: true, id: "292D79483525D872", item: { count: 1, id: "minecraft:magma_cream" }, type: "item" }]
+			title: "Magma Stockpile"
+			x: 7.5d
+			y: 19.5d
+		}
+		{
+			dependencies: ["191D63F1212F7142"]
+			description: ["A merchant has ordered 16 Gilded Blackstone. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 16 Gilded Blackstone", "&7The items are taken when you complete the quest."]
+			id: "76B250FC1CCCC815"
+			rewards: [
+				{ count: 2, id: "7F0E45950D0EB572", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "11D50B3ED58DF90E", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 94 of 102 • 2 Diamond, 8 Emerald"
+			tasks: [{ count: 16L, consume_items: true, id: "09258F946FB443AA", item: { count: 1, id: "minecraft:gilded_blackstone" }, type: "item" }]
+			title: "Golden Ruins"
+			x: 6.0d
+			y: 19.5d
+		}
+		{
+			dependencies: ["76B250FC1CCCC815"]
+			description: ["Supply run: 12 Netherite Scrap, taken on hand-in.", "", "&bObjective:&r Hand in 12 Netherite Scrap", "&7The items are taken when you complete the quest."]
+			id: "4A9EF4AABE839811"
+			rewards: [
+				{ count: 2, id: "0E9E1A5D7CB8645D", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "486E5D5748427458", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 95 of 102 • 2 Diamond, 8 Emerald"
+			tasks: [{ count: 12L, consume_items: true, id: "0B5C2274C577136B", item: { count: 1, id: "minecraft:netherite_scrap" }, type: "item" }]
+			title: "Scrap Heap"
+			x: 4.5d
+			y: 19.5d
+		}
+		{
+			dependencies: ["4A9EF4AABE839811"]
+			description: ["Accomplish \"Feels Like Home\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Feels Like Home\""]
+			id: "2CE5C34A44ED9A60"
+			rewards: [
+				{ count: 2, id: "02E5F461129FBD46", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "5958D6A67372FD3A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 96 of 102 • 2 Diamond, 8 Emerald"
+			tasks: [{ advancement: "minecraft:nether/ride_strider_in_overworld_lava", criterion: "", id: "0219BDA41F4D2395", type: "advancement" }]
+			title: "Feels Like Home"
+			x: 3.0d
+			y: 19.5d
+		}
+		{
+			dependencies: ["2CE5C34A44ED9A60"]
+			description: ["Earn the advancement \"Uneasy Alliance\".", "", "&bObjective:&r Earn the advancement \"Uneasy Alliance\""]
+			id: "2F091BA2F30E23E0"
+			rewards: [
+				{ count: 2, id: "68611FD0F04D56BF", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "0D90D2A0E60B59D0", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 97 of 102 • 2 Diamond, 8 Emerald"
+			tasks: [{ advancement: "minecraft:nether/uneasy_alliance", criterion: "", id: "4696A5EDBC94FD1A", type: "advancement" }]
+			title: "Uneasy Alliance"
+			x: 1.5d
+			y: 19.5d
+		}
+		{
+			dependencies: ["2F091BA2F30E23E0"]
+			description: ["Keep 1 Music Disc Pigstep in your pack. The clerk only needs to see them.", "", "&bObjective:&r Have 1 Music Disc Pigstep in your inventory"]
+			id: "1D0BEDD80F8BD54F"
+			rewards: [
+				{ count: 2, id: "610DFAB0A854E9E7", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "1E624FBC65D45AAB", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 98 of 102 • 2 Diamond, 8 Emerald"
+			tasks: [{ count: 1L, id: "1E55E7DA8A2047AF", item: { count: 1, id: "minecraft:music_disc_pigstep" }, type: "item" }]
+			title: "Pigstep"
+			x: 0.0d
+			y: 19.5d
+		}
+		{
+			dependencies: ["1D0BEDD80F8BD54F"]
+			description: ["Reach 500 blocks for distance by strider.", "", "&bObjective:&r Reach distance by strider: 500 blocks", "&7Counts your total since you first joined."]
+			id: "0B951DE2914B4923"
+			rewards: [
+				{ count: 2, id: "208DED7390D55A32", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 9, id: "49B1D2E496151EB7", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 99 of 102 • 2 Diamond, 9 Emerald"
+			tasks: [{ id: "3C775983883531B8", stat: "minecraft:strider_one_cm", type: "stat", value: 50000 }]
+			title: "Lava Admiral"
+			x: 0.0d
+			y: 21.0d
+		}
+		{
+			dependencies: ["0B951DE2914B4923"]
+			description: ["Workshop order: 64 Polished Basalt, made by you.", "", "&bObjective:&r Craft 64 Polished Basalt", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Emberblade&7 (enchanted)"]
+			id: "1DF95BCE2B8DAB29"
+			rewards: [
+				{ count: 7, id: "01AF451B9BC2D3B5", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "3FDC295F00851B74", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "6DDC2014F59B8637", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 5, "minecraft:unbreaking": 3, "minecraft:looting": 3, "minecraft:sweeping_edge": 3 } } }, count: 1, id: "simplyswords:emberblade" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 100 of 102 • 7 Diamond, 2 Emerald + Gear"
+			tasks: [{ count: 64L, only_from_crafting: true, id: "15817B42D797A941", item: { count: 1, id: "minecraft:polished_basalt" }, type: "item" }]
+			title: "&6&lPolished Basalt"
+			x: 1.5d
+			y: 21.0d
+		}
+		{
+			dependencies: ["1DF95BCE2B8DAB29"]
+			description: ["Earn the advancement \"Cover Me in Debris\".", "", "&bObjective:&r Earn the advancement \"Cover Me in Debris\""]
+			id: "46E93DE7FF5C7E4E"
+			rewards: [
+				{ count: 2, id: "3E7F68E055772FD9", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 9, id: "0CA68332E83C1810", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 101 of 102 • 2 Diamond, 9 Emerald"
+			tasks: [{ advancement: "minecraft:nether/netherite_armor", criterion: "", id: "27C98F5E37D32576", type: "advancement" }]
+			title: "Cover Me in Debris"
+			x: 3.0d
+			y: 21.0d
+		}
+		{
+			dependencies: ["46E93DE7FF5C7E4E"]
+			description: ["Experience is the true currency. Offer 30 levels.", "", "&bObjective:&r Spend 30 XP levels", "&7The levels are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Soulpyre&7 (enchanted)", "&6&lFinal entry of this Ledger."]
+			id: "0E34750D8DA27B8F"
+			rewards: [
+				{ count: 1, id: "70F388BAE0274A20", item: { count: 1, id: "lightmanscurrency:coin_netherite" }, type: "item" }
+				{ count: 2, id: "68E860BC10DEF6C8", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ id: "359E2768A7DE7A83", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 5, "minecraft:unbreaking": 3, "minecraft:looting": 3, "minecraft:sweeping_edge": 3 } } }, count: 1, id: "simplyswords:soulpyre" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 2.0d
+			subtitle: "Entry 102 of 102 • 1 Netherite, 2 Diamond + Gear"
+			tasks: [{ id: "616E57F82C321AE1", points: false, type: "xp", value: 30L }]
+			title: "&6&lHellfire Veteran"
+			x: 4.5d
+			y: 21.0d
+		}
+	]
+	subtitle: ["Fire, fortune and ancient debris. Bring a sword. &7(Unlocks after entry 50 of the previous Ledger.)"]
+	title: "&cLedger V: Into the Nether"
+}

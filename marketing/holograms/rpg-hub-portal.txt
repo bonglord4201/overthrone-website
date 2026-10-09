@@ -1,0 +1,12 @@
+summon text_display ~ ~6.2 ~ {billboard:"center",shadow:1b,background:0,Tags:["rpg_hub_holo"],transformation:[1.2f,0f,0f,0f,0f,1.2f,0f,0f,0f,0f,1.2f,0f,0f,0f,0f,1f],text:'{"text":"✦ RETURN TO ✦","color":"dark_red","bold":true}'}
+
+summon text_display ~ ~5.0 ~ {billboard:"center",shadow:1b,background:0,Tags:["rpg_hub_holo"],transformation:[4f,0f,0f,0f,0f,4f,0f,0f,0f,0f,4f,0f,0f,0f,0f,1f],text:'{"text":"HUB","color":"gold","bold":true}'}
+
+summon text_display ~ ~4.55 ~ {billboard:"center",shadow:1b,background:0,Tags:["rpg_hub_holo"],transformation:[1.2f,0f,0f,0f,0f,1.2f,0f,0f,0f,0f,1.2f,0f,0f,0f,0f,1f],text:'{"text":"The Throne City awaits","color":"gray","italic":true}'}
+
+summon text_display ~ ~4.1 ~ {billboard:"center",shadow:1b,background:0,Tags:["rpg_hub_holo"],transformation:[1.4f,0f,0f,0f,0f,1.4f,0f,0f,0f,0f,1.4f,0f,0f,0f,0f,1f],text:'[{"text":"▶ ","color":"dark_red"},"Walk through the portal"]'}
+
+summon text_display ~ ~3.65 ~ {billboard:"center",shadow:1b,background:0,Tags:["rpg_hub_holo"],transformation:[1.4f,0f,0f,0f,0f,1.4f,0f,0f,0f,0f,1.4f,0f,0f,0f,0f,1f],text:'[{"text":"or type ","color":"gray"},{"text":"/warp hub","color":"green"}]'}
+
+To remove it and start again:
+kill @e[type=text_display,tag=rpg_hub_holo,distance=..10]

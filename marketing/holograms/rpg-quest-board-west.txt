@@ -1,0 +1,23 @@
+Quest board on the WEST board (block x=8, text faces east).
+
+/summon text_display 9.1 21.1 13.5 {Rotation:[-90f,0f],shadow:1b,background:0,Tags:["rpg_qb"],transformation:[0.85f,0f,0f,0f,0f,0.85f,0f,0f,0f,0f,0.85f,0f,0f,0f,0f,1f],text:'{"text":"✦ HUNTER ASSOCIATION ✦","color":"red","bold":true}'}
+
+/summon text_display 9.1 20.45 13.5 {Rotation:[-90f,0f],shadow:1b,background:0,Tags:["rpg_qb"],transformation:[1.8f,0f,0f,0f,0f,1.8f,0f,0f,0f,0f,1.8f,0f,0f,0f,0f,1f],text:'{"text":"QUEST BOARD","color":"gold","bold":true}'}
+
+/summon text_display 9.1 20.2 13.5 {Rotation:[-90f,0f],shadow:1b,background:0,Tags:["rpg_qb"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"100 contracts await, hunter","color":"gray"}'}
+
+/summon text_display 9.1 19.95 13.5 {Rotation:[-90f,0f],shadow:1b,background:0,Tags:["rpg_qb"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"━━━━━━━━━━━━━━━━━━","color":"dark_red"}'}
+
+/summon text_display 9.1 19.5 13.5 {Rotation:[-90f,0f],shadow:1b,background:0,Tags:["rpg_qb","qb_rank"],transformation:[1.5f,0f,0f,0f,0f,1.5f,0f,0f,0f,0f,1.5f,0f,0f,0f,0f,1f],text:'""'}
+
+/data merge entity @e[tag=qb_rank,limit=1] {text:'[{"text":"E ","color":"green"},"▸ ",{"text":"D ","color":"yellow"},"▸ ",{"text":"C ","color":"gold"},"▸ ",{"text":"B ","color":"red"},"▸ ",{"text":"S","color":"dark_red"}]'}
+
+/summon text_display 9.1 19.2 13.5 {Rotation:[-90f,0f],shadow:1b,background:0,Tags:["rpg_qb"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"✦ Right-click Questmaster Orin","color":"green"}'}
+
+/summon text_display 9.1 18.95 13.5 {Rotation:[-90f,0f],shadow:1b,background:0,Tags:["rpg_qb"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"☰ ","color":"aqua"},"Finish one to unlock the next"]'}
+
+/summon text_display 9.1 18.7 13.5 {Rotation:[-90f,0f],shadow:1b,background:0,Tags:["rpg_qb"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"✪ ","color":"light_purple"},"Every 10th quest = bonus crate"]'}
+
+/summon text_display 9.1 18.45 13.5 {Rotation:[-90f,0f],shadow:1b,background:0,Tags:["rpg_qb"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"♦ ","color":"gold"},"Coins, gear & XP rewards"]'}
+
+/summon text_display 9.1 18.05 13.5 {Rotation:[-90f,0f],shadow:1b,background:0,Tags:["rpg_qb"],transformation:[0.95f,0f,0f,0f,0f,0.95f,0f,0f,0f,0f,0.95f,0f,0f,0f,0f,1f],text:'{"text":"Reach S-Rank. Claim the Throne.","color":"gold","italic":true}'}

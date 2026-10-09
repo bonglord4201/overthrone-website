@@ -1,0 +1,92 @@
+{
+	default_hide_dependency_lines: false
+	default_quest_shape: ""
+	filename: "getting_started"
+	group: ""
+	icon: {
+		id: "minecraft:oak_sapling"
+	}
+	id: "17420DAE82FA89E8"
+	images: [ ]
+	order_index: 0
+	quest_links: [ ]
+	quests: [
+		{
+			id: "2CD33DE9ACC18F2B"
+			rewards: [
+				{
+					count: 8
+					id: "7A87CCA18FA8F966"
+					item: {
+						count: 1
+						id: "minecraft:bread"
+					}
+					type: "item"
+				}
+				{
+					id: "22681FE77DB21AFF"
+					tags: ["ss_money_100"]
+					type: "custom"
+				}
+			]
+			tasks: [{
+				id: "36E696463B283983"
+				item: { count: 1, id: "minecraft:crafting_table" }
+				type: "item"
+			}]
+			x: 0.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["2CD33DE9ACC18F2B"]
+			id: "6282672D57347FAF"
+			rewards: [
+				{
+					id: "149566545535C393"
+					item: {
+						count: 1
+						id: "minecraft:stone_pickaxe"
+					}
+					type: "item"
+				}
+				{
+					id: "2787C18F40843E9B"
+					tags: ["ss_money_150"]
+					type: "custom"
+				}
+			]
+			tasks: [{
+				count: 32L
+				id: "6F8EEF40B0DCBB23"
+				item: { count: 1, id: "minecraft:cobblestone" }
+				type: "item"
+			}]
+			x: 2.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["6282672D57347FAF"]
+			id: "38F62FA309EEC24A"
+			rewards: [
+				{
+					id: "3E136F5C73AEA6CD"
+					table_id: 6777319090239687113L
+					type: "random"
+				}
+				{
+					id: "7E9D886C08181E9F"
+					tags: ["ss_money_250"]
+					type: "custom"
+				}
+			]
+			tasks: [{
+				count: 8L
+				id: "1AEE9F7730A8A98D"
+				item: { count: 1, id: "minecraft:iron_ingot" }
+				type: "item"
+			}]
+			x: 4.0d
+			y: 0.0d
+		}
+	]
+}

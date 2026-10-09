@@ -1,0 +1,33 @@
+/summon text_display ~ ~7.29 ~ {Tags:["realms"],billboard:"center",shadow:1b,background:0,transformation:[2.5f,0f,0f,0f,0f,2.5f,0f,0f,0f,0f,2.5f,0f,0f,0f,0f,1f],text:'{"text":"✦ THE REALMS ✦","color":"gold","bold":true}'}
+
+/summon text_display ~ ~6.99 ~ {Tags:["realms"],billboard:"center",shadow:1b,background:0,text:'["",{"text":"Two worlds lie beyond the throne. ","color":"gray"},{"text":"Choose your path.","color":"white"}]'}
+
+/summon text_display ~ ~6.69 ~ {Tags:["realms"],billboard:"center",shadow:1b,background:0,text:'{"text":"▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬","color":"dark_gray"}'}
+
+/summon text_display ~ ~5.84 ~ {Tags:["realms"],billboard:"center",shadow:1b,background:0,transformation:[2f,0f,0f,0f,0f,2f,0f,0f,0f,0f,2f,0f,0f,0f,0f,1f],text:'{"text":"☀ AEONIA ☀","color":"yellow","bold":true}'}
+
+/summon text_display ~ ~5.47 ~ {Tags:["realms"],billboard:"center",shadow:1b,background:0,transformation:[1.25f,0f,0f,0f,0f,1.25f,0f,0f,0f,0f,1.25f,0f,0f,0f,0f,1f],text:'{"text":"Realm of the Divine","color":"aqua","italic":true}'}
+
+/summon text_display ~ ~5.17 ~ {Tags:["realms"],billboard:"center",shadow:1b,background:0,text:'["",{"text":"Ascend to the ","color":"gray"},{"text":"city of the gods","color":"yellow"}]'}
+
+/summon text_display ~ ~4.87 ~ {Tags:["realms"],billboard:"center",shadow:1b,background:0,text:'["",{"text":"Ancient temples, marble halls and ","color":"gray"},{"text":"celestial skies","color":"aqua"}]'}
+
+/summon text_display ~ ~4.57 ~ {Tags:["realms"],billboard:"center",shadow:1b,background:0,text:'["",{"text":"Prove your worth to the ","color":"gray"},{"text":"Olympians","color":"gold","bold":true}]'}
+
+/summon text_display ~ ~4.27 ~ {Tags:["realms"],billboard:"center",shadow:1b,background:0,text:'["",{"text":"➤ ","color":"yellow"},{"text":"Required: ","color":"white"},{"text":"Level 50","color":"green","bold":true}]'}
+
+/summon text_display ~ ~3.42 ~ {Tags:["realms"],billboard:"center",shadow:1b,background:0,transformation:[2f,0f,0f,0f,0f,2f,0f,0f,0f,0f,2f,0f,0f,0f,0f,1f],text:'{"text":"☠ NETHERFALL ☠","color":"dark_red","bold":true}'}
+
+/summon text_display ~ ~3.06 ~ {Tags:["realms"],billboard:"center",shadow:1b,background:0,transformation:[1.25f,0f,0f,0f,0f,1.25f,0f,0f,0f,0f,1.25f,0f,0f,0f,0f,1f],text:'{"text":"Realm of the Dead","color":"red","italic":true}'}
+
+/summon text_display ~ ~2.76 ~ {Tags:["realms"],billboard:"center",shadow:1b,background:0,text:'["",{"text":"Descend into a world of ","color":"gray"},{"text":"fire ","color":"gold"},{"text":"and ","color":"gray"},{"text":"ash","color":"dark_gray"}]'}
+
+/summon text_display ~ ~2.46 ~ {Tags:["realms"],billboard:"center",shadow:1b,background:0,text:'["",{"text":"Volcanic wastes, ancient ruins and ","color":"gray"},{"text":"lost souls","color":"dark_purple"}]'}
+
+/summon text_display ~ ~2.16 ~ {Tags:["realms"],billboard:"center",shadow:1b,background:0,text:'["",{"text":"⚠ ","color":"dark_red"},{"text":"EXTREMELY DANGEROUS ","color":"red","bold":true},{"text":"⚠","color":"dark_red"}]'}
+
+/summon text_display ~ ~1.86 ~ {Tags:["realms"],billboard:"center",shadow:1b,background:0,text:'["",{"text":"➤ ","color":"dark_red"},{"text":"Required: ","color":"white"},{"text":"Level 100","color":"red","bold":true}]'}
+
+/summon text_display ~ ~1.56 ~ {Tags:["realms"],billboard:"center",shadow:1b,background:0,text:'{"text":"▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬","color":"dark_gray"}'}
+
+/summon text_display ~ ~1.2 ~ {Tags:["realms"],billboard:"center",shadow:1b,background:0,transformation:[1.25f,0f,0f,0f,0f,1.25f,0f,0f,0f,0f,1.25f,0f,0f,0f,0f,1f],text:'{"text":"✦ COMING SOON ✦","color":"gold","bold":true}'}

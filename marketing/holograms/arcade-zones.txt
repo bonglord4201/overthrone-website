@@ -1,0 +1,31 @@
+### exchange counter (stand on the light strip, middle of the counter)
+/summon text_display ~ ~3.75 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_counter"],transformation:[0.8f,0f,0f,0f,0f,0.8f,0f,0f,0f,0f,0.8f,0f,0f,0f,0f,1f],text:'{"text":"✦ ARCADE & TRADE HALL ✦","color":"dark_red","bold":true}'}
+/summon text_display ~ ~3.25 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_counter"],transformation:[1.7f,0f,0f,0f,0f,1.7f,0f,0f,0f,0f,1.7f,0f,0f,0f,0f,1f],text:'{"text":"EXCHANGE COUNTER","color":"gold","bold":true}'}
+/summon text_display ~ ~2.95 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_counter"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"Prizes • Help • Trades","color":"gray"}'}
+/summon text_display ~ ~2.7 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_counter"],transformation:[0.85f,0f,0f,0f,0f,0.85f,0f,0f,0f,0f,0.85f,0f,0f,0f,0f,1f],text:'{"text":"Ring the bell for service!","color":"yellow","italic":true}'}
+Remove: /kill @e[type=text_display,tag=arc_counter,distance=..8]
+Move up: /execute as @e[type=text_display,tag=arc_counter,distance=..8] at @s run tp @s ~ ~0.25 ~
+
+### gacha machines (stand in front of the middle one)
+/summon text_display ~ ~3.2 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_gacha"],transformation:[0.8f,0f,0f,0f,0f,0.8f,0f,0f,0f,0f,0.8f,0f,0f,0f,0f,1f],text:'{"text":"✦ TRY YOUR LUCK ✦","color":"dark_purple","bold":true}'}
+/summon text_display ~ ~2.65 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_gacha"],transformation:[1.9f,0f,0f,0f,0f,1.9f,0f,0f,0f,0f,1.9f,0f,0f,0f,0f,1f],text:'{"text":"GACHA ZONE","color":"light_purple","bold":true}'}
+/summon text_display ~ ~2.35 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_gacha"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"Spin for rare loot & prizes","color":"gray"}'}
+/summon text_display ~ ~2.1 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_gacha"],transformation:[0.85f,0f,0f,0f,0f,0.85f,0f,0f,0f,0f,0.85f,0f,0f,0f,0f,1f],text:'{"text":"Every capsule is a surprise!","color":"yellow","italic":true}'}
+Remove: /kill @e[type=text_display,tag=arc_gacha,distance=..8]
+Move up: /execute as @e[type=text_display,tag=arc_gacha,distance=..8] at @s run tp @s ~ ~0.25 ~
+
+### vending machines (stand in front of the middle green one)
+/summon text_display ~ ~3.2 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_vend"],transformation:[0.8f,0f,0f,0f,0f,0.8f,0f,0f,0f,0f,0.8f,0f,0f,0f,0f,1f],text:'{"text":"✦ 24/7 SUPPLIES ✦","color":"dark_aqua","bold":true}'}
+/summon text_display ~ ~2.65 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_vend"],transformation:[1.9f,0f,0f,0f,0f,1.9f,0f,0f,0f,0f,1.9f,0f,0f,0f,0f,1f],text:'{"text":"VENDING","color":"aqua","bold":true}'}
+/summon text_display ~ ~2.35 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_vend"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"Snacks, potions & gear","color":"gray"}'}
+/summon text_display ~ ~2.1 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_vend"],transformation:[0.85f,0f,0f,0f,0f,0.85f,0f,0f,0f,0f,0.85f,0f,0f,0f,0f,1f],text:'{"text":"Stock up before the hunt!","color":"yellow","italic":true}'}
+Remove: /kill @e[type=text_display,tag=arc_vend,distance=..8]
+Move up: /execute as @e[type=text_display,tag=arc_vend,distance=..8] at @s run tp @s ~ ~0.25 ~
+
+### ATMs (do this TWICE: once in front of each pair, between the two machines)
+/summon text_display ~ ~3.55 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_atm"],transformation:[0.8f,0f,0f,0f,0f,0.8f,0f,0f,0f,0f,0.8f,0f,0f,0f,0f,1f],text:'{"text":"✦ THRONE BANK ✦","color":"dark_green","bold":true}'}
+/summon text_display ~ ~3.0 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_atm"],transformation:[1.9f,0f,0f,0f,0f,1.9f,0f,0f,0f,0f,1.9f,0f,0f,0f,0f,1f],text:'{"text":"ATM","color":"green","bold":true}'}
+/summon text_display ~ ~2.7 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_atm"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"Deposit • Withdraw • Balance","color":"gray"}'}
+/summon text_display ~ ~2.45 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_atm"],transformation:[0.85f,0f,0f,0f,0f,0.85f,0f,0f,0f,0f,0.85f,0f,0f,0f,0f,1f],text:'{"text":"Keep your coins safe","color":"yellow","italic":true}'}
+Remove: /kill @e[type=text_display,tag=arc_atm,distance=..8]
+Move up: /execute as @e[type=text_display,tag=arc_atm,distance=..8] at @s run tp @s ~ ~0.25 ~

@@ -1,0 +1,1493 @@
+{
+	default_hide_dependency_lines: false
+	default_quest_shape: ""
+	filename: "ledger_03_artisan_s_guild"
+	group: ""
+	icon: { id: "minecraft:smithing_table" }
+	id: "59BFCC2595F02518"
+	images: [ ]
+	order_index: 22
+	quest_links: [ ]
+	quests: [
+		{
+			dependencies: ["50A0A6A4EBB74F80"]
+			description: ["The guild wants 1 freshly crafted Stonecutter.", "", "&bObjective:&r Craft 1 Stonecutter", "&7Only items you craft yourself count."]
+			id: "5BEE9F0BB4B9953D"
+			rewards: [
+				{ count: 3, id: "787B6EBD2A24CB8B", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "10CF32EA5701D2F8", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 1 of 104 • 3 Emerald, 6 Gold"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "07B7C5C100FB944D", item: { count: 1, id: "minecraft:stonecutter" }, type: "item" }]
+			title: "The Stonecutter"
+			x: 0.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["5BEE9F0BB4B9953D"]
+			description: ["The Ledger tracks everything. Push interact with stonecutter to 20.", "", "&bObjective:&r Reach interact with stonecutter: 20", "&7Counts your total since you first joined."]
+			id: "0997C2FD38B5C8DD"
+			rewards: [
+				{ count: 3, id: "603E34760609C4E4", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "55AC6672B59F5F7C", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 2 of 104 • 3 Emerald, 6 Gold"
+			tasks: [{ id: "4F76C67CB898385E", stat: "minecraft:interact_with_stonecutter", type: "stat", value: 20 }]
+			title: "Precision Cuts"
+			x: 1.5d
+			y: 0.0d
+		}
+		{
+			dependencies: ["0997C2FD38B5C8DD"]
+			description: ["Workshop order: 64 Polished Andesite, made by you.", "", "&bObjective:&r Craft 64 Polished Andesite", "&7Only items you craft yourself count."]
+			id: "20A5CE289CF8D959"
+			rewards: [
+				{ count: 3, id: "6FCC1FBC9ECDA6A1", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "514E30FD1A35D1BB", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 3 of 104 • 3 Emerald, 6 Gold"
+			tasks: [{ count: 64L, only_from_crafting: true, id: "1F4F21C68B6BD038", item: { count: 1, id: "minecraft:polished_andesite" }, type: "item" }]
+			title: "Polished Andesite"
+			x: 3.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["20A5CE289CF8D959"]
+			description: ["The guild wants 64 freshly crafted Polished Diorite.", "", "&bObjective:&r Craft 64 Polished Diorite", "&7Only items you craft yourself count."]
+			id: "483E460C87AC68DB"
+			rewards: [
+				{ count: 3, id: "1AADF1722894DD4D", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "4682698C2C3FB418", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 4 of 104 • 3 Emerald, 6 Gold"
+			tasks: [{ count: 64L, only_from_crafting: true, id: "67D44FFD4A711166", item: { count: 1, id: "minecraft:polished_diorite" }, type: "item" }]
+			title: "Polished Diorite"
+			x: 4.5d
+			y: 0.0d
+		}
+		{
+			dependencies: ["483E460C87AC68DB"]
+			description: ["Prove your hands are skilled: craft 64 Polished Granite yourself.", "", "&bObjective:&r Craft 64 Polished Granite", "&7Only items you craft yourself count."]
+			id: "2E5600EE4785B525"
+			rewards: [
+				{ count: 3, id: "55B3689884A7EA53", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "16A9BCD64E038CE9", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 5 of 104 • 3 Emerald, 7 Gold"
+			tasks: [{ count: 64L, only_from_crafting: true, id: "2F433C4A75FB463C", item: { count: 1, id: "minecraft:polished_granite" }, type: "item" }]
+			title: "Polished Granite"
+			x: 6.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["2E5600EE4785B525"]
+			description: ["Workshop order: 32 Mossy Stone Bricks, made by you.", "", "&bObjective:&r Craft 32 Mossy Stone Bricks", "&7Only items you craft yourself count."]
+			id: "1A5A2D450A07F2DD"
+			rewards: [
+				{ count: 3, id: "20B73E0296770BC2", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "377287B3D657ABF0", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 6 of 104 • 3 Emerald, 7 Gold"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "3F311F1BCF20358E", item: { count: 1, id: "minecraft:mossy_stone_bricks" }, type: "item" }]
+			title: "Mossy Masonry"
+			x: 7.5d
+			y: 0.0d
+		}
+		{
+			dependencies: ["1A5A2D450A07F2DD"]
+			description: ["The guild wants 16 freshly crafted Chiseled Stone Bricks.", "", "&bObjective:&r Craft 16 Chiseled Stone Bricks", "&7Only items you craft yourself count."]
+			id: "0A9848E62EE3C115"
+			rewards: [
+				{ count: 3, id: "0144E95E738A6EF4", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "4A84546A38B3E12D", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 7 of 104 • 3 Emerald, 7 Gold"
+			tasks: [{ count: 16L, only_from_crafting: true, id: "623A102254BCB7A0", item: { count: 1, id: "minecraft:chiseled_stone_bricks" }, type: "item" }]
+			title: "Chiselled Stone"
+			x: 9.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["0A9848E62EE3C115"]
+			description: ["The Ledger wants proof: carry 16 Cracked Stone Bricks and show it.", "", "&bObjective:&r Have 16 Cracked Stone Bricks in your inventory"]
+			id: "1181EA41B83FE913"
+			rewards: [
+				{ count: 3, id: "4542B9423C5238C5", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "4629C085747DF54A", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 8 of 104 • 3 Emerald, 7 Gold"
+			tasks: [{ count: 16L, id: "2D670561782ADDC9", item: { count: 1, id: "minecraft:cracked_stone_bricks" }, type: "item" }]
+			title: "Weathered Walls"
+			x: 9.0d
+			y: 1.5d
+		}
+		{
+			dependencies: ["1181EA41B83FE913"]
+			description: ["A collector is asking around for Smooth Stone. Bring 32 and prove you have them.", "", "&bObjective:&r Have 32 Smooth Stone in your inventory"]
+			id: "2B52505B3FE5E118"
+			rewards: [
+				{ count: 3, id: "3CC31FC862A0F063", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "5E96BDF081C4688A", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 9 of 104 • 3 Emerald, 8 Gold"
+			tasks: [{ count: 32L, id: "619D7E6411C12021", item: { count: 1, id: "minecraft:smooth_stone" }, type: "item" }]
+			title: "Smooth Stone"
+			x: 7.5d
+			y: 1.5d
+		}
+		{
+			dependencies: ["2B52505B3FE5E118"]
+			description: ["The guild wants 64 freshly crafted Bricks.", "", "&bObjective:&r Craft 64 Bricks", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Diamond Shovel&7 (enchanted)"]
+			id: "127481A81185B271"
+			rewards: [
+				{ count: 9, id: "352FCB217FB0AE2C", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "33447B1EF9FA3E90", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ id: "0E0F4C06A44AFDDF", item: { components: { "minecraft:enchantments": { levels: { "minecraft:efficiency": 4, "minecraft:unbreaking": 3 } } }, count: 1, id: "minecraft:diamond_shovel" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 10 of 104 • 9 Emerald, 5 Gold + Gear"
+			tasks: [{ count: 64L, only_from_crafting: true, id: "7CDAE2769F6A7D64", item: { count: 1, id: "minecraft:bricks" }, type: "item" }]
+			title: "&6&lRed Bricks"
+			x: 6.0d
+			y: 1.5d
+		}
+		{
+			dependencies: ["127481A81185B271"]
+			description: ["Prove your hands are skilled: craft 32 Cut Sandstone yourself.", "", "&bObjective:&r Craft 32 Cut Sandstone", "&7Only items you craft yourself count."]
+			id: "0B7B396804FACAFD"
+			rewards: [
+				{ count: 3, id: "3B13EEB5814E50FD", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "3298799CB56BD59F", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 11 of 104 • 3 Emerald, 8 Gold"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "5EB5D61024BC9478", item: { count: 1, id: "minecraft:cut_sandstone" }, type: "item" }]
+			title: "Cut Sandstone"
+			x: 4.5d
+			y: 1.5d
+		}
+		{
+			dependencies: ["0B7B396804FACAFD"]
+			description: ["Workshop order: 32 Red Sandstone, made by you.", "", "&bObjective:&r Craft 32 Red Sandstone", "&7Only items you craft yourself count."]
+			id: "05346EC481BB0C2E"
+			rewards: [
+				{ count: 3, id: "677C2F787D7C4CFF", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "3E6ACF64B2CBF717", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 12 of 104 • 3 Emerald, 8 Gold"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "009BCE509BD54816", item: { count: 1, id: "minecraft:red_sandstone" }, type: "item" }]
+			title: "Red Sandstone"
+			x: 3.0d
+			y: 1.5d
+		}
+		{
+			dependencies: ["05346EC481BB0C2E"]
+			description: ["Keep 32 Smooth Sandstone in your pack. The clerk only needs to see them.", "", "&bObjective:&r Have 32 Smooth Sandstone in your inventory"]
+			id: "35F7F6359784C3D9"
+			rewards: [
+				{ count: 3, id: "778F33BB3AB0AC17", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "2110ABF3B877EBFA", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 13 of 104 • 3 Emerald, 9 Gold"
+			tasks: [{ count: 32L, id: "67E5A33D665A362B", item: { count: 1, id: "minecraft:smooth_sandstone" }, type: "item" }]
+			title: "Smooth Sandstone"
+			x: 1.5d
+			y: 1.5d
+		}
+		{
+			dependencies: ["35F7F6359784C3D9"]
+			description: ["Prove your hands are skilled: craft 64 Deepslate Bricks yourself.", "", "&bObjective:&r Craft 64 Deepslate Bricks", "&7Only items you craft yourself count."]
+			id: "3ECDFF4EAA17D5BF"
+			rewards: [
+				{ count: 3, id: "0A64DDA70122A2AD", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "58892D05CCCE4501", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 14 of 104 • 3 Emerald, 9 Gold"
+			tasks: [{ count: 64L, only_from_crafting: true, id: "5B3C6042B4CB30AF", item: { count: 1, id: "minecraft:deepslate_bricks" }, type: "item" }]
+			title: "Deepslate Bricks"
+			x: 0.0d
+			y: 1.5d
+		}
+		{
+			dependencies: ["3ECDFF4EAA17D5BF"]
+			description: ["Workshop order: 64 Deepslate Tiles, made by you.", "", "&bObjective:&r Craft 64 Deepslate Tiles", "&7Only items you craft yourself count."]
+			id: "7941577B20390B58"
+			rewards: [
+				{ count: 3, id: "67AF7B3C6ADBEBC8", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "7D9921AD383412AA", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 15 of 104 • 3 Emerald, 9 Gold"
+			tasks: [{ count: 64L, only_from_crafting: true, id: "51BCF6016A64EB09", item: { count: 1, id: "minecraft:deepslate_tiles" }, type: "item" }]
+			title: "Deepslate Tiles"
+			x: 0.0d
+			y: 3.0d
+		}
+		{
+			dependencies: ["7941577B20390B58"]
+			description: ["The guild wants 64 freshly crafted Polished Deepslate.", "", "&bObjective:&r Craft 64 Polished Deepslate", "&7Only items you craft yourself count."]
+			id: "23C8A17C92858AAD"
+			rewards: [
+				{ count: 4, id: "4484667DEC357A28", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 16 of 104 • 4 Emerald"
+			tasks: [{ count: 64L, only_from_crafting: true, id: "2099AFBDE4770DDF", item: { count: 1, id: "minecraft:polished_deepslate" }, type: "item" }]
+			title: "Polished Deepslate"
+			x: 1.5d
+			y: 3.0d
+		}
+		{
+			dependencies: ["23C8A17C92858AAD"]
+			description: ["Prove your hands are skilled: craft 8 Chiseled Deepslate yourself.", "", "&bObjective:&r Craft 8 Chiseled Deepslate", "&7Only items you craft yourself count."]
+			id: "19418374B4BE07F9"
+			rewards: [
+				{ count: 4, id: "6114C75F1DEEB30E", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 17 of 104 • 4 Emerald"
+			tasks: [{ count: 8L, only_from_crafting: true, id: "2B8581757FB72D0B", item: { count: 1, id: "minecraft:chiseled_deepslate" }, type: "item" }]
+			title: "Chiselled Deepslate"
+			x: 3.0d
+			y: 3.0d
+		}
+		{
+			dependencies: ["19418374B4BE07F9"]
+			description: ["Workshop order: 32 Tuff Bricks, made by you.", "", "&bObjective:&r Craft 32 Tuff Bricks", "&7Only items you craft yourself count."]
+			id: "6DB0137673982F25"
+			rewards: [
+				{ count: 4, id: "0B6B805CD78573DD", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 18 of 104 • 4 Emerald"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "6A57313BAC46F13C", item: { count: 1, id: "minecraft:tuff_bricks" }, type: "item" }]
+			title: "Tuff Bricks"
+			x: 4.5d
+			y: 3.0d
+		}
+		{
+			dependencies: ["6DB0137673982F25"]
+			description: ["The guild wants 32 freshly crafted Polished Tuff.", "", "&bObjective:&r Craft 32 Polished Tuff", "&7Only items you craft yourself count."]
+			id: "065DF0BFA94A7484"
+			rewards: [
+				{ count: 4, id: "432EF98C65F822D9", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 19 of 104 • 4 Emerald"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "3E9C4C2A3200B87D", item: { count: 1, id: "minecraft:polished_tuff" }, type: "item" }]
+			title: "Polished Tuff"
+			x: 6.0d
+			y: 3.0d
+		}
+		{
+			dependencies: ["065DF0BFA94A7484"]
+			description: ["Prove your hands are skilled: craft 8 Chiseled Tuff yourself.", "", "&bObjective:&r Craft 8 Chiseled Tuff", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Diamond Axe&7 (enchanted)"]
+			id: "3A6962E96653BE0D"
+			rewards: [
+				{ count: 1, id: "465C19599E706980", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ id: "6F543D608F9D9286", item: { components: { "minecraft:enchantments": { levels: { "minecraft:efficiency": 4, "minecraft:unbreaking": 3 } } }, count: 1, id: "minecraft:diamond_axe" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 20 of 104 • 1 Diamond + Gear"
+			tasks: [{ count: 8L, only_from_crafting: true, id: "609B08EF85694522", item: { count: 1, id: "minecraft:chiseled_tuff" }, type: "item" }]
+			title: "&6&lChiselled Tuff"
+			x: 7.5d
+			y: 3.0d
+		}
+		{
+			dependencies: ["3A6962E96653BE0D"]
+			description: ["A collector is asking around for Glass. Bring 64 and prove you have them.", "", "&bObjective:&r Have 64 Glass in your inventory"]
+			id: "285589CCE550CC26"
+			rewards: [
+				{ count: 4, id: "54B5B6E859CAACCF", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "533E6CE05A97BDA1", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 21 of 104 • 4 Emerald, 1 Gold"
+			tasks: [{ count: 64L, id: "421E95C007073F54", item: { count: 1, id: "minecraft:glass" }, type: "item" }]
+			title: "Glassblower"
+			x: 9.0d
+			y: 3.0d
+		}
+		{
+			dependencies: ["285589CCE550CC26"]
+			description: ["The guild wants 32 freshly crafted Glass Pane.", "", "&bObjective:&r Craft 32 Glass Pane", "&7Only items you craft yourself count."]
+			id: "73C0525E468B67E5"
+			rewards: [
+				{ count: 4, id: "1D467357AC97D030", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "1D240239A1189CFC", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 22 of 104 • 4 Emerald, 1 Gold"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "35C580B19DB83BDE", item: { count: 1, id: "minecraft:glass_pane" }, type: "item" }]
+			title: "Window Panes"
+			x: 9.0d
+			y: 4.5d
+		}
+		{
+			dependencies: ["73C0525E468B67E5"]
+			description: ["Prove your hands are skilled: craft 16 Purple Stained Glass yourself.", "", "&bObjective:&r Craft 16 Purple Stained Glass", "&7Only items you craft yourself count."]
+			id: "08F18852480EC2FF"
+			rewards: [
+				{ count: 4, id: "51B45CCC927B4B45", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "644A87539C011EBB", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 23 of 104 • 4 Emerald, 1 Gold"
+			tasks: [{ count: 16L, only_from_crafting: true, id: "4545F6A6ADED500E", item: { count: 1, id: "minecraft:purple_stained_glass" }, type: "item" }]
+			title: "Royal Glass"
+			x: 7.5d
+			y: 4.5d
+		}
+		{
+			dependencies: ["08F18852480EC2FF"]
+			description: ["Workshop order: 16 Cyan Stained Glass, made by you.", "", "&bObjective:&r Craft 16 Cyan Stained Glass", "&7Only items you craft yourself count."]
+			id: "696F96EB9ADF36F9"
+			rewards: [
+				{ count: 4, id: "483D1519FAA714AC", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "5416078FFA590363", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 24 of 104 • 4 Emerald, 2 Gold"
+			tasks: [{ count: 16L, only_from_crafting: true, id: "4B05BDAF245E6B95", item: { count: 1, id: "minecraft:cyan_stained_glass" }, type: "item" }]
+			title: "Ocean Glass"
+			x: 6.0d
+			y: 4.5d
+		}
+		{
+			dependencies: ["696F96EB9ADF36F9"]
+			description: ["The guild wants 4 freshly crafted Tinted Glass.", "", "&bObjective:&r Craft 4 Tinted Glass", "&7Only items you craft yourself count."]
+			id: "70A50F376331E82D"
+			rewards: [
+				{ count: 4, id: "00714FDC75AB74B0", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "712EB13354962B47", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 25 of 104 • 4 Emerald, 2 Gold"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "0EBB1D4FE05E3640", item: { count: 1, id: "minecraft:tinted_glass" }, type: "item" }]
+			title: "Tinted Glass"
+			x: 4.5d
+			y: 4.5d
+		}
+		{
+			dependencies: ["70A50F376331E82D"]
+			description: ["The Ledger wants proof: carry 8 White Glazed Terracotta and show it.", "", "&bObjective:&r Have 8 White Glazed Terracotta in your inventory"]
+			id: "0F2955FF03F8D573"
+			rewards: [
+				{ count: 4, id: "23E9320DED19BEDF", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "22C5F949DC60987C", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 26 of 104 • 4 Emerald, 2 Gold"
+			tasks: [{ count: 8L, id: "0B154C0768F7B3FC", item: { count: 1, id: "minecraft:white_glazed_terracotta" }, type: "item" }]
+			title: "Glazed Tiles"
+			x: 3.0d
+			y: 4.5d
+		}
+		{
+			dependencies: ["0F2955FF03F8D573"]
+			description: ["Workshop order: 32 White Concrete Powder, made by you.", "", "&bObjective:&r Craft 32 White Concrete Powder", "&7Only items you craft yourself count."]
+			id: "43DA0D2FC35B0354"
+			rewards: [
+				{ count: 4, id: "29D6ADEA491ADCD7", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "2E53199190CFED70", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 27 of 104 • 4 Emerald, 3 Gold"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "2429B490C02D0A95", item: { count: 1, id: "minecraft:white_concrete_powder" }, type: "item" }]
+			title: "Concrete Mix"
+			x: 1.5d
+			y: 4.5d
+		}
+		{
+			dependencies: ["43DA0D2FC35B0354"]
+			description: ["Keep 32 White Concrete in your pack. The clerk only needs to see them.", "", "&bObjective:&r Have 32 White Concrete in your inventory"]
+			id: "13420675B192A654"
+			rewards: [
+				{ count: 4, id: "0771188A727C36E5", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "24C0F714B803EAD7", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 28 of 104 • 4 Emerald, 3 Gold"
+			tasks: [{ count: 32L, id: "1D4FF73FB5A41F93", item: { count: 1, id: "minecraft:white_concrete" }, type: "item" }]
+			title: "Set in Stone"
+			x: 0.0d
+			y: 4.5d
+		}
+		{
+			dependencies: ["13420675B192A654"]
+			description: ["Prove your hands are skilled: craft 4 Copper Block yourself.", "", "&bObjective:&r Craft 4 Copper Block", "&7Only items you craft yourself count."]
+			id: "45D76FA2E76C0B69"
+			rewards: [
+				{ count: 4, id: "1C5F874F85193815", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "2732FBEF23DCA5C6", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 29 of 104 • 4 Emerald, 3 Gold"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "26E9D94C9F8119A0", item: { count: 1, id: "minecraft:copper_block" }, type: "item" }]
+			title: "Copper Plating"
+			x: 0.0d
+			y: 6.0d
+		}
+		{
+			dependencies: ["45D76FA2E76C0B69"]
+			description: ["Workshop order: 16 Cut Copper, made by you.", "", "&bObjective:&r Craft 16 Cut Copper", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Iron Greathammer&7 (enchanted)"]
+			id: "3860308C80456ABA"
+			rewards: [
+				{ count: 1, id: "4DD426B448EF334E", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 1, id: "0B385DCB144896BC", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "15FF3E6F4E1FA707", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 3, "minecraft:unbreaking": 2 } } }, count: 1, id: "simplyswords:iron_greathammer" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 30 of 104 • 1 Diamond, 1 Emerald + Gear"
+			tasks: [{ count: 16L, only_from_crafting: true, id: "06F4CF0B7819FFD2", item: { count: 1, id: "minecraft:cut_copper" }, type: "item" }]
+			title: "&6&lCut Copper"
+			x: 1.5d
+			y: 6.0d
+		}
+		{
+			dependencies: ["3860308C80456ABA"]
+			description: ["The guild wants 8 freshly crafted Chiseled Copper.", "", "&bObjective:&r Craft 8 Chiseled Copper", "&7Only items you craft yourself count."]
+			id: "46CBE8EDE9FDFDA3"
+			rewards: [
+				{ count: 4, id: "3192C6AD586C2E0D", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "733B8F43A430775C", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 31 of 104 • 4 Emerald, 4 Gold"
+			tasks: [{ count: 8L, only_from_crafting: true, id: "0C8914CA5696F300", item: { count: 1, id: "minecraft:chiseled_copper" }, type: "item" }]
+			title: "Chiselled Copper"
+			x: 3.0d
+			y: 6.0d
+		}
+		{
+			dependencies: ["46CBE8EDE9FDFDA3"]
+			description: ["Prove your hands are skilled: craft 8 Copper Grate yourself.", "", "&bObjective:&r Craft 8 Copper Grate", "&7Only items you craft yourself count."]
+			id: "2EBD01AD3459247F"
+			rewards: [
+				{ count: 4, id: "4BB67971814BDA4F", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "2ADBD9BA3AE40C2B", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 32 of 104 • 4 Emerald, 4 Gold"
+			tasks: [{ count: 8L, only_from_crafting: true, id: "631A0772E755AF6A", item: { count: 1, id: "minecraft:copper_grate" }, type: "item" }]
+			title: "Copper Grates"
+			x: 4.5d
+			y: 6.0d
+		}
+		{
+			dependencies: ["2EBD01AD3459247F"]
+			description: ["Workshop order: 2 Copper Door, made by you.", "", "&bObjective:&r Craft 2 Copper Door", "&7Only items you craft yourself count."]
+			id: "631D4F7E7230D0AE"
+			rewards: [
+				{ count: 4, id: "2C9960FD96390F07", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "17379525EBD02812", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 33 of 104 • 4 Emerald, 4 Gold"
+			tasks: [{ count: 2L, only_from_crafting: true, id: "139222B7A56A3BFC", item: { count: 1, id: "minecraft:copper_door" }, type: "item" }]
+			title: "Copper Door"
+			x: 6.0d
+			y: 6.0d
+		}
+		{
+			dependencies: ["631D4F7E7230D0AE"]
+			description: ["The guild wants 4 freshly crafted Copper Trapdoor.", "", "&bObjective:&r Craft 4 Copper Trapdoor", "&7Only items you craft yourself count."]
+			id: "39880A3E77A279B9"
+			rewards: [
+				{ count: 4, id: "22C920DA0D2BF4AE", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "08650E2E4B09E376", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 34 of 104 • 4 Emerald, 5 Gold"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "27B19450FE29210D", item: { count: 1, id: "minecraft:copper_trapdoor" }, type: "item" }]
+			title: "Copper Hatch"
+			x: 7.5d
+			y: 6.0d
+		}
+		{
+			dependencies: ["39880A3E77A279B9"]
+			description: ["Prove your hands are skilled: craft 4 Copper Bulb yourself.", "", "&bObjective:&r Craft 4 Copper Bulb", "&7Only items you craft yourself count."]
+			id: "569D36F3E8E527E0"
+			rewards: [
+				{ count: 4, id: "52F13C5FCCA0EA85", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "34B9FEDD53DE0A5C", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 35 of 104 • 4 Emerald, 5 Gold"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "010520F9B826A011", item: { count: 1, id: "minecraft:copper_bulb" }, type: "item" }]
+			title: "Copper Bulbs"
+			x: 9.0d
+			y: 6.0d
+		}
+		{
+			dependencies: ["569D36F3E8E527E0"]
+			description: ["Accomplish \"Lighten Up\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Lighten Up\""]
+			id: "4CBB92BD33C3D2AF"
+			rewards: [
+				{ count: 4, id: "7459BF4AF1111DFC", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "1B65C934F8C56FA3", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 36 of 104 • 4 Emerald, 5 Gold"
+			tasks: [{ advancement: "minecraft:adventure/lighten_up", criterion: "", id: "3B3E15355C231E09", type: "advancement" }]
+			title: "Lighten Up"
+			x: 9.0d
+			y: 7.5d
+		}
+		{
+			dependencies: ["4CBB92BD33C3D2AF"]
+			description: ["Earn the advancement \"Wax On\".", "", "&bObjective:&r Earn the advancement \"Wax On\""]
+			id: "1195A98D789BC2B6"
+			rewards: [
+				{ count: 4, id: "40BCD56323AABEA3", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "7986176D18C01D54", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 37 of 104 • 4 Emerald, 6 Gold"
+			tasks: [{ advancement: "minecraft:husbandry/wax_on", criterion: "", id: "509E34DADBCA6E99", type: "advancement" }]
+			title: "Wax On"
+			x: 7.5d
+			y: 7.5d
+		}
+		{
+			dependencies: ["1195A98D789BC2B6"]
+			description: ["Accomplish \"Wax Off\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Wax Off\""]
+			id: "58143904DFCFCEDF"
+			rewards: [
+				{ count: 4, id: "74874303DB6BC9F9", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "09913945939F3BA7", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 38 of 104 • 4 Emerald, 6 Gold"
+			tasks: [{ advancement: "minecraft:husbandry/wax_off", criterion: "", id: "1A55DBB15D478FC1", type: "advancement" }]
+			title: "Wax Off"
+			x: 6.0d
+			y: 7.5d
+		}
+		{
+			dependencies: ["58143904DFCFCEDF"]
+			description: ["Workshop order: 4 Lightning Rod, made by you.", "", "&bObjective:&r Craft 4 Lightning Rod", "&7Only items you craft yourself count."]
+			id: "0427D5A7D015F4A7"
+			rewards: [
+				{ count: 4, id: "49047E77C040DB0B", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "29849D855FE5DD56", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 39 of 104 • 4 Emerald, 6 Gold"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "53BFDBD19A65927B", item: { count: 1, id: "minecraft:lightning_rod" }, type: "item" }]
+			title: "Lightning Rods"
+			x: 4.5d
+			y: 7.5d
+		}
+		{
+			dependencies: ["0427D5A7D015F4A7"]
+			description: ["The guild wants 8 freshly crafted Redstone Torch.", "", "&bObjective:&r Craft 8 Redstone Torch", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Zanite Pickaxe&7 (enchanted)"]
+			id: "3A7657C2A7F1DA43"
+			rewards: [
+				{ count: 1, id: "02A4242801ED44BE", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "13A04417F43F7F78", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "2E89AC0BCFE8000D", item: { components: { "minecraft:enchantments": { levels: { "minecraft:efficiency": 4, "minecraft:unbreaking": 3 } } }, count: 1, id: "aether:zanite_pickaxe" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 40 of 104 • 1 Diamond, 2 Emerald + Gear"
+			tasks: [{ count: 8L, only_from_crafting: true, id: "5CD532209318A4DF", item: { count: 1, id: "minecraft:redstone_torch" }, type: "item" }]
+			title: "&6&lRedstone Torches"
+			x: 3.0d
+			y: 7.5d
+		}
+		{
+			dependencies: ["3A7657C2A7F1DA43"]
+			description: ["Prove your hands are skilled: craft 4 Lever yourself.", "", "&bObjective:&r Craft 4 Lever", "&7Only items you craft yourself count."]
+			id: "03D72DC77E3CC14D"
+			rewards: [
+				{ count: 4, id: "2DF1BBB7A8312A89", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "3D491E30E4C64C34", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 41 of 104 • 4 Emerald, 7 Gold"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "57726653296F7523", item: { count: 1, id: "minecraft:lever" }, type: "item" }]
+			title: "Pull the Lever"
+			x: 1.5d
+			y: 7.5d
+		}
+		{
+			dependencies: ["03D72DC77E3CC14D"]
+			description: ["Workshop order: 4 Stone Button, made by you.", "", "&bObjective:&r Craft 4 Stone Button", "&7Only items you craft yourself count."]
+			id: "52BF34C963E29793"
+			rewards: [
+				{ count: 4, id: "05F02D016AEB7F5D", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "618AA89750F63AAA", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 42 of 104 • 4 Emerald, 7 Gold"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "6226B2C635F39FE6", item: { count: 1, id: "minecraft:stone_button" }, type: "item" }]
+			title: "Push the Button"
+			x: 0.0d
+			y: 7.5d
+		}
+		{
+			dependencies: ["52BF34C963E29793"]
+			description: ["The guild wants 4 freshly crafted Oak Pressure Plate.", "", "&bObjective:&r Craft 4 Oak Pressure Plate", "&7Only items you craft yourself count."]
+			id: "2FD63D3B7332B7AB"
+			rewards: [
+				{ count: 4, id: "115B60018FDC3BF3", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "0AA4DCB874BAC8A1", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 43 of 104 • 4 Emerald, 8 Gold"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "77826047FE8461E0", item: { count: 1, id: "minecraft:oak_pressure_plate" }, type: "item" }]
+			title: "Pressure Plates"
+			x: 0.0d
+			y: 9.0d
+		}
+		{
+			dependencies: ["2FD63D3B7332B7AB"]
+			description: ["Prove your hands are skilled: craft 4 Repeater yourself.", "", "&bObjective:&r Craft 4 Repeater", "&7Only items you craft yourself count."]
+			id: "39F602E6F93590CD"
+			rewards: [
+				{ count: 4, id: "36264F796B7E58D0", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "340B87248E6B3C3B", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 44 of 104 • 4 Emerald, 8 Gold"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "61B73947C985C61E", item: { count: 1, id: "minecraft:repeater" }, type: "item" }]
+			title: "Repeaters"
+			x: 1.5d
+			y: 9.0d
+		}
+		{
+			dependencies: ["39F602E6F93590CD"]
+			description: ["Workshop order: 2 Comparator, made by you.", "", "&bObjective:&r Craft 2 Comparator", "&7Only items you craft yourself count."]
+			id: "29D72F4B73CA3769"
+			rewards: [
+				{ count: 4, id: "1CB47DF402AA8D6B", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "03F37CA1E9FE33A9", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 45 of 104 • 4 Emerald, 8 Gold"
+			tasks: [{ count: 2L, only_from_crafting: true, id: "739E5ED7F5ECBD4E", item: { count: 1, id: "minecraft:comparator" }, type: "item" }]
+			title: "Comparators"
+			x: 3.0d
+			y: 9.0d
+		}
+		{
+			dependencies: ["29D72F4B73CA3769"]
+			description: ["The guild wants 4 freshly crafted Redstone Lamp.", "", "&bObjective:&r Craft 4 Redstone Lamp", "&7Only items you craft yourself count."]
+			id: "7D7FABA6B8C1D0DE"
+			rewards: [
+				{ count: 4, id: "33019CB9BCE261B9", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "4D810AC29ED5BE4D", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 46 of 104 • 4 Emerald, 9 Gold"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "422AD7BB88CA4796", item: { count: 1, id: "minecraft:redstone_lamp" }, type: "item" }]
+			title: "Redstone Lamps"
+			x: 4.5d
+			y: 9.0d
+		}
+		{
+			dependencies: ["7D7FABA6B8C1D0DE"]
+			description: ["Prove your hands are skilled: craft 1 Daylight Detector yourself.", "", "&bObjective:&r Craft 1 Daylight Detector", "&7Only items you craft yourself count."]
+			id: "7913E1BCAD4C90AC"
+			rewards: [
+				{ count: 4, id: "6A61CB50C98F4FD8", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "48F24B1369382FC1", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 47 of 104 • 4 Emerald, 9 Gold"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "329E960F10229D79", item: { count: 1, id: "minecraft:daylight_detector" }, type: "item" }]
+			title: "Sunrise Sensor"
+			x: 6.0d
+			y: 9.0d
+		}
+		{
+			dependencies: ["7913E1BCAD4C90AC"]
+			description: ["Workshop order: 1 Target, made by you.", "", "&bObjective:&r Craft 1 Target", "&7Only items you craft yourself count."]
+			id: "13841993B13008AD"
+			rewards: [
+				{ count: 4, id: "5D6969D2C59AB0E6", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "071B4AD8D87EB950", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 48 of 104 • 4 Emerald, 9 Gold"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "1C43E4F65CFF5A35", item: { count: 1, id: "minecraft:target" }, type: "item" }]
+			title: "Bullseye Block"
+			x: 7.5d
+			y: 9.0d
+		}
+		{
+			dependencies: ["13841993B13008AD"]
+			description: ["The guild wants 2 freshly crafted Tripwire Hook.", "", "&bObjective:&r Craft 2 Tripwire Hook", "&7Only items you craft yourself count."]
+			id: "4041683C2211BFF8"
+			rewards: [
+				{ count: 5, id: "5EC613D3455EE864", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 49 of 104 • 5 Emerald"
+			tasks: [{ count: 2L, only_from_crafting: true, id: "4CC0414649DC28C0", item: { count: 1, id: "minecraft:tripwire_hook" }, type: "item" }]
+			title: "Tripwire"
+			x: 9.0d
+			y: 9.0d
+		}
+		{
+			dependencies: ["4041683C2211BFF8"]
+			description: ["Prove your hands are skilled: craft 2 Trapped Chest yourself.", "", "&bObjective:&r Craft 2 Trapped Chest", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Iron Halberd&7 (enchanted)"]
+			id: "0E4B965E26D37AE2"
+			rewards: [
+				{ count: 1, id: "44A7110C72594860", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 2, id: "2C7806A05F9C56DB", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "444676A359CFFB87", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 3, "minecraft:unbreaking": 2 } } }, count: 1, id: "simplyswords:iron_halberd" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 50 of 104 • 1 Diamond, 2 Emerald + Gear"
+			tasks: [{ count: 2L, only_from_crafting: true, id: "114C1DEC7071C635", item: { count: 1, id: "minecraft:trapped_chest" }, type: "item" }]
+			title: "&6&lBooby Trap"
+			x: 9.0d
+			y: 10.5d
+		}
+		{
+			dependencies: ["0E4B965E26D37AE2"]
+			description: ["Workshop order: 4 Piston, made by you.", "", "&bObjective:&r Craft 4 Piston", "&7Only items you craft yourself count."]
+			id: "3F9335EFF7B9D08B"
+			rewards: [
+				{ count: 5, id: "78009BA2597EC7A3", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 51 of 104 • 5 Emerald"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "28DE16CCF5B9EB26", item: { count: 1, id: "minecraft:piston" }, type: "item" }]
+			title: "Pistons"
+			x: 7.5d
+			y: 10.5d
+		}
+		{
+			dependencies: ["3F9335EFF7B9D08B"]
+			description: ["The guild wants 2 freshly crafted Sticky Piston.", "", "&bObjective:&r Craft 2 Sticky Piston", "&7Only items you craft yourself count."]
+			id: "2C2169A2FDDEE1FC"
+			rewards: [
+				{ count: 5, id: "652FB0616F21AB57", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "1F38C98D759C5142", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 52 of 104 • 5 Emerald, 1 Gold"
+			tasks: [{ count: 2L, only_from_crafting: true, id: "3D8721555560548A", item: { count: 1, id: "minecraft:sticky_piston" }, type: "item" }]
+			title: "Sticky Pistons"
+			x: 6.0d
+			y: 10.5d
+		}
+		{
+			dependencies: ["2C2169A2FDDEE1FC"]
+			description: ["Prove your hands are skilled: craft 2 Observer yourself.", "", "&bObjective:&r Craft 2 Observer", "&7Only items you craft yourself count."]
+			id: "28A2A7B7AEF62318"
+			rewards: [
+				{ count: 5, id: "292BBDDAAA03EB73", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "2A3E088E06E2B74C", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 53 of 104 • 5 Emerald, 1 Gold"
+			tasks: [{ count: 2L, only_from_crafting: true, id: "685F438D5987B6F8", item: { count: 1, id: "minecraft:observer" }, type: "item" }]
+			title: "Observers"
+			x: 4.5d
+			y: 10.5d
+		}
+		{
+			dependencies: ["28A2A7B7AEF62318"]
+			description: ["Workshop order: 2 Dispenser, made by you.", "", "&bObjective:&r Craft 2 Dispenser", "&7Only items you craft yourself count."]
+			id: "24A5A14996A17E22"
+			rewards: [
+				{ count: 5, id: "57BBEDC14D2E8F62", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "001D94CD3CE2AC70", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 54 of 104 • 5 Emerald, 1 Gold"
+			tasks: [{ count: 2L, only_from_crafting: true, id: "1CE07FE27A7FFEB0", item: { count: 1, id: "minecraft:dispenser" }, type: "item" }]
+			title: "Dispensers"
+			x: 3.0d
+			y: 10.5d
+		}
+		{
+			dependencies: ["24A5A14996A17E22"]
+			description: ["The guild wants 2 freshly crafted Dropper.", "", "&bObjective:&r Craft 2 Dropper", "&7Only items you craft yourself count."]
+			id: "7E0F9F89C5CBE578"
+			rewards: [
+				{ count: 5, id: "0A46AD750B8F67FB", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "4EE6E67C21BB7141", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 55 of 104 • 5 Emerald, 2 Gold"
+			tasks: [{ count: 2L, only_from_crafting: true, id: "26614A4D60F0B966", item: { count: 1, id: "minecraft:dropper" }, type: "item" }]
+			title: "Droppers"
+			x: 1.5d
+			y: 10.5d
+		}
+		{
+			dependencies: ["7E0F9F89C5CBE578"]
+			description: ["Prove your hands are skilled: craft 2 Hopper yourself.", "", "&bObjective:&r Craft 2 Hopper", "&7Only items you craft yourself count."]
+			id: "11887900031DB034"
+			rewards: [
+				{ count: 5, id: "5CFBEF7473AA8A4D", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "284154589B88FE26", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 56 of 104 • 5 Emerald, 2 Gold"
+			tasks: [{ count: 2L, only_from_crafting: true, id: "0FF18085ECB21910", item: { count: 1, id: "minecraft:hopper" }, type: "item" }]
+			title: "Hoppers"
+			x: 0.0d
+			y: 10.5d
+		}
+		{
+			dependencies: ["11887900031DB034"]
+			description: ["Workshop order: 1 Crafter, made by you.", "", "&bObjective:&r Craft 1 Crafter", "&7Only items you craft yourself count."]
+			id: "5AE9E1F77676BF83"
+			rewards: [
+				{ count: 5, id: "1526B85BDBD44D8A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "77CC246FDE74E730", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 57 of 104 • 5 Emerald, 2 Gold"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "3AF26A3FB70591DC", item: { count: 1, id: "minecraft:crafter" }, type: "item" }]
+			title: "The Crafter"
+			x: 0.0d
+			y: 12.0d
+		}
+		{
+			dependencies: ["5AE9E1F77676BF83"]
+			description: ["Accomplish \"Crafters Crafting Crafters\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Crafters Crafting Crafters\""]
+			id: "2670413CB595AE44"
+			rewards: [
+				{ count: 5, id: "472D5AD69873AC6F", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "0C6B612BD0A16AC0", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 58 of 104 • 5 Emerald, 3 Gold"
+			tasks: [{ advancement: "minecraft:adventure/crafters_crafting_crafters", criterion: "", id: "4A31C1491AD7D68D", type: "advancement" }]
+			title: "Crafters Crafting Crafters"
+			x: 1.5d
+			y: 12.0d
+		}
+		{
+			dependencies: ["2670413CB595AE44"]
+			description: ["Prove your hands are skilled: craft 4 Note Block yourself.", "", "&bObjective:&r Craft 4 Note Block", "&7Only items you craft yourself count."]
+			id: "02BCDC9149BE07DD"
+			rewards: [
+				{ count: 5, id: "09ECE569A79382DE", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "713307BA42EC57E7", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 59 of 104 • 5 Emerald, 3 Gold"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "139A4506B3161517", item: { count: 1, id: "minecraft:note_block" }, type: "item" }]
+			title: "Note Blocks"
+			x: 3.0d
+			y: 12.0d
+		}
+		{
+			dependencies: ["02BCDC9149BE07DD"]
+			description: ["The Ledger tracks everything. Push tune noteblock to 10.", "", "&bObjective:&r Reach tune noteblock: 10", "&7Counts your total since you first joined.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Zanite Ring"]
+			id: "0F8CA4F2313EFD96"
+			rewards: [
+				{ count: 1, id: "3225ABFEB425AC3C", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 3, id: "5FE5E0FF9DCF17D1", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "0965DB7539F17054", item: { count: 1, id: "aether:zanite_ring" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 60 of 104 • 1 Diamond, 3 Emerald + Gear"
+			tasks: [{ id: "1E740E5631C3AD94", stat: "minecraft:tune_noteblock", type: "stat", value: 10 }]
+			title: "&6&lTuning Up"
+			x: 4.5d
+			y: 12.0d
+		}
+		{
+			dependencies: ["0F8CA4F2313EFD96"]
+			description: ["Reach 30 for play noteblock.", "", "&bObjective:&r Reach play noteblock: 30", "&7Counts your total since you first joined."]
+			id: "7C267EDC3D4191DF"
+			rewards: [
+				{ count: 5, id: "519108048832335A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "194B2C8D4A7D475D", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 61 of 104 • 5 Emerald, 4 Gold"
+			tasks: [{ id: "276B66592E82C462", stat: "minecraft:play_noteblock", type: "stat", value: 30 }]
+			title: "Concert Night"
+			x: 6.0d
+			y: 12.0d
+		}
+		{
+			dependencies: ["7C267EDC3D4191DF"]
+			description: ["Prove your hands are skilled: craft 1 Jukebox yourself.", "", "&bObjective:&r Craft 1 Jukebox", "&7Only items you craft yourself count."]
+			id: "45CF03E94FC2B142"
+			rewards: [
+				{ count: 5, id: "0FCB488B50F10564", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "44C4EF4DDB2CA7CD", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 62 of 104 • 5 Emerald, 4 Gold"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "7D83A6DAC4CC35F7", item: { count: 1, id: "minecraft:jukebox" }, type: "item" }]
+			title: "Jukebox"
+			x: 7.5d
+			y: 12.0d
+		}
+		{
+			dependencies: ["45CF03E94FC2B142"]
+			description: ["Workshop order: 32 Rail, made by you.", "", "&bObjective:&r Craft 32 Rail", "&7Only items you craft yourself count."]
+			id: "5E5BE9D5F799F343"
+			rewards: [
+				{ count: 5, id: "4148A847C1F52B62", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "64AFA3F5EE97EBB5", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 63 of 104 • 5 Emerald, 5 Gold"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "2FB8BE4019C4631B", item: { count: 1, id: "minecraft:rail" }, type: "item" }]
+			title: "Laying Track"
+			x: 9.0d
+			y: 12.0d
+		}
+		{
+			dependencies: ["5E5BE9D5F799F343"]
+			description: ["The guild wants 8 freshly crafted Powered Rail.", "", "&bObjective:&r Craft 8 Powered Rail", "&7Only items you craft yourself count."]
+			id: "3E6314F5904239D8"
+			rewards: [
+				{ count: 5, id: "217DA8413EA2B561", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "1057B41CFBB29EA8", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 64 of 104 • 5 Emerald, 5 Gold"
+			tasks: [{ count: 8L, only_from_crafting: true, id: "5148FB5DC6828C51", item: { count: 1, id: "minecraft:powered_rail" }, type: "item" }]
+			title: "Powered Rails"
+			x: 9.0d
+			y: 13.5d
+		}
+		{
+			dependencies: ["3E6314F5904239D8"]
+			description: ["Prove your hands are skilled: craft 4 Detector Rail yourself.", "", "&bObjective:&r Craft 4 Detector Rail", "&7Only items you craft yourself count."]
+			id: "1F12C738A8361C28"
+			rewards: [
+				{ count: 5, id: "11A12371A183E1E1", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "4F09BCC588F0EC99", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 65 of 104 • 5 Emerald, 5 Gold"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "5D06698DFAF35FD6", item: { count: 1, id: "minecraft:detector_rail" }, type: "item" }]
+			title: "Detector Rails"
+			x: 7.5d
+			y: 13.5d
+		}
+		{
+			dependencies: ["1F12C738A8361C28"]
+			description: ["Workshop order: 4 Activator Rail, made by you.", "", "&bObjective:&r Craft 4 Activator Rail", "&7Only items you craft yourself count."]
+			id: "4D76BDE4C7CDEEB4"
+			rewards: [
+				{ count: 5, id: "3A06992E7753ABE4", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "178BF517D11BFF32", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 66 of 104 • 5 Emerald, 6 Gold"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "32641F8AC958D819", item: { count: 1, id: "minecraft:activator_rail" }, type: "item" }]
+			title: "Activator Rails"
+			x: 6.0d
+			y: 13.5d
+		}
+		{
+			dependencies: ["4D76BDE4C7CDEEB4"]
+			description: ["The guild wants 1 freshly crafted Minecart.", "", "&bObjective:&r Craft 1 Minecart", "&7Only items you craft yourself count."]
+			id: "047FC54F99FEB9E0"
+			rewards: [
+				{ count: 5, id: "4A2F0041BC0E489A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "307CC308E382377B", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 67 of 104 • 5 Emerald, 6 Gold"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "4E190A89759281D9", item: { count: 1, id: "minecraft:minecart" }, type: "item" }]
+			title: "Minecart"
+			x: 4.5d
+			y: 13.5d
+		}
+		{
+			dependencies: ["047FC54F99FEB9E0"]
+			description: ["Prove your hands are skilled: craft 1 Chest Minecart yourself.", "", "&bObjective:&r Craft 1 Chest Minecart", "&7Only items you craft yourself count."]
+			id: "5061AA6C0A64A747"
+			rewards: [
+				{ count: 5, id: "60AA9A3D55B238A3", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "0A8CED2A41000874", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 68 of 104 • 5 Emerald, 6 Gold"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "78B530BEC17E4D69", item: { count: 1, id: "minecraft:chest_minecart" }, type: "item" }]
+			title: "Cargo Cart"
+			x: 3.0d
+			y: 13.5d
+		}
+		{
+			dependencies: ["5061AA6C0A64A747"]
+			description: ["Workshop order: 1 Hopper Minecart, made by you.", "", "&bObjective:&r Craft 1 Hopper Minecart", "&7Only items you craft yourself count."]
+			id: "10C2E999C63A6266"
+			rewards: [
+				{ count: 5, id: "2DF1E968B209387B", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "44FF9D3364335469", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 69 of 104 • 5 Emerald, 7 Gold"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "7AFB3BFB1CD34E02", item: { count: 1, id: "minecraft:hopper_minecart" }, type: "item" }]
+			title: "Hopper Cart"
+			x: 1.5d
+			y: 13.5d
+		}
+		{
+			dependencies: ["10C2E999C63A6266"]
+			description: ["The guild wants 2 freshly crafted Tnt.", "", "&bObjective:&r Craft 2 Tnt", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Iron Claymore&7 (enchanted)"]
+			id: "4952B60E3AAFD583"
+			rewards: [
+				{ count: 1, id: "178FF654FED8C590", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 4, id: "0E236C532053C7FA", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "366C6DF13CB66FED", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 3, "minecraft:unbreaking": 2 } } }, count: 1, id: "simplyswords:iron_claymore" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 70 of 104 • 1 Diamond, 4 Emerald + Gear"
+			tasks: [{ count: 2L, only_from_crafting: true, id: "6B940C3EC9E6F52D", item: { count: 1, id: "minecraft:tnt" }, type: "item" }]
+			title: "&6&lHandle With Care"
+			x: 0.0d
+			y: 13.5d
+		}
+		{
+			dependencies: ["4952B60E3AAFD583"]
+			description: ["Prove your hands are skilled: craft 1 Tnt Minecart yourself.", "", "&bObjective:&r Craft 1 Tnt Minecart", "&7Only items you craft yourself count."]
+			id: "4014CE0DB47F5606"
+			rewards: [
+				{ count: 5, id: "7778B05297A5061E", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "651CBE0803733782", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 71 of 104 • 5 Emerald, 8 Gold"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "32790297E9B13EDD", item: { count: 1, id: "minecraft:tnt_minecart" }, type: "item" }]
+			title: "Explosive Delivery"
+			x: 0.0d
+			y: 15.0d
+		}
+		{
+			dependencies: ["4014CE0DB47F5606"]
+			description: ["Workshop order: 1 Grindstone, made by you.", "", "&bObjective:&r Craft 1 Grindstone", "&7Only items you craft yourself count."]
+			id: "5F7F061D5E7837E7"
+			rewards: [
+				{ count: 5, id: "13546ACCA33B95F8", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "4BFE9C4D039960F5", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 72 of 104 • 5 Emerald, 8 Gold"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "2D9938BCCEDACF87", item: { count: 1, id: "minecraft:grindstone" }, type: "item" }]
+			title: "Grindstone"
+			x: 1.5d
+			y: 15.0d
+		}
+		{
+			dependencies: ["5F7F061D5E7837E7"]
+			description: ["Reach 5 for interact with grindstone.", "", "&bObjective:&r Reach interact with grindstone: 5", "&7Counts your total since you first joined."]
+			id: "4EF2FCAFEB515F95"
+			rewards: [
+				{ count: 5, id: "13F4B9D1ED42A09F", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "62BD2B75DFD8578F", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 73 of 104 • 5 Emerald, 8 Gold"
+			tasks: [{ id: "31AC3E4BA573137C", stat: "minecraft:interact_with_grindstone", type: "stat", value: 5 }]
+			title: "Clean Slate"
+			x: 3.0d
+			y: 15.0d
+		}
+		{
+			dependencies: ["4EF2FCAFEB515F95"]
+			description: ["Prove your hands are skilled: craft 1 Smithing Table yourself.", "", "&bObjective:&r Craft 1 Smithing Table", "&7Only items you craft yourself count."]
+			id: "7BAB1A79E93F0C7C"
+			rewards: [
+				{ count: 5, id: "04BC1769BE294B54", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "5C51393EEB73FC8E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 74 of 104 • 5 Emerald, 9 Gold"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "27A994630046F0A8", item: { count: 1, id: "minecraft:smithing_table" }, type: "item" }]
+			title: "Smithing Table"
+			x: 4.5d
+			y: 15.0d
+		}
+		{
+			dependencies: ["7BAB1A79E93F0C7C"]
+			description: ["Workshop order: 1 Fletching Table, made by you.", "", "&bObjective:&r Craft 1 Fletching Table", "&7Only items you craft yourself count."]
+			id: "5D0A99543FEACF9A"
+			rewards: [
+				{ count: 5, id: "79AA5BB361FD35BA", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "0040C7DEA20E4604", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 75 of 104 • 5 Emerald, 9 Gold"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "6643DB73105149E4", item: { count: 1, id: "minecraft:fletching_table" }, type: "item" }]
+			title: "Fletcher's Bench"
+			x: 6.0d
+			y: 15.0d
+		}
+		{
+			dependencies: ["5D0A99543FEACF9A"]
+			description: ["The guild wants 1 freshly crafted Blast Furnace.", "", "&bObjective:&r Craft 1 Blast Furnace", "&7Only items you craft yourself count."]
+			id: "13DB5B2460FD757C"
+			rewards: [
+				{ count: 6, id: "24B464F41EAA5AE8", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 76 of 104 • 6 Emerald"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "2A3E15D87E7AD7D6", item: { count: 1, id: "minecraft:blast_furnace" }, type: "item" }]
+			title: "Blast Furnace"
+			x: 7.5d
+			y: 15.0d
+		}
+		{
+			dependencies: ["13DB5B2460FD757C"]
+			description: ["Reach 10 for interact with blast furnace.", "", "&bObjective:&r Reach interact with blast furnace: 10", "&7Counts your total since you first joined."]
+			id: "05F2FB1F1E6B9A64"
+			rewards: [
+				{ count: 6, id: "5EA247C00665FF94", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 77 of 104 • 6 Emerald"
+			tasks: [{ id: "66196FBAB4A5A7D8", stat: "minecraft:interact_with_blast_furnace", type: "stat", value: 10 }]
+			title: "Ore Smelter"
+			x: 9.0d
+			y: 15.0d
+		}
+		{
+			dependencies: ["05F2FB1F1E6B9A64"]
+			description: ["Workshop order: 1 Anvil, made by you.", "", "&bObjective:&r Craft 1 Anvil", "&7Only items you craft yourself count."]
+			id: "7370142686E67455"
+			rewards: [
+				{ count: 6, id: "039CB80C6B167F51", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 78 of 104 • 6 Emerald"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "63E0724CA01C4623", item: { count: 1, id: "minecraft:anvil" }, type: "item" }]
+			title: "The Anvil"
+			x: 9.0d
+			y: 16.5d
+		}
+		{
+			dependencies: ["7370142686E67455"]
+			description: ["Reach 5 for interact with anvil.", "", "&bObjective:&r Reach interact with anvil: 5", "&7Counts your total since you first joined."]
+			id: "57151B4687135326"
+			rewards: [
+				{ count: 6, id: "0BB181F269E22280", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "603E5C0978DF153E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 79 of 104 • 6 Emerald, 1 Gold"
+			tasks: [{ id: "5C8B99C001E928C4", stat: "minecraft:interact_with_anvil", type: "stat", value: 5 }]
+			title: "Name It"
+			x: 7.5d
+			y: 16.5d
+		}
+		{
+			dependencies: ["57151B4687135326"]
+			description: ["Prove your hands are skilled: craft 1 Lectern yourself.", "", "&bObjective:&r Craft 1 Lectern", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Diamond Pickaxe&7 (enchanted)"]
+			id: "408236C45713A0EF"
+			rewards: [
+				{ count: 1, id: "0347229E77315FA8", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 5, id: "027FEEF7E0EEE4E3", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "431B2766919754A3", item: { components: { "minecraft:enchantments": { levels: { "minecraft:efficiency": 4, "minecraft:unbreaking": 3, "minecraft:fortune": 2 } } }, count: 1, id: "minecraft:diamond_pickaxe" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 80 of 104 • 1 Diamond, 5 Emerald + Gear"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "7094A4FF28C27D0B", item: { count: 1, id: "minecraft:lectern" }, type: "item" }]
+			title: "&6&lLectern"
+			x: 6.0d
+			y: 16.5d
+		}
+		{
+			dependencies: ["408236C45713A0EF"]
+			description: ["Workshop order: 16 Chain, made by you.", "", "&bObjective:&r Craft 16 Chain", "&7Only items you craft yourself count."]
+			id: "07FAE506AB41A15C"
+			rewards: [
+				{ count: 6, id: "6B6CD8413A6677BB", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "627F253A7379F939", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 81 of 104 • 6 Emerald, 2 Gold"
+			tasks: [{ count: 16L, only_from_crafting: true, id: "7920267B43131016", item: { count: 1, id: "minecraft:chain" }, type: "item" }]
+			title: "Chains"
+			x: 4.5d
+			y: 16.5d
+		}
+		{
+			dependencies: ["07FAE506AB41A15C"]
+			description: ["The guild wants 32 freshly crafted Iron Bars.", "", "&bObjective:&r Craft 32 Iron Bars", "&7Only items you craft yourself count."]
+			id: "2C9103AC62CD8DE9"
+			rewards: [
+				{ count: 6, id: "08BA4241E8B18CE6", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "7080B4AEAF8EF5A2", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 82 of 104 • 6 Emerald, 2 Gold"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "65456B23DA0EE9A2", item: { count: 1, id: "minecraft:iron_bars" }, type: "item" }]
+			title: "Iron Bars"
+			x: 3.0d
+			y: 16.5d
+		}
+		{
+			dependencies: ["2C9103AC62CD8DE9"]
+			description: ["Prove your hands are skilled: craft 2 Iron Door yourself.", "", "&bObjective:&r Craft 2 Iron Door", "&7Only items you craft yourself count."]
+			id: "36197675D877AAA0"
+			rewards: [
+				{ count: 6, id: "726C3E6CF9EC1CC7", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "4458E9B3223CD4C4", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 83 of 104 • 6 Emerald, 2 Gold"
+			tasks: [{ count: 2L, only_from_crafting: true, id: "6AB101D8D9434AFA", item: { count: 1, id: "minecraft:iron_door" }, type: "item" }]
+			title: "Iron Door"
+			x: 1.5d
+			y: 16.5d
+		}
+		{
+			dependencies: ["36197675D877AAA0"]
+			description: ["Workshop order: 4 Iron Trapdoor, made by you.", "", "&bObjective:&r Craft 4 Iron Trapdoor", "&7Only items you craft yourself count."]
+			id: "33FE233E251BC217"
+			rewards: [
+				{ count: 6, id: "2CEB4DB72A4A4928", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "133955C4C1E88ACE", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 84 of 104 • 6 Emerald, 3 Gold"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "63DA287683FAD550", item: { count: 1, id: "minecraft:iron_trapdoor" }, type: "item" }]
+			title: "Iron Hatch"
+			x: 0.0d
+			y: 16.5d
+		}
+		{
+			dependencies: ["33FE233E251BC217"]
+			description: ["The guild wants 32 freshly crafted Ladder.", "", "&bObjective:&r Craft 32 Ladder", "&7Only items you craft yourself count."]
+			id: "7E0D959422A4AB62"
+			rewards: [
+				{ count: 6, id: "597CC936DDB9F941", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "3316C14CF7FCE61A", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 85 of 104 • 6 Emerald, 3 Gold"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "1480610C50A2FA44", item: { count: 1, id: "minecraft:ladder" }, type: "item" }]
+			title: "Ladders"
+			x: 0.0d
+			y: 18.0d
+		}
+		{
+			dependencies: ["7E0D959422A4AB62"]
+			description: ["Prove your hands are skilled: craft 32 Scaffolding yourself.", "", "&bObjective:&r Craft 32 Scaffolding", "&7Only items you craft yourself count."]
+			id: "7A969B3CED6DF2A7"
+			rewards: [
+				{ count: 6, id: "03BD28F596A52ED0", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "0A0509B58F57D30A", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 86 of 104 • 6 Emerald, 4 Gold"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "26A561298DDADAAE", item: { count: 1, id: "minecraft:scaffolding" }, type: "item" }]
+			title: "Scaffolding"
+			x: 1.5d
+			y: 18.0d
+		}
+		{
+			dependencies: ["7A969B3CED6DF2A7"]
+			description: ["Workshop order: 6 Oak Sign, made by you.", "", "&bObjective:&r Craft 6 Oak Sign", "&7Only items you craft yourself count."]
+			id: "2AFB48D8C2832DA2"
+			rewards: [
+				{ count: 6, id: "28CAE93EEA885828", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 4, id: "3C059F62633E54B7", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 87 of 104 • 6 Emerald, 4 Gold"
+			tasks: [{ count: 6L, only_from_crafting: true, id: "780BE7981C79BDDB", item: { count: 1, id: "minecraft:oak_sign" }, type: "item" }]
+			title: "Signposts"
+			x: 3.0d
+			y: 18.0d
+		}
+		{
+			dependencies: ["2AFB48D8C2832DA2"]
+			description: ["The guild wants 6 freshly crafted Oak Hanging Sign.", "", "&bObjective:&r Craft 6 Oak Hanging Sign", "&7Only items you craft yourself count."]
+			id: "1D9B006FD7D8C042"
+			rewards: [
+				{ count: 6, id: "2A5868F5C3F30782", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "6328819F3E134DB8", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 88 of 104 • 6 Emerald, 5 Gold"
+			tasks: [{ count: 6L, only_from_crafting: true, id: "35359A2EC93AF13F", item: { count: 1, id: "minecraft:oak_hanging_sign" }, type: "item" }]
+			title: "Hanging Signs"
+			x: 4.5d
+			y: 18.0d
+		}
+		{
+			dependencies: ["1D9B006FD7D8C042"]
+			description: ["Prove your hands are skilled: craft 4 Glow Item Frame yourself.", "", "&bObjective:&r Craft 4 Glow Item Frame", "&7Only items you craft yourself count."]
+			id: "51FF3F848FF57A65"
+			rewards: [
+				{ count: 6, id: "5CA6A941ED4BC47A", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 5, id: "595EF59C92CDB6CF", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 89 of 104 • 6 Emerald, 5 Gold"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "52839F9E1AB9E00F", item: { count: 1, id: "minecraft:glow_item_frame" }, type: "item" }]
+			title: "Glowing Frames"
+			x: 6.0d
+			y: 18.0d
+		}
+		{
+			dependencies: ["51FF3F848FF57A65"]
+			description: ["Workshop order: 32 Stone Brick Stairs, made by you.", "", "&bObjective:&r Craft 32 Stone Brick Stairs", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Zanite Pendant"]
+			id: "2FB44184A7492A5E"
+			rewards: [
+				{ count: 1, id: "05C0BD089039C465", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 6, id: "2C924F8ECD4DF8D0", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "79295D7253331962", item: { count: 1, id: "aether:zanite_pendant" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 90 of 104 • 1 Diamond, 6 Emerald + Gear"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "31EFAEB1F307F8B8", item: { count: 1, id: "minecraft:stone_brick_stairs" }, type: "item" }]
+			title: "&6&lGrand Staircase"
+			x: 7.5d
+			y: 18.0d
+		}
+		{
+			dependencies: ["2FB44184A7492A5E"]
+			description: ["The guild wants 32 freshly crafted Stone Brick Slab.", "", "&bObjective:&r Craft 32 Stone Brick Slab", "&7Only items you craft yourself count."]
+			id: "61889DE6F9A69819"
+			rewards: [
+				{ count: 6, id: "7F6BC9AE59767DAC", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "177096753E571B0D", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 91 of 104 • 6 Emerald, 6 Gold"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "1A47001CA2FF5067", item: { count: 1, id: "minecraft:stone_brick_slab" }, type: "item" }]
+			title: "Stone Slabs"
+			x: 9.0d
+			y: 18.0d
+		}
+		{
+			dependencies: ["61889DE6F9A69819"]
+			description: ["Prove your hands are skilled: craft 32 Stone Brick Wall yourself.", "", "&bObjective:&r Craft 32 Stone Brick Wall", "&7Only items you craft yourself count."]
+			id: "4624441CBCBD1515"
+			rewards: [
+				{ count: 6, id: "7AD964826932C2CE", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 6, id: "0FFBCDAA55753466", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 92 of 104 • 6 Emerald, 6 Gold"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "28B7F4D9936120DE", item: { count: 1, id: "minecraft:stone_brick_wall" }, type: "item" }]
+			title: "Castle Walls"
+			x: 9.0d
+			y: 19.5d
+		}
+		{
+			dependencies: ["4624441CBCBD1515"]
+			description: ["Workshop order: 64 Cherry Planks, made by you.", "", "&bObjective:&r Craft 64 Cherry Planks", "&7Only items you craft yourself count."]
+			id: "1A85256211670D0B"
+			rewards: [
+				{ count: 6, id: "72D8BF8DC0EB4594", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "65CD00E67971256D", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 93 of 104 • 6 Emerald, 7 Gold"
+			tasks: [{ count: 64L, only_from_crafting: true, id: "0A70F96B1B931283", item: { count: 1, id: "minecraft:cherry_planks" }, type: "item" }]
+			title: "Blossom Planks"
+			x: 7.5d
+			y: 19.5d
+		}
+		{
+			dependencies: ["1A85256211670D0B"]
+			description: ["The guild wants 32 freshly crafted Bamboo Mosaic.", "", "&bObjective:&r Craft 32 Bamboo Mosaic", "&7Only items you craft yourself count."]
+			id: "68A2D016DDFA04D7"
+			rewards: [
+				{ count: 6, id: "4322841EA00B9DFB", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 7, id: "2BDBAA13E6E4532D", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 94 of 104 • 6 Emerald, 7 Gold"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "256D62F703BFAED8", item: { count: 1, id: "minecraft:bamboo_mosaic" }, type: "item" }]
+			title: "Bamboo Mosaic"
+			x: 6.0d
+			y: 19.5d
+		}
+		{
+			dependencies: ["68A2D016DDFA04D7"]
+			description: ["Prove your hands are skilled: craft 64 Bamboo Planks yourself.", "", "&bObjective:&r Craft 64 Bamboo Planks", "&7Only items you craft yourself count."]
+			id: "2B2449CF8C1EDE39"
+			rewards: [
+				{ count: 6, id: "146B0DEE9C0CED88", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "422AE1F28752DEF3", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 95 of 104 • 6 Emerald, 8 Gold"
+			tasks: [{ count: 64L, only_from_crafting: true, id: "071EC4651EF90C4F", item: { count: 1, id: "minecraft:bamboo_planks" }, type: "item" }]
+			title: "Bamboo Planks"
+			x: 4.5d
+			y: 19.5d
+		}
+		{
+			dependencies: ["2B2449CF8C1EDE39"]
+			description: ["Workshop order: 2 Chiseled Bookshelf, made by you.", "", "&bObjective:&r Craft 2 Chiseled Bookshelf", "&7Only items you craft yourself count."]
+			id: "0D36E58FE4A5BEF3"
+			rewards: [
+				{ count: 6, id: "2165B9B5D736A45E", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 8, id: "25575BA4F8DC7440", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 96 of 104 • 6 Emerald, 8 Gold"
+			tasks: [{ count: 2L, only_from_crafting: true, id: "420CBC6A95DDF639", item: { count: 1, id: "minecraft:chiseled_bookshelf" }, type: "item" }]
+			title: "Chiselled Bookshelf"
+			x: 3.0d
+			y: 19.5d
+		}
+		{
+			dependencies: ["0D36E58FE4A5BEF3"]
+			description: ["The guild wants 2 freshly crafted Decorated Pot.", "", "&bObjective:&r Craft 2 Decorated Pot", "&7Only items you craft yourself count."]
+			id: "42A323CE4C5797CC"
+			rewards: [
+				{ count: 6, id: "36179C141CE98CA7", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "1578513BEAF760EF", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 97 of 104 • 6 Emerald, 9 Gold"
+			tasks: [{ count: 2L, only_from_crafting: true, id: "5D07B5023AECFD20", item: { count: 1, id: "minecraft:decorated_pot" }, type: "item" }]
+			title: "Clay Pots"
+			x: 1.5d
+			y: 19.5d
+		}
+		{
+			dependencies: ["42A323CE4C5797CC"]
+			description: ["Prove your hands are skilled: craft 1 Brush yourself.", "", "&bObjective:&r Craft 1 Brush", "&7Only items you craft yourself count."]
+			id: "4F511E08BB47BA08"
+			rewards: [
+				{ count: 6, id: "3D65A269841B5F7D", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 9, id: "16434D6A200BF9F0", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 98 of 104 • 6 Emerald, 9 Gold"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "59716CCC9401C9D3", item: { count: 1, id: "minecraft:brush" }, type: "item" }]
+			title: "Archaeologist's Brush"
+			x: 0.0d
+			y: 19.5d
+		}
+		{
+			dependencies: ["4F511E08BB47BA08"]
+			description: ["Workshop order: 4 Magenta Banner, made by you.", "", "&bObjective:&r Craft 4 Magenta Banner", "&7Only items you craft yourself count."]
+			id: "3314E71F77751F85"
+			rewards: [
+				{ count: 7, id: "0643FC03BD1AAC68", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+			]
+			subtitle: "Entry 99 of 104 • 7 Emerald"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "553664BF235B3B96", item: { count: 1, id: "minecraft:magenta_banner" }, type: "item" }]
+			title: "Guild Banners"
+			x: 0.0d
+			y: 21.0d
+		}
+		{
+			dependencies: ["3314E71F77751F85"]
+			description: ["The guild wants 4 freshly crafted Sea Lantern.", "", "&bObjective:&r Craft 4 Sea Lantern", "&7Only items you craft yourself count.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Iron Glaive&7 (enchanted)"]
+			id: "4D7A67FFA265182E"
+			rewards: [
+				{ count: 1, id: "280B505CA9FE4707", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 8, id: "353AADD1B884152D", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "40E5F81E55F0AA73", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 4, "minecraft:unbreaking": 3, "minecraft:looting": 2 } } }, count: 1, id: "simplyswords:iron_glaive" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 100 of 104 • 1 Diamond, 8 Emerald + Gear"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "2B76311A486C921D", item: { count: 1, id: "minecraft:sea_lantern" }, type: "item" }]
+			title: "&6&lSea Lanterns"
+			x: 1.5d
+			y: 21.0d
+		}
+		{
+			dependencies: ["4D7A67FFA265182E"]
+			description: ["Prove your hands are skilled: craft 4 End Rod yourself.", "", "&bObjective:&r Craft 4 End Rod", "&7Only items you craft yourself count."]
+			id: "4B4727ECF7615D0C"
+			rewards: [
+				{ count: 7, id: "3A436AEC5B8817AF", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "388AA21012886620", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 101 of 104 • 7 Emerald, 1 Gold"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "3472AA22995D680B", item: { count: 1, id: "minecraft:end_rod" }, type: "item" }]
+			title: "Light Rods"
+			x: 3.0d
+			y: 21.0d
+		}
+		{
+			dependencies: ["4B4727ECF7615D0C"]
+			description: ["Accomplish \"Surge Protector\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Surge Protector\""]
+			id: "10007973AE92E231"
+			rewards: [
+				{ count: 7, id: "6B5A02277418FE8E", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 1, id: "43F4322DD5D594EE", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 102 of 104 • 7 Emerald, 1 Gold"
+			tasks: [{ advancement: "minecraft:adventure/lightning_rod_with_villager_no_fire", criterion: "", id: "247460EC94749765", type: "advancement" }]
+			title: "Surge Protector"
+			x: 4.5d
+			y: 21.0d
+		}
+		{
+			dependencies: ["10007973AE92E231"]
+			description: ["Earn the advancement \"Sound of Music\".", "", "&bObjective:&r Earn the advancement \"Sound of Music\""]
+			id: "0A8E16D80B24502A"
+			rewards: [
+				{ count: 7, id: "268E30660C339542", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 2, id: "14ADF272B898BAD0", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 103 of 104 • 7 Emerald, 2 Gold"
+			tasks: [{ advancement: "minecraft:adventure/play_jukebox_in_meadows", criterion: "", id: "72EAEFD5848F5711", type: "advancement" }]
+			title: "Sound of Music"
+			x: 6.0d
+			y: 21.0d
+		}
+		{
+			dependencies: ["0A8E16D80B24502A"]
+			description: ["Experience is the true currency. Offer 20 levels.", "", "&bObjective:&r Spend 20 XP levels", "&7The levels are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coins and gear:", "&d  ✦ Diamond Longsword&7 (enchanted)", "&6&lFinal entry of this Ledger."]
+			id: "5040655B903EF064"
+			rewards: [
+				{ count: 2, id: "42120F2492C3D846", item: { count: 1, id: "lightmanscurrency:coin_diamond" }, type: "item" }
+				{ count: 9, id: "63B162C7838913AC", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ id: "1D0ED628830AC632", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness": 4, "minecraft:unbreaking": 3, "minecraft:looting": 2 } } }, count: 1, id: "simplyswords:diamond_longsword" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 2.0d
+			subtitle: "Entry 104 of 104 • 2 Diamond, 9 Emerald + Gear"
+			tasks: [{ id: "6A3CCC5EAA79CB41", points: false, type: "xp", value: 20L }]
+			title: "&6&lMaster Craftsman"
+			x: 7.5d
+			y: 21.0d
+		}
+	]
+	subtitle: ["Builders, tinkerers and redstone wizards are paid in full. &7(Unlocks after entry 50 of the previous Ledger.)"]
+	title: "&6Ledger III: Artisan's Guild"
+}
