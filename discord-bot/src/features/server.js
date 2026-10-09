@@ -347,8 +347,10 @@ function buildMessage(guild, msg) {
   });
   const components = [];
   for (let n = 0; n < (msg.buttons ?? []).length; n += 5) {
-    components.push(new ActionRowBuilder().addComponents(msg.buttons.slice(n, n + 5).map((b) =>
-      new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(b.label).setURL(b.url).setEmoji(b.emoji ?? "🔗"))));
+    components.push(new ActionRowBuilder().addComponents(msg.buttons.slice(n, n + 5).map((b) => b.id
+      // { id } = a bot button (for example "link:start"), { url } = a link button.
+      ? new ButtonBuilder().setStyle(b.style === "secondary" ? ButtonStyle.Secondary : ButtonStyle.Success).setCustomId(b.id).setLabel(b.label).setEmoji(b.emoji ?? "✨")
+      : new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(b.label).setURL(b.url).setEmoji(b.emoji ?? "🔗"))));
   }
   return { embeds, components, allowedMentions: { parse: [] } };
 }
@@ -464,7 +466,7 @@ export const commands = [
         .addBooleanOption((o) => o.setName("confirm").setDescription("Set to True to really apply").setRequired(true)))
       .addSubcommand((s) => s.setName("content").setDescription("Post or refresh the info channels, ticket panel and role panel")
         .addStringOption((o) => o.setName("only").setDescription("Just one channel (default: all of them)").addChoices(
-          ...["welcome", "rules", "links", "faq", "commands", "mods", "quests", "bosses", "tickets", "roles"].map((v) => ({ name: v, value: v }))))
+          ...["welcome", "link", "rules", "links", "faq", "commands", "mods", "quests", "bosses", "tickets", "roles"].map((v) => ({ name: v, value: v }))))
         .addBooleanOption((o) => o.setName("clear_old").setDescription("Archive (to bot-logs) and remove the old messages in those channels first")))
       .addSubcommand((s) => s.setName("restore").setDescription("Put permissions, categories and order back from a backup")
         .addBooleanOption((o) => o.setName("confirm").setDescription("Set to True to really restore").setRequired(true))

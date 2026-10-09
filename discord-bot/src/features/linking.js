@@ -1,7 +1,7 @@
 // Minecraft <-> Discord account linking.
 // /link <name> sends a 6-digit code to that player IN-GAME (via RCON), /verify <code> proves they own it.
 import crypto from "node:crypto";
-import { SlashCommandBuilder } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, SlashCommandBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 import { db, save } from "../store.js";
 import { rcon, rconConfigured } from "../rcon.js";
 import { config, embed, ok, fail, EPHEMERAL, MC_NAME, head, isStaff, sendTo, ts } from "../util.js";
@@ -31,12 +31,9 @@ async function applyLinkedRole(member, name) {
   if (config.linking.setNickname && member.manageable) await member.setNickname(name).catch(() => {});
 }
 
-export const commands = [
-  {
-    data: new SlashCommandBuilder().setName("link").setDescription("Link your Minecraft account to Discord")
-      .addStringOption((o) => o.setName("minecraft_name").setDescription("Your exact Minecraft username").setRequired(true)),
-    async execute(i) {
-      const name = i.options.getString("minecraft_name").trim();
+// Shared by /link and the "Link my account" button.
+async function startLink(i, rawName) {
+      const name = String(rawName ?? "").trim();
       if (!MC_NAME.test(name)) return i.reply({ flags: EPHEMERAL, embeds: [fail("That isn't a valid Minecraft username.")] });
       if (db.links[i.user.id]) return i.reply({ flags: EPHEMERAL, embeds: [fail(`You're already linked to **${db.links[i.user.id].name}**. Use \`/unlink\` first.`)] });
       const taken = findLinkByName(name);
@@ -54,7 +51,7 @@ export const commands = [
           { text: "[OVERTHRONE] ", color: "dark_red", bold: true },
           { text: "Discord link code: ", color: "gray" },
           { text: code, color: "gold", bold: true, clickEvent: { action: "copy_to_clipboard", value: code } },
-          { text: `\nRequested by ${i.user.username}. Type /verify ${code} in Discord. Not you? Ignore this.`, color: "dark_gray" }
+          { text: `\nRequested by ${i.user.username}. Click "Enter code" in Discord (or type /verify ${code}). Not you? Ignore this.`, color: "dark_gray" }
         ]);
       } catch (e) {
         return i.editReply({ embeds: [fail("Couldn't reach the Minecraft server: " + e.message)] });
@@ -64,20 +61,21 @@ export const commands = [
       }
       db.pendingLinks[i.user.id] = { name, code, expires: Date.now() + CODE_TTL };
       save();
-      await i.editReply({ embeds: [embed("Check your Minecraft chat 📬",
-        `We sent a **6-digit code** to **${name}** in-game.\nRun \`/verify code:<the code>\` here within 10 minutes.`).setThumbnail(head(name))] });
+      await i.editReply({
+        embeds: [embed("Check your Minecraft chat 📬",
+          `We sent a **6-digit code** to **${name}** in-game.\nClick **Enter code** below (or run \`/verify\`) within 10 minutes.`).setThumbnail(head(name))],
+        components: [new ActionRowBuilder().addComponents(new ButtonBuilder().setCustomId("link:code").setLabel("Enter code").setEmoji("🔑").setStyle(ButtonStyle.Success))]
+      });
     }
-  },
-  {
-    data: new SlashCommandBuilder().setName("verify").setDescription("Finish linking with the code from Minecraft")
-      .addStringOption((o) => o.setName("code").setDescription("The 6-digit code you got in-game").setRequired(true)),
-    async execute(i) {
+
+// Shared by /verify and the "Enter code" button.
+async function finishVerify(i, rawCode) {
       const p = db.pendingLinks[i.user.id];
-      const code = i.options.getString("code").trim();
+      const code = String(rawCode ?? "").trim();
       if (!p || p.expires < Date.now()) {
         delete db.pendingLinks[i.user.id];
         save();
-        return i.reply({ flags: EPHEMERAL, embeds: [fail("No active code. Run `/link` first.")] });
+        return i.reply({ flags: EPHEMERAL, embeds: [fail("No active code. Click **Link my account** (or run `/link`) first.")] });
       }
       if (p.code !== code) return i.reply({ flags: EPHEMERAL, embeds: [fail("Wrong code. Check your Minecraft chat.")] });
       if (findLinkByName(p.name)) return i.reply({ flags: EPHEMERAL, embeds: [fail("That account was just linked by someone else.")] });
@@ -96,6 +94,37 @@ export const commands = [
       await i.editReply({ embeds: [ok(`Linked! Your Discord is now connected to **${name}**.`).setThumbnail(head(name))] });
       sendTo(i.guild, "logs", { embeds: [embed("🔗 Account linked", `${i.user} ↔ **${name}**`).setThumbnail(head(name))] });
     }
+
+const modal = (id, title, field, label, placeholder, min, max) => new ModalBuilder().setCustomId(id).setTitle(title).addComponents(
+  new ActionRowBuilder().addComponents(new TextInputBuilder().setCustomId(field).setLabel(label).setPlaceholder(placeholder)
+    .setStyle(TextInputStyle.Short).setMinLength(min).setMaxLength(max).setRequired(true)));
+
+// The link panel's buttons open small forms, so players never have to type a command.
+export const buttons = {
+  async "link:start"(i) {
+    if (db.links[i.user.id]) return i.reply({ flags: EPHEMERAL, embeds: [ok(`You're already linked to **${db.links[i.user.id].name}**.`)] });
+    return i.showModal(modal("link:name", "Link your Minecraft account", "name", "Your exact Minecraft username", "Be online on the server first", 3, 16));
+  },
+  async "link:code"(i) {
+    return i.showModal(modal("link:verify", "Enter your link code", "code", "6-digit code from Minecraft chat", "123456", 6, 6));
+  }
+};
+
+export const modals = {
+  async "link:name"(i) { return startLink(i, i.fields.getTextInputValue("name")); },
+  async "link:verify"(i) { return finishVerify(i, i.fields.getTextInputValue("code")); }
+};
+
+export const commands = [
+  {
+    data: new SlashCommandBuilder().setName("link").setDescription("Link your Minecraft account to Discord")
+      .addStringOption((o) => o.setName("minecraft_name").setDescription("Your exact Minecraft username").setRequired(true)),
+    async execute(i) { return startLink(i, i.options.getString("minecraft_name")); }
+  },
+  {
+    data: new SlashCommandBuilder().setName("verify").setDescription("Finish linking with the code from Minecraft")
+      .addStringOption((o) => o.setName("code").setDescription("The 6-digit code you got in-game").setRequired(true)),
+    async execute(i) { return finishVerify(i, i.options.getString("code")); }
   },
   {
     data: new SlashCommandBuilder().setName("unlink").setDescription("Unlink your Minecraft account")

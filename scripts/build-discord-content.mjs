@@ -67,6 +67,29 @@ channels.push({ key: "welcome", messages: [{
   buttons: [btn("Website", "/", "🌐"), btn("Player Guide", "/guide", "📖"), btn("Rules", "/rules", "📜"), btn("Vote", "/vote", "🗳️")]
 }] });
 
+// ---------------------------------------------------------------- account linking panel
+channels.push({ key: "link", messages: [{
+  embeds: [{
+    title: "🔗 Link your Minecraft account",
+    description: [
+      "Connect your Minecraft account to Discord to get the **Linked** role and your in-game perks.",
+      "",
+      "**How it works**",
+      "🔸 **1.** Join the server (`overthronesmp.net`) and stay online.",
+      "🔸 **2.** Click **Link my account** below and type your exact Minecraft username.",
+      "🔸 **3.** A **6-digit code** appears in your Minecraft chat. You can click it to copy it.",
+      "🔸 **4.** Click **Enter code** and paste it. Done!",
+      "",
+      "Codes expire after 10 minutes. Only you can see the bot's replies here.",
+      "",
+      "⚠️ **Staff will never ask for your code.** Never share it with anyone.",
+      "Trouble linking? Open a ticket in {#tickets}."
+    ].join("\n"),
+    thumbnail: "https://overthronesmp.net/images/icon-192.png"
+  }],
+  buttons: [{ label: "Link my account", id: "link:start", emoji: "🔗" }, { label: "Enter code", id: "link:code", emoji: "🔑", style: "secondary" }]
+}] });
+
 // ---------------------------------------------------------------- rules
 channels.push({ key: "rules", messages: pack([
   { title: "📜 OVERTHRONE Rules", description: RULES_INTRO.join("\n\n") + `\n\n*Last updated ${updated}.*` },

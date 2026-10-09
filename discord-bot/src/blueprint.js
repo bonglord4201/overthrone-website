@@ -35,6 +35,7 @@ export const LAYOUT = [
   { key: "info", name: "📌 INFORMATION", aliases: ["the throne", "throne", "information", "info", "overthrone", "overthrone smp", "start here", "important"], perm: "readonly", channels: [
     { key: "welcome", name: "👋・welcome", aliases: ["welcome"] },                       // the info page
     { key: "arrived", name: "🛬・arrived", aliases: ["arrived", "arrivals", "joins", "new members", "welcomes"], bot: "welcome", optional: true },   // join messages
+    { key: "link", name: "🔗・link-minecraft-account", aliases: ["link minecraft account", "link minecraft account here", "link account", "link your account", "account linking", "link"] },   // the link panel
     { key: "rules", name: "📜・rules", aliases: ["rules", "server rules"] },
     { key: "announcements", name: "📢・announcements", aliases: ["announcements", "announcement", "news"] },
     { key: "updates", name: "💻・updates", aliases: ["updates", "update", "server updates"] },
