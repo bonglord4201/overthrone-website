@@ -19,6 +19,8 @@ const BACKUP_DIR = path.resolve("data", "backups");
 const CONTENT_FILE = new URL("../../content.json", import.meta.url);
 const TEXTISH = [ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.GuildForum];
 const isVoice = (c) => c.type === ChannelType.GuildVoice || c.type === ChannelType.GuildStageVoice;
+// Threads (and anything else without its own permissions) are never touched or backed up.
+const hasPerms = (c) => !c.isThread?.() && Boolean(c.permissionOverwrites);
 
 db.server ??= { layout: {}, roles: {}, createdRoles: [], createdChannels: [], content: {}, lastBackup: null, firstBackup: null };
 
@@ -42,7 +44,7 @@ function matchRoles(guild) {
 }
 
 function matchLayout(guild) {
-  const all = [...guild.channels.cache.values()];
+  const all = [...guild.channels.cache.values()].filter(hasPerms);
   const used = new Set();
   const dupes = [];
   const result = [];
@@ -128,7 +130,7 @@ const everyoneCanSee = (guild, ch) => ch.permissionsFor(guild.roles.everyone)?.h
 function backup(guild, label) {
   const snap = {
     label, takenAt: new Date().toISOString(), guild: guild.id,
-    channels: [...guild.channels.cache.values()].map((c) => ({
+    channels: [...guild.channels.cache.values()].filter(hasPerms).map((c) => ({
       id: c.id, name: c.name, type: c.type, parentId: c.parentId, position: c.rawPosition,
       overwrites: [...c.permissionOverwrites.cache.values()].map((o) => ({ id: o.id, type: o.type, allow: o.allow.bitfield.toString(), deny: o.deny.bitfield.toString() }))
     })),
