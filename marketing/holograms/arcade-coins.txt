@@ -1,0 +1,23 @@
+Stand on the light strip in front of the wall, between the two red panels, then paste:
+
+/summon text_display ~ ~4.45 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_coins"],transformation:[1.3f,0f,0f,0f,0f,1.3f,0f,0f,0f,0f,1.3f,0f,0f,0f,0f,1f],text:'{"text":"✦ HOW TO EARN COINS ✦","color":"gold","bold":true}'}
+
+/summon text_display ~ ~4.15 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_coins"],transformation:[1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'{"text":"━━━━━━━━━━━━━━━━","color":"dark_red"}'}
+
+/summon text_display ~ ~3.85 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_coins"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"☰ Complete quests at Questmaster Orin","color":"green"}'}
+
+/summon text_display ~ ~3.6 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_coins"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"✪ ","color":"light_purple"},"Clear Rank Trials for bonus loot"]'}
+
+/summon text_display ~ ~3.35 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_coins"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"⇄ ","color":"aqua"},"Trade & sell loot to other hunters"]'}
+
+/summon text_display ~ ~3.1 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_coins"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"⚔ ","color":"red"},"Hunt, grind & level up"]'}
+
+/summon text_display ~ ~2.6 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_coins"],transformation:[1.5f,0f,0f,0f,0f,1.5f,0f,0f,0f,0f,1.5f,0f,0f,0f,0f,1f],text:'{"text":"100% FREE TO PLAY","color":"green","bold":true}'}
+
+/summon text_display ~ ~2.3 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_coins"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"Everything here is earned in-game","color":"white"}'}
+
+/summon text_display ~ ~2.05 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_coins"],transformation:[0.8f,0f,0f,0f,0f,0.8f,0f,0f,0f,0f,0.8f,0f,0f,0f,0f,1f],text:'{"text":"No real money needed. This is a game shop!","color":"gray","italic":true}'}
+
+Remove: /kill @e[type=text_display,tag=arc_coins,distance=..8]
+Move up: /execute as @e[type=text_display,tag=arc_coins,distance=..8] at @s run tp @s ~ ~0.25 ~
+Move down: /execute as @e[type=text_display,tag=arc_coins,distance=..8] at @s run tp @s ~ ~-0.25 ~
