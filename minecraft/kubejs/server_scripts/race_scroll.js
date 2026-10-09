@@ -15,8 +15,16 @@ const KEY = 'overthrone_race_scroll_last'
 const NPC_NAME = 'Seris the Rebirth Keeper'
 const NPC_RANGE = 8
 
-const nearSeris = (player) => player.server.runCommandSilent(
-  `execute as ${player.username} at @s if entity @e[type=easy_npc:humanoid,distance=..${NPC_RANGE},name="${NPC_NAME}"]`) > 0
+// Looks for an entity named Seris within NPC_RANGE blocks. Checked directly: on 1.21 a command's
+// result can't be read back from runCommandSilent, so a selector check would always fail.
+const nearSeris = (player) => {
+  const box = player.getBoundingBox().inflate(NPC_RANGE)
+  const list = player.level.getEntities(player, box)
+  for (let i = 0; i < list.size(); i++) {
+    if (String(list.get(i).getName().getString()) === NPC_NAME) return true
+  }
+  return false
+}
 
 // The NPC runs the command as itself; a player typing it may only use their own name.
 const target = (ctx, Arguments) => {
@@ -51,12 +59,13 @@ const claim = (player) => {
     player.server.runCommandSilent(`playsound minecraft:block.note_block.bass player ${player.username} ~ ~ ~ 0.6 0.7`)
     return 0
   }
-  // vanilla /give drops the scroll at the player's feet if their inventory is full
-  const given = player.server.runCommandSilent(`give ${player.username} ${SCROLL} 1`)
-  if (!given) {
+  let scroll = null
+  try { scroll = Item.of(SCROLL) } catch (e) { scroll = null }
+  if (!scroll || scroll.isEmpty()) {
     player.tell('§c✦ The Race Reset Scroll could not be given. Please tell staff.')
     return 0
   }
+  player.give(scroll)   // drops at the player's feet if the inventory is full
   player.persistentData.putDouble(KEY, Date.now())
   player.tell('§5✦ §dSeris: §7Take it, and choose wisely. §8(Next scroll in 12h)')
   player.server.runCommandSilent(`playsound minecraft:block.enchantment_table.use player ${player.username} ~ ~ ~ 0.8 1.2`)
