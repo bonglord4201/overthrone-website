@@ -60,6 +60,22 @@ npm run deploy    # wrangler deploy, then apply any new D1 migrations
 If the Worker is deployed by Cloudflare's Git integration (Workers Builds), set its
 **Deploy command** to `npm run deploy` so migrations are applied too.
 
+## Trailer video
+
+The homepage trailer lives in `public/video/` as WebM (VP9, played by Chrome/Firefox/Edge) and
+MP4 (H.264, used by Safari/iOS), each kept under Cloudflare's 25 MiB per-file asset limit.
+`/video/*` runs through the Worker (`src/video.js`) so browsers get proper byte-range (206)
+responses, which Safari needs to play and seek. After replacing a video, run
+`node scripts/video-sizes.mjs` to refresh `public/video/sizes.json`. Re-encode recipe
+(source = full-quality render from `marketing/trailer/`):
+
+```bash
+ffmpeg -i trailer.mp4 -c:v libvpx-vp9 -b:v 1600k -pass 1 -an -f webm /dev/null
+ffmpeg -i trailer.mp4 -c:v libvpx-vp9 -b:v 1600k -pass 2 -c:a libopus -b:a 128k overthrone-trailer.webm
+ffmpeg -i trailer.mp4 -c:v libx264 -preset slow -b:v 1600k -pass 1 -an -f null /dev/null
+ffmpeg -i trailer.mp4 -c:v libx264 -preset slow -b:v 1600k -pass 2 -c:a aac -b:a 128k -movflags +faststart overthrone-trailer.mp4
+```
+
 ## Admin sign-in (one-time setup)
 
 1. Cloudflare dashboard → **Zero Trust** → **Access** → **Applications** → **Add an application** → **Self-hosted**.

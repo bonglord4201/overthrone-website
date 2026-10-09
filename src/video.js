@@ -13,7 +13,7 @@ export async function serveVideo(request, env) {
   const asset = await env.ASSETS.fetch(new Request(request.url, { method: "GET" }));
   if (asset.status !== 200) return asset;
 
-  const size = Number(asset.headers.get("Content-Length"));
+  const size = Number(asset.headers.get("Content-Length")) || await knownSize(request, env);
   const headers = new Headers({
     "Content-Type": asset.headers.get("Content-Type") || "application/octet-stream",
     "Accept-Ranges": "bytes",
@@ -48,7 +48,27 @@ export async function serveVideo(request, env) {
     asset.body?.cancel();
     return new Response(null, { status: 206, headers });
   }
-  return new Response(asset.body.pipeThrough(slice(start, end)), { status: 206, headers });
+  let body = asset.body.pipeThrough(slice(start, end));
+  if (typeof FixedLengthStream === "function") {   // Workers runtime: send a real Content-Length
+    const fixed = new FixedLengthStream(end - start + 1);
+    body.pipeTo(fixed.writable).catch(() => {});
+    body = fixed.readable;
+  }
+  return new Response(body, { status: 206, headers });
+}
+
+// The asset server does not always send Content-Length (it streams), so the byte
+// size of each video is also listed in public/video/sizes.json. Regenerate it
+// with `node scripts/video-sizes.mjs` whenever a video file changes.
+async function knownSize(request, env) {
+  try {
+    const res = await env.ASSETS.fetch(new Request(new URL("/video/sizes.json", request.url)));
+    if (!res.ok) return NaN;
+    const sizes = await res.json();
+    return Number(sizes[new URL(request.url).pathname.split("/").pop()]);
+  } catch {
+    return NaN;
+  }
 }
 
 // Passes through only bytes start..end (inclusive) of the stream, then stops reading.
