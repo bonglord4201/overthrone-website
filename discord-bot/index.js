@@ -13,8 +13,9 @@ import * as levels from "./src/features/levels.js";
 import * as giveaways from "./src/features/giveaways.js";
 import * as community from "./src/features/community.js";
 import * as minecraft from "./src/features/minecraft.js";
+import * as server from "./src/features/server.js";
 
-const features = [info, linking, setup, events, tickets, moderation, levels, giveaways, community, minecraft];
+const features = [info, linking, setup, events, tickets, moderation, levels, giveaways, community, minecraft, server];
 
 if (!process.env.DISCORD_TOKEN) {
   console.error("DISCORD_TOKEN is missing. Create a .env file next to index.js (copy .env.example).");

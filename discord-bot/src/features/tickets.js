@@ -51,6 +51,18 @@ async function closeTicket(channel, closedBy, reason) {
   return true;
 }
 
+// The ticket panel message (used by /ticket panel and /server content).
+export function panelMessage() {
+  const desc = config.tickets.map((t) => `${t.emoji} **${t.label}**: ${t.description}`).join("\n");
+  return {
+    embeds: [embed("🎫 OVERTHRONE Support", `Need help? Pick a button below to open a **private** ticket that only you and staff can see.\n\n${desc}\n\n*Don't open tickets for fun. Abusing tickets will get you punished.*`).setThumbnail(config.logo)],
+    components: panelRows()
+  };
+}
+
+// Roles that can see and answer tickets: the support roles from /server apply, or the Staff role.
+const supportRoles = () => [...new Set([...(db.settings.supportRoles ?? []), db.settings.roles.staff].filter(Boolean))];
+
 export const commands = [
   {
     data: new SlashCommandBuilder().setName("ticket").setDescription("Ticket tools")
@@ -62,8 +74,7 @@ export const commands = [
       const sub = i.options.getSubcommand();
       if (sub === "panel") {
         if (!i.memberPermissions.has(PermissionFlagsBits.ManageGuild)) return i.reply({ flags: EPHEMERAL, embeds: [fail("Admins only.")] });
-        const desc = config.tickets.map((t) => `${t.emoji} **${t.label}** — ${t.description}`).join("\n");
-        await i.channel.send({ embeds: [embed("🎫 OVERTHRONE Support", `Need help? Pick a button below to open a **private** ticket with staff.\n\n${desc}\n\n*Abusing tickets will get you punished.*`).setThumbnail(config.logo)], components: panelRows() });
+        await i.channel.send(panelMessage());
         return i.reply({ flags: EPHEMERAL, embeds: [ok("Ticket panel posted.")] });
       }
       const t = db.tickets[i.channelId];
@@ -97,6 +108,7 @@ export const buttons = {
     await i.deferReply({ flags: EPHEMERAL });
     const number = ++db.ticketCounter;
     const staffRole = db.settings.roles.staff;
+    const support = supportRoles().filter((id) => i.guild.roles.cache.has(id));
     const allow = [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.AttachFiles, PermissionFlagsBits.ReadMessageHistory, PermissionFlagsBits.EmbedLinks];
     const channel = await i.guild.channels.create({
       name: `${type.id}-${String(number).padStart(4, "0")}-${i.user.username}`.toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 90),
@@ -106,7 +118,7 @@ export const buttons = {
       permissionOverwrites: [
         { id: i.guild.roles.everyone.id, deny: [PermissionFlagsBits.ViewChannel] },
         { id: i.user.id, allow },
-        ...(staffRole ? [{ id: staffRole, allow }] : []),
+        ...support.map((id) => ({ id, allow })),
         { id: i.guild.members.me.id, allow: [...allow, PermissionFlagsBits.ManageChannels] }
       ]
     });
