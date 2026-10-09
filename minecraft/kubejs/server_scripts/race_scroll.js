@@ -17,14 +17,24 @@ const NPC_RANGE = 8
 
 // Looks for an entity named Seris within NPC_RANGE blocks. Checked directly: on 1.21 a command's
 // result can't be read back from runCommandSilent, so a selector check would always fail.
-const nearSeris = (player) => {
-  const box = player.getBoundingBox().inflate(NPC_RANGE)
+const findSeris = (player, range) => {
+  const box = player.getBoundingBox().inflate(range)
   const list = player.level.getEntities(player, box)
   for (let i = 0; i < list.size(); i++) {
-    if (String(list.get(i).getName().getString()) === NPC_NAME) return true
+    if (String(list.get(i).getName().getString()) === NPC_NAME) return list.get(i)
   }
-  return false
+  return null
 }
+const nearSeris = (player) => findSeris(player, NPC_RANGE) !== null
+
+// Floating text above Seris (a vanilla text_display). Placed with /racescroll hologram.
+const HOLO_TAG = 'seris_holo'
+const HOLO_HEIGHT = 2.55   // above her name tag
+const HOLO_TEXT = '{"text":"","extra":['
+  + '{"text":"✦ REBIRTH KEEPER ✦\\\\n","color":"#E0B13E","bold":true},'
+  + '{"text":"Free Race Reset Scroll\\\\n","color":"light_purple"},'
+  + '{"text":"1 every 12 hours\\\\n","color":"gray"},'
+  + '{"text":"Right-click to claim","color":"yellow"}]}'
 
 // The NPC runs the command as itself; a player typing it may only use their own name.
 const target = (ctx, Arguments) => {
@@ -88,6 +98,27 @@ ServerEvents.commandRegistry(event => {
       player.tell(left > 0 ? `§5✦ §dSeris: §7Your next scroll is ready in §d${fmt(left)}§7.` : '§5✦ §dSeris: §7A scroll is waiting for you. Ask and it is yours.')
       return 1
     })))
+    .then(Commands.literal('hologram')   // op: stand near Seris and run it; run again to move/refresh it
+      .requires(src => src.hasPermission(2))
+      .executes(ctx => {
+        const player = ctx.source.playerOrException
+        const seris = findSeris(player, 16)
+        player.server.runCommandSilent(`kill @e[type=minecraft:text_display,tag=${HOLO_TAG}]`)
+        if (!seris) {
+          player.tell('§cStand within 16 blocks of Seris the Rebirth Keeper and try again.')
+          return 0
+        }
+        const x = seris.x, y = seris.y + HOLO_HEIGHT, z = seris.z
+        player.server.runCommandSilent(`execute at ${player.username} run summon minecraft:text_display ${x} ${y} ${z} `
+          + `{Tags:["${HOLO_TAG}"],billboard:"center",alignment:"center",shadow:1b,line_width:200,background:1610612736,text:'${HOLO_TEXT}'}`)
+        player.tell('§a✦ Hologram placed above Seris. Remove it with /racescroll hologram remove')
+        return 1
+      })
+      .then(Commands.literal('remove').executes(ctx => {
+        ctx.source.server.runCommandSilent(`kill @e[type=minecraft:text_display,tag=${HOLO_TAG}]`)
+        ctx.source.sendSystemMessage(Text.of('Seris hologram removed.'))
+        return 1
+      })))
     .then(Commands.literal('check')
       .requires(src => src.hasPermission(2))
       .then(Commands.argument('target', Arguments.PLAYER.create(event)).executes(ctx => {
