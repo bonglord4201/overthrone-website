@@ -21,9 +21,9 @@ H = BAR / 2
 SHOTS = [
     # intro - slow, atmospheric (0 - 12.8 s)
     ('c1', 0.5,  [(2 * BAR, 1.25)], {'fade': True}),
-    ('c6', 0.5,  [(2 * BAR, 1.25)], {'fade': True}),
-    ('c3', 6.0,  [(2 * BAR, 1.25)], {'fade': True}),
-    ('c4', 2.5,  [(2 * BAR, 1.25)], {'fade': True}),
+    ('c6', 0.5,  [(1.5 * BAR, 1.7)], {'fade': True}),     # dragon: keep it moving
+    ('c3', 6.0,  [(1.5 * BAR, 1.3)], {'fade': True}),
+    ('c4', 2.8,  [(3 * BAR, 0.8)], {'fade': True}),       # realms portal: slow, let it breathe
     # title slam (12.8 - 16.0) is a generated card, see build_trailer.py
     ('TITLE', 0, [(2 * BAR, 1.0)], {}),
     # the hub - fast flyovers (16.0 - 35.2)
@@ -33,7 +33,7 @@ SHOTS = [
     ('c3', 0.0,  [(2 * BAR, 1.6)], {}),
     ('c5', 4.5,  [(BAR, 1.5)], {}),
     ('c5', 10.0, [(BAR, 1.6)], {}),
-    ('c4', 13.0, [(2 * BAR, 1.6)], {}),
+    ('c4', 13.0, [(2 * BAR, 1.0)], {}),                   # realm portals, real speed
     ('c6', 6.5,  [(2 * BAR, 1.6)], {}),
     # build-up (35.2 - 38.4)
     ('c12', 1.5, [(BAR, 0.7)], {}),

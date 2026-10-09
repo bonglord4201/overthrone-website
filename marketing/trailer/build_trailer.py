@@ -14,7 +14,6 @@ CLIPS, MUSIC, FONTS, OUT = sys.argv[1:5]
 HERE = os.path.dirname(os.path.abspath(__file__))
 LOGO = os.path.join(HERE, '..', 'server-icon', 'overthrone-logo-enhanced.png')
 W, H, FPS = 1280, 720, T.FPS
-BARS = 92                                         # 2.39:1 letterbox; also hides the HUD corners
 RED, WHITE = (226, 38, 58, 255), (245, 242, 236, 255)
 BEBAS = os.path.join(FONTS, 'BebasNeue-Regular.ttf')
 tmp = tempfile.mkdtemp(prefix='trailer_')
@@ -36,7 +35,11 @@ def render_piece(job):
     path, clip, src, dur, speed, crop, grade, extra = job
     n = frames(dur)
     vf = []
-    if crop: vf.append('crop=948:533:60:107,scale=1280:720:flags=lanczos')     # zoom past the Epic Fight HUD
+    # full-frame 16:9 with no black bars: zoom in just enough to push the HUD out of frame
+    box = {'hud': '948:533:60:107',          # Epic Fight skill/stamina panel on the right
+           'rpg': '1080:608:100:58',         # "Epic Fight is testing version" text top-right
+           'default': '1104:621:88:0'}[crop]   # small corner icons at the bottom
+    vf += ['crop=' + box, 'scale=1280:720:flags=lanczos', 'unsharp=5:5:0.5']
     vf.append('setpts=%.4f*(PTS-STARTPTS)' % (1 / speed))
     if speed < 1:
         vf.append('minterpolate=fps=%d:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1' % FPS)
@@ -148,6 +151,8 @@ def card_end(outdir, n):
         f.save(os.path.join(outdir, '%04d.png' % i), compress_level=1)
 
 # ---------------------------------------------------------------- build the shot list
+def s_off(pieces, j): return sum(d for d, _ in pieces[:j])
+
 jobs, order, t = [], [], 0.0
 intro_parts = []
 for k, (clip, src, pieces, opt) in enumerate(T.SHOTS):
@@ -159,8 +164,9 @@ for k, (clip, src, pieces, opt) in enumerate(T.SHOTS):
         for j, (dur, speed) in enumerate(pieces):
             path = os.path.join(tmp, 'p%02d_%d.mp4' % (k, j))
             extra_dur = 0.4 if opt.get('fade') else 0.0         # overlap for the intro dissolves
-            jobs.append((path, clip, s, dur + extra_dur, speed, opt.get('crop', False), grade_for(t), []))
-            (intro_parts if opt.get('fade') else order).append(('piece', path, t, dur))
+            mode = 'hud' if opt.get('crop') else 'rpg' if clip in ('c7', 'c8') or (clip == 'c6' and src >= 15) else 'default'
+            jobs.append((path, clip, s, dur + extra_dur, speed, mode, grade_for(t), []))
+            (intro_parts if opt.get('fade') else order).append(('piece', path, t + s_off(pieces, j), dur))
             s += dur * speed
     t += shot_dur
 assert abs(t - T.TOTAL) < 1e-6, t
@@ -173,7 +179,7 @@ with cf.ThreadPoolExecutor(4) as ex:
 intro = os.path.join(tmp, 'intro.mp4')
 fc, prev = [], '0:v'
 for i in range(1, len(intro_parts)):
-    fc.append('[%s][%d:v]xfade=transition=fade:duration=0.4:offset=%.2f[x%d]' % (prev, i, T.bars(2 * i), i))
+    fc.append('[%s][%d:v]xfade=transition=fade:duration=0.4:offset=%.2f[x%d]' % (prev, i, intro_parts[i][2], i))
     prev = 'x%d' % i
 fc.append('[%s]fade=in:st=0:d=1.2,trim=duration=%.2f,setpts=PTS-STARTPTS[v]' % (prev, T.bars(T.TITLE)))
 args = []
@@ -232,8 +238,7 @@ for s in slows:                                            # quick flash on each
         for j, a in enumerate((0.3, 0.12)):
             t0 = s + j / FPS
             post.append("drawbox=x=0:y=0:w=iw:h=ih:color=white@%.2f:t=fill:enable='between(t,%.3f,%.3f)'" % (a, t0, t0 + 0.99 / FPS))
-post += ['drawbox=x=0:y=0:w=iw:h=%d:color=black:t=fill' % BARS, 'drawbox=x=0:y=ih-%d:w=iw:h=%d:color=black:t=fill' % (BARS, BARS),
-         'noise=alls=4:allf=t', 'fade=out:st=%.2f:d=1.4' % (T.TOTAL - 1.4), 'format=yuv420p']
+post += ['noise=alls=4:allf=t', 'fade=out:st=%.2f:d=1.4' % (T.TOTAL - 1.4), 'format=yuv420p']
 fc.append('[%s]%s[v]' % (prev, ','.join(post)))
 
 args = ['-i', body]
