@@ -2,8 +2,8 @@
 
     python3 build_trailer.py <clips_dir> <music.wav> <fonts_dir> <out.mp4>
 
-<clips_dir> holds c1.mp4 ... c12.mp4 (INTRO_1 ... INTRO_12). <fonts_dir> holds Bebas Neue and
-Shippori Mincho B1 (both SIL Open Font License, from github.com/google/fonts).
+<clips_dir> holds c1.mp4 ... c12.mp4 (INTRO_1 ... INTRO_12). <fonts_dir> holds Bebas Neue
+(SIL Open Font License, from github.com/google/fonts).
 The edit itself (shots, speeds, captions, hits) lives in timeline.py.
 """
 import concurrent.futures as cf, math, os, shutil, subprocess, sys, tempfile
@@ -17,7 +17,6 @@ W, H, FPS = 1280, 720, T.FPS
 BARS = 92                                         # 2.39:1 letterbox; also hides the HUD corners
 RED, WHITE = (226, 38, 58, 255), (245, 242, 236, 255)
 BEBAS = os.path.join(FONTS, 'BebasNeue-Regular.ttf')
-MINCHO = os.path.join(FONTS, 'ShipporiMinchoB1-ExtraBold.ttf')
 tmp = tempfile.mkdtemp(prefix='trailer_')
 X264 = ['-c:v', 'libx264', '-preset', 'veryfast', '-crf', '12', '-pix_fmt', 'yuv420p', '-r', str(FPS), '-an']
 
@@ -92,39 +91,33 @@ def animate(layer, n, style, outdir):
             frame.alpha_composite(l, ((W - w) // 2, (H - h) // 2)) if s >= 1 else frame.alpha_composite(l)
         frame.save(os.path.join(outdir, '%04d.png' % i), compress_level=1)
 
-def caption_layer(style, en, jp, sub):
+def caption_layer(style, en, sub):
     if style == 'word':
         return text_layer([(en, font(BEBAS, 190), WHITE, 14, H / 2 - 105)])
     if style == 'soft':
-        layer = text_layer([(jp, font(MINCHO, 34), RED, 14, H / 2 + 120), (en, font(BEBAS, 46), WHITE, 16, H / 2 + 168)])
-        return layer
+        return text_layer([(en, font(BEBAS, 50), WHITE, 18, H / 2 + 150)])
     big = 128 if len(en) <= 14 else 104
-    lines = [(jp, font(MINCHO, 46), RED, 18, H / 2 - 134), (en, font(BEBAS, big), WHITE, 10, H / 2 - 70)]
-    if sub: lines.append((sub, font(BEBAS, 34), WHITE, 6, H / 2 + 62))
+    lines = [(en, font(BEBAS, big), WHITE, 10, H / 2 - 70)]
+    if sub: lines.append((sub, font(BEBAS, 34), RED, 6, H / 2 + 62))
     layer = text_layer(lines)
-    d = ImageDraw.Draw(layer)
-    jw = d.textlength(jp, font=font(MINCHO, 46)) + 18 * (len(jp) - 1)
-    red_rule(d, W / 2, H / 2 - 100, 70, jw / 2 + 24)
+    ImageDraw.Draw(layer).line([(W / 2 - 60, H / 2 - 92), (W / 2 + 60, H / 2 - 92)], fill=RED, width=4)
     return layer
 
 def card_title(outdir, n):
-    """Logo slam with a giant faint kanji 覇 ('supremacy') behind it."""
+    """Logo slam with a red glow pulsing behind it."""
     os.makedirs(outdir, exist_ok=True)
     logo = Image.open(LOGO).convert('RGBA')
-    kanji = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-    ImageDraw.Draw(kanji).text((W / 2, H / 2), '覇', font=font(MINCHO, 400), fill=(226, 38, 58, 46), anchor='mm')
-    kana = text_layer([('オーバースローン', font(MINCHO, 28), WHITE, 16, 560)])
+    glow = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    ImageDraw.Draw(glow).ellipse([W / 2 - 260, H / 2 - 260, W / 2 + 260, H / 2 + 220], fill=(226, 38, 58, 90))
+    glow = glow.filter(ImageFilter.GaussianBlur(90))
     for i in range(n):
         f = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-        ks = 1.0 + 0.08 * i / n
-        k = kanji.resize((int(W * ks), int(H * ks)), Image.BILINEAR)
-        f.alpha_composite(k, ((W - k.width) // 2, (H - k.height) // 2))
+        g = glow.copy(); ga = 0.5 + 0.5 * math.exp(-i / 10)
+        g.putalpha(g.split()[3].point(lambda v: int(v * ga)))
+        f.alpha_composite(g)
         size = int(400 * (1.0 + 0.5 * (1 - ease_out(i / 6)) + 0.04 * i / n))
         lg = logo.resize((size, size), Image.LANCZOS)
-        f.alpha_composite(lg, ((W - size) // 2, (H - size) // 2 - 20))
-        if i >= 9:
-            kk = kana.copy(); a = min(1, (i - 9) / 8)
-            kk.putalpha(kk.split()[3].point(lambda v: int(v * a))); f.alpha_composite(kk)
+        f.alpha_composite(lg, ((W - size) // 2, (H - size) // 2 - 10))
         a = min(1, (n - 1 - i) / 6)
         if a < 1: f.putalpha(f.split()[3].point(lambda v: int(v * a)))
         f.save(os.path.join(outdir, '%04d.png' % i), compress_level=1)
@@ -134,7 +127,7 @@ def card_end(outdir, n):
     logo = shadowed(Image.open(LOGO).convert('RGBA').resize((330, 330), Image.LANCZOS), 12)
     tx = 600
     parts = [   # (appear at beat, layer)
-        (2, text_layer([('王座を掴め', font(MINCHO, 38), RED, 14, 196, tx + 190)])),
+        (2, text_layer([('YOUR THRONE AWAITS', font(BEBAS, 40), RED, 10, 192, tx + 230)])),
         (4, text_layer([('JOIN NOW', font(BEBAS, 132), WHITE, 10, 238, tx + 230)])),
         (6, text_layer([('51.161.196.66', font(BEBAS, 66), WHITE, 6, 380, tx + 230)])),
         (7, text_layer([('OVERTHRONESMP.NET', font(BEBAS, 40), RED, 8, 456, tx + 230)])),
@@ -212,9 +205,9 @@ run(['-f', 'concat', '-safe', '0', '-i', listfile, '-c', 'copy', body])
 
 # ---------------------------------------------------------------- captions
 cap_inputs = []
-for k, (bar, length, style, en, jp, sub) in enumerate(T.CAPTIONS):
+for k, (bar, length, style, en, sub) in enumerate(T.CAPTIONS):
     d = os.path.join(tmp, 'cap%02d' % k)
-    animate(caption_layer(style, en, jp, sub), frames(T.bars(length)), style, d)
+    animate(caption_layer(style, en, sub), frames(T.bars(length)), style, d)
     cap_inputs.append((d, T.bars(bar)))
 
 # ---------------------------------------------------------------- final pass

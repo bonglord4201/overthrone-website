@@ -81,20 +81,20 @@ def shot_times():
             t += dur
     return starts, slows, round(t, 4)
 
-# ---- text: (start bar, length in bars, style, english, japanese, subtitle)
+# ---- text: (start bar, length in bars, style, text, subtitle)
 # style: 'soft' fades, 'slam' punches in on the beat, 'word' is a short one-word hit.
 CAPTIONS = [
-    (0.5, 3.0,  'soft', 'A NEW REALM AWAITS', '天空の王国', None),
-    (10.2, 1.7, 'slam', 'THE HUB', '天空都市', None),
-    (22, 2.0,   'slam', 'MASTER THE BLADE', '剣を極めよ', None),
-    (25, 1.5,   'slam', 'EPIC FIGHT COMBAT', '戦闘', None),
-    (29, 0.5,   'word', 'DODGE', None, None),
-    (29.5, 0.5, 'word', 'DASH', None, None),
-    (30, 0.75,  'word', 'STRIKE', None, None),
-    (32, 1.0,   'slam', 'LEGENDARY WEAPONS', '伝説の武器', None),
-    (42.2, 1.7, 'slam', 'THE RPG WORLD', '冒険の世界', 'QUESTS  ·  BOSSES  ·  LOOT'),
-    (45.2, 1.7, 'slam', 'ARCADE & TRADE HALL', '遊技場', None),
-    (49.0, 1.0, 'slam', 'CLAIM YOUR THRONE', '王座', None),
+    (0.5, 3.0,  'soft', 'A NEW REALM AWAITS', None),
+    (10.2, 1.7, 'slam', 'THE HUB', None),
+    (22, 2.0,   'slam', 'MASTER THE BLADE', None),
+    (25, 1.5,   'slam', 'EPIC FIGHT COMBAT', None),
+    (29, 0.5,   'word', 'DODGE', None),
+    (29.5, 0.5, 'word', 'DASH', None),
+    (30, 0.75,  'word', 'STRIKE', None),
+    (32, 1.0,   'slam', 'LEGENDARY WEAPONS', None),
+    (42.2, 1.7, 'slam', 'THE RPG WORLD', 'QUESTS  ·  BOSSES  ·  LOOT'),
+    (45.2, 1.7, 'slam', 'ARCADE & TRADE HALL', None),
+    (49.0, 1.0, 'slam', 'CLAIM YOUR THRONE', None),
 ]
 
 # ---- big hits (seconds): white flash + camera shake + impact sound
