@@ -333,41 +333,56 @@ impact(at(24), 1.0); crash(at(32), 0.9)
 melody(32, 'koto', 0, 1.0)
 for b in (28, 30): flute(74, at(b), 2 * B - BEAT, 0.7)
 
-# hero shot (bars 40-41): everything drops out, gong, flute
-impact(at(40), 0.9)
-koto_gliss(at(40), up=False, v=1.0)
-koto_trem(62, at(40), 2 * B, 0.8)
-flute(69, at(40, 0.5), 1.5 * B, 1.0)
-bass808(D2 - 12, at(40), 2 * B, v=0.9)
-riser(at(42), '2s', 0.8)
+# hero shot (2 bars): everything drops out, gong, flute
+HR, BS, RP, EN = T.HERO, T.BOSS, T.RPG, T.END
+impact(at(HR), 0.9)
+koto_gliss(at(HR), up=False, v=1.0)
+koto_trem(62, at(HR), 2 * B, 0.8)
+flute(69, at(HR, 0.5), 1.5 * B, 1.0)
+bass808(D2 - 12, at(HR), 2 * B, v=0.9)
+riser(at(BS), '2s', 0.9)
 
-# RPG world (bars 42-51): darker progression, groove + flute
-impact(at(42), 0.8)
-for b in range(42, 52):
-    r = ROOT_RPG[(b - 42) % 4]
-    drums_bar(b, 1 if b < 46 else 2)
+# bosses + hordes (10 bars): darkest, heaviest section
+impact(at(BS), 1.0)
+for b in range(BS, RP):
+    r = ROOT_RPG[(b - BS) % 4]
+    drums_bar(b, 2)
+    bass_bar(b, r, glide=r - 5 if (b - BS) % 4 == 0 else None)
+    riff_bar(b, r, 12 if b >= BS + 4 else 0, 0.8, RIFF_B if (b - BS) % 2 else [62, 63, 67, 63, 69, 67, 63, 62])
+    if (b - BS) % 4 == 0: pad([r + 24, r + 31, r + 36], at(b), 4 * B, 0.6, 1500)
+for b in (BS, BS + 4): koto_trem(74, at(b), 2 * B, 0.6)
+gong(at(BS + 6), 0.6); crash(at(BS + 6), 0.8)
+for k in range(8): taiko(at(RP - 1, k * 0.5), 0.55 + 0.05 * k)
+riser(at(RP), '2s', 0.9)
+
+# RPG world (10 bars): darker progression, groove + flute
+impact(at(RP), 0.8)
+for b in range(RP, EN):
+    r = ROOT_RPG[(b - RP) % 4]
+    drums_bar(b, 1 if b < RP + 4 else 2)
     bass_bar(b, r)
-    riff_bar(b, r, 0, 0.7, RIFF_A if (b - 42) % 2 == 0 else [62, 63, 67, 63, 69, 67, 63, 62])
-    if (b - 42) % 4 == 0: pad([r + 24, r + 31], at(b), 4 * B, 0.5, 1200)
-melody(44, 'flute', 0, 1.0)
-for k in range(8): taiko(at(51, k * 0.5), 0.5 + 0.05 * k)
-riser(at(52), '2s', 0.9)
+    riff_bar(b, r, 0, 0.7, RIFF_A if (b - RP) % 2 == 0 else [62, 63, 67, 63, 69, 67, 63, 62])
+    if (b - RP) % 4 == 0: pad([r + 24, r + 31], at(b), 4 * B, 0.5, 1200)
+melody(RP + 2, 'flute', 0, 1.0)
+for k in range(8): taiko(at(EN - 1, k * 0.5), 0.5 + 0.05 * k)
+riser(at(EN), '2s', 0.9)
 
-# end card (bars 52-57): final hit, ring-out, "don, don, DON"
-impact(at(52), 1.1)
-koto_gliss(at(52), up=True, v=0.8)
-pad([D2, A2, 62, 69], at(52), 6 * B, 0.7, 1300)
-bass808(D2 - 12, at(52), 3 * B, v=1.0)
-for bo, beat, m, beats in [(53, 0, 74, 2), (53, 2, 75, 1), (53, 3, 74, 1), (54, 0, 69, 4)]:
-    koto(m, at(bo, beat), 0.9, 0.0, 3)
-flute(62, at(54), 3 * B, 0.9)
-taiko(at(56, 0), 0.9); taiko(at(56, 0.75), 0.9); taiko(at(56, 1.5), 1.2, semis=-5); gong(at(56, 1.5), 0.6)
+# end card (6 bars): final hit, ring-out, "don, don, DON"
+impact(at(EN), 1.1)
+koto_gliss(at(EN), up=True, v=0.8)
+pad([D2, A2, 62, 69], at(EN), 6 * B, 0.7, 1300)
+bass808(D2 - 12, at(EN), 3 * B, v=1.0)
+for bo, beat, m, beats in [(1, 0, 74, 2), (1, 2, 75, 1), (1, 3, 74, 1), (2, 0, 69, 4)]:
+    koto(m, at(EN + bo, beat), 0.9, 0.0, 3)
+flute(62, at(EN + 2), 3 * B, 0.9)
+taiko(at(EN + 4, 0), 0.9); taiko(at(EN + 4, 0.75), 0.9); taiko(at(EN + 4, 1.5), 1.2, semis=-5); gong(at(EN + 4, 1.5), 0.6)
 
 # sound effects locked to the picture
 starts, slows, _ = T.shot_times()
 for s in starts[6:13]: whoosh(s)                      # hub flyover cuts
 for s in slows: shing(s)                              # slow-motion sword moments
 for s in starts[15:33]: whoosh(s, 0.6)
+for s in starts[34:44]: whoosh(s, 0.6)                # boss / horde cuts
 
 # ---------------------------------------------------------------- mix
 def reverb(x, seconds, mix, seed):

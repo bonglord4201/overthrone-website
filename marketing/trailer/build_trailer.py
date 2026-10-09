@@ -2,7 +2,7 @@
 
     python3 build_trailer.py <clips_dir> <music.wav> <fonts_dir> <out.mp4>
 
-<clips_dir> holds c1.mp4 ... c12.mp4 (INTRO_1 ... INTRO_12). <fonts_dir> holds Bebas Neue
+<clips_dir> holds c1.mp4 ... c12.mp4 (INTRO_1 ... INTRO_12) and f1.mp4 / f2.mp4 (the fight clips). <fonts_dir> holds Bebas Neue
 (SIL Open Font License, from github.com/google/fonts).
 The edit itself (shots, speeds, captions, hits) lives in timeline.py.
 """
@@ -23,7 +23,10 @@ def run(args): subprocess.run(['ffmpeg', '-v', 'error', '-y'] + args, check=True
 def frames(sec): return int(round(sec * FPS))
 
 # ---------------------------------------------------------------- per-section colour grade
-def grade_for(t):
+def grade_for(t, lift=1.0):
+    if lift != 1.0:            # dark night / nether fight footage: lift the shadows, keep the punch
+        return ('eq=contrast=1.12:saturation=1.2:gamma=%.2f:brightness=0.02,'
+                'colorbalance=rs=-0.03:bs=0.05:rh=0.05:bh=-0.03' % lift)
     if t < T.bars(T.BUILD):    # sky city: warm highlights, rich colour
         return 'eq=contrast=1.08:saturation=1.22:gamma=0.98,colorbalance=rh=0.04:bh=-0.04:bs=0.03'
     if t < T.bars(T.RPG):      # combat: punchy, cool shadows
@@ -38,7 +41,8 @@ def render_piece(job):
     # full-frame 16:9 with no black bars: zoom in just enough to push the HUD out of frame
     box = {'hud': '948:533:60:107',          # Epic Fight skill/stamina panel on the right
            'rpg': '1080:608:100:58',         # "Epic Fight is testing version" text top-right
-           'default': '1104:621:88:0'}[crop]   # small corner icons at the bottom
+           'full': '1280:720:0:0',           # clean footage, nothing to hide
+           'default': '1104:621:88:0'}.get(crop, crop)   # small corner icons at the bottom; else a custom box
     vf += ['crop=' + box, 'scale=1280:720:flags=lanczos', 'unsharp=5:5:0.5']
     vf.append('setpts=%.4f*(PTS-STARTPTS)' % (1 / speed))
     if speed < 1:
@@ -164,8 +168,9 @@ for k, (clip, src, pieces, opt) in enumerate(T.SHOTS):
         for j, (dur, speed) in enumerate(pieces):
             path = os.path.join(tmp, 'p%02d_%d.mp4' % (k, j))
             extra_dur = 0.4 if opt.get('fade') else 0.0         # overlap for the intro dissolves
-            mode = 'hud' if opt.get('crop') else 'rpg' if clip in ('c7', 'c8') or (clip == 'c6' and src >= 15) else 'default'
-            jobs.append((path, clip, s, dur + extra_dur, speed, mode, grade_for(t), []))
+            mode = ('hud' if opt.get('crop') else opt['box'] if 'box' in opt else 'full' if clip.startswith('f')
+                    else 'rpg' if clip in ('c7', 'c8') or (clip == 'c6' and src >= 15) else 'default')
+            jobs.append((path, clip, s, dur + extra_dur, speed, mode, grade_for(t, opt.get('lift', 1.0)), []))
             (intro_parts if opt.get('fade') else order).append(('piece', path, t + s_off(pieces, j), dur))
             s += dur * speed
     t += shot_dur

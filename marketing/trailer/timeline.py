@@ -11,8 +11,8 @@ FPS = 30
 def bars(b): return round(b * BAR, 4)
 
 # ---- sections (in bars)
-INTRO, TITLE, HUB, BUILD, COMBAT, HERO, RPG, END, FINISH = 0, 8, 10, 22, 24, 40, 42, 52, 58
-TOTAL = bars(FINISH)                       # 92.8 s
+INTRO, TITLE, HUB, BUILD, COMBAT, HERO, BOSS, RPG, END, FINISH = 0, 8, 10, 22, 24, 40, 42, 52, 62, 68
+TOTAL = bars(FINISH)                       # 108.8 s
 
 # ---- shots, in order. Each shot: (clip, source start, [(output seconds, speed), ...], options)
 # speed > 1 = sped up (flyovers), speed < 1 = slow motion (frame-interpolated).
@@ -59,7 +59,19 @@ SHOTS = [
     ('c10', 24.0, [(H, 0.8)], {'crop': True}),
     # hero shot (64.0 - 67.2)
     ('c12', 23.0, [(2 * BAR, 0.6)], {}),
-    # the RPG world (67.2 - 83.2)
+    # bosses + hordes (67.2 - 83.2): the two fight clips. 'box' crops their baked-in black bars,
+    # 'lift' brightens the dark night / nether footage.
+    ('f2', 1.4,  [(1.5 * BAR, 0.8)], {'box': '924:520:240:100', 'lift': 1.25}),   # Lycanth reveal
+    ('f2', 4.1,  [(H, 1.0), (H, 0.5)], {'lift': 1.2}),
+    ('f1', 1.2,  [(BAR, 1.0)], {'box': '960:540:160:80', 'lift': 1.4}),             # wither horde
+    ('f1', 4.8,  [(H, 1.0), (H, 0.5)], {'lift': 1.4}),
+    ('f1', 9.0,  [(BAR, 1.0)], {'lift': 1.4}),
+    ('f2', 14.0, [(BAR, 1.0)], {'lift': 1.2}),                                      # vs the Hollow
+    ('f2', 16.4, [(H, 1.0), (H, 0.6)], {'lift': 1.15}),
+    ('f2', 22.4, [(BAR, 1.0)], {'lift': 1.1}),
+    ('f1', 18.1, [(H, 1.0), (H, 0.5)], {'lift': 1.4}),
+    ('f2', 24.2, [(H, 0.6)], {'lift': 1.1}),
+    # the RPG world (83.2 - 99.2)
     ('c6', 15.0, [(2 * BAR, 1.4)], {}),
     ('c7', 2.5,  [(BAR, 1.4)], {}),
     ('c7', 9.5,  [(2 * BAR, 1.3)], {}),
@@ -67,7 +79,7 @@ SHOTS = [
     ('c7', 19.0, [(2 * BAR, 1.5)], {}),
     ('c8', 0.0,  [(BAR, 1.2)], {}),
     ('c9', 8.4,  [(H, 1.0), (H, 0.5)], {}),
-    # end card (83.2 - 92.8)
+    # end card (99.2 - 108.8)
     ('END', 0, [(6 * BAR, 1.0)], {}),
 ]
 
@@ -85,17 +97,19 @@ def shot_times():
 # style: 'soft' fades, 'slam' punches in on the beat, 'word' is a short one-word hit.
 CAPTIONS = [
     (0.5, 3.0,  'soft', 'A NEW REALM AWAITS', None),
-    (10.2, 1.7, 'slam', 'THE HUB', None),
-    (22, 2.0,   'slam', 'MASTER THE BLADE', None),
-    (25, 1.5,   'slam', 'EPIC FIGHT COMBAT', None),
-    (29, 0.5,   'word', 'DODGE', None),
-    (29.5, 0.5, 'word', 'DASH', None),
-    (30, 0.75,  'word', 'STRIKE', None),
-    (32, 1.0,   'slam', 'LEGENDARY WEAPONS', None),
-    (42.2, 1.7, 'slam', 'THE RPG WORLD', 'QUESTS  ·  BOSSES  ·  LOOT'),
-    (45.2, 1.7, 'slam', 'ARCADE & TRADE HALL', None),
-    (49.0, 1.0, 'slam', 'CLAIM YOUR THRONE', None),
+    (HUB + 0.2, 1.7, 'slam', 'THE HUB', None),
+    (BUILD, 2.0, 'slam', 'MASTER THE BLADE', None),
+    (COMBAT + 1, 1.5, 'slam', 'EPIC FIGHT COMBAT', None),
+    (COMBAT + 5, 0.5, 'word', 'DODGE', None),
+    (COMBAT + 5.5, 0.5, 'word', 'DASH', None),
+    (COMBAT + 6, 0.75, 'word', 'STRIKE', None),
+    (COMBAT + 8, 1.0, 'slam', 'LEGENDARY WEAPONS', None),
+    (BOSS + 2.5, 1.5, 'slam', 'SURVIVE THE HORDES', None),
+    (BOSS + 5.5, 1.0, 'slam', 'SLAY THE BOSSES', None),
+    (RPG + 0.2, 1.7, 'slam', 'THE RPG WORLD', 'QUESTS  ·  BOSSES  ·  LOOT'),
+    (RPG + 3.2, 1.7, 'slam', 'ARCADE & TRADE HALL', None),
+    (RPG + 7.0, 1.0, 'slam', 'CLAIM YOUR THRONE', None),
 ]
 
 # ---- big hits (seconds): white flash + camera shake + impact sound
-IMPACTS = [bars(TITLE), bars(COMBAT), bars(HERO), bars(RPG), bars(END)]
+IMPACTS = [bars(TITLE), bars(COMBAT), bars(HERO), bars(BOSS), bars(RPG), bars(END)]
