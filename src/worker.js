@@ -77,6 +77,10 @@ function applySettings(res, s, path) {
         if (isHttpUrl(s.tebex_url)) el.setAttribute("data-tebex-url", s.tebex_url);
       }
     })
+    .on("a[data-modpack]", {
+      element(el) { if (isHttpUrl(s.modpack_url)) { el.setAttribute("href", s.modpack_url); el.removeAttribute("hidden"); } }
+    })
+    .on("[data-modpack-fallback]", { element(el) { if (isHttpUrl(s.modpack_url)) el.setAttribute("hidden", ""); } })
     .on("a[data-social]", {
       element(el) {
         const v = s["social_" + el.getAttribute("data-social")];

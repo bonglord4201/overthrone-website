@@ -60,6 +60,15 @@ npm run deploy    # wrangler deploy, then apply any new D1 migrations
 If the Worker is deployed by Cloudflare's Git integration (Workers Builds), set its
 **Deploy command** to `npm run deploy` so migrations are applied too.
 
+## Player Guide
+
+`/guide` is generated: edit `scripts/guide-data.mjs` (sections, keybinds, forum posts) and run
+`node scripts/build-pages.mjs`. That rewrites `public/guide.html` and
+`migrations/0006_guides_and_forums.sql` (guide posts in the forums, the Player Guides category,
+the RPG world realm). Migrations only add what's missing, so edits made in `/admin` are kept.
+The "Get the modpack" button uses **Admin → Site Settings → Modpack download URL**; while that is
+empty it points players to the Discord.
+
 ## Trailer video
 
 The homepage trailer lives in `public/video/` as WebM (VP9, played by Chrome/Firefox/Edge) and
