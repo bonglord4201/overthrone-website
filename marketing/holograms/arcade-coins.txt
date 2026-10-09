@@ -3,7 +3,7 @@ STEP 0 - delete the old one:
 
 STEP 1 - walk right up against the pillar between the two red panels, stand in the middle of it, look straight at it, and paste (don't move until step 4):
 
-/execute positioned ^ ^ ^0.29 run summon text_display ~ ~1.95 ~ {Tags:["acn"],background:-804125688,transformation:[38f,0f,0f,0f,0f,12f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'" "'}
+/execute positioned ^ ^ ^0.29 run summon text_display ~ ~1.95 ~ {Tags:["acn"],background:-804125688,transformation:[43f,0f,0f,-0.54f,0f,12f,0f,-0.12f,0f,0f,1f,0f,0f,0f,0f,1f],text:'" "'}
 /execute positioned ^ ^ ^0.26 run summon text_display ~ ~4.45 ~ {Tags:["acn","acnt"],transformation:[1.3f,0f,0f,0f,0f,1.3f,0f,0f,0f,0f,1.3f,0f,0f,0f,0f,1f],text:'{"text":"✦ HOW TO EARN COINS ✦","color":"gold","bold":true}'}
 /execute positioned ^ ^ ^0.26 run summon text_display ~ ~4.17 ~ {Tags:["acn","acnt"],transformation:[1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'{"text":"━━━━━━━━━━━━━━━━","color":"dark_red"}'}
 /execute positioned ^ ^ ^0.26 run summon text_display ~ ~3.9 ~ {Tags:["acn","acnt"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"☰ Complete quests at Questmaster Orin","color":"green"}'}
@@ -24,7 +24,7 @@ south: /execute as @e[type=text_display,tag=acn,distance=..6] run data merge ent
 east: /execute as @e[type=text_display,tag=acn,distance=..6] run data merge entity @s {Rotation:[90f,0f]}
 west: /execute as @e[type=text_display,tag=acn,distance=..6] run data merge entity @s {Rotation:[-90f,0f]}
 
-PANEL SIZE (change 38f = width, 12f = height in BOTH spots):
-/execute as @e[type=text_display,tag=acn,tag=!acnt,distance=..6] run data merge entity @s {transformation:[38f,0f,0f,0f,0f,12f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f]}
+PANEL SIZE (43f = width, 12f = height, -0.54f = left/right, -0.12f = up/down in BOTH spots):
+/execute as @e[type=text_display,tag=acn,tag=!acnt,distance=..6] run data merge entity @s {transformation:[43f,0f,0f,-0.54f,0f,12f,0f,-0.12f,0f,0f,1f,0f,0f,0f,0f,1f]}
 
 Delete: /kill @e[type=text_display,tag=acn,distance=..8]
