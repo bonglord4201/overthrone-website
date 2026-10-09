@@ -5,6 +5,8 @@
 //   public/rules.html                         /rules
 //   public/vote.html                          /vote (vote links come from Admin → Site Settings → Voting)
 //   migrations/0003_rules_forum_post.sql      pinned "Official Server Rules" post in Forums → Rules
+//   public/guide.html                         /guide (Player Guide, from scripts/guide-data.mjs)
+//   migrations/0006_guides_and_forums.sql     guide posts + missing categories in the forums, RPG world realm
 //
 // Both pages reuse the store page's head, header and footer so they match the site.
 
@@ -13,6 +15,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { RULES_UPDATED, RULES_INTRO, RULE_SECTIONS } from "./rules-data.mjs";
 import { VOTE_SLOTS } from "./vote-data.mjs";
+import { GUIDE_UPDATED, GUIDE_INTRO, SECTIONS, FORUM_POSTS, NEW_CATEGORIES, CATEGORY_WELCOMES } from "./guide-data.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -33,7 +36,7 @@ function page({ slug, title, description, main }) {
     .replaceAll("Store | OVERTHRONE SMP", `${title} | OVERTHRONE SMP`)
     .replace('data-page="store"', `data-page="${slug}"`)
     .replace('<li><a href="/store" aria-current="page">Store</a></li>', '<li><a href="/store">Store</a></li>');
-  if (slug === "vote") html = html.replace('<li><a href="/vote">Vote</a></li>', '<li><a href="/vote" aria-current="page">Vote</a></li>');
+  html = html.replace(`<li><a href="/${slug}">`, `<li><a href="/${slug}" aria-current="page">`);
   fs.writeFileSync(path.join(root, "public", slug + ".html"), html);
   console.log("wrote public/" + slug + ".html");
 }
@@ -157,3 +160,123 @@ WHERE slug = 'rules'
 `;
 fs.writeFileSync(path.join(root, "migrations/0003_rules_forum_post.sql"), sql);
 console.log("wrote migrations/0003_rules_forum_post.sql");
+
+// ---------------------------------------------------------------- /guide
+// **bold** and [text](/link or https://...) on top of HTML escaping.
+const fmt = (s) => esc(s)
+  .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+  .replace(/\[([^\]]+)\]\(((?:https?:\/\/|\/)[^\s)]+)\)/g, (_, t, u) =>
+    /^https?:/.test(u) ? `<a class="inline-link" href="${u}" target="_blank" rel="noopener noreferrer">${t}</a>` : `<a class="inline-link" href="${u}">${t}</a>`);
+const kbd = (k) => k === "Unbound" ? '<span class="g-unbound">Not set</span>'
+  : k.split(/\s([+/])\s/).map((part, i) => (i % 2 ? `<span class="g-kbd-sep">${part}</span>` : `<kbd>${esc(part)}</kbd>`)).join("");
+const guideUpdated = new Date(GUIDE_UPDATED + "T00:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+const DISCORD = "https://discord.gg/overthronesmp";
+
+const blockHtml = (b) => {
+  if (b.p) return `<p>${fmt(b.p)}</p>`;
+  if (b.steps) return `<ol class="g-steps">${b.steps.map((st, i) => `<li><span class="g-step-num">${String(i + 1).padStart(2, "0")}</span><div><h3>${esc(st.t)}</h3><p>${fmt(st.d)}</p>${
+    st.modpack ? `<p class="g-step-actions"><a class="btn btn-sm btn-primary" data-modpack href="${DISCORD}" target="_blank" rel="noopener noreferrer" hidden>Download the modpack</a><a class="btn btn-sm btn-ghost" href="${DISCORD}" data-discord data-modpack-fallback target="_blank" rel="noopener noreferrer">Get it in Discord</a></p>` : ""}${
+    st.copy ? `<p class="g-step-actions"><button class="btn btn-sm btn-ghost" type="button" data-copy-ip><span data-label>Copy address</span></button></p>` : ""}</div></li>`).join("")}</ol>`;
+  if (b.keys) return `<div class="g-keys"><h3>${esc(b.keys.title)}</h3><table class="g-table"><tbody>${b.keys.rows.map(([k, d]) => `<tr><th scope="row">${kbd(k)}</th><td>${fmt(d)}</td></tr>`).join("")}</tbody></table></div>`;
+  if (b.table) {
+    const keyed = b.table.head[0] === "Key";
+    return `<div class="g-table-wrap"><table class="g-table g-grid"><thead><tr>${b.table.head.map((x) => `<th scope="col">${esc(x)}</th>`).join("")}</tr></thead><tbody>${
+      b.table.rows.map((r) => `<tr>${r.map((c, i) => i === 0 ? `<th scope="row">${keyed ? kbd(c) : esc(c)}</th>` : `<td>${keyed && i === 3 && !/^Unbind/.test(c) ? kbd(c.replace(/ or .*/, "")) + esc(c.replace(/^[^ ]+( or .*)?$/, "$1")) : fmt(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  }
+  if (b.list) return `<ul class="g-list">${b.list.map((x) => `<li>${fmt(x)}</li>`).join("")}</ul>`;
+  if (b.callout) return `<div class="g-callout g-callout-${b.callout.kind}"><span class="g-callout-label">${b.callout.kind === "warn" ? "Warning" : "Tip"}</span><p>${fmt(b.callout.text)}</p></div>`;
+  if (b.chips) return `<ul class="g-chips">${b.chips.map((c) => `<li><code>${esc(c.t)}</code><span>${esc(c.d)}</span></li>`).join("")}</ul>`;
+  if (b.coins) return `<ol class="g-coins" aria-label="Coin values, lowest to highest">${b.coins.map((c, i) => `<li><span class="g-coin g-coin-${c.toLowerCase()}" aria-hidden="true"></span><strong>${esc(c)}</strong>${i ? `<small>= 10 ${esc(b.coins[i - 1])}</small>` : "<small>Base coin</small>"}</li>`).join("")}</ol>`;
+  if (b.cards) return `<div class="g-cards">${b.cards.map((c) => `<article class="g-card"><span class="g-card-kicker">${esc(c.k)}</span><h3>${esc(c.t)}</h3><p>${fmt(c.d)}</p></article>`).join("")}</div>`;
+  if (b.mods) return `<div class="g-mods">${b.mods.map((g) => `<div class="g-mod-group"><h3>${esc(g.group)}</h3><ul>${g.items.map((m) => `<li>${esc(m)}</li>`).join("")}</ul></div>`).join("")}</div>`;
+  if (b.faq) return `<div class="g-faq">${b.faq.map((f) => `<details><summary>${esc(f.q)}</summary><p>${fmt(f.a)}</p></details>`).join("")}</div>`;
+  throw new Error("Unknown guide block: " + JSON.stringify(b).slice(0, 80));
+};
+
+const guideToc = SECTIONS.map((s, i) => `<li><a href="#${s.id}"><span>${String(i + 1).padStart(2, "0")}</span>${esc(s.title)}</a></li>`).join("");
+const guideSections = SECTIONS.map((s, i) => `
+    <section class="g-section" id="${s.id}" aria-labelledby="${s.id}-title">
+      <h2 id="${s.id}-title"><span class="rule-num">${i + 1}</span>${esc(s.title)}</h2>
+      <p class="g-intro">${fmt(s.intro)}</p>
+      ${s.blocks.map(blockHtml).join("\n      ")}
+    </section>`).join("");
+
+page({
+  slug: "guide",
+  title: "Player Guide",
+  description: "How to join OVERTHRONE SMP: modpack install, keybinds and key conflict fixes, quests, coins, warps, bosses and the full mod list.",
+  main: `<main id="main">
+<div class="page-head">
+  ${embers}
+  <div class="container">
+    <p class="eyebrow">OVERTHRONE SMP</p>
+    <h1>Player Guide</h1>
+    <p>${esc(GUIDE_INTRO)}</p>
+    <p class="g-updated">Updated ${guideUpdated}</p>
+  </div>
+</div>
+<div class="container guide-page">
+  <nav class="guide-toc" aria-label="Guide sections"><p class="guide-toc-title">On this page</p><ol>${guideToc}</ol></nav>
+  <div class="guide-body">${guideSections}
+    <div class="rules-help">
+      <h2>Still stuck?</h2>
+      <p>Open a General Support ticket in our Discord and staff will help you out.</p>
+      <p><a class="btn btn-primary" href="${DISCORD}" data-discord target="_blank" rel="noopener noreferrer">Join the Discord</a> <a class="btn btn-ghost" href="/forums?c=guides">Guides in the forums</a></p>
+    </div>
+  </div>
+</div>
+</main>`
+});
+
+// ---------------------------------------------------------------- guide posts in the forums
+const blockText = (b) => {
+  if (b.p) return b.p;
+  if (b.steps) return b.steps.map((st, i) => `- **${i + 1}. ${st.t}** ${st.d}`).join("\n");
+  if (b.keys) return `**${b.keys.title}**\n` + b.keys.rows.map(([k, d]) => `- **${k === "Unbound" ? "Not set" : k}**: ${d}`).join("\n");
+  if (b.table) {
+    if (b.table.head[0] === "Key") return b.table.rows.map((r) => {
+      const shared = r[1].startsWith("(") ? "" : ` (shared by ${r[1]})`;
+      const fix = /^Unbind it/.test(r[3]) ? `unbind **${r[2]}** ${r[3].replace(/^Unbind it\s*/, "")}` : `change **${r[2]}** to **${r[3]}**`;
+      return `- **${r[0]}**: ${fix.trim()}${shared}`;
+    }).join("\n");
+    return `**${b.table.head.join(" · ")}**\n` + b.table.rows.map((r) => `- **${r[0]}**: ${r.slice(1).join(" · ")}`).join("\n");
+  }
+  if (b.list) return b.list.map((x) => `- ${x}`).join("\n");
+  if (b.callout) return b.callout.text;
+  if (b.chips) return b.chips.map((c) => `- **${c.t}**: ${c.d}`).join("\n");
+  if (b.coins) return "**Coins, lowest to highest:** " + b.coins.join(" → ");
+  if (b.cards) return b.cards.map((c) => `- **${c.t}** (${c.k}): ${c.d}`).join("\n");
+  if (b.mods) return b.mods.map((g) => `**${g.group}:** ${g.items.join(", ")}`).join("\n\n");
+  if (b.faq) return b.faq.map((f) => `**${f.q}**\n${f.a}`).join("\n\n");
+  return "";
+};
+const sectionText = (s) => `## ${s.title}\n${s.intro}\n\n${s.blocks.map(blockText).join("\n\n")}`;
+const byId = Object.fromEntries(SECTIONS.map((s) => [s.id, s]));
+const postSql = (category, title, body, pinned) => `INSERT INTO forum_posts (category_id, title, body, author_name, pinned, published, published_at)
+SELECT id, ${sq(title)}, ${sq(body)}, 'OVERTHRONE Staff', ${pinned ? 1 : 0}, 1, strftime('%Y-%m-%dT%H:%M:%SZ', 'now')
+FROM forum_categories
+WHERE slug = ${sq(category)}
+  AND NOT EXISTS (SELECT 1 FROM forum_posts WHERE title = ${sq(title)});`;
+
+const guideSql = [
+  "-- Player Guide posts, missing forum categories and the RPG world realm.",
+  "-- Generated by scripts/build-pages.mjs from scripts/guide-data.mjs. Every statement only adds",
+  "-- what is missing (or replaces untouched seed text), so edits made in /admin are never overwritten.",
+  "",
+  ...NEW_CATEGORIES.map((c) => `INSERT OR IGNORE INTO forum_categories (section, name, slug, description, icon, sort_order) VALUES (${sq(c.section)}, ${sq(c.name)}, ${sq(c.slug)}, ${sq(c.description)}, ${sq(c.icon)}, ${c.sort_order});`),
+  "",
+  ...FORUM_POSTS.map((fp) => postSql(fp.category, fp.title,
+    fp.sections.map((id) => sectionText(byId[id])).join("\n\n") + `\n\n[Open the full Player Guide](/guide#${fp.sections[0]})`, fp.pinned)),
+  "",
+  ...CATEGORY_WELCOMES.map((w) => postSql(w.category, w.title, w.body, true)),
+  "",
+  "INSERT OR IGNORE INTO realms (name, slug, subtitle, description, status, sort_order) VALUES",
+  "  ('THE RPG WORLD', 'rpg-world', 'Quests & Trade', 'A protected city of quests, trade and magic: Questmaster Orin and the Quest Board, the Arcade & Trade Hall and the Arcanum.', '', 15);",
+  "UPDATE site_settings SET value = 'Seven realms, each with its own role.' WHERE key = 'realms_intro' AND value = 'Six realms, each with its own role.';",
+  "",
+  `UPDATE home_sections SET body = ${sq("OVERTHRONE SMP is a modded dark-fantasy MMORPG server: Tensura: Reincarnated, Epic Fight combat, over 1,100 quests, bosses and a coin economy you grind for in game.\n\nNew here? The [Player Guide](/guide) walks you through installing the modpack, the keybinds and your first hour.")}, updated_at = strftime('%Y-%m-%dT%H:%M:%SZ', 'now')`,
+  "WHERE title = 'Getting Started' AND instr(body, 'is currently under development.') > 0;",
+  ""
+].join("\n");
+fs.writeFileSync(path.join(root, "migrations/0006_guides_and_forums.sql"), guideSql);
+console.log("wrote migrations/0006_guides_and_forums.sql");

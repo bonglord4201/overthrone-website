@@ -1,2 +1,7 @@
 # The old Wiki page is now the Forums.
 /wiki /forums 301
+# Short links into the Player Guide.
+/join /guide#start 301
+/keybinds /guide#keybinds 301
+/mods /guide#mods 301
+/quests /guide#quests 301
