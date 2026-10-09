@@ -155,13 +155,13 @@ RYO_SKIN = [456948940, -74762666, -1775736367, -930515890]
 # NPCs that skip their dialog and run a command straight away when right-clicked
 OPEN_ON_CLICK = {"questmaster_orin": "ftbquests open_book"}
 
-def build(key, name, color, pages):
+def build(key, name, color, pages, name_json=None, description="OVERTHRONE RPG NPC"):
     now = int(time.time() * 1000)
     skin = {"Type": S("CUSTOM"), "UUID": IA(RYO_SKIN)} if key == "guildmaster_ryo" else {"Type": S("DEFAULT")}
     data = {
         "EasyNPCVersion": I(3),
         "id": S("easy_npc:humanoid"),
-        "CustomName": S('{"text":"%s","color":"%s"}' % (name, color)),
+        "CustomName": S(name_json or '{"text":"%s","color":"%s"}' % (name, color)),
         "SkinData": C(skin),
         "ObjectiveData": C({"ObjectiveDataSet": LIST(10, [C({"Type": S(t)}) for t in ("LOOK_AT_RESET", "LOOK_AT_PLAYER", "LOOK_AT_MOB")])}),
         "DialogData": C({"Type": S("STANDARD"), "DialogDataSet": LIST(10, pages)}),
@@ -173,7 +173,7 @@ def build(key, name, color, pages):
     root = {
         "PresetMetadata": C({
             "version": S("1.0.0"), "modified": L(now), "created": L(now), "category": S("General"),
-            "name": S(name), "entityTypeId": S("easy_npc:humanoid"), "description": S("OVERTHRONE RPG NPC"),
+            "name": S(name), "entityTypeId": S("easy_npc:humanoid"), "description": S(description),
             "author": S("__SK1TZ__"), "variantType": S("STEVE"),
         }),
         "data": C(data),
@@ -183,6 +183,9 @@ def build(key, name, color, pages):
         f.write(gzip.compress(raw))
 
 if __name__ == "__main__":
+    from guides import GUIDES
     for key, (name, color, pages) in NPCS.items():
         build(key, name, color, pages)
-    print("built", len(NPCS))
+    for key, (name, name_json, description, pages) in GUIDES.items():
+        build(key, name, None, pages, name_json, description)
+    print("built", len(NPCS) + len(GUIDES))
