@@ -109,5 +109,30 @@
     paint();
   }
 
+  // Trailer: a styled play button over the poster; native controls once it is playing.
+  const trailer = document.querySelector("[data-trailer]");
+  const trailerPlay = document.querySelector("[data-trailer-play]");
+  if (trailer && trailerPlay) {
+    const label = trailerPlay.querySelector("[data-trailer-label]");
+    const showOverlay = (text) => {
+      trailer.controls = false;
+      if (label && text) label.textContent = text;
+      trailerPlay.hidden = false;
+    };
+    showOverlay();
+    trailerPlay.addEventListener("click", () => {
+      trailerPlay.hidden = true;
+      trailer.controls = true;
+      const p = trailer.play();
+      if (p && p.catch) p.catch(() => {});
+      trailer.focus();
+    });
+    trailer.addEventListener("ended", () => {
+      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+      trailer.currentTime = 0;
+      showOverlay("Watch again");
+    });
+  }
+
   document.querySelectorAll("[data-year]").forEach((el) => { el.textContent = new Date().getFullYear(); });
 })();
