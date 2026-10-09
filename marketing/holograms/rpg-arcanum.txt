@@ -1,0 +1,15 @@
+Stand on the very top of the roof, in the middle, then paste:
+
+/summon text_display ~ ~5.5 ~ {billboard:"center",shadow:1b,background:0,Tags:["arcanum_holo"],transformation:[2f,0f,0f,0f,0f,2f,0f,0f,0f,0f,2f,0f,0f,0f,0f,1f],text:'{"text":"✦ THE ✦","color":"light_purple","bold":true}'}
+
+/summon text_display ~ ~3.75 ~ {billboard:"center",shadow:1b,background:0,Tags:["arcanum_holo"],transformation:[6f,0f,0f,0f,0f,6f,0f,0f,0f,0f,6f,0f,0f,0f,0f,1f],text:'{"text":"ARCANUM","color":"dark_purple","bold":true}'}
+
+/summon text_display ~ ~3.15 ~ {billboard:"center",shadow:1b,background:0,Tags:["arcanum_holo"],transformation:[2f,0f,0f,0f,0f,2f,0f,0f,0f,0f,2f,0f,0f,0f,0f,1f],text:'{"text":"Enchanting • Runes • Arcane Arts","color":"aqua"}'}
+
+/summon text_display ~ ~2.5 ~ {billboard:"center",shadow:1b,background:0,Tags:["arcanum_holo"],transformation:[2.3f,0f,0f,0f,0f,2.3f,0f,0f,0f,0f,2.3f,0f,0f,0f,0f,1f],text:'[{"text":"» ","color":"gold"},{"text":"/warp arcanum","color":"green"}]'}
+
+Glow:
+/execute as @e[type=text_display,tag=arcanum_holo] run data merge entity @s {brightness:{sky:15,block:15}}
+
+Up: /execute as @e[type=text_display,tag=arcanum_holo] at @s run tp @s ~ ~0.5 ~
+Delete: /kill @e[type=text_display,tag=arcanum_holo]
