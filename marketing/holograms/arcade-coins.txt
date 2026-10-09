@@ -1,23 +1,30 @@
-Stand on the light strip in front of the wall, between the two red panels, then paste:
+STEP 0 - delete the old one:
+/kill @e[type=text_display,tag=arc_coins]
 
-/summon text_display ~ ~4.45 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_coins"],transformation:[1.3f,0f,0f,0f,0f,1.3f,0f,0f,0f,0f,1.3f,0f,0f,0f,0f,1f],text:'{"text":"✦ HOW TO EARN COINS ✦","color":"gold","bold":true}'}
+STEP 1 - walk right up against the pillar between the two red panels, stand in the middle of it, look straight at it, and paste (don't move until step 4):
 
-/summon text_display ~ ~4.15 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_coins"],transformation:[1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'{"text":"━━━━━━━━━━━━━━━━","color":"dark_red"}'}
+/execute positioned ^ ^ ^0.29 run summon text_display ~ ~1.95 ~ {Tags:["acn"],background:-804125688,transformation:[38f,0f,0f,0f,0f,12f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'" "'}
+/execute positioned ^ ^ ^0.26 run summon text_display ~ ~4.45 ~ {Tags:["acn","acnt"],transformation:[1.3f,0f,0f,0f,0f,1.3f,0f,0f,0f,0f,1.3f,0f,0f,0f,0f,1f],text:'{"text":"✦ HOW TO EARN COINS ✦","color":"gold","bold":true}'}
+/execute positioned ^ ^ ^0.26 run summon text_display ~ ~4.17 ~ {Tags:["acn","acnt"],transformation:[1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f],text:'{"text":"━━━━━━━━━━━━━━━━","color":"dark_red"}'}
+/execute positioned ^ ^ ^0.26 run summon text_display ~ ~3.9 ~ {Tags:["acn","acnt"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"☰ Complete quests at Questmaster Orin","color":"green"}'}
+/execute positioned ^ ^ ^0.26 run summon text_display ~ ~3.65 ~ {Tags:["acn","acnt"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"✪ ","color":"light_purple"},"Clear Rank Trials for bonus loot"]'}
+/execute positioned ^ ^ ^0.26 run summon text_display ~ ~3.4 ~ {Tags:["acn","acnt"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"⇄ ","color":"aqua"},"Trade & sell loot to other hunters"]'}
+/execute positioned ^ ^ ^0.26 run summon text_display ~ ~3.15 ~ {Tags:["acn","acnt"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"⚔ ","color":"red"},"Hunt, grind & level up"]'}
+/execute positioned ^ ^ ^0.26 run summon text_display ~ ~2.65 ~ {Tags:["acn","acnt"],transformation:[1.5f,0f,0f,0f,0f,1.5f,0f,0f,0f,0f,1.5f,0f,0f,0f,0f,1f],text:'{"text":"100% FREE TO PLAY","color":"green","bold":true}'}
+/execute positioned ^ ^ ^0.26 run summon text_display ~ ~2.35 ~ {Tags:["acn","acnt"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"Everything here is earned in-game","color":"white"}'}
+/execute positioned ^ ^ ^0.26 run summon text_display ~ ~2.1 ~ {Tags:["acn","acnt"],transformation:[0.85f,0f,0f,0f,0f,0.85f,0f,0f,0f,0f,0.85f,0f,0f,0f,0f,1f],text:'{"text":"No real money needed!","color":"gray","italic":true}'}
 
-/summon text_display ~ ~3.85 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_coins"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"☰ Complete quests at Questmaster Orin","color":"green"}'}
+STEP 2 - make it glow + background:
+/execute as @e[type=text_display,tag=acn,distance=..6] run data merge entity @s {brightness:{sky:15,block:15},shadow:1b,line_width:400}
+/execute as @e[type=text_display,tag=acnt,distance=..6] run data merge entity @s {background:0}
 
-/summon text_display ~ ~3.6 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_coins"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"✪ ","color":"light_purple"},"Clear Rank Trials for bonus loot"]'}
+STEP 3 - press F3, read 'Facing:' and paste ONLY the matching one:
+north: /execute as @e[type=text_display,tag=acn,distance=..6] run data merge entity @s {Rotation:[0f,0f]}
+south: /execute as @e[type=text_display,tag=acn,distance=..6] run data merge entity @s {Rotation:[180f,0f]}
+east: /execute as @e[type=text_display,tag=acn,distance=..6] run data merge entity @s {Rotation:[90f,0f]}
+west: /execute as @e[type=text_display,tag=acn,distance=..6] run data merge entity @s {Rotation:[-90f,0f]}
 
-/summon text_display ~ ~3.35 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_coins"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"⇄ ","color":"aqua"},"Trade & sell loot to other hunters"]'}
+PANEL SIZE (change 38f = width, 12f = height in BOTH spots):
+/execute as @e[type=text_display,tag=acn,tag=!acnt,distance=..6] run data merge entity @s {transformation:[38f,0f,0f,0f,0f,12f,0f,0f,0f,0f,1f,0f,0f,0f,0f,1f]}
 
-/summon text_display ~ ~3.1 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_coins"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'[{"text":"⚔ ","color":"red"},"Hunt, grind & level up"]'}
-
-/summon text_display ~ ~2.6 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_coins"],transformation:[1.5f,0f,0f,0f,0f,1.5f,0f,0f,0f,0f,1.5f,0f,0f,0f,0f,1f],text:'{"text":"100% FREE TO PLAY","color":"green","bold":true}'}
-
-/summon text_display ~ ~2.3 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_coins"],transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'{"text":"Everything here is earned in-game","color":"white"}'}
-
-/summon text_display ~ ~2.05 ~ {billboard:"center",shadow:1b,background:0,Tags:["arc_coins"],transformation:[0.8f,0f,0f,0f,0f,0.8f,0f,0f,0f,0f,0.8f,0f,0f,0f,0f,1f],text:'{"text":"No real money needed. This is a game shop!","color":"gray","italic":true}'}
-
-Remove: /kill @e[type=text_display,tag=arc_coins,distance=..8]
-Move up: /execute as @e[type=text_display,tag=arc_coins,distance=..8] at @s run tp @s ~ ~0.25 ~
-Move down: /execute as @e[type=text_display,tag=arc_coins,distance=..8] at @s run tp @s ~ ~-0.25 ~
+Delete: /kill @e[type=text_display,tag=acn,distance=..8]
