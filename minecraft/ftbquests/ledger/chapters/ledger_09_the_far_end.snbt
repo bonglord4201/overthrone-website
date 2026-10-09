@@ -1,0 +1,1355 @@
+{
+	default_hide_dependency_lines: false
+	default_quest_shape: ""
+	filename: "ledger_09_the_far_end"
+	group: ""
+	icon: { id: "minecraft:end_crystal" }
+	id: "1A08BC45A14B7C7F"
+	images: [ ]
+	order_index: 28
+	quest_links: [ ]
+	quests: [
+		{
+			dependencies: ["69F2F37B729CC6D7"]
+			description: ["The guild wants 12 freshly crafted Ender Eye.", "", "&bObjective:&r Craft 12 Ender Eye", "&7Only items you craft yourself count."]
+			id: "6205A4A119A67948"
+			rewards: [
+				{ count: 2, id: "65493DDC36FB9764", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 1 of 95 • 2 Gold"
+			tasks: [{ count: 12L, only_from_crafting: true, id: "26AAA64A55D89B72", item: { count: 1, id: "minecraft:ender_eye" }, type: "item" }]
+			title: "Eyes of Ender"
+			x: 0.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["6205A4A119A67948"]
+			description: ["Scouts mention a Stronghold. Find it and step inside its walls.", "", "&bObjective:&r Find a Stronghold"]
+			id: "5F3D3BC63FB8C29E"
+			rewards: [
+				{ count: 2, id: "3D7394710976EBAF", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 2 of 95 • 2 Gold"
+			tasks: [{ id: "051308A348596DBD", structure: "minecraft:stronghold", type: "structure" }]
+			title: "The Stronghold"
+			x: 1.5d
+			y: 0.0d
+		}
+		{
+			dependencies: ["5F3D3BC63FB8C29E"]
+			description: ["Earn the advancement \"Eye Spy\".", "", "&bObjective:&r Earn the advancement \"Eye Spy\""]
+			id: "05E66795EF5DA045"
+			rewards: [
+				{ count: 2, id: "623A3CA3BFE23F00", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 1, id: "225A80138AF5725A", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 3 of 95 • 2 Gold, 1 Iron"
+			tasks: [{ advancement: "minecraft:story/follow_ender_eye", criterion: "", id: "447B1822E8F11E73", type: "advancement" }]
+			title: "Eye Spy"
+			x: 3.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["05E66795EF5DA045"]
+			description: ["Cross into the End.", "", "&bObjective:&r Enter the End"]
+			id: "40A6364D4DCB7701"
+			rewards: [
+				{ count: 2, id: "717476428C55CD22", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 1, id: "0771FC427E51693F", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 4 of 95 • 2 Gold, 1 Iron"
+			tasks: [{ dimension: "minecraft:the_end", id: "44B52C126FC14439", type: "dimension" }]
+			title: "The End?"
+			x: 4.5d
+			y: 0.0d
+		}
+		{
+			dependencies: ["40A6364D4DCB7701"]
+			description: ["Cartographers need a first-hand report from the The End.", "", "&bObjective:&r Visit the The End biome"]
+			id: "0106F674F587DA9C"
+			rewards: [
+				{ count: 2, id: "364648F7A1B7463F", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 1, id: "3A16092A9C31859C", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 5 of 95 • 2 Gold, 1 Iron"
+			tasks: [{ biome: "minecraft:the_end", id: "028FFCF74C8CCBA0", type: "biome" }]
+			title: "Dragon's Isle"
+			x: 6.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["0106F674F587DA9C"]
+			description: ["A merchant has ordered 128 End Stone. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 128 End Stone", "&7The items are taken when you complete the quest."]
+			id: "4BF729EB91CDC972"
+			rewards: [
+				{ count: 2, id: "0E1EB37603735E2C", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 1, id: "28BA06D512B4E93B", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 6 of 95 • 2 Gold, 1 Iron"
+			tasks: [{ count: 128L, consume_items: true, id: "03BE4DDDF0DB185E", item: { count: 1, id: "minecraft:end_stone" }, type: "item" }]
+			title: "End Stone"
+			x: 7.5d
+			y: 0.0d
+		}
+		{
+			dependencies: ["4BF729EB91CDC972"]
+			description: ["The guild wants 64 freshly crafted End Stone Bricks.", "", "&bObjective:&r Craft 64 End Stone Bricks", "&7Only items you craft yourself count."]
+			id: "081EA242849565A1"
+			rewards: [
+				{ count: 2, id: "3A0AE6205881654D", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 1, id: "0F731CDE03F37E1E", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 7 of 95 • 2 Gold, 1 Iron"
+			tasks: [{ count: 64L, only_from_crafting: true, id: "074D301D93A4783E", item: { count: 1, id: "minecraft:end_stone_bricks" }, type: "item" }]
+			title: "End Stone Bricks"
+			x: 9.0d
+			y: 0.0d
+		}
+		{
+			dependencies: ["081EA242849565A1"]
+			description: ["A bounty is posted: 1 Ender Dragon.", "", "&bObjective:&r Slay 1 Ender Dragon"]
+			id: "57450CCE4D7104E4"
+			rewards: [
+				{ count: 2, id: "046BE0550F2913C9", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 1, id: "590BB451D6D9C930", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 8 of 95 • 2 Gold, 1 Iron"
+			tasks: [{ entity: "minecraft:ender_dragon", id: "18463774F10FD8E3", type: "kill", value: 1L }]
+			title: "Free the End"
+			x: 9.0d
+			y: 1.5d
+		}
+		{
+			dependencies: ["57450CCE4D7104E4"]
+			description: ["A collector is asking around for Dragon Egg. Bring 1 and prove you have them.", "", "&bObjective:&r Have 1 Dragon Egg in your inventory"]
+			id: "7B0946E3328CEF4C"
+			rewards: [
+				{ count: 2, id: "74161295D4378923", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 1, id: "07E8C748E57747AD", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 9 of 95 • 2 Gold, 1 Iron"
+			tasks: [{ count: 1L, id: "6921EEC4FA75F632", item: { count: 1, id: "minecraft:dragon_egg" }, type: "item" }]
+			title: "The Next Generation"
+			x: 7.5d
+			y: 1.5d
+		}
+		{
+			dependencies: ["7B0946E3328CEF4C"]
+			description: ["Keep 4 Dragon Breath in your pack. The clerk only needs to see them.", "", "&bObjective:&r Have 4 Dragon Breath in your inventory", "", "&6Ledger Trial! &7Bonus coin reward."]
+			id: "10C89CAF074111C4"
+			rewards: [
+				{ count: 5, id: "27AC0A7B63131B52", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 3, id: "0B1CA16F5DA3DAF7", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 10 of 95 • 5 Gold, 3 Iron"
+			tasks: [{ count: 4L, id: "329068466408BE50", item: { count: 1, id: "minecraft:dragon_breath" }, type: "item" }]
+			title: "&6&lYou Need a Mint"
+			x: 6.0d
+			y: 1.5d
+		}
+		{
+			dependencies: ["10C89CAF074111C4"]
+			description: ["Prove your hands are skilled: craft 4 End Crystal yourself.", "", "&bObjective:&r Craft 4 End Crystal", "&7Only items you craft yourself count."]
+			id: "38E194BB6D544D29"
+			rewards: [
+				{ count: 2, id: "348906D7CCA67A9E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 1, id: "32EEE4E6DCC857F9", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 11 of 95 • 2 Gold, 1 Iron"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "4BA38F55B070F3ED", item: { count: 1, id: "minecraft:end_crystal" }, type: "item" }]
+			title: "End Crystals"
+			x: 4.5d
+			y: 1.5d
+		}
+		{
+			dependencies: ["38E194BB6D544D29"]
+			description: ["Accomplish \"The End... Again...\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"The End... Again...\""]
+			id: "2C07C2F56F7908BD"
+			rewards: [
+				{ count: 2, id: "09C36E3081422B10", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 1, id: "757C45BF6743C936", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 12 of 95 • 2 Gold, 1 Iron"
+			tasks: [{ advancement: "minecraft:end/respawn_dragon", criterion: "", id: "6EF28805FE02CE0E", type: "advancement" }]
+			title: "The End... Again..."
+			x: 3.0d
+			y: 1.5d
+		}
+		{
+			dependencies: ["2C07C2F56F7908BD"]
+			description: ["Earn the advancement \"Remote Getaway\".", "", "&bObjective:&r Earn the advancement \"Remote Getaway\""]
+			id: "1B1BA93482B979AC"
+			rewards: [
+				{ count: 2, id: "06D637C099CA6DA6", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 2, id: "5969FDE5123821E9", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 13 of 95 • 2 Gold, 2 Iron"
+			tasks: [{ advancement: "minecraft:end/enter_end_gateway", criterion: "", id: "093EBD8A689EC97C", type: "advancement" }]
+			title: "Remote Getaway"
+			x: 1.5d
+			y: 1.5d
+		}
+		{
+			dependencies: ["1B1BA93482B979AC"]
+			description: ["Cartographers need a first-hand report from the End Highlands.", "", "&bObjective:&r Visit the End Highlands biome"]
+			id: "4EE27D51F036BA56"
+			rewards: [
+				{ count: 2, id: "74E102A79D8C09B8", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 2, id: "2D97AA62CCAC2F3B", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 14 of 95 • 2 Gold, 2 Iron"
+			tasks: [{ biome: "minecraft:end_highlands", id: "632C0CC94E65C63B", type: "biome" }]
+			title: "End Highlands"
+			x: 0.0d
+			y: 1.5d
+		}
+		{
+			dependencies: ["4EE27D51F036BA56"]
+			description: ["Set foot in the End Midlands and live to tell of it.", "", "&bObjective:&r Visit the End Midlands biome"]
+			id: "6509D80D411FFDAC"
+			rewards: [
+				{ count: 2, id: "6E2174F34BBFB342", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 2, id: "0B1531852454A9C6", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 15 of 95 • 2 Gold, 2 Iron"
+			tasks: [{ biome: "minecraft:end_midlands", id: "2391FFE99B95AC6A", type: "biome" }]
+			title: "End Midlands"
+			x: 0.0d
+			y: 3.0d
+		}
+		{
+			dependencies: ["6509D80D411FFDAC"]
+			description: ["Explore the Small End Islands.", "", "&bObjective:&r Visit the Small End Islands biome"]
+			id: "3BC9AB6413767031"
+			rewards: [
+				{ count: 2, id: "7F9D458AF126F916", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 2, id: "7354B22528A7ECEA", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 16 of 95 • 2 Gold, 2 Iron"
+			tasks: [{ biome: "minecraft:small_end_islands", id: "7FA03895F989EEA2", type: "biome" }]
+			title: "Small End Islands"
+			x: 1.5d
+			y: 3.0d
+		}
+		{
+			dependencies: ["3BC9AB6413767031"]
+			description: ["Cartographers need a first-hand report from the End Barrens.", "", "&bObjective:&r Visit the End Barrens biome"]
+			id: "237C32983A10BF7A"
+			rewards: [
+				{ count: 2, id: "6D765969AD86AA89", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 2, id: "162D574B5F49AFF1", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 17 of 95 • 2 Gold, 2 Iron"
+			tasks: [{ biome: "minecraft:end_barrens", id: "79FA33F757C36A4A", type: "biome" }]
+			title: "End Barrens"
+			x: 3.0d
+			y: 3.0d
+		}
+		{
+			dependencies: ["237C32983A10BF7A"]
+			description: ["A merchant has ordered 64 Chorus Fruit. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 64 Chorus Fruit", "&7The items are taken when you complete the quest."]
+			id: "3A388390A2FC302B"
+			rewards: [
+				{ count: 2, id: "7876FBAA1BD33318", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 2, id: "164917CAD27896B5", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 18 of 95 • 2 Gold, 2 Iron"
+			tasks: [{ count: 64L, consume_items: true, id: "2E7A48A75DD08544", item: { count: 1, id: "minecraft:chorus_fruit" }, type: "item" }]
+			title: "Chorus Fruit"
+			x: 4.5d
+			y: 3.0d
+		}
+		{
+			dependencies: ["3A388390A2FC302B"]
+			description: ["Keep 32 Popped Chorus Fruit in your pack. The clerk only needs to see them.", "", "&bObjective:&r Have 32 Popped Chorus Fruit in your inventory"]
+			id: "4D3A0EC2C72E9DDB"
+			rewards: [
+				{ count: 2, id: "40BAB33CF94D6233", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 2, id: "7C591904768B909B", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 19 of 95 • 2 Gold, 2 Iron"
+			tasks: [{ count: 32L, id: "1756FF46ACB8EBC3", item: { count: 1, id: "minecraft:popped_chorus_fruit" }, type: "item" }]
+			title: "Popped Chorus"
+			x: 6.0d
+			y: 3.0d
+		}
+		{
+			dependencies: ["4D3A0EC2C72E9DDB"]
+			description: ["The realm needs Chorus Flower. Bring 4 and they're yours no more.", "", "&bObjective:&r Hand in 4 Chorus Flower", "&7The items are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			id: "1FCC8F44FC934EA1"
+			rewards: [
+				{ count: 5, id: "7D0F63EF67406063", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 6, id: "3325B772BD0E6BA4", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 20 of 95 • 5 Gold, 6 Iron"
+			tasks: [{ count: 4L, consume_items: true, id: "0B4DD6E553739D02", item: { count: 1, id: "minecraft:chorus_flower" }, type: "item" }]
+			title: "&6&lChorus Flowers"
+			x: 7.5d
+			y: 3.0d
+		}
+		{
+			dependencies: ["1FCC8F44FC934EA1"]
+			description: ["Workshop order: 64 Purpur Block, made by you.", "", "&bObjective:&r Craft 64 Purpur Block", "&7Only items you craft yourself count."]
+			id: "49F574115ACAEA30"
+			rewards: [
+				{ count: 2, id: "7D93DD761B4345D4", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 2, id: "76F8A4AB73212DEB", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 21 of 95 • 2 Gold, 2 Iron"
+			tasks: [{ count: 64L, only_from_crafting: true, id: "4D59B5A1134960F5", item: { count: 1, id: "minecraft:purpur_block" }, type: "item" }]
+			title: "Purpur Blocks"
+			x: 9.0d
+			y: 3.0d
+		}
+		{
+			dependencies: ["49F574115ACAEA30"]
+			description: ["The guild wants 16 freshly crafted Purpur Pillar.", "", "&bObjective:&r Craft 16 Purpur Pillar", "&7Only items you craft yourself count."]
+			id: "0532A8603102FE8F"
+			rewards: [
+				{ count: 2, id: "7DCF48AD684D1FE9", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 2, id: "676234D3781ECF75", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 22 of 95 • 2 Gold, 2 Iron"
+			tasks: [{ count: 16L, only_from_crafting: true, id: "06CDE22FE50F87ED", item: { count: 1, id: "minecraft:purpur_pillar" }, type: "item" }]
+			title: "Purpur Pillars"
+			x: 9.0d
+			y: 4.5d
+		}
+		{
+			dependencies: ["0532A8603102FE8F"]
+			description: ["Prove your hands are skilled: craft 32 Purpur Stairs yourself.", "", "&bObjective:&r Craft 32 Purpur Stairs", "&7Only items you craft yourself count."]
+			id: "0331CB106B11E653"
+			rewards: [
+				{ count: 2, id: "3872C335F5DF9936", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 3, id: "43C65C4B96F5279C", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 23 of 95 • 2 Gold, 3 Iron"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "172267CDF36B6A44", item: { count: 1, id: "minecraft:purpur_stairs" }, type: "item" }]
+			title: "Purpur Stairs"
+			x: 7.5d
+			y: 4.5d
+		}
+		{
+			dependencies: ["0331CB106B11E653"]
+			description: ["Locate a End City.", "", "&bObjective:&r Find a End City"]
+			id: "11E7014C04D67A55"
+			rewards: [
+				{ count: 2, id: "7EEAE56914E1A486", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 3, id: "713E4E9E4954169B", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 24 of 95 • 2 Gold, 3 Iron"
+			tasks: [{ id: "442D50275DF80A63", structure: "minecraft:end_city", type: "structure" }]
+			title: "The City at the End of the Game"
+			x: 6.0d
+			y: 4.5d
+		}
+		{
+			dependencies: ["11E7014C04D67A55"]
+			description: ["Hunt down 10 Shulker and claim the bounty.", "", "&bObjective:&r Slay 10 Shulker"]
+			id: "64B33ACE510518EE"
+			rewards: [
+				{ count: 2, id: "6F1314803EF1E59B", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 3, id: "457E7CC661B19E26", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 25 of 95 • 2 Gold, 3 Iron"
+			tasks: [{ entity: "minecraft:shulker", id: "6783FA060E63A902", type: "kill", value: 10L }]
+			title: "Shulker Hunt"
+			x: 4.5d
+			y: 4.5d
+		}
+		{
+			dependencies: ["64B33ACE510518EE"]
+			description: ["Accomplish \"Great View From Up Here\". The realm remembers.", "", "&bObjective:&r Earn the advancement \"Great View From Up Here\""]
+			id: "165CA97C5CC7657E"
+			rewards: [
+				{ count: 2, id: "701588FD5836A86F", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 3, id: "5DAB48EC8A1115C6", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 26 of 95 • 2 Gold, 3 Iron"
+			tasks: [{ advancement: "minecraft:end/levitate", criterion: "", id: "35B0528990110EC4", type: "advancement" }]
+			title: "Great View From Up Here"
+			x: 3.0d
+			y: 4.5d
+		}
+		{
+			dependencies: ["165CA97C5CC7657E"]
+			description: ["Supply run: 4 Shulker Shell, taken on hand-in.", "", "&bObjective:&r Hand in 4 Shulker Shell", "&7The items are taken when you complete the quest."]
+			id: "2EFBA6656785D8C6"
+			rewards: [
+				{ count: 2, id: "4FC628291F965E16", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 3, id: "4A7D5D9805FE7839", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 27 of 95 • 2 Gold, 3 Iron"
+			tasks: [{ count: 4L, consume_items: true, id: "04681968CDE1D33D", item: { count: 1, id: "minecraft:shulker_shell" }, type: "item" }]
+			title: "Shulker Shells"
+			x: 1.5d
+			y: 4.5d
+		}
+		{
+			dependencies: ["2EFBA6656785D8C6"]
+			description: ["The guild wants 1 freshly crafted Shulker Box.", "", "&bObjective:&r Craft 1 Shulker Box", "&7Only items you craft yourself count."]
+			id: "728E1C28FCD571C2"
+			rewards: [
+				{ count: 2, id: "67B67F732F01D626", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 3, id: "61890FDAA0A15EED", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 28 of 95 • 2 Gold, 3 Iron"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "4A6CE21E89FEA584", item: { count: 1, id: "minecraft:shulker_box" }, type: "item" }]
+			title: "Shulker Box"
+			x: 0.0d
+			y: 4.5d
+		}
+		{
+			dependencies: ["728E1C28FCD571C2"]
+			description: ["Reach 20 for open shulker box.", "", "&bObjective:&r Reach open shulker box: 20", "&7Counts your total since you first joined."]
+			id: "389DA1BFFB83A60D"
+			rewards: [
+				{ count: 2, id: "49BF6EC4D37DE4A3", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 3, id: "7D3CDEED3A33CBD5", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 29 of 95 • 2 Gold, 3 Iron"
+			tasks: [{ id: "0FDA120414F68B66", stat: "minecraft:open_shulker_box", type: "stat", value: 20 }]
+			title: "Portable Storage"
+			x: 0.0d
+			y: 6.0d
+		}
+		{
+			dependencies: ["389DA1BFFB83A60D"]
+			description: ["A collector is asking around for Elytra. Bring 1 and prove you have them.", "", "&bObjective:&r Have 1 Elytra in your inventory", "", "&6Ledger Trial! &7Bonus coin reward."]
+			id: "15145E3D07FBDC24"
+			rewards: [
+				{ count: 5, id: "5BFD1F1320E386F3", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 8, id: "126ED757C4B6949C", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 30 of 95 • 5 Gold, 8 Iron"
+			tasks: [{ count: 1L, id: "7BBDB459B2BF78F2", item: { count: 1, id: "minecraft:elytra" }, type: "item" }]
+			title: "&6&lSky's the Limit"
+			x: 1.5d
+			y: 6.0d
+		}
+		{
+			dependencies: ["15145E3D07FBDC24"]
+			description: ["The guild wants 64 freshly crafted Firework Rocket.", "", "&bObjective:&r Craft 64 Firework Rocket", "&7Only items you craft yourself count."]
+			id: "3A505E1396916D53"
+			rewards: [
+				{ count: 2, id: "058D066881C66C80", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 3, id: "6300CB54B0A94167", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 31 of 95 • 2 Gold, 3 Iron"
+			tasks: [{ count: 64L, only_from_crafting: true, id: "51D80C410541C506", item: { count: 1, id: "minecraft:firework_rocket" }, type: "item" }]
+			title: "Rocket Fuel"
+			x: 3.0d
+			y: 6.0d
+		}
+		{
+			dependencies: ["3A505E1396916D53"]
+			description: ["The Ledger tracks everything. Push distance flown with elytra to 1 km.", "", "&bObjective:&r Reach distance flown with elytra: 1 km", "&7Counts your total since you first joined."]
+			id: "7320B54E2702A6CA"
+			rewards: [
+				{ count: 2, id: "2344FC3F312F6C2E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 3, id: "15262EF04A2F3450", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 32 of 95 • 2 Gold, 3 Iron"
+			tasks: [{ id: "6D7BEFAC8D3A43D1", stat: "minecraft:aviate_one_cm", type: "stat", value: 100000 }]
+			title: "First Flight"
+			x: 4.5d
+			y: 6.0d
+		}
+		{
+			dependencies: ["7320B54E2702A6CA"]
+			description: ["A collector is asking around for Dragon Head. Bring 1 and prove you have them.", "", "&bObjective:&r Have 1 Dragon Head in your inventory"]
+			id: "00B0A084BD19ABD8"
+			rewards: [
+				{ count: 2, id: "2E361B48932E940E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 4, id: "07DE07F7C60E2792", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 33 of 95 • 2 Gold, 4 Iron"
+			tasks: [{ count: 1L, id: "319973D9EB269923", item: { count: 1, id: "minecraft:dragon_head" }, type: "item" }]
+			title: "Dragon Head"
+			x: 6.0d
+			y: 6.0d
+		}
+		{
+			dependencies: ["00B0A084BD19ABD8"]
+			description: ["The guild wants 16 freshly crafted End Rod.", "", "&bObjective:&r Craft 16 End Rod", "&7Only items you craft yourself count."]
+			id: "2967E9C12B2F8F19"
+			rewards: [
+				{ count: 2, id: "5E6FDA0E25E8E09C", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 4, id: "334C4D8FA44ED2D5", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 34 of 95 • 2 Gold, 4 Iron"
+			tasks: [{ count: 16L, only_from_crafting: true, id: "1831F8C623112255", item: { count: 1, id: "minecraft:end_rod" }, type: "item" }]
+			title: "End Rods"
+			x: 7.5d
+			y: 6.0d
+		}
+		{
+			dependencies: ["2967E9C12B2F8F19"]
+			description: ["Prove your hands are skilled: craft 1 Ender Chest yourself.", "", "&bObjective:&r Craft 1 Ender Chest", "&7Only items you craft yourself count."]
+			id: "49E230B15355582B"
+			rewards: [
+				{ count: 2, id: "4FD8C2789C396B85", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 4, id: "09CD4224E17C0CD0", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 35 of 95 • 2 Gold, 4 Iron"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "573CC9166B247EF1", item: { count: 1, id: "minecraft:ender_chest" }, type: "item" }]
+			title: "Ender Chest"
+			x: 9.0d
+			y: 6.0d
+		}
+		{
+			dependencies: ["49E230B15355582B"]
+			description: ["The Ledger tracks everything. Push open enderchest to 20.", "", "&bObjective:&r Reach open enderchest: 20", "&7Counts your total since you first joined."]
+			id: "01990F2F9A8CB457"
+			rewards: [
+				{ count: 2, id: "24FCCA4AAF43E7C9", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 4, id: "08E01B3A534DDA4C", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 36 of 95 • 2 Gold, 4 Iron"
+			tasks: [{ id: "00088AB4D33570A9", stat: "minecraft:open_enderchest", type: "stat", value: 20 }]
+			title: "Pocket Dimension"
+			x: 9.0d
+			y: 7.5d
+		}
+		{
+			dependencies: ["01990F2F9A8CB457"]
+			description: ["The guild wants 32 freshly crafted Magenta Stained Glass.", "", "&bObjective:&r Craft 32 Magenta Stained Glass", "&7Only items you craft yourself count."]
+			id: "0BA2B306EF5DF132"
+			rewards: [
+				{ count: 2, id: "6EECCCDC4EA94F7E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 4, id: "2A6BAB25A5D3E676", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 37 of 95 • 2 Gold, 4 Iron"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "2148DB5693AC4C1A", item: { count: 1, id: "minecraft:magenta_stained_glass" }, type: "item" }]
+			title: "Void Glass"
+			x: 7.5d
+			y: 7.5d
+		}
+		{
+			dependencies: ["0BA2B306EF5DF132"]
+			description: ["Prove your hands are skilled: craft 64 End Stone Brick Stairs yourself.", "", "&bObjective:&r Craft 64 End Stone Brick Stairs", "&7Only items you craft yourself count."]
+			id: "3E5817339EF54B37"
+			rewards: [
+				{ count: 2, id: "087A5CE946AC855B", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 4, id: "7EB7AD58931E4F21", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 38 of 95 • 2 Gold, 4 Iron"
+			tasks: [{ count: 64L, only_from_crafting: true, id: "7EC4FC0FC131E1FC", item: { count: 1, id: "minecraft:end_stone_brick_stairs" }, type: "item" }]
+			title: "Void Stairway"
+			x: 6.0d
+			y: 7.5d
+		}
+		{
+			dependencies: ["3E5817339EF54B37"]
+			description: ["Supply run: 32 Ender Eye, taken on hand-in.", "", "&bObjective:&r Hand in 32 Ender Eye", "&7The items are taken when you complete the quest."]
+			id: "48DFABEAC7D168B4"
+			rewards: [
+				{ count: 2, id: "1AC1063BA534B1CF", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 4, id: "1C98E43DDF6D5C28", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 39 of 95 • 2 Gold, 4 Iron"
+			tasks: [{ count: 32L, consume_items: true, id: "5A7E2B893B356854", item: { count: 1, id: "minecraft:ender_eye" }, type: "item" }]
+			title: "Eye Hoard"
+			x: 4.5d
+			y: 7.5d
+		}
+		{
+			dependencies: ["48DFABEAC7D168B4"]
+			description: ["The realm needs End Stone. Bring 512 and they're yours no more.", "", "&bObjective:&r Hand in 512 End Stone", "&7The items are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			id: "1609C367E8CA8B7B"
+			rewards: [
+				{ count: 6, id: "55CB4023EA08C64C", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 1, id: "53AFD025DC8E675E", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 40 of 95 • 6 Gold, 1 Iron"
+			tasks: [{ count: 512L, consume_items: true, id: "62290F2B70BC08BB", item: { count: 1, id: "minecraft:end_stone" }, type: "item" }]
+			title: "&6&lEnd Quarry"
+			x: 3.0d
+			y: 7.5d
+		}
+		{
+			dependencies: ["1609C367E8CA8B7B"]
+			description: ["Prove your hands are skilled: craft 32 End Stone Brick Wall yourself.", "", "&bObjective:&r Craft 32 End Stone Brick Wall", "&7Only items you craft yourself count."]
+			id: "30BB47D5D8D9C01C"
+			rewards: [
+				{ count: 2, id: "7701B897C4967E42", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 4, id: "7C00498BBED4413D", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 41 of 95 • 2 Gold, 4 Iron"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "43B40C657633F6EC", item: { count: 1, id: "minecraft:end_stone_brick_wall" }, type: "item" }]
+			title: "Void Battlements"
+			x: 1.5d
+			y: 7.5d
+		}
+		{
+			dependencies: ["30BB47D5D8D9C01C"]
+			description: ["Workshop order: 32 Purpur Slab, made by you.", "", "&bObjective:&r Craft 32 Purpur Slab", "&7Only items you craft yourself count."]
+			id: "72F2E0BF50CCD575"
+			rewards: [
+				{ count: 2, id: "7C15E8B3A67F0ABC", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 5, id: "30BF318F1EBB5E53", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 42 of 95 • 2 Gold, 5 Iron"
+			tasks: [{ count: 32L, only_from_crafting: true, id: "084B290775E0BE95", item: { count: 1, id: "minecraft:purpur_slab" }, type: "item" }]
+			title: "Purpur Slabs"
+			x: 0.0d
+			y: 7.5d
+		}
+		{
+			dependencies: ["72F2E0BF50CCD575"]
+			description: ["The guild wants 1 freshly crafted Purple Shulker Box.", "", "&bObjective:&r Craft 1 Purple Shulker Box", "&7Only items you craft yourself count."]
+			id: "6A6FD3A55E932EF7"
+			rewards: [
+				{ count: 2, id: "24D3B99D8C89B22F", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 5, id: "6CC79F8271F8019F", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 43 of 95 • 2 Gold, 5 Iron"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "6BCDB68160CEB8B2", item: { count: 1, id: "minecraft:purple_shulker_box" }, type: "item" }]
+			title: "Purple Shulker"
+			x: 0.0d
+			y: 9.0d
+		}
+		{
+			dependencies: ["6A6FD3A55E932EF7"]
+			description: ["Prove your hands are skilled: craft 1 Black Shulker Box yourself.", "", "&bObjective:&r Craft 1 Black Shulker Box", "&7Only items you craft yourself count."]
+			id: "1E705E383441BAE1"
+			rewards: [
+				{ count: 2, id: "6A61780556E5526E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 5, id: "336344402B66238D", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 44 of 95 • 2 Gold, 5 Iron"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "18406ACD9D6FBEA6", item: { count: 1, id: "minecraft:black_shulker_box" }, type: "item" }]
+			title: "Black Shulker"
+			x: 1.5d
+			y: 9.0d
+		}
+		{
+			dependencies: ["1E705E383441BAE1"]
+			description: ["Workshop order: 1 White Shulker Box, made by you.", "", "&bObjective:&r Craft 1 White Shulker Box", "&7Only items you craft yourself count."]
+			id: "28678018A95DDBFF"
+			rewards: [
+				{ count: 2, id: "538DAA7F9A4088F4", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 5, id: "29FC1F180D65550B", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 45 of 95 • 2 Gold, 5 Iron"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "2334E9096F1B20CC", item: { count: 1, id: "minecraft:white_shulker_box" }, type: "item" }]
+			title: "White Shulker"
+			x: 3.0d
+			y: 9.0d
+		}
+		{
+			dependencies: ["28678018A95DDBFF"]
+			description: ["The guild wants 1 freshly crafted Red Shulker Box.", "", "&bObjective:&r Craft 1 Red Shulker Box", "&7Only items you craft yourself count."]
+			id: "4FC108C93ACD9DD7"
+			rewards: [
+				{ count: 2, id: "38B6CEADC0CBD9C1", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 5, id: "53E37B9A248A4107", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 46 of 95 • 2 Gold, 5 Iron"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "11FC1CA47CB94984", item: { count: 1, id: "minecraft:red_shulker_box" }, type: "item" }]
+			title: "Red Shulker"
+			x: 4.5d
+			y: 9.0d
+		}
+		{
+			dependencies: ["4FC108C93ACD9DD7"]
+			description: ["Prove your hands are skilled: craft 1 Lime Shulker Box yourself.", "", "&bObjective:&r Craft 1 Lime Shulker Box", "&7Only items you craft yourself count."]
+			id: "27A9BAB29424CE16"
+			rewards: [
+				{ count: 2, id: "2D853D40AF2BDF46", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 5, id: "6EBE298CB86F95EE", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 47 of 95 • 2 Gold, 5 Iron"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "5F42D2817F2AFB6D", item: { count: 1, id: "minecraft:lime_shulker_box" }, type: "item" }]
+			title: "Lime Shulker"
+			x: 6.0d
+			y: 9.0d
+		}
+		{
+			dependencies: ["27A9BAB29424CE16"]
+			description: ["Workshop order: 1 Cyan Shulker Box, made by you.", "", "&bObjective:&r Craft 1 Cyan Shulker Box", "&7Only items you craft yourself count."]
+			id: "5215E809708A25E0"
+			rewards: [
+				{ count: 2, id: "0F6856B3660D69C4", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 5, id: "465839032F8C6382", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 48 of 95 • 2 Gold, 5 Iron"
+			tasks: [{ count: 1L, only_from_crafting: true, id: "08D4E4C623438707", item: { count: 1, id: "minecraft:cyan_shulker_box" }, type: "item" }]
+			title: "Cyan Shulker"
+			x: 7.5d
+			y: 9.0d
+		}
+		{
+			dependencies: ["5215E809708A25E0"]
+			description: ["Hunt down 30 Shulker and claim the bounty.", "", "&bObjective:&r Slay 30 Shulker"]
+			id: "03CD862BAA7224D0"
+			rewards: [
+				{ count: 2, id: "7317E0EDA636DFF4", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 5, id: "2D7EC5F736A3383A", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 49 of 95 • 2 Gold, 5 Iron"
+			tasks: [{ entity: "minecraft:shulker", id: "495A13DB4E818236", type: "kill", value: 30L }]
+			title: "Shell Shock"
+			x: 9.0d
+			y: 9.0d
+		}
+		{
+			dependencies: ["03CD862BAA7224D0"]
+			description: ["A merchant has ordered 16 Shulker Shell. Deliver them to the Ledger.", "", "&bObjective:&r Hand in 16 Shulker Shell", "&7The items are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coin reward."]
+			id: "60FDA07A610C6A2F"
+			rewards: [
+				{ count: 6, id: "3C535685E1C3BC70", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 4, id: "14B243995B80D5E1", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 50 of 95 • 6 Gold, 4 Iron"
+			tasks: [{ count: 16L, consume_items: true, id: "21131951EA09C76D", item: { count: 1, id: "minecraft:shulker_shell" }, type: "item" }]
+			title: "&6&lShell Hoard"
+			x: 9.0d
+			y: 10.5d
+		}
+		{
+			dependencies: ["60FDA07A610C6A2F"]
+			description: ["Workshop order: 4 Shulker Box, made by you.", "", "&bObjective:&r Craft 4 Shulker Box", "&7Only items you craft yourself count."]
+			id: "3688898DF7A38224"
+			rewards: [
+				{ count: 2, id: "643E58DE57A390D7", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 6, id: "504D8CCC8AC0B08E", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 51 of 95 • 2 Gold, 6 Iron"
+			tasks: [{ count: 4L, only_from_crafting: true, id: "4EA147D95B22F555", item: { count: 1, id: "minecraft:shulker_box" }, type: "item" }]
+			title: "Storage Empire"
+			x: 7.5d
+			y: 10.5d
+		}
+		{
+			dependencies: ["3688898DF7A38224"]
+			description: ["The Ledger tracks everything. Push distance flown with elytra to 10 km.", "", "&bObjective:&r Reach distance flown with elytra: 10 km", "&7Counts your total since you first joined."]
+			id: "70A1F3695DDA5E3B"
+			rewards: [
+				{ count: 2, id: "17508AE546599316", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 6, id: "0D923B7C2ADBBCCB", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 52 of 95 • 2 Gold, 6 Iron"
+			tasks: [{ id: "19AD3BD5A3CCFB39", stat: "minecraft:aviate_one_cm", type: "stat", value: 1000000 }]
+			title: "Ten Kilometre Glide"
+			x: 6.0d
+			y: 10.5d
+		}
+		{
+			dependencies: ["70A1F3695DDA5E3B"]
+			description: ["The Ledger wants proof: carry 16 Dragon Breath and show it.", "", "&bObjective:&r Have 16 Dragon Breath in your inventory"]
+			id: "6CD114A099A43628"
+			rewards: [
+				{ count: 2, id: "6FB89FD049B38088", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 6, id: "437C72316E018752", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 53 of 95 • 2 Gold, 6 Iron"
+			tasks: [{ count: 16L, id: "7261242236DFD0C3", item: { count: 1, id: "minecraft:dragon_breath" }, type: "item" }]
+			title: "Dragon's Breath"
+			x: 4.5d
+			y: 10.5d
+		}
+		{
+			dependencies: ["6CD114A099A43628"]
+			description: ["The alchemists want to see a Lingering Potion of Strong Harming of your own making.", "", "&bObjective:&r Have a Lingering Potion of Strong Harming"]
+			id: "6F050EDE674A8464"
+			rewards: [
+				{ count: 2, id: "4A5C73BF308753EA", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 6, id: "7F8EE68099E13FDE", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 54 of 95 • 2 Gold, 6 Iron"
+			tasks: [{ count: 1L, id: "7368914C84D2B46D", item: { components: { "minecraft:potion_contents": { potion: "minecraft:strong_harming" } }, count: 1, id: "minecraft:lingering_potion" }, match_components: "fuzzy", type: "item" }]
+			title: "Lingering Doom"
+			x: 3.0d
+			y: 10.5d
+		}
+		{
+			dependencies: ["6F050EDE674A8464"]
+			description: ["Brew and carry a Lingering Potion of Slow Falling.", "", "&bObjective:&r Have a Lingering Potion of Slow Falling"]
+			id: "1B03F455D66D28D7"
+			rewards: [
+				{ count: 2, id: "6108F9C3E333CB0E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 6, id: "196445760FCF2D93", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 55 of 95 • 2 Gold, 6 Iron"
+			tasks: [{ count: 1L, id: "453DDE4F87F30E48", item: { components: { "minecraft:potion_contents": { potion: "minecraft:slow_falling" } }, count: 1, id: "minecraft:lingering_potion" }, match_components: "fuzzy", type: "item" }]
+			title: "Lingering Feathers"
+			x: 1.5d
+			y: 10.5d
+		}
+		{
+			dependencies: ["1B03F455D66D28D7"]
+			description: ["The Ledger wants proof: carry 2 Elytra and show it.", "", "&bObjective:&r Have 2 Elytra in your inventory"]
+			id: "06E8FA25D94E150A"
+			rewards: [
+				{ count: 2, id: "5E0B57BDE7BE1D51", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 6, id: "4C3A4B624ED5E22F", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 56 of 95 • 2 Gold, 6 Iron"
+			tasks: [{ count: 2L, id: "33F8F1330445E4E4", item: { count: 1, id: "minecraft:elytra" }, type: "item" }]
+			title: "Spare Wings"
+			x: 0.0d
+			y: 10.5d
+		}
+		{
+			dependencies: ["06E8FA25D94E150A"]
+			description: ["Reports of Ender Dragon sightings. Thin them out: 2 kills.", "", "&bObjective:&r Slay 2 Ender Dragon"]
+			id: "5D33F505D6ADA6A4"
+			rewards: [
+				{ count: 2, id: "717136F703415DF3", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 6, id: "4F2865E731DDD088", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 57 of 95 • 2 Gold, 6 Iron"
+			tasks: [{ entity: "minecraft:ender_dragon", id: "6A38F0633607E5B4", type: "kill", value: 2L }]
+			title: "Dragon Slayer"
+			x: 0.0d
+			y: 12.0d
+		}
+		{
+			dependencies: ["5D33F505D6ADA6A4"]
+			description: ["The guild wants 8 freshly crafted End Crystal.", "", "&bObjective:&r Craft 8 End Crystal", "&7Only items you craft yourself count."]
+			id: "68A4DF38068E76DB"
+			rewards: [
+				{ count: 2, id: "3BD44105550DC4D9", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 6, id: "5CE463744047B6B7", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 58 of 95 • 2 Gold, 6 Iron"
+			tasks: [{ count: 8L, only_from_crafting: true, id: "2206B4D4F4F268C0", item: { count: 1, id: "minecraft:end_crystal" }, type: "item" }]
+			title: "Crystal Array"
+			x: 1.5d
+			y: 12.0d
+		}
+		{
+			dependencies: ["68A4DF38068E76DB"]
+			description: ["Supply run: 256 Chorus Fruit, taken on hand-in.", "", "&bObjective:&r Hand in 256 Chorus Fruit", "&7The items are taken when you complete the quest."]
+			id: "48A8E5D830E989C6"
+			rewards: [
+				{ count: 2, id: "5349EDC06E4DD42D", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 7, id: "51FA8597694979C5", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 59 of 95 • 2 Gold, 7 Iron"
+			tasks: [{ count: 256L, consume_items: true, id: "7D0F2E117420AC58", item: { count: 1, id: "minecraft:chorus_fruit" }, type: "item" }]
+			title: "Chorus Orchard"
+			x: 3.0d
+			y: 12.0d
+		}
+		{
+			dependencies: ["48A8E5D830E989C6"]
+			description: ["A collector is asking around for Popped Chorus Fruit. Bring 128 and prove you have them.", "", "&bObjective:&r Have 128 Popped Chorus Fruit in your inventory", "", "&6Ledger Trial! &7Bonus coin reward."]
+			id: "439BB9A1CCCC4DBF"
+			rewards: [
+				{ count: 6, id: "5EE50F1E7D00DD25", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 7, id: "3F2DFC4E63F47333", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 60 of 95 • 6 Gold, 7 Iron"
+			tasks: [{ count: 128L, id: "0B59D730C71CDEDC", item: { count: 1, id: "minecraft:popped_chorus_fruit" }, type: "item" }]
+			title: "&6&lPurpur Supply"
+			x: 4.5d
+			y: 12.0d
+		}
+		{
+			dependencies: ["439BB9A1CCCC4DBF"]
+			description: ["The guild wants 256 freshly crafted Purpur Block.", "", "&bObjective:&r Craft 256 Purpur Block", "&7Only items you craft yourself count."]
+			id: "3C913583201E7353"
+			rewards: [
+				{ count: 2, id: "0CDEB6DF73BA26F9", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 7, id: "352E738E844F3FC5", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 61 of 95 • 2 Gold, 7 Iron"
+			tasks: [{ count: 256L, only_from_crafting: true, id: "4C66113FE405F195", item: { count: 1, id: "minecraft:purpur_block" }, type: "item" }]
+			title: "Purpur Palace"
+			x: 6.0d
+			y: 12.0d
+		}
+		{
+			dependencies: ["3C913583201E7353"]
+			description: ["Prove your hands are skilled: craft 256 End Stone Bricks yourself.", "", "&bObjective:&r Craft 256 End Stone Bricks", "&7Only items you craft yourself count."]
+			id: "7BF22351FEE25015"
+			rewards: [
+				{ count: 2, id: "4F5D043F66C5C8DA", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 7, id: "2AA03DC05337683A", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 62 of 95 • 2 Gold, 7 Iron"
+			tasks: [{ count: 256L, only_from_crafting: true, id: "048DF67C22546D4B", item: { count: 1, id: "minecraft:end_stone_bricks" }, type: "item" }]
+			title: "Void Fortress"
+			x: 7.5d
+			y: 12.0d
+		}
+		{
+			dependencies: ["7BF22351FEE25015"]
+			description: ["Reach 1 km for distance flown.", "", "&bObjective:&r Reach distance flown: 1 km", "&7Counts your total since you first joined."]
+			id: "635C428346DC36EB"
+			rewards: [
+				{ count: 2, id: "0EF0AC73F4EC044F", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 7, id: "7B752A2A6C8A130B", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 63 of 95 • 2 Gold, 7 Iron"
+			tasks: [{ id: "5A0A7E3D8A3AD1B5", stat: "minecraft:fly_one_cm", type: "stat", value: 100000 }]
+			title: "Air Time"
+			x: 9.0d
+			y: 12.0d
+		}
+		{
+			dependencies: ["635C428346DC36EB"]
+			description: ["The Ledger tracks everything. Push distance fallen to 500 blocks.", "", "&bObjective:&r Reach distance fallen: 500 blocks", "&7Counts your total since you first joined."]
+			id: "38EB040389EC6187"
+			rewards: [
+				{ count: 2, id: "42A752CE53D666FE", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 7, id: "38C707F41B444103", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 64 of 95 • 2 Gold, 7 Iron"
+			tasks: [{ id: "49638908DED2E0B2", stat: "minecraft:fall_one_cm", type: "stat", value: 50000 }]
+			title: "Freefall"
+			x: 9.0d
+			y: 13.5d
+		}
+		{
+			dependencies: ["38EB040389EC6187"]
+			description: ["The guild stores are low on Firework Rocket. Hand in 256.", "", "&bObjective:&r Hand in 256 Firework Rocket", "&7The items are taken when you complete the quest."]
+			id: "316DE76203A892A0"
+			rewards: [
+				{ count: 2, id: "4ED6AAD81871A2B1", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 7, id: "3100EDB916976EB6", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 65 of 95 • 2 Gold, 7 Iron"
+			tasks: [{ count: 256L, consume_items: true, id: "09A84EEFB48A2E05", item: { count: 1, id: "minecraft:firework_rocket" }, type: "item" }]
+			title: "Rocket Stockpile"
+			x: 7.5d
+			y: 13.5d
+		}
+		{
+			dependencies: ["316DE76203A892A0"]
+			description: ["The Ledger tracks everything. Push open enderchest to 100.", "", "&bObjective:&r Reach open enderchest: 100", "&7Counts your total since you first joined."]
+			id: "0CB7A51BC0CB9C4F"
+			rewards: [
+				{ count: 2, id: "398EDA164B4192BD", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 7, id: "5E386D099885813C", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 66 of 95 • 2 Gold, 7 Iron"
+			tasks: [{ id: "79A0DBBF15F8097E", stat: "minecraft:open_enderchest", type: "stat", value: 100 }]
+			title: "Void Banker"
+			x: 6.0d
+			y: 13.5d
+		}
+		{
+			dependencies: ["0CB7A51BC0CB9C4F"]
+			description: ["Reach 100 for open shulker box.", "", "&bObjective:&r Reach open shulker box: 100", "&7Counts your total since you first joined."]
+			id: "4F319EBB90CD1B50"
+			rewards: [
+				{ count: 2, id: "0B937858BF1B6893", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 8, id: "75B36F4D5B3DC826", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 67 of 95 • 2 Gold, 8 Iron"
+			tasks: [{ id: "26AA1DBA925D8DCA", stat: "minecraft:open_shulker_box", type: "stat", value: 100 }]
+			title: "Box Master"
+			x: 4.5d
+			y: 13.5d
+		}
+		{
+			dependencies: ["4F319EBB90CD1B50"]
+			description: ["Prove your hands are skilled: craft 64 End Stone Brick Slab yourself.", "", "&bObjective:&r Craft 64 End Stone Brick Slab", "&7Only items you craft yourself count."]
+			id: "3A33C41CEA9CA84C"
+			rewards: [
+				{ count: 2, id: "2073F1B9BBC228BF", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 8, id: "6D7E80170E20CB93", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 68 of 95 • 2 Gold, 8 Iron"
+			tasks: [{ count: 64L, only_from_crafting: true, id: "0E8BDA936BA5BADA", item: { count: 1, id: "minecraft:end_stone_brick_slab" }, type: "item" }]
+			title: "Void Floors"
+			x: 3.0d
+			y: 13.5d
+		}
+		{
+			dependencies: ["3A33C41CEA9CA84C"]
+			description: ["Workshop order: 64 Purple Concrete Powder, made by you.", "", "&bObjective:&r Craft 64 Purple Concrete Powder", "&7Only items you craft yourself count."]
+			id: "253246E4F3487CC5"
+			rewards: [
+				{ count: 2, id: "2051DD3B37F3BF0E", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 8, id: "2D889C76C2F2C979", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 69 of 95 • 2 Gold, 8 Iron"
+			tasks: [{ count: 64L, only_from_crafting: true, id: "06F2EDE82D8965DF", item: { count: 1, id: "minecraft:purple_concrete_powder" }, type: "item" }]
+			title: "Void Concrete"
+			x: 1.5d
+			y: 13.5d
+		}
+		{
+			dependencies: ["253246E4F3487CC5"]
+			description: ["Hunt down 75 Shulker and claim the bounty.", "", "&bObjective:&r Slay 75 Shulker", "", "&6Ledger Trial! &7Bonus coin reward."]
+			id: "19A9F0F7F03C07E0"
+			rewards: [
+				{ count: 7, id: "465EC521A7E884D6", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 70 of 95 • 7 Gold"
+			tasks: [{ entity: "minecraft:shulker", id: "34DBFEBD11253A64", type: "kill", value: 75L }]
+			title: "&6&lShulker Exterminator"
+			x: 0.0d
+			y: 13.5d
+		}
+		{
+			dependencies: ["19A9F0F7F03C07E0"]
+			description: ["Supply run: 48 Shulker Shell, taken on hand-in.", "", "&bObjective:&r Hand in 48 Shulker Shell", "&7The items are taken when you complete the quest."]
+			id: "04119B1B61799119"
+			rewards: [
+				{ count: 2, id: "296FA8EF83611374", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 8, id: "02EBE3C0930E25FE", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 71 of 95 • 2 Gold, 8 Iron"
+			tasks: [{ count: 48L, consume_items: true, id: "20781E018AC595B8", item: { count: 1, id: "minecraft:shulker_shell" }, type: "item" }]
+			title: "Shell Fortune"
+			x: 0.0d
+			y: 15.0d
+		}
+		{
+			dependencies: ["04119B1B61799119"]
+			description: ["Reports of Ender Dragon sightings. Thin them out: 3 kills.", "", "&bObjective:&r Slay 3 Ender Dragon"]
+			id: "7BBEB8D0DD5E618B"
+			rewards: [
+				{ count: 2, id: "366271670837AAEE", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 8, id: "05F9D10AA38D49C5", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 72 of 95 • 2 Gold, 8 Iron"
+			tasks: [{ entity: "minecraft:ender_dragon", id: "6F0B9B20ED5DB823", type: "kill", value: 3L }]
+			title: "Dragonbane"
+			x: 1.5d
+			y: 15.0d
+		}
+		{
+			dependencies: ["7BBEB8D0DD5E618B"]
+			description: ["Keep 2 Dragon Head in your pack. The clerk only needs to see them.", "", "&bObjective:&r Have 2 Dragon Head in your inventory"]
+			id: "265981538DB219DC"
+			rewards: [
+				{ count: 2, id: "70B1670E806B71D7", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 8, id: "77E9F3699EE307E1", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 73 of 95 • 2 Gold, 8 Iron"
+			tasks: [{ count: 2L, id: "3A1BC9A72DE472A6", item: { count: 1, id: "minecraft:dragon_head" }, type: "item" }]
+			title: "Twin Heads"
+			x: 3.0d
+			y: 15.0d
+		}
+		{
+			dependencies: ["265981538DB219DC"]
+			description: ["Prove your hands are skilled: craft 64 Purpur Pillar yourself.", "", "&bObjective:&r Craft 64 Purpur Pillar", "&7Only items you craft yourself count."]
+			id: "4A83AE8982D74C26"
+			rewards: [
+				{ count: 2, id: "43E2E373CBA04303", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 8, id: "23BD84F464DF3B33", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 74 of 95 • 2 Gold, 8 Iron"
+			tasks: [{ count: 64L, only_from_crafting: true, id: "2C2F28B8CAFA60EF", item: { count: 1, id: "minecraft:purpur_pillar" }, type: "item" }]
+			title: "Pillars of the Void"
+			x: 4.5d
+			y: 15.0d
+		}
+		{
+			dependencies: ["4A83AE8982D74C26"]
+			description: ["Supply run: 32 Crying Obsidian, taken on hand-in.", "", "&bObjective:&r Hand in 32 Crying Obsidian", "&7The items are taken when you complete the quest."]
+			id: "60E3D3805D538DAE"
+			rewards: [
+				{ count: 2, id: "0F9E4BE0BAD35E6D", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 9, id: "0A52BD31BA096F01", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 75 of 95 • 2 Gold, 9 Iron"
+			tasks: [{ count: 32L, consume_items: true, id: "178F878CA5AD426B", item: { count: 1, id: "minecraft:crying_obsidian" }, type: "item" }]
+			title: "Tears of the Void"
+			x: 6.0d
+			y: 15.0d
+		}
+		{
+			dependencies: ["60E3D3805D538DAE"]
+			description: ["The realm needs End Rod. Bring 64 and they're yours no more.", "", "&bObjective:&r Hand in 64 End Rod", "&7The items are taken when you complete the quest."]
+			id: "08CC56B5BAFB9F53"
+			rewards: [
+				{ count: 2, id: "14EF244E609D2DB6", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 9, id: "2397F62836E478D8", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 76 of 95 • 2 Gold, 9 Iron"
+			tasks: [{ count: 64L, consume_items: true, id: "1860EB1B663587FA", item: { count: 1, id: "minecraft:end_rod" }, type: "item" }]
+			title: "Rod Lighthouse"
+			x: 7.5d
+			y: 15.0d
+		}
+		{
+			dependencies: ["08CC56B5BAFB9F53"]
+			description: ["The Ledger wants proof: carry 1 Music Disc 11 and show it.", "", "&bObjective:&r Have 1 Music Disc 11 in your inventory"]
+			id: "125C93FE328AADC6"
+			rewards: [
+				{ count: 2, id: "737CFA6EAE59B952", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 9, id: "110CD2DE636314EE", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 77 of 95 • 2 Gold, 9 Iron"
+			tasks: [{ count: 1L, id: "58D3191C0D654CE1", item: { count: 1, id: "minecraft:music_disc_11" }, type: "item" }]
+			title: "Disc 11"
+			x: 9.0d
+			y: 15.0d
+		}
+		{
+			dependencies: ["125C93FE328AADC6"]
+			description: ["A collector is asking around for Music Disc 13. Bring 1 and prove you have them.", "", "&bObjective:&r Have 1 Music Disc 13 in your inventory"]
+			id: "4E06CDC0D9AEC2B9"
+			rewards: [
+				{ count: 2, id: "782E76EC264067FB", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 9, id: "74A1A7EB77FF57A4", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 78 of 95 • 2 Gold, 9 Iron"
+			tasks: [{ count: 1L, id: "17FC0D9B2B13F93E", item: { count: 1, id: "minecraft:music_disc_13" }, type: "item" }]
+			title: "Disc 13"
+			x: 9.0d
+			y: 16.5d
+		}
+		{
+			dependencies: ["4E06CDC0D9AEC2B9"]
+			description: ["Keep 1 Music Disc Cat in your pack. The clerk only needs to see them.", "", "&bObjective:&r Have 1 Music Disc Cat in your inventory"]
+			id: "25FB0030E4BA7786"
+			rewards: [
+				{ count: 2, id: "10570C00B069B876", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 9, id: "4BB0B9791E522CFD", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 79 of 95 • 2 Gold, 9 Iron"
+			tasks: [{ count: 1L, id: "0C732E029EE453A3", item: { count: 1, id: "minecraft:music_disc_cat" }, type: "item" }]
+			title: "Cat"
+			x: 7.5d
+			y: 16.5d
+		}
+		{
+			dependencies: ["25FB0030E4BA7786"]
+			description: ["The Ledger wants proof: carry 1 Music Disc Blocks and show it.", "", "&bObjective:&r Have 1 Music Disc Blocks in your inventory", "", "&6Ledger Trial! &7Bonus coin reward."]
+			id: "30A9933748C56A3F"
+			rewards: [
+				{ count: 7, id: "59145C37D7CF4515", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 3, id: "391266F2EB05681D", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 80 of 95 • 7 Gold, 3 Iron"
+			tasks: [{ count: 1L, id: "46BA2B352273399E", item: { count: 1, id: "minecraft:music_disc_blocks" }, type: "item" }]
+			title: "&6&lBlocks"
+			x: 6.0d
+			y: 16.5d
+		}
+		{
+			dependencies: ["30A9933748C56A3F"]
+			description: ["A collector is asking around for Music Disc Chirp. Bring 1 and prove you have them.", "", "&bObjective:&r Have 1 Music Disc Chirp in your inventory"]
+			id: "06AF30AA882DF396"
+			rewards: [
+				{ count: 2, id: "523169F8D9C6C17D", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 9, id: "234E48AB77248546", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 81 of 95 • 2 Gold, 9 Iron"
+			tasks: [{ count: 1L, id: "541E23CFB2800AC8", item: { count: 1, id: "minecraft:music_disc_chirp" }, type: "item" }]
+			title: "Chirp"
+			x: 4.5d
+			y: 16.5d
+		}
+		{
+			dependencies: ["06AF30AA882DF396"]
+			description: ["Keep 1 Music Disc Far in your pack. The clerk only needs to see them.", "", "&bObjective:&r Have 1 Music Disc Far in your inventory"]
+			id: "630EDFC1CB93BF84"
+			rewards: [
+				{ count: 2, id: "2CE707B611327DA6", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 9, id: "312A318790649474", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 82 of 95 • 2 Gold, 9 Iron"
+			tasks: [{ count: 1L, id: "183B64947DBCA9DF", item: { count: 1, id: "minecraft:music_disc_far" }, type: "item" }]
+			title: "Far"
+			x: 3.0d
+			y: 16.5d
+		}
+		{
+			dependencies: ["630EDFC1CB93BF84"]
+			description: ["The Ledger wants proof: carry 1 Music Disc Mall and show it.", "", "&bObjective:&r Have 1 Music Disc Mall in your inventory"]
+			id: "11690B216820038C"
+			rewards: [
+				{ count: 3, id: "356E467B4CDAAFA3", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 83 of 95 • 3 Gold"
+			tasks: [{ count: 1L, id: "0291E30493CE5F30", item: { count: 1, id: "minecraft:music_disc_mall" }, type: "item" }]
+			title: "Mall"
+			x: 1.5d
+			y: 16.5d
+		}
+		{
+			dependencies: ["11690B216820038C"]
+			description: ["A collector is asking around for Music Disc Mellohi. Bring 1 and prove you have them.", "", "&bObjective:&r Have 1 Music Disc Mellohi in your inventory"]
+			id: "597C3479044B1DB0"
+			rewards: [
+				{ count: 3, id: "08DF9ED0926DDE47", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 84 of 95 • 3 Gold"
+			tasks: [{ count: 1L, id: "46C2AACAF863C364", item: { count: 1, id: "minecraft:music_disc_mellohi" }, type: "item" }]
+			title: "Mellohi"
+			x: 0.0d
+			y: 16.5d
+		}
+		{
+			dependencies: ["597C3479044B1DB0"]
+			description: ["Keep 1 Music Disc Stal in your pack. The clerk only needs to see them.", "", "&bObjective:&r Have 1 Music Disc Stal in your inventory"]
+			id: "51BC415569DBBB4F"
+			rewards: [
+				{ count: 3, id: "6813E689732660B0", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 85 of 95 • 3 Gold"
+			tasks: [{ count: 1L, id: "70AAE3AAB794C430", item: { count: 1, id: "minecraft:music_disc_stal" }, type: "item" }]
+			title: "Stal"
+			x: 0.0d
+			y: 18.0d
+		}
+		{
+			dependencies: ["51BC415569DBBB4F"]
+			description: ["The Ledger wants proof: carry 1 Music Disc Strad and show it.", "", "&bObjective:&r Have 1 Music Disc Strad in your inventory"]
+			id: "180E9DBF9CBE0978"
+			rewards: [
+				{ count: 3, id: "04BCB1EB32361036", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 86 of 95 • 3 Gold"
+			tasks: [{ count: 1L, id: "3DE3C239D872BFAB", item: { count: 1, id: "minecraft:music_disc_strad" }, type: "item" }]
+			title: "Strad"
+			x: 1.5d
+			y: 18.0d
+		}
+		{
+			dependencies: ["180E9DBF9CBE0978"]
+			description: ["A collector is asking around for Music Disc Ward. Bring 1 and prove you have them.", "", "&bObjective:&r Have 1 Music Disc Ward in your inventory"]
+			id: "7CF37DC943E679AF"
+			rewards: [
+				{ count: 3, id: "04ADA6A2F62B8F0B", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 87 of 95 • 3 Gold"
+			tasks: [{ count: 1L, id: "09DAED6FF4D4D314", item: { count: 1, id: "minecraft:music_disc_ward" }, type: "item" }]
+			title: "Ward"
+			x: 3.0d
+			y: 18.0d
+		}
+		{
+			dependencies: ["7CF37DC943E679AF"]
+			description: ["Keep 1 Music Disc Wait in your pack. The clerk only needs to see them.", "", "&bObjective:&r Have 1 Music Disc Wait in your inventory"]
+			id: "4EC3229D1B58983E"
+			rewards: [
+				{ count: 3, id: "09C1E8F4A715EB3C", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 88 of 95 • 3 Gold"
+			tasks: [{ count: 1L, id: "053CFC195F088519", item: { count: 1, id: "minecraft:music_disc_wait" }, type: "item" }]
+			title: "Wait"
+			x: 4.5d
+			y: 18.0d
+		}
+		{
+			dependencies: ["4EC3229D1B58983E"]
+			description: ["The Ledger wants proof: carry 1 Music Disc Relic and show it.", "", "&bObjective:&r Have 1 Music Disc Relic in your inventory"]
+			id: "22EDEBCE20E6A10E"
+			rewards: [
+				{ count: 3, id: "39057B4A2D546D4C", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			subtitle: "Entry 89 of 95 • 3 Gold"
+			tasks: [{ count: 1L, id: "70468B41DC856D5D", item: { count: 1, id: "minecraft:music_disc_relic" }, type: "item" }]
+			title: "Relic"
+			x: 6.0d
+			y: 18.0d
+		}
+		{
+			dependencies: ["22EDEBCE20E6A10E"]
+			description: ["A collector is asking around for Music Disc Creator Music Box. Bring 1 and prove you have them.", "", "&bObjective:&r Have 1 Music Disc Creator Music Box in your inventory", "", "&6Ledger Trial! &7Bonus coin reward."]
+			id: "5073828C09371360"
+			rewards: [
+				{ count: 7, id: "395570329A92B88F", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 6, id: "007E4AB81AB6E4A7", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 1.4d
+			subtitle: "Entry 90 of 95 • 7 Gold, 6 Iron"
+			tasks: [{ count: 1L, id: "37D392A3F73615A9", item: { count: 1, id: "minecraft:music_disc_creator_music_box" }, type: "item" }]
+			title: "&6&lCreator (Music Box)"
+			x: 7.5d
+			y: 18.0d
+		}
+		{
+			dependencies: ["5073828C09371360"]
+			description: ["Reach 10 for play record.", "", "&bObjective:&r Reach play record: 10", "&7Counts your total since you first joined."]
+			id: "1925BEA542447AED"
+			rewards: [
+				{ count: 3, id: "5740B2942B727474", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 1, id: "044637C0C48A1471", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 91 of 95 • 3 Gold, 1 Iron"
+			tasks: [{ id: "00C2A475F5C9BCAD", stat: "minecraft:play_record", type: "stat", value: 10 }]
+			title: "DJ Set"
+			x: 9.0d
+			y: 18.0d
+		}
+		{
+			dependencies: ["1925BEA542447AED"]
+			description: ["The Ledger tracks everything. Push distance flown with elytra to 50 km.", "", "&bObjective:&r Reach distance flown with elytra: 50 km", "&7Counts your total since you first joined."]
+			id: "0155E3977CF2C699"
+			rewards: [
+				{ count: 3, id: "7788AE25B951EC9D", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 1, id: "4EA367E7CDF2B55E", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 92 of 95 • 3 Gold, 1 Iron"
+			tasks: [{ id: "7C7BCFB0D1D8C752", stat: "minecraft:aviate_one_cm", type: "stat", value: 5000000 }]
+			title: "Fifty Kilometre Flight"
+			x: 9.0d
+			y: 19.5d
+		}
+		{
+			dependencies: ["0155E3977CF2C699"]
+			description: ["The guild stores are low on Dragon Breath. Hand in 32.", "", "&bObjective:&r Hand in 32 Dragon Breath", "&7The items are taken when you complete the quest."]
+			id: "09EC5A9B0F847977"
+			rewards: [
+				{ count: 3, id: "4B07FF67F7ED5E56", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 1, id: "26F22CBD0D57061B", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 93 of 95 • 3 Gold, 1 Iron"
+			tasks: [{ count: 32L, consume_items: true, id: "6086B9EE70799C50", item: { count: 1, id: "minecraft:dragon_breath" }, type: "item" }]
+			title: "Dragon Brewery"
+			x: 7.5d
+			y: 19.5d
+		}
+		{
+			dependencies: ["09EC5A9B0F847977"]
+			description: ["The Ledger tracks everything. Push distance flown to 5 km.", "", "&bObjective:&r Reach distance flown: 5 km", "&7Counts your total since you first joined."]
+			id: "081D7D46ABFCF0CC"
+			rewards: [
+				{ count: 3, id: "6559E1CF1DD353CF", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+				{ count: 1, id: "1652DE469C238781", item: { count: 1, id: "lightmanscurrency:coin_iron" }, type: "item" }
+			]
+			subtitle: "Entry 94 of 95 • 3 Gold, 1 Iron"
+			tasks: [{ id: "22620CE52AB65702", stat: "minecraft:fly_one_cm", type: "stat", value: 500000 }]
+			title: "High Flyer"
+			x: 6.0d
+			y: 19.5d
+		}
+		{
+			dependencies: ["081D7D46ABFCF0CC"]
+			description: ["Gather 60 levels and spend them here.", "", "&bObjective:&r Spend 60 XP levels", "&7The levels are taken when you complete the quest.", "", "&6Ledger Trial! &7Bonus coin reward.", "&6&lFinal entry of this Ledger."]
+			id: "19E1911113C38BCD"
+			rewards: [
+				{ count: 1, id: "5F1874A875A5B5B8", item: { count: 1, id: "lightmanscurrency:coin_emerald" }, type: "item" }
+				{ count: 3, id: "5E3C6ECBEB81ADC5", item: { count: 1, id: "lightmanscurrency:coin_gold" }, type: "item" }
+			]
+			shape: "hexagon"
+			size: 2.0d
+			subtitle: "Entry 95 of 95 • 1 Emerald, 3 Gold"
+			tasks: [{ id: "026B11182F6BC49E", points: false, type: "xp", value: 60L }]
+			title: "&6&lVoidborn"
+			x: 4.5d
+			y: 19.5d
+		}
+	]
+	subtitle: ["Beyond the stronghold lies the void, a dragon and the cities of the End. &7(Unlocks after entry 50 of the previous Ledger.)"]
+	title: "&5Ledger IX: The Far End"
+}
