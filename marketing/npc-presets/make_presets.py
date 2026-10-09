@@ -60,6 +60,8 @@ def cmd(command): return {"Type": S("COMMAND"), "Cmd": S("execute as @initiator 
 
 # Close first, then run: a screen the command opens (like the quest book) must not get closed after it.
 def run(label, command): return btn(label, close(), cmd(command))
+# Runs as the NPC with no permission level needed: for KubeJS commands that take the player's name.
+def npc_run(label, command): return btn(label, close(), {"Type": S("COMMAND"), "Cmd": S(command), "PermLevel": I(0)})
 def to(label, page_name): return btn(label, go(page_name))
 BACK = lambda: btn("<< Back", back())
 BYE = lambda label="Farewell": btn(label, close())
@@ -150,12 +152,12 @@ NPCS = {
  # Gives a Tensura Race Reset Scroll once every 12 hours (cooldown lives in minecraft/kubejs/server_scripts/race_scroll.js)
  "rebirth_keeper": ("Seris the Rebirth Keeper", "#AA00AA", [
    page("main", "Ah... @initiator. I am Seris, keeper of the Rebirth Archive. Every soul is born into a race it never chose. I can offer you a second chance: one Race Reset Scroll, every twelve hours.",
-        [run("✦ Claim my Race Reset Scroll", "racescroll claim"), to("? What does the scroll do", "what"),
-         run("⌛ When can I claim again?", "racescroll time"), BYE("Not today")], default=True),
+        [npc_run("✦ Claim my scroll", "racescroll claim @initiator"), to("? What does it do", "what"),
+         npc_run("⌛ Next scroll when?", "racescroll time @initiator"), BYE("Not today")], default=True),
    page("what", "Read the Race Reset Scroll and you are reborn. It resets your Statistics, Naming status, Awakening status, Spirits, Resistances and your Race, along with its Intrinsic Skills. Then you choose a new race.",
         [to("☠ Is there a catch?", "catch"), BACK()]),
    page("catch", "There is always a catch, child. Whatever your old race gave you is gone: its intrinsic skills, your awakening, your spirits. Don't read it on a whim. Keep it until you are sure... and you only get one every twelve hours.",
-        [run("✦ I understand. Give me the scroll", "racescroll claim"), BACK()]),
+        [npc_run("✦ I understand", "racescroll claim @initiator"), BACK()]),
  ]),
 }
 
