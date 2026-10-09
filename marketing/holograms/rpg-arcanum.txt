@@ -1,15 +1,16 @@
+Delete old: /kill @e[type=text_display,tag=arcanum_holo]
+
 Stand on the very top of the roof, in the middle, then paste:
 
-/summon text_display ~ ~5.5 ~ {billboard:"center",shadow:1b,background:0,Tags:["arcanum_holo"],transformation:[2f,0f,0f,0f,0f,2f,0f,0f,0f,0f,2f,0f,0f,0f,0f,1f],text:'{"text":"✦ THE ✦","color":"light_purple","bold":true}'}
+/summon text_display ~ ~10.6 ~ {billboard:"center",view_range:4f,Tags:["arcanum_holo"],transformation:[4f,0f,0f,0f,0f,4f,0f,0f,0f,0f,4f,0f,0f,0f,0f,1f],text:'{"text":"✦ THE ✦","color":"gold","bold":true}'}
 
-/summon text_display ~ ~3.75 ~ {billboard:"center",shadow:1b,background:0,Tags:["arcanum_holo"],transformation:[6f,0f,0f,0f,0f,6f,0f,0f,0f,0f,6f,0f,0f,0f,0f,1f],text:'{"text":"ARCANUM","color":"dark_purple","bold":true}'}
+/summon text_display ~ ~6.9 ~ {billboard:"center",view_range:4f,Tags:["arcanum_holo"],transformation:[14f,0f,0f,0f,0f,14f,0f,0f,0f,0f,14f,0f,0f,0f,0f,1f],text:'{"text":"ARCANUM","color":"light_purple","bold":true}'}
 
-/summon text_display ~ ~3.15 ~ {billboard:"center",shadow:1b,background:0,Tags:["arcanum_holo"],transformation:[2f,0f,0f,0f,0f,2f,0f,0f,0f,0f,2f,0f,0f,0f,0f,1f],text:'{"text":"Enchanting • Runes • Arcane Arts","color":"aqua"}'}
+/summon text_display ~ ~5.5 ~ {billboard:"center",view_range:4f,Tags:["arcanum_holo"],transformation:[4.5f,0f,0f,0f,0f,4.5f,0f,0f,0f,0f,4.5f,0f,0f,0f,0f,1f],text:'{"text":"Enchanting • Runes • Magic","color":"aqua"}'}
 
-/summon text_display ~ ~2.5 ~ {billboard:"center",shadow:1b,background:0,Tags:["arcanum_holo"],transformation:[2.3f,0f,0f,0f,0f,2.3f,0f,0f,0f,0f,2.3f,0f,0f,0f,0f,1f],text:'[{"text":"» ","color":"gold"},{"text":"/warp arcanum","color":"green"}]'}
+/summon text_display ~ ~4.2 ~ {billboard:"center",view_range:4f,Tags:["arcanum_holo"],transformation:[5f,0f,0f,0f,0f,5f,0f,0f,0f,0f,5f,0f,0f,0f,0f,1f],text:'{"text":"/warp arcanum","color":"green","bold":true}'}
 
-Glow:
-/execute as @e[type=text_display,tag=arcanum_holo] run data merge entity @s {brightness:{sky:15,block:15}}
+Glow + dark backing:
+/execute as @e[type=text_display,tag=arcanum_holo] run data merge entity @s {brightness:{sky:15,block:15},shadow:1b,background:1879048192,line_width:400}
 
 Up: /execute as @e[type=text_display,tag=arcanum_holo] at @s run tp @s ~ ~0.5 ~
-Delete: /kill @e[type=text_display,tag=arcanum_holo]
