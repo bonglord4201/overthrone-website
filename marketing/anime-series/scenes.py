@@ -95,6 +95,6 @@ def door_panels(a, close):
         x0, x1 = (0, gx) if side == 0 else (W - gx, W)
         if x1 <= x0: continue
         d.rectangle([x0, 0, x1, H], fill=(20, 14, 18, 255))
-        for k in range(6):
+        for k in range(6 if x1 - x0 > 80 else 0):
             yy = 160 + k * 300; d.rectangle([x0 + 30, yy, x1 - 30, yy + 220], outline=(90, 60, 50, 255), width=6)
     return over(a, img)
