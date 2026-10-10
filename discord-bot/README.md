@@ -16,6 +16,7 @@ Node.js (discord.js v14). No database server needed: everything is saved in `dat
 | Levels | XP for chatting, level-up messages, `/rank`, `/leaderboard`, optional reward roles |
 | Community | `/suggest` (with votes and a thread), staff `/suggestion`, `/giveaway`, `/rolepanel`, `/announce` |
 | Server control | `/mc command`, `/mc say`, `/mc whitelist`, `/mc list` (admins only, through RCON) |
+| Server organiser | `/server preview` · `/server apply` · `/server content` · `/server restore` (see below) |
 
 ## Setup
 
@@ -41,6 +42,22 @@ Node.js (discord.js v14). No database server needed: everything is saved in `dat
    - Set the startup / main file to `index.js` and Node.js 20 or newer, then start the server.
 5. **In Discord**
    - Run `/setup`, give your staff the **Staff** role, then run `/ticket panel` in your support channel.
+
+## Organising the whole Discord (`/server`)
+
+Admins only. The bot needs the **Administrator** permission.
+
+1. **`/server preview`**: changes nothing. Lists every change it would make and any staff channel that members can see right now. The full plan comes as a file.
+2. **`/server apply confirm:True`**: saves a backup (`data/backups/`, also sent to you), then:
+   - creates only the **missing** roles (In-Game Admin, Staff, Linked, ping roles). Existing roles are never changed.
+   - creates only the **missing** staff channels (build-team, in-game-staff, mod-logs, bot-logs, ticket-logs) and a private ticket category
+   - fixes real problems only: staff channels members can see become staff-only, and info/guide channels members can post in become read-only. Staff roles get access to the staff area.
+   - **never moves, renames, reorders or deletes anything**. `how-to-play` is never touched.
+   It's safe to run again: the second run changes nothing.
+3. **`/server content`**: posts the welcome, rules, website links, FAQ, useful commands, mods & keybinds, quests and bosses posts, plus the ticket panel and the ping-role panel. Running it again edits those posts instead of reposting them. Use `only:` to do one channel at a time. Add `clear_old:True` to archive the old messages in those channels to bot-logs and remove them first.
+4. **`/server restore confirm:True`**: puts every channel's permissions back the way they were before the last apply. `original:True` goes back to before the first one.
+
+The layout is in `src/blueprint.js`. The posts come from `content.json`, which `node scripts/build-discord-content.mjs` builds from the website's guide and rules, so Discord and the website always match.
 
 ## Editing
 

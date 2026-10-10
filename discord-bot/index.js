@@ -13,8 +13,9 @@ import * as levels from "./src/features/levels.js";
 import * as giveaways from "./src/features/giveaways.js";
 import * as community from "./src/features/community.js";
 import * as minecraft from "./src/features/minecraft.js";
+import * as server from "./src/features/server.js";
 
-const features = [info, linking, setup, events, tickets, moderation, levels, giveaways, community, minecraft];
+const features = [info, linking, setup, events, tickets, moderation, levels, giveaways, community, minecraft, server];
 
 if (!process.env.DISCORD_TOKEN) {
   console.error("DISCORD_TOKEN is missing. Create a .env file next to index.js (copy .env.example).");
@@ -35,7 +36,9 @@ const client = new Client({
 
 const commands = new Map();
 const buttons = new Map();
+const modals = new Map();
 for (const f of features) {
+  for (const [id, fn] of Object.entries(f.modals ?? {})) modals.set(id, fn);
   for (const c of f.commands ?? []) commands.set(c.data.name, c);
   for (const [prefix, fn] of Object.entries(f.buttons ?? {})) buttons.set(prefix, fn);
   f.register?.(client);
@@ -69,6 +72,9 @@ client.on(Events.InteractionCreate, async (i) => {
     if (i.isChatInputCommand()) {
       const cmd = commands.get(i.commandName);
       if (cmd) await cmd.execute(i);
+    } else if (i.isModalSubmit()) {
+      const fn = modals.get(i.customId);
+      if (fn) await fn(i);
     } else if (i.isButton()) {
       // customId "a:b:c" -> handler "a:b" with arg "c", or handler "a" with arg "b:c"
       const parts = i.customId.split(":");

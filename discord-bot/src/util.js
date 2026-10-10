@@ -19,8 +19,8 @@ export const fail = (text) => embed(null, "❌ " + text).setColor(0xe74c3c);
 export function isStaff(member) {
   if (!member) return false;
   if (member.permissions?.has(PermissionFlagsBits.ManageMessages)) return true;
-  const staff = db.settings.roles.staff;
-  return Boolean(staff && member.roles?.cache?.has(staff));
+  const ids = [db.settings.roles.staff, ...(db.settings.staffRoles ?? [])].filter(Boolean);
+  return ids.some((id) => member.roles?.cache?.has(id));
 }
 
 export function getChannel(guild, key) {

@@ -60,6 +60,8 @@ def cmd(command): return {"Type": S("COMMAND"), "Cmd": S("execute as @initiator 
 
 # Close first, then run: a screen the command opens (like the quest book) must not get closed after it.
 def run(label, command): return btn(label, close(), cmd(command))
+# Runs as the NPC with no permission level needed: for KubeJS commands that take the player's name.
+def npc_run(label, command): return btn(label, close(), {"Type": S("COMMAND"), "Cmd": S(command), "PermLevel": I(0)})
 def to(label, page_name): return btn(label, go(page_name))
 BACK = lambda: btn("<< Back", back())
 BYE = lambda label="Farewell": btn(label, close())
@@ -147,6 +149,16 @@ NPCS = {
    page("aeonia", "AEONIA, the Realm of the Divine. Ancient temples, marble halls and celestial skies, where the gods once walked. Only the worthy may ascend, and the gods do not forgive arrogance.", [BACK()]),
    page("netherfall", "NETHERFALL, the Realm of the Dead. Volcanic wastes, ancient ruins and the endless abyss. Lost souls wander there, hungry. Many enter. Few return. Do not go unprepared, @initiator.", [BACK()]),
  ]),
+ # Gives a Tensura Race Reset Scroll once every 12 hours (cooldown lives in minecraft/kubejs/server_scripts/race_scroll.js)
+ "rebirth_keeper": ("Seris the Rebirth Keeper", "#AA00AA", [
+   page("main", "Ah... @initiator. I am Seris, keeper of the Rebirth Archive. Every soul is born into a race it never chose. I can offer you a second chance: one Race Reset Scroll, every twelve hours.",
+        [npc_run("✦ Claim my scroll", "racescroll claim @initiator"), to("? What does it do", "what"),
+         npc_run("⌛ Next scroll when?", "racescroll time @initiator"), BYE("Not today")], default=True),
+   page("what", "Read the Race Reset Scroll and you are reborn. It resets your Statistics, Naming status, Awakening status, Spirits, Resistances and your Race, along with its Intrinsic Skills. Then you choose a new race.",
+        [to("☠ Is there a catch?", "catch"), BACK()]),
+   page("catch", "There is always a catch, child. Whatever your old race gave you is gone: its intrinsic skills, your awakening, your spirits. Don't read it on a whim. Keep it until you are sure... and you only get one every twelve hours.",
+        [npc_run("✦ I understand", "racescroll claim @initiator"), BACK()]),
+ ]),
 }
 
 # Ryo's custom skin that was already uploaded in-game (from the export); the others start with the default skin.
@@ -155,13 +167,13 @@ RYO_SKIN = [456948940, -74762666, -1775736367, -930515890]
 # NPCs that skip their dialog and run a command straight away when right-clicked
 OPEN_ON_CLICK = {"questmaster_orin": "ftbquests open_book"}
 
-def build(key, name, color, pages):
+def build(key, name, color, pages, name_json=None, description="OVERTHRONE RPG NPC"):
     now = int(time.time() * 1000)
     skin = {"Type": S("CUSTOM"), "UUID": IA(RYO_SKIN)} if key == "guildmaster_ryo" else {"Type": S("DEFAULT")}
     data = {
         "EasyNPCVersion": I(3),
         "id": S("easy_npc:humanoid"),
-        "CustomName": S('{"text":"%s","color":"%s"}' % (name, color)),
+        "CustomName": S(name_json or '{"text":"%s","color":"%s"}' % (name, color)),
         "SkinData": C(skin),
         "ObjectiveData": C({"ObjectiveDataSet": LIST(10, [C({"Type": S(t)}) for t in ("LOOK_AT_RESET", "LOOK_AT_PLAYER", "LOOK_AT_MOB")])}),
         "DialogData": C({"Type": S("STANDARD"), "DialogDataSet": LIST(10, pages)}),
@@ -173,7 +185,7 @@ def build(key, name, color, pages):
     root = {
         "PresetMetadata": C({
             "version": S("1.0.0"), "modified": L(now), "created": L(now), "category": S("General"),
-            "name": S(name), "entityTypeId": S("easy_npc:humanoid"), "description": S("OVERTHRONE RPG NPC"),
+            "name": S(name), "entityTypeId": S("easy_npc:humanoid"), "description": S(description),
             "author": S("__SK1TZ__"), "variantType": S("STEVE"),
         }),
         "data": C(data),
@@ -183,6 +195,9 @@ def build(key, name, color, pages):
         f.write(gzip.compress(raw))
 
 if __name__ == "__main__":
+    from guides import GUIDES
     for key, (name, color, pages) in NPCS.items():
         build(key, name, color, pages)
-    print("built", len(NPCS))
+    for key, (name, name_json, description, pages) in GUIDES.items():
+        build(key, name, None, pages, name_json, description)
+    print("built", len(NPCS) + len(GUIDES))

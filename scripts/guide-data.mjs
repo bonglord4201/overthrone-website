@@ -9,7 +9,7 @@
 // Inline formatting: **bold** and [text](/link). Keep it plain: these strings are
 // escaped for the page and reused as forum post text.
 
-export const GUIDE_UPDATED = "2026-10-09";
+export const GUIDE_UPDATED = "2026-10-10";
 
 export const GUIDE_INTRO =
   "Everything you need to play OVERTHRONE SMP: installing the modpack, the keybinds that matter, quests, coins, warps, bosses and fixes for common problems.";
@@ -132,6 +132,71 @@ export const SECTIONS = [
         "**Classes.** Visit **/warp classes** in the hub to see the classes."
       ] },
       { callout: { kind: "tip", text: "Damage numbers (from Combat Numbers) pop up when you hit something, so you can see which weapon and skills actually do more damage." } }
+    ]
+  },
+  {
+    id: "races",
+    title: "Races & Evolution",
+    icon: "crown",
+    intro: "Tensura: Reincarnated asks you to pick a race the first time you join. Your race decides your starting health, magic and strength, the skills you're born with and every evolution you can reach. Here's every starting race, who it suits and how to evolve it.",
+    blocks: [
+      { list: [
+        "**Pick on your first join.** A race menu opens when you first join. Each race shows a difficulty: Easy races start strong, Hard and Extreme ones start weak but can end up just as powerful.",
+        "**EP is your power level.** Existence Points are your max Magicules (MP) plus your max Aura (AP). Kill mobs to gain EP: by default you get 3% of what you kill.",
+        "**Magic or might.** Majin races (Slime, Wight, Ghoul, Lesser Daemon) turn most of that EP into MP for skills and magic. Every other race turns most of it into AP for battlewills and fighting.",
+        "**How to evolve.** Press **B** (Status Menu) and open the **Evolution Menu**. It lists the evolutions you can reach and how close you are. Press **Track** to show the goal on screen, then **Evolve** when it hits 100%.",
+        "**Changed your mind?** Talk to **Seris the Rebirth Keeper** for a **Race Reset Scroll** (one every 12 hours). It resets your race, stats and race skills so you can pick again."
+      ] },
+      { table: { head: ["Race", "Difficulty", "Best for", "Start MP / AP"], rows: [
+        ["Giant", "Easy", "Raw power, the strongest start", "6,000–8,000 / 4,000–6,000"],
+        ["Lesser Daemon", "Easy", "Flying spellcaster", "5,000–6,000 / 2,000–3,000"],
+        ["Ogre", "Easy", "Melee fighter, the most evolution paths", "300–600 / 1,500–2,500"],
+        ["Beastfolk", "Easy", "Fast melee with regeneration", "300–600 / 1,500–2,500"],
+        ["Harpy", "Easy", "Magic with wings to glide", "1,500–2,500 / 300–600"],
+        ["Elf", "Intermediate", "Elemental magic, fast", "320–600 / 600–800"],
+        ["Merfolk", "Intermediate", "Oceans and water combat", "400–600 / 500–600"],
+        ["Lizardman", "Intermediate", "Dragon path that ends with flight", "100–200 / 600–800"],
+        ["Orc", "Intermediate", "Tank with a hunger skill", "50–100 / 400–600"],
+        ["Human", "Hard", "Weapons and battlewills, can become a Vampire", "50–70 / 760–1,140"],
+        ["Dwarf", "Hard", "Tough, slow, hard-hitting", "80–120 / 720–1,080"],
+        ["Goblin", "Hard", "Weak start, quick first evolutions", "700 / 300"],
+        ["Wight", "Hard", "Undead mage, hates sunlight", "2,000–3,000 / 100–500"],
+        ["Ghoul", "Hard", "The road to Divine Vampire", "2,000–3,000 / 1,000–2,000"],
+        ["Slime", "Extreme", "Experts: weakest start, huge payoff", "200–500 / 200–500"]
+      ] } },
+      { cards: [
+        { k: "Easy", t: "Giant", d: "The strongest start in the game: 50 HP, 6 attack damage, big MP and AP, and **Giantification** to grow huge. **Path:** Giant → Ancient Giant (300,000 EP + 20 Ancient Debris) → Divine Giant (2,000,000 EP)." },
+        { k: "Easy", t: "Lesser Daemon", d: "Flies from day one, has the biggest magic pool of any starter and comes with a pile of spells. Majin. **Path:** Lesser Daemon → Greater Daemon (20,000 EP) → Arch Daemon (140,000 EP) → Daemon Lord (2 of: a body, a name, an awakening) → Devil Lord (all 3)." },
+        { k: "Easy", t: "Ogre", d: "Strong, tough melee fighter with **Strength** and the most branches of any race. Bonds with Fire Spirits more easily. **Path:** Ogre → Kijin (get a Spirit) or Enlightened Ogre (100,000 EP) → Mystic Oni (10 Elemental Essence) or Wicked Oni (10 Daemon Essence) → Spirit Oni or Death Oni (400,000 EP) → Divine Oni or Divine Fighter (2,000,000 EP)." },
+        { k: "Easy", t: "Beastfolk", d: "Fast, high Aura, with **Beast Transformation** and **Self Regeneration**, so you can keep fighting without rest. A great first melee race. **Path:** Beastfolk → Beast Lord (100,000 EP) → Spirit Beast (400,000 EP + 4 bosses) → Divine Beast (2,000,000 EP)." },
+        { k: "Easy", t: "Harpy", d: "A big magic pool, **Magic Jamming**, and wings that let you glide like an elytra. Good for mages who like to move. **Path:** Harpy → Harpy Queen (200,000 EP) → Spirit Bird (800,000 EP) → Divine Bird (2,000,000 EP)." },
+        { k: "Intermediate", t: "Elf", d: "Quick on your feet with a talent for elemental magic. Bonds with Wind Spirits more easily. **Path:** Elf → Enlightened Elf (100,000 EP) → Elf Saint (400,000 EP + 4 bosses) → Divine Elf (2,000,000 EP)." },
+        { k: "Intermediate", t: "Merfolk", d: "Breathes underwater and shoots through it with **Hydraulic Propulsion**. Bonds with Water Spirits more easily. **Path:** Merfolk → Enlightened Merfolk (100,000 EP) → Merfolk Saint (400,000 EP + 4 bosses) → Divine Fish (2,000,000 EP)." },
+        { k: "Intermediate", t: "Lizardman", d: "**Scale Armor** and a dragon bloodline. Dragonewts get Flame Breath and Thunder Breath, and the last two forms grow real wings. **Path:** Lizardman → Dragonewt (10 Dragon Essence) → True Dragonewt (800,000 EP) → Divine Dragon (2,000,000 EP)." },
+        { k: "Intermediate", t: "Orc", d: "Tanky (28 HP) but low on magic. The Orc Lord route learns **Starved**, a hunger skill. **Path:** Orc → High Orc (5,000 EP) → Orc Lord (10 Royal Blood) → Orc Disaster (200,000 EP + mastered Starved) → Spirit Boar (400,000 EP) → Divine Boar (2,000,000 EP). High Orc can also go straight to Spirit Boar at 400,000 EP." },
+        { k: "Hard", t: "Human", d: "Very little magic but solid Aura, so you fight with weapons and battlewills. **Path:** Human → Enlightened Human (100,000 EP) → Human Saint (400,000 EP + 4 bosses) → Divine Human (2,000,000 EP). **Or** drink 5 Zane Blood to become a **Vampire** and join the vampire line." },
+        { k: "Hard", t: "Dwarf", d: "Tough and hits harder than most starters, but slow and low on magic. Bonds with Earth Spirits more easily. **Path:** Dwarf → Enlightened Dwarf (100,000 EP) → Dwarf Saint (400,000 EP + 4 bosses) → Divine Dwarf (2,000,000 EP)." },
+        { k: "Hard", t: "Goblin", d: "Only 12 HP, but you evolve fast: Hobgoblin at just 2,000 EP. **Path:** Goblin → Hobgoblin (2,000 EP) → Enlightened Hobgoblin (100,000 EP) → Hobgoblin Saint (400,000 EP + 4 bosses) → Divine Oni (2,000,000 EP). **Or** a Hobgoblin that defeats (or dies to) the Elemental Colossus becomes an **Ogre**." },
+        { k: "Hard", t: "Wight", d: "Undead with a huge magic pool, and undead mobs leave you alone. Sunlight burns and weakens you (a helmet stops the burning; roofs and rain stop it all). **Path:** Wight → Wight King (200,000 EP) → Spirit Skeleton (800,000 EP) → Divine Skeleton (2,000,000 EP). **Or** turn **Human** by eating an Enchanted Golden Apple while you have Weakness." },
+        { k: "Hard", t: "Ghoul", d: "A vampire thrall: big MP, **Paralysis**, **Strength** and **Self Regeneration**, but sunlight cripples you. This is the road to Divine Vampire. **Path:** Ghoul → Vampire (1 Zane Blood) → Vampire Overcomer (150,000 EP) → Vampire Lord (400,000 EP) → Divine Vampire (2,000,000 EP)." },
+        { k: "Extreme", t: "Slime", d: "The hardest start: 10 HP and slow. But slimes take **50% less physical damage**, have **Absorb & Dissolve** and **Self Regeneration**, and end as one of the strongest races. **Path:** Slime → Metal Slime (absorb 100 Magic Ore with Absorb & Dissolve) → Demon Slime (awaken as True Demon Lord or True Hero) → God Slime (2,000,000 EP)." }
+      ] },
+      { list: [
+        "**EP goals.** Most first evolutions need about 100,000 EP, the third stage 400,000 to 800,000, and the final Divine forms 2,000,000 EP.",
+        "**Defeat 4 bosses.** Saint-tier evolutions also need you to beat four different bosses.",
+        "**Items.** Some evolutions need an item instead of EP: Zane Blood, Royal Blood, Dragon Essence, Elemental Essence, Daemon Essence, Magic Ore or Ancient Debris.",
+        "**Harvest Festival.** When a player awakens as a **True Demon Lord**, their subordinates nearby evolve for free. Many early evolutions list it as an alternative.",
+        "**Naming.** A stronger player can name you (default key **N**). Their Evolve option can push you to your next form if it doesn't need an awakening.",
+        "**Awakening.** True Demon Lord (Majin with 200,000 EP, then collect 10,000 souls) or True Hero. Some evolutions, like Demon Slime, need one."
+      ] },
+      { faq: [
+        { q: "Vampire weaknesses: Ghoul, Vampire and Vampire Overcomer", a: "Ghouls and Vampires get heavy debuffs and burn in sunlight. A helmet stops the burning (it slowly loses durability), and roofs or rain stop the debuffs. Vampire Overcomer still gets Weakness III and Slowness II in sunlight. **Vampire Lord** and **Divine Vampire** have no sunlight weakness at all. Every vampire is weaker on a **New Moon**, and every vampire can turn into a **swarm of bats** (Race Ability, **Ctrl + E**)." },
+        { q: "What does a final Divine race give me?", a: "Every Divine form has up to 1,000,000 MP and 1,000,000 AP, around 900 to 1,200 HP, and **Divine Ki Release**: +50 battlewill damage (+100 mastered), extra armour damage, and it can hit spiritual enemies. Some get more: Divine Vampire gets **Infinite Regeneration**, Divine Giant gets **Titanification** and **Ultraspeed Regeneration**, Divine Fighter gets **Divine Berserker**." },
+        { q: "Which races can fly?", a: "**Lesser Daemon** and every daemon after it fly from the start (creative-style flight). **True Dragonewt** and **Divine Dragon** grow wings. **Harpies** and their evolutions glide like an elytra. Vampires can turn into bats." },
+        { q: "What's the Race/Mount Ability key?", a: "**Ctrl + E** by default (Options → Controls → Tensura). It uses your race's special ability, like the vampire bat swarm or the slime super jump." },
+        { q: "Can I change race later?", a: "Yes. Get a **Race Reset Scroll** from Seris the Rebirth Keeper (one every 12 hours). It resets your statistics, naming and awakening status, spirits, resistances and race with its intrinsic skills, so only use it if you're sure." }
+      ] },
+      { callout: { kind: "tip", text: "Race stats and requirements are the Tensura: Reincarnated defaults for version 2.0.1. Press **B** in game: your Evolution Menu always shows the exact requirement for your next form." } }
     ]
   },
   {
@@ -312,6 +377,10 @@ export const FORUM_POSTS = [
   { category: "bosses", title: "Bosses & Dungeons Guide", pinned: true, sections: ["bosses"] },
   { category: "realms", title: "Worlds & Warps", pinned: true, sections: ["worlds"] }
 ];
+
+// Races category + post in the forums (migration 0007, since 0006 has already run).
+export const RACES_CATEGORY = { section: "OVERTHRONE Gameplay", name: "Races", slug: "races", description: "Every Tensura race, who it suits and how to evolve it.", icon: "crown", sort_order: 25 };
+export const RACES_POST = { category: "races", title: "Races & Evolution Guide", pinned: true, sections: ["races"] };
 
 // Forum category for the guide posts (the other categories already exist).
 export const NEW_CATEGORIES = [

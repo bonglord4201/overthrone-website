@@ -1,0 +1,557 @@
+{
+  "generatedFrom": "scripts/build-discord-content.mjs",
+  "channels": [
+    {
+      "key": "welcome",
+      "messages": [
+        {
+          "embeds": [
+            {
+              "title": "⚔️ Welcome to OVERTHRONE SMP",
+              "description": "*Don't reach the throne. Overthrow it.*\n\nA modded dark-fantasy MMORPG on **NeoForge 1.21.1**, built around **Tensura: Reincarnated** and **Epic Fight** combat. Over 1,100 quests, bosses, an RPG city and an economy you grind for in game.\n\n**🚀 Start here**\n🔸 Read the {#rules}\n🔸 Install the modpack: {#howtoplay}\n🔸 Fix your keybinds: {#mods}\n🔸 Pick your notifications: {#roles}\n🔸 Link your Minecraft account: type `/link` here while you're online in-game\n\n**🎮 Server address:** `overthronesmp.net`\n\nNeed help? Open a ticket in {#tickets}.",
+              "image": "https://overthronesmp.net/images/og-card.png"
+            }
+          ],
+          "buttons": [
+            {
+              "label": "Website",
+              "url": "https://overthronesmp.net/",
+              "emoji": "🌐"
+            },
+            {
+              "label": "Player Guide",
+              "url": "https://overthronesmp.net/guide",
+              "emoji": "📖"
+            },
+            {
+              "label": "Rules",
+              "url": "https://overthronesmp.net/rules",
+              "emoji": "📜"
+            },
+            {
+              "label": "Vote",
+              "url": "https://overthronesmp.net/vote",
+              "emoji": "🗳️"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "link",
+      "messages": [
+        {
+          "embeds": [
+            {
+              "title": "🔗 Link your Minecraft account",
+              "description": "Connect your Minecraft account to Discord to get the **Linked** role and your in-game perks.\n\n**How it works**\n🔸 **1.** Join the server (`overthronesmp.net`) and stay online.\n🔸 **2.** Click **Link my account** below and type your exact Minecraft username.\n🔸 **3.** A **6-digit code** appears in your Minecraft chat. You can click it to copy it.\n🔸 **4.** Click **Enter code** and paste it. Done!\n\nCodes expire after 10 minutes. Only you can see the bot's replies here.\n\n⚠️ **Staff will never ask for your code.** Never share it with anyone.\nTrouble linking? Open a ticket in {#tickets}.",
+              "thumbnail": "https://overthronesmp.net/images/icon-192.png"
+            }
+          ],
+          "buttons": [
+            {
+              "label": "Link my account",
+              "id": "link:start",
+              "emoji": "🔗"
+            },
+            {
+              "label": "Enter code",
+              "id": "link:code",
+              "emoji": "🔑",
+              "style": "secondary"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "rules",
+      "messages": [
+        {
+          "embeds": [
+            {
+              "title": "📜 OVERTHRONE Rules",
+              "description": "By joining OVERTHRONE SMP – the Minecraft server, our Discord, the forums or the store – you agree to these rules.\n\nUnless a section says otherwise, every rule applies everywhere OVERTHRONE exists: in-game, in Discord, on the forums and in private messages about the server.\n\nStaff may act on behaviour that breaks the spirit of these rules even if it is not listed. Not knowing the rules is not an excuse.\n\n*Last updated 3 October 2026.*"
+            },
+            {
+              "title": "1 · Global Bans",
+              "description": "*Breaking these rules can lead to a temporary or permanent ban from every OVERTHRONE platform.*\n\n**1.1** **No cheating.** Hacked clients, X-ray (mods, resource packs or texture tricks), freecam abuse, kill aura, auto-clickers, macros and any client mod that gives an unfair advantage are not allowed.\n**1.2** **No exploiting.** Duplication glitches, unintended mod interactions, bypassing claims and any bug that gives an advantage are banned. Found one? Report it privately to staff – you may be rewarded.\n**1.3** **No ban or mute evasion.** Using another account to get around a punishment extends it to every account you use.\n**1.4** **No account sharing or selling.** You are responsible for everything done on your account.\n**1.5** **No real-money trading.** Selling or buying in-game items, currency, Throne Shards, bases or accounts for real money or anything outside the server is not allowed.\n**1.6** **No threats or attacks.** DDoS threats, doxxing, swatting, hacking attempts and sharing anyone's personal information result in an immediate permanent ban.\n**1.7** **No lag machines.** Builds, farms or redstone made to lag or crash the server or other players are not allowed.\n**1.8** **No illegal content.** Anything illegal, or links to it, is banned everywhere."
+            },
+            {
+              "title": "2 · Chat & Global Mutes",
+              "description": "*Breaking these rules can lead to a warning, a mute or a ban.*\n\n**2.1** **Respect everyone.** No harassment, bullying, targeted insults or encouraging others to do so.\n**2.2** **No hate speech or discrimination** based on race, religion, gender, sexuality, nationality, disability or anything else.\n**2.3** **No NSFW content.** No sexual, gore or shocking content in chat, names, skins, builds, signs, books or images.\n**2.4** **No spam.** No flooding, repeated messages, excessive caps, character spam or wall-of-text messages.\n**2.5** **No advertising.** Do not promote other servers, IPs, websites, stores, Discord servers or your own social media without staff permission.\n**2.6** **English in public chat** so staff can moderate it. Other languages are fine in private messages.\n**2.7** **No impersonation** of staff, YouTubers or other players.\n**2.8** **No drama-starting.** Keep arguments, politics and controversial topics out of public chat.\n**2.9** **Don't share personal information** – yours or anyone else's."
+            },
+            {
+              "title": "3 · SMP Gameplay",
+              "description": "*Rules for playing in the realms of OVERTHRONE SMP.*\n\n**3.1** **No griefing or stealing** from builds, claims or containers that are not yours.\n**3.2** **No spawn-killing or trapping** players at spawn, portals, Gates or respawn points.\n**3.3** **No combat logging.** Leaving the game to escape a fight counts as a loss and may be punished.\n**3.4** **PvP only where it is enabled.** Follow the PvP rules of each realm and event.\n**3.5** **Don't block shared areas.** Do not block Gates, dungeons, boss arenas, portals, paths or public builds, and don't camp them to stop others playing.\n**3.6** **Keep builds appropriate.** No offensive, NSFW or political builds, and don't build right next to someone else without asking.\n**3.7** **Fair trading.** Scamming players in trades, shops, the auction house or deals made through Discord is not allowed.\n**3.8** **No unfair AFK farming.** AFK machines that abuse mods or bypass AFK limits are not allowed.\n**3.9** **Report bugs, don't abuse them.** Use the Bug Reports forum or a Discord ticket."
+            },
+            {
+              "title": "4 · Discord",
+              "description": "*The Chat & Global Mutes rules also apply in Discord.*\n\n**4.1** **Use the right channels** and stay on topic.\n**4.2** **Don't ping staff or roles** without a real reason. For help, open a ticket.\n**4.3** **No unsolicited DMs** to members for advertising, trading or scams.\n**4.4** **Keep your profile appropriate** – name, avatar, status and banner.\n**4.5** **Voice chat:** no soundboards, earrape, screaming or recording people without their permission.\n**4.6** **Follow Discord's Terms of Service** and Community Guidelines."
+            },
+            {
+              "title": "5 · Forums",
+              "description": "*Rules for the OVERTHRONE forums on this website.*\n\n**5.1** **Post in the right category** and use a clear title.\n**5.2** **No spam, bumping or low-effort posts.** Don't reply just to raise your post count.\n**5.3** **No necroposting** – don't revive old threads unless you have something useful to add.\n**5.4** **Player Reports** need proof (video or screenshots) and should stay factual. Don't call players out in public threads.\n**5.5** **Suggestions** should be constructive. Explain the idea and why it helps the server.\n**5.6** **Don't argue with staff decisions in public.** Use an appeal instead."
+            },
+            {
+              "title": "6 · Store & Purchases",
+              "description": "*Rules for purchases made on the OVERTHRONE store (powered by Tebex).*\n\n**6.1** **All purchases are final.** Digital items are delivered instantly and cannot be refunded unless required by law.\n**6.2** **Chargebacks and payment disputes** lead to a permanent ban on every OVERTHRONE platform.\n**6.3** **Use your exact Minecraft username** at checkout. We can't move purchases made to the wrong account.\n**6.4** **Ranks and perks do not protect you from the rules.** Banned players do not get refunds.\n**6.5** **Perks may change** as the server develops, to keep gameplay fair and balanced.\n**6.6** **Only buy from the official store.** Purchases from anyone else are real-money trading and are not allowed."
+            }
+          ]
+        },
+        {
+          "embeds": [
+            {
+              "title": "7 · Punishments & Appeals",
+              "description": "*How staff handle rule breaks.*\n\n**7.1** **Punishments usually escalate:** warning → mute → temporary ban → permanent ban. Serious rule breaks can skip straight to a permanent ban.\n**7.2** **Staff decisions are final in the moment.** If you think a punishment was unfair, appeal it – don't argue in chat.\n**7.3** **Appeals** are made through a ticket in our Discord. Be honest and include your username, the punishment and why it should be reviewed.\n**7.4** **Lying to staff** or faking evidence makes a punishment worse.\n**7.5** **These rules can change at any time.** Check this page for the latest version."
+            }
+          ],
+          "buttons": [
+            {
+              "label": "Full rules on the website",
+              "url": "https://overthronesmp.net/rules",
+              "emoji": "📜"
+            },
+            {
+              "label": "Open a ticket",
+              "url": "https://discord.gg/overthronesmp",
+              "emoji": "🎫"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "links",
+      "messages": [
+        {
+          "embeds": [
+            {
+              "title": "🌐 Website & Links",
+              "description": "🌐 **Website:** https://overthronesmp.net\n📖 **Player Guide:** https://overthronesmp.net/guide\n⌨️ **Keybinds:** https://overthronesmp.net/keybinds\n💬 **Forums:** https://overthronesmp.net/forums\n📜 **Rules:** https://overthronesmp.net/rules\n🗳️ **Vote for rewards:** https://overthronesmp.net/vote\n🎬 **Trailer:** https://overthronesmp.net/#trailer\n\n📨 **Invite friends:** https://discord.gg/overthronesmp"
+            }
+          ],
+          "buttons": [
+            {
+              "label": "Website",
+              "url": "https://overthronesmp.net/",
+              "emoji": "🌐"
+            },
+            {
+              "label": "Player Guide",
+              "url": "https://overthronesmp.net/guide",
+              "emoji": "📖"
+            },
+            {
+              "label": "Forums",
+              "url": "https://overthronesmp.net/forums",
+              "emoji": "💬"
+            },
+            {
+              "label": "Vote",
+              "url": "https://overthronesmp.net/vote",
+              "emoji": "🗳️"
+            },
+            {
+              "label": "Trailer",
+              "url": "https://overthronesmp.net/#trailer",
+              "emoji": "🎬"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "faq",
+      "messages": [
+        {
+          "embeds": [
+            {
+              "title": "❓ Frequently Asked Questions",
+              "description": "**🔸 Is the server free?**\nYes. You need Minecraft: Java Edition and the OVERTHRONE modpack.\n\n**🔸 Can Bedrock or console players join?**\nNo. Modded servers only work with Java Edition on PC.\n\n**🔸 Can I add my own mods?**\nOnly client-side mods that don't give an advantage, such as minimaps you already have, shaders or performance mods. X-ray, freecam and other cheat mods get you banned. If you're not sure, ask in a Discord ticket first.\n\n**🔸 What version is it?**\nMinecraft 1.21.1 with NeoForge. Use the modpack so every mod version matches the server.\n\n**🔸 Where do I get help?**\nOpen a ticket in the Discord, or check the [forums](https://overthronesmp.net/forums)."
+            },
+            {
+              "title": "🛠️ Known Issues & Fixes",
+              "description": "**🔸 My armour is invisible in Epic Fight battle mode**\nThis is a known incompatibility between Epic Fight and some modded armour, including Tensura armour. Your armour still protects you; it just isn't drawn in battle mode. Press **R** to switch to mining mode to see it again.\n\n**🔸 My camera glitches in third person**\nThis happens when two lock-on systems run together: Epic Fight's lock-on (**G**) and Better Lock On. Use only one. Unbind the one you don't want in Options → Controls → Key Binds.\n\n**🔸 The game crashes or freezes while loading**\nUsually not enough memory. Give the pack **6–8 GB** of RAM in your launcher, then restart. Close other heavy programs.\n\n**🔸 My FPS is low**\nTurn shaders off with **O** (pick \"None\"), lower Render Distance to 8–12 and Simulation Distance to 6–8 in Video Settings. Sodium's extra options are under Video Settings too.\n\n**🔸 My keys do two things at once**\nFollow the [key conflict fixes](https://overthronesmp.net/guide#key-conflicts).\n\n**🔸 Nobody can hear me in voice chat**\nPress **V**, open the settings and pick the right microphone. Make sure you aren't muted (**M**) and that voice chat isn't turned off (**N**).\n\n**🔸 I found a bug or exploit**\nReport it privately in a Discord ticket. Don't abuse it; using bugs for an advantage is against [rule 1.2](https://overthronesmp.net/rules#global-bans)."
+            }
+          ],
+          "buttons": [
+            {
+              "label": "Player Guide",
+              "url": "https://overthronesmp.net/guide#fixes",
+              "emoji": "📖"
+            },
+            {
+              "label": "Keybind fixes",
+              "url": "https://overthronesmp.net/guide#key-conflicts",
+              "emoji": "⌨️"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "commands",
+      "messages": [
+        {
+          "embeds": [
+            {
+              "title": "⌨️ Useful Commands",
+              "description": "**🧭 Warps** (in-game)\n`/warp hub` OVERTHRONE hub\n`/warp survival` Survival world\n`/warp realms` Realm portals\n`/warp market` Market\n`/warp tavern` Tavern\n`/warp classes` Classes\n`/warp hunters` Hunters\n`/warp crates` Crates\n`/warp afk` AFK area\n`/rpg` RPG world\n`/warp arcade` Arcade & Trade Hall\n`/warp arcanum` The Arcanum: enchanting & runes"
+            },
+            {
+              "title": "🤖 Discord Commands",
+              "description": "`/link` Link your Minecraft account (be online in-game)\n`/verify` Finish linking with the code from Minecraft chat\n`/status` Live server status · `/players` Who's online\n`/ip` Server address · `/vote` Vote links · `/rules` Rules · `/website` Website\n`/suggest` Suggest something for the server\n`/rank` Your chat level · `/leaderboard` Top chatters"
+            },
+            {
+              "title": "🎮 Keys Worth Knowing",
+              "description": "`R` Epic Fight battle / mining mode\n`Left Alt` Dodge · `Right Mouse` Guard · `G` Lock on\n`'` Claims & parties (Open Parties and Claims)\n`M` World map · `B` Backpack · `V` Voice chat\n\nSeveral mods share keys by default. Fix them in {#mods}."
+            }
+          ],
+          "buttons": [
+            {
+              "label": "All warps & keys",
+              "url": "https://overthronesmp.net/guide#worlds",
+              "emoji": "🧭"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "mods",
+      "messages": [
+        {
+          "embeds": [
+            {
+              "title": "🧩 Mod List",
+              "description": "The main mods that change how you play. The full pack also has libraries and performance mods.",
+              "fields": [
+                {
+                  "name": "Core",
+                  "value": "Tensura: Reincarnated · Tensura: Kumo Desu · Tensura Leveling · Epic Fight · Epic Fight Extra · Epic Fight Skill Tree · Weapons of Miracles",
+                  "inline": false
+                },
+                {
+                  "name": "Magic & gear",
+                  "value": "Iron's Spells 'n Spellbooks · Simply Swords · Apotheosis · Apothic Enchanting · Apothic Attributes · Artifacts · Sophisticated Backpacks",
+                  "inline": false
+                },
+                {
+                  "name": "Bosses & mobs",
+                  "value": "L_Ender's Cataclysm · Mowzie's Mobs · Born in Chaos · Deeper and Darker",
+                  "inline": false
+                },
+                {
+                  "name": "Worlds & exploring",
+                  "value": "The Aether · Regions Unexplored · ChoiceTheorem's Overhauled Village · YUNG's Better Dungeons · Dungeons and Taverns · Explorify · Lootr · Waystones · Nature's Compass",
+                  "inline": false
+                },
+                {
+                  "name": "Quests & economy",
+                  "value": "FTB Quests · Lightman's Currency · Jobs+",
+                  "inline": false
+                },
+                {
+                  "name": "Friends & claims",
+                  "value": "Open Parties and Claims · FTB Teams · FTB Chunks · Simple Voice Chat",
+                  "inline": false
+                },
+                {
+                  "name": "Helpful",
+                  "value": "JEI · Jade · Xaero's Minimap · Xaero's World Map · Combat Numbers · Better Lock On",
+                  "inline": false
+                },
+                {
+                  "name": "Performance & visuals",
+                  "value": "Sodium · Iris Shaders · ImmediatelyFast · ModernFix · FerriteCore · Entity Culling · Dynamic FPS",
+                  "inline": false
+                }
+              ]
+            },
+            {
+              "title": "⌨️ Keybinds",
+              "description": "These are the default keys for the main mods. Change any of them in Options → Controls → Key Binds. If your modpack already came with different keys, use those.",
+              "fields": [
+                {
+                  "name": "Epic Fight (combat)",
+                  "value": "`R` Switch between battle mode and mining mode\n`Left Mouse` Attack (in battle mode)\n`Right Mouse` Guard / block\n`Left Alt` Dodge\n`Space` Movement skill (for example a double jump), when you have one equipped\n`Left Mouse` Weapon skill. It shares the attack button by default; many players move it to a mouse side button\n`G` Lock on to a target\n`←` / `→` Switch lock-on target\n`Middle Mouse` Move the lock-on freely\n`K` Skill menu (equip and upgrade skills)\n`Y` Emote wheel",
+                  "inline": false
+                },
+                {
+                  "name": "Iron's Spells 'n Spellbooks (magic)",
+                  "value": "`R` Spell wheel: pick a spell from your spellbook\n`V` Cast the selected spell\n`Left Alt` + `Scroll` Scroll through the spell bar\n*not set* Quick-cast slots 1–15: bind these if you use a lot of spells",
+                  "inline": false
+                },
+                {
+                  "name": "Maps, waypoints and claims",
+                  "value": "`M` Xaero's World Map\n`Y` Xaero's Minimap settings\n`B` Xaero's: add a waypoint\n`U` Xaero's: waypoint list\n`M` FTB Chunks map (the pack has both map mods)\n`' (apostrophe)` Open Parties and Claims menu: claims, parties and settings",
+                  "inline": false
+                },
+                {
+                  "name": "Voice chat, backpacks and other mods",
+                  "value": "`V` Simple Voice Chat menu (proximity voice)\n`M` Mute your microphone\n`N` Turn voice chat off/on\n`H` Hide voice chat icons\n`G` Voice chat groups\n`B` Open your Sophisticated Backpack\n`Alt` + `Z` / `Alt` + `X` Toggle backpack upgrades 1 and 2\n`R` / `U` JEI: recipes / uses of the item under your mouse (in inventories)\n`O` Iris: choose a shader pack\n`K` Iris: turn shaders on/off\n`R` Iris: reload shaders",
+                  "inline": false
+                }
+              ]
+            },
+            {
+              "title": "⚠️ Fix Key Conflicts",
+              "description": "With the default keys, one button does several things at once. For example, R switches Epic Fight mode, opens the spell wheel and reloads shaders. Here's a setup that fixes all of them.\n\n`R` Set **Iron's Spells: Spell Wheel** to **Z**\n`R` Unbind **Iris: Reload Shaders** \n`V` Set **Iron's Spells: Cast Spell** to **X or a mouse side button**\n`K` Unbind **Iris: Toggle Shaders** (use O instead)\n`M` Unbind **FTB Chunks: Map** (use Xaero's)\n`M` Set **Voice Chat: Mute Microphone** to **J**\n`G` Unbind **Voice Chat: Groups** (groups are in the V menu)\n`B` Unbind **Xaero's: New Waypoint** (add waypoints from the map)\n`Y` Unbind **Xaero's: Minimap Settings** "
+            }
+          ],
+          "buttons": [
+            {
+              "label": "Full keybind guide",
+              "url": "https://overthronesmp.net/guide#keybinds",
+              "emoji": "⌨️"
+            },
+            {
+              "label": "Mod list",
+              "url": "https://overthronesmp.net/guide#mods",
+              "emoji": "🧩"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "quests",
+      "messages": [
+        {
+          "embeds": [
+            {
+              "title": "📜 Quests",
+              "description": "There are over 1,100 quests in the quest book. Open it by talking to Questmaster Orin in the RPG world, or with the quest book button in your inventory.\n\n**📖 The Quest Board** (100 quests)\nThe Hunter's path from E-Rank to S-Rank. Every 10th quest is a Rank Trial. Rewards are balance, XP and gear that gets better at each rank.\n\n**📖 The Hunter's Ledger** (1,012 quests)\nTen Ledgers of coin quests covering farming, exploring, crafting, fishing, the Nether, magic, caves, bounties, the End and legendary feats. Finishing all of them pays about 1,500 Netherite coins.\n\n**🚪 SLR Quests**\nSolo Leveling System progression and daily objectives. The full SLR system isn't available straight away."
+            },
+            {
+              "title": "🗡️ Quest Board Ranks",
+              "description": "**E-Rank** · quests 1–20 · *The Awakening*\n**D-Rank** · quests 21–40 · *The Wilds*\n**C-Rank** · quests 41–60 · *Into the Depths*\n**B-Rank** · quests 61–80 · *The Hunt Beyond*\n**S-Rank** · quests 81–100 · *Overthrow*"
+            },
+            {
+              "title": "📒 The Hunter's Ledger",
+              "description": "**I. Homestead** · Farming, food and animals\n**II. Wanderlust** · Exploring biomes and structures\n**III. Artisan's Guild** · Crafting and building\n**IV. Tides & Tails** · Fishing and the ocean\n**V. Into the Nether** · The Nether and its fortresses\n**VI. Arcane Arts** · Enchanting, brewing and magic\n**VII. The Deep Below** · Caves, mining and the deep dark\n**VIII. Bounty Board** · Hunting mobs\n**IX. The Far End** · The End\n**X. Legends of the Realm** · The hardest feats and bosses\n\n🔸 Each Ledger unlocks once you've finished entry 50 of the one before it.\n🔸 Every 10th Ledger entry and each finale also gives **enchanted gear**. The strongest modded weapons, armour and spellbooks come from the late Ledgers.\n🔸 Hand-in quests take the items from your inventory, so don't hand in anything you want to keep."
+            }
+          ],
+          "buttons": [
+            {
+              "label": "How quests work",
+              "url": "https://overthronesmp.net/guide#quests",
+              "emoji": "📜"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "bosses",
+      "messages": [
+        {
+          "embeds": [
+            {
+              "title": "👿 Bosses & Dungeons",
+              "description": "The pack adds a lot of things that want you dead. Gear up, bring food, and don't fight the big ones alone.\n\n⚠️ **Apotheosis** can make any mob an elite with extra powers, and gives gear random affixes and gem sockets. If a mob has a name and glows, be careful.",
+              "fields": [
+                {
+                  "name": "L_Ender's Cataclysm · Bosses",
+                  "value": "Huge boss fights in their own structures: Ignis, the Netherite Monstrosity, the Ender Guardian, the Leviathan, the Harbinger, the Ancient Remnant, Maledictus and Scylla.",
+                  "inline": false
+                },
+                {
+                  "name": "Mowzie's Mobs · Bosses",
+                  "value": "The Ferrous Wroughtnaut, Frostmaw, Umvuthi and the Naga, each with its own attack pattern to learn.",
+                  "inline": false
+                },
+                {
+                  "name": "The Aether · Sky dimension",
+                  "value": "A floating dimension with dungeons and bosses: the Slider, the Valkyrie Queen and the Sun Spirit.",
+                  "inline": false
+                },
+                {
+                  "name": "Deeper and Darker · The Otherside",
+                  "value": "A dimension reached from Ancient Cities in the deep dark, home to the Stalker. Sneak, and be quiet.",
+                  "inline": false
+                },
+                {
+                  "name": "Born in Chaos · Night mobs",
+                  "value": "Nightmarish monsters that make the night much more dangerous. Don't wander far from a light source.",
+                  "inline": false
+                },
+                {
+                  "name": "Dungeons & loot · Explore",
+                  "value": "YUNG's Better Dungeons, Dungeons and Taverns and Explorify add structures everywhere. Lootr gives every player their own loot from the same chest.",
+                  "inline": false
+                }
+              ]
+            }
+          ],
+          "buttons": [
+            {
+              "label": "Bosses guide",
+              "url": "https://overthronesmp.net/guide#bosses",
+              "emoji": "👿"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "races",
+      "messages": [
+        {
+          "embeds": [
+            {
+              "title": "🧬 Races & Evolution",
+              "description": "Tensura: Reincarnated asks you to pick a race the first time you join. Your race decides your starting health, magic and strength, the skills you're born with and every evolution you can reach. Here's every starting race, who it suits and how to evolve it.\n\n🔸 **Pick on your first join.** A race menu opens when you first join. Each race shows a difficulty: Easy races start strong, Hard and Extreme ones start weak but can end up just as powerful.\n🔸 **EP is your power level.** Existence Points are your max Magicules (MP) plus your max Aura (AP). Kill mobs to gain EP: by default you get 3% of what you kill.\n🔸 **Magic or might.** Majin races (Slime, Wight, Ghoul, Lesser Daemon) turn most of that EP into MP for skills and magic. Every other race turns most of it into AP for battlewills and fighting.\n🔸 **How to evolve.** Press **B** (Status Menu) and open the **Evolution Menu**. It lists the evolutions you can reach and how close you are. Press **Track** to show the goal on screen, then **Evolve** when it hits 100%.\n🔸 **Changed your mind?** Talk to **Seris the Rebirth Keeper** for a **Race Reset Scroll** (one every 12 hours). It resets your race, stats and race skills so you can pick again.",
+              "image": "https://overthronesmp.net/images/og-card.png"
+            },
+            {
+              "title": "📊 Pick Your Race",
+              "description": "🟢 **Giant** (Easy): Raw power, the strongest start · *MP / AP 6,000–8,000 / 4,000–6,000*\n🟢 **Lesser Daemon** (Easy): Flying spellcaster · *MP / AP 5,000–6,000 / 2,000–3,000*\n🟢 **Ogre** (Easy): Melee fighter, the most evolution paths · *MP / AP 300–600 / 1,500–2,500*\n🟢 **Beastfolk** (Easy): Fast melee with regeneration · *MP / AP 300–600 / 1,500–2,500*\n🟢 **Harpy** (Easy): Magic with wings to glide · *MP / AP 1,500–2,500 / 300–600*\n🟡 **Elf** (Intermediate): Elemental magic, fast · *MP / AP 320–600 / 600–800*\n🟡 **Merfolk** (Intermediate): Oceans and water combat · *MP / AP 400–600 / 500–600*\n🟡 **Lizardman** (Intermediate): Dragon path that ends with flight · *MP / AP 100–200 / 600–800*\n🟡 **Orc** (Intermediate): Tank with a hunger skill · *MP / AP 50–100 / 400–600*\n🟠 **Human** (Hard): Weapons and battlewills, can become a Vampire · *MP / AP 50–70 / 760–1,140*\n🟠 **Dwarf** (Hard): Tough, slow, hard-hitting · *MP / AP 80–120 / 720–1,080*\n🟠 **Goblin** (Hard): Weak start, quick first evolutions · *MP / AP 700 / 300*\n🟠 **Wight** (Hard): Undead mage, hates sunlight · *MP / AP 2,000–3,000 / 100–500*\n🟠 **Ghoul** (Hard): The road to Divine Vampire · *MP / AP 2,000–3,000 / 1,000–2,000*\n🔴 **Slime** (Extreme): Experts: weakest start, huge payoff · *MP / AP 200–500 / 200–500*\n\n🟢 Easy · 🟡 Intermediate · 🟠 Hard · 🔴 Extreme"
+            },
+            {
+              "title": "🧬 Every Race & How to Evolve It",
+              "fields": [
+                {
+                  "name": "🟢 Giant · Easy",
+                  "value": "The strongest start in the game: 50 HP, 6 attack damage, big MP and AP, and **Giantification** to grow huge.\n**Path:** Giant → Ancient Giant (300,000 EP + 20 Ancient Debris) → Divine Giant (2,000,000 EP).",
+                  "inline": false
+                },
+                {
+                  "name": "🟢 Lesser Daemon · Easy",
+                  "value": "Flies from day one, has the biggest magic pool of any starter and comes with a pile of spells. Majin.\n**Path:** Lesser Daemon → Greater Daemon (20,000 EP) → Arch Daemon (140,000 EP) → Daemon Lord (2 of: a body, a name, an awakening) → Devil Lord (all 3).",
+                  "inline": false
+                },
+                {
+                  "name": "🟢 Ogre · Easy",
+                  "value": "Strong, tough melee fighter with **Strength** and the most branches of any race. Bonds with Fire Spirits more easily.\n**Path:** Ogre → Kijin (get a Spirit) or Enlightened Ogre (100,000 EP) → Mystic Oni (10 Elemental Essence) or Wicked Oni (10 Daemon Essence) → Spirit Oni or Death Oni (400,000 EP) → Divine Oni or Divine Fighter (2,000,000 EP).",
+                  "inline": false
+                },
+                {
+                  "name": "🟢 Beastfolk · Easy",
+                  "value": "Fast, high Aura, with **Beast Transformation** and **Self Regeneration**, so you can keep fighting without rest. A great first melee race.\n**Path:** Beastfolk → Beast Lord (100,000 EP) → Spirit Beast (400,000 EP + 4 bosses) → Divine Beast (2,000,000 EP).",
+                  "inline": false
+                },
+                {
+                  "name": "🟢 Harpy · Easy",
+                  "value": "A big magic pool, **Magic Jamming**, and wings that let you glide like an elytra. Good for mages who like to move.\n**Path:** Harpy → Harpy Queen (200,000 EP) → Spirit Bird (800,000 EP) → Divine Bird (2,000,000 EP).",
+                  "inline": false
+                }
+              ]
+            },
+            {
+              "title": "🧬 Races (continued)",
+              "fields": [
+                {
+                  "name": "🟡 Elf · Intermediate",
+                  "value": "Quick on your feet with a talent for elemental magic. Bonds with Wind Spirits more easily.\n**Path:** Elf → Enlightened Elf (100,000 EP) → Elf Saint (400,000 EP + 4 bosses) → Divine Elf (2,000,000 EP).",
+                  "inline": false
+                },
+                {
+                  "name": "🟡 Merfolk · Intermediate",
+                  "value": "Breathes underwater and shoots through it with **Hydraulic Propulsion**. Bonds with Water Spirits more easily.\n**Path:** Merfolk → Enlightened Merfolk (100,000 EP) → Merfolk Saint (400,000 EP + 4 bosses) → Divine Fish (2,000,000 EP).",
+                  "inline": false
+                },
+                {
+                  "name": "🟡 Lizardman · Intermediate",
+                  "value": "**Scale Armor** and a dragon bloodline. Dragonewts get Flame Breath and Thunder Breath, and the last two forms grow real wings.\n**Path:** Lizardman → Dragonewt (10 Dragon Essence) → True Dragonewt (800,000 EP) → Divine Dragon (2,000,000 EP).",
+                  "inline": false
+                },
+                {
+                  "name": "🟡 Orc · Intermediate",
+                  "value": "Tanky (28 HP) but low on magic. The Orc Lord route learns **Starved**, a hunger skill.\n**Path:** Orc → High Orc (5,000 EP) → Orc Lord (10 Royal Blood) → Orc Disaster (200,000 EP + mastered Starved) → Spirit Boar (400,000 EP) → Divine Boar (2,000,000 EP). High Orc can also go straight to Spirit Boar at 400,000 EP.",
+                  "inline": false
+                },
+                {
+                  "name": "🟠 Human · Hard",
+                  "value": "Very little magic but solid Aura, so you fight with weapons and battlewills.\n**Path:** Human → Enlightened Human (100,000 EP) → Human Saint (400,000 EP + 4 bosses) → Divine Human (2,000,000 EP).\n**Or** drink 5 Zane Blood to become a **Vampire** and join the vampire line.",
+                  "inline": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "embeds": [
+            {
+              "title": "🧬 Races (continued)",
+              "fields": [
+                {
+                  "name": "🟠 Dwarf · Hard",
+                  "value": "Tough and hits harder than most starters, but slow and low on magic. Bonds with Earth Spirits more easily.\n**Path:** Dwarf → Enlightened Dwarf (100,000 EP) → Dwarf Saint (400,000 EP + 4 bosses) → Divine Dwarf (2,000,000 EP).",
+                  "inline": false
+                },
+                {
+                  "name": "🟠 Goblin · Hard",
+                  "value": "Only 12 HP, but you evolve fast: Hobgoblin at just 2,000 EP.\n**Path:** Goblin → Hobgoblin (2,000 EP) → Enlightened Hobgoblin (100,000 EP) → Hobgoblin Saint (400,000 EP + 4 bosses) → Divine Oni (2,000,000 EP).\n**Or** a Hobgoblin that defeats (or dies to) the Elemental Colossus becomes an **Ogre**.",
+                  "inline": false
+                },
+                {
+                  "name": "🟠 Wight · Hard",
+                  "value": "Undead with a huge magic pool, and undead mobs leave you alone. Sunlight burns and weakens you (a helmet stops the burning; roofs and rain stop it all).\n**Path:** Wight → Wight King (200,000 EP) → Spirit Skeleton (800,000 EP) → Divine Skeleton (2,000,000 EP).\n**Or** turn **Human** by eating an Enchanted Golden Apple while you have Weakness.",
+                  "inline": false
+                },
+                {
+                  "name": "🟠 Ghoul · Hard",
+                  "value": "A vampire thrall: big MP, **Paralysis**, **Strength** and **Self Regeneration**, but sunlight cripples you. This is the road to Divine Vampire.\n**Path:** Ghoul → Vampire (1 Zane Blood) → Vampire Overcomer (150,000 EP) → Vampire Lord (400,000 EP) → Divine Vampire (2,000,000 EP).",
+                  "inline": false
+                },
+                {
+                  "name": "🔴 Slime · Extreme",
+                  "value": "The hardest start: 10 HP and slow. But slimes take **50% less physical damage**, have **Absorb & Dissolve** and **Self Regeneration**, and end as one of the strongest races.\n**Path:** Slime → Metal Slime (absorb 100 Magic Ore with Absorb & Dissolve) → Demon Slime (awaken as True Demon Lord or True Hero) → God Slime (2,000,000 EP).",
+                  "inline": false
+                }
+              ]
+            },
+            {
+              "title": "⬆️ How Evolving Works",
+              "description": "🔸 **EP goals.** Most first evolutions need about 100,000 EP, the third stage 400,000 to 800,000, and the final Divine forms 2,000,000 EP.\n🔸 **Defeat 4 bosses.** Saint-tier evolutions also need you to beat four different bosses.\n🔸 **Items.** Some evolutions need an item instead of EP: Zane Blood, Royal Blood, Dragon Essence, Elemental Essence, Daemon Essence, Magic Ore or Ancient Debris.\n🔸 **Harvest Festival.** When a player awakens as a **True Demon Lord**, their subordinates nearby evolve for free. Many early evolutions list it as an alternative.\n🔸 **Naming.** A stronger player can name you (default key **N**). Their Evolve option can push you to your next form if it doesn't need an awakening.\n🔸 **Awakening.** True Demon Lord (Majin with 200,000 EP, then collect 10,000 souls) or True Hero. Some evolutions, like Demon Slime, need one."
+            },
+            {
+              "title": "❓ Race FAQ",
+              "fields": [
+                {
+                  "name": "Vampire weaknesses: Ghoul, Vampire and Vampire Overcomer",
+                  "value": "Ghouls and Vampires get heavy debuffs and burn in sunlight. A helmet stops the burning (it slowly loses durability), and roofs or rain stop the debuffs. Vampire Overcomer still gets Weakness III and Slowness II in sunlight. **Vampire Lord** and **Divine Vampire** have no sunlight weakness at all. Every vampire is weaker on a **New Moon**, and every vampire can turn into a **swarm of bats** (Race Ability, **Ctrl + E**).",
+                  "inline": false
+                },
+                {
+                  "name": "What does a final Divine race give me?",
+                  "value": "Every Divine form has up to 1,000,000 MP and 1,000,000 AP, around 900 to 1,200 HP, and **Divine Ki Release**: +50 battlewill damage (+100 mastered), extra armour damage, and it can hit spiritual enemies. Some get more: Divine Vampire gets **Infinite Regeneration**, Divine Giant gets **Titanification** and **Ultraspeed Regeneration**, Divine Fighter gets **Divine Berserker**.",
+                  "inline": false
+                },
+                {
+                  "name": "Which races can fly?",
+                  "value": "**Lesser Daemon** and every daemon after it fly from the start (creative-style flight). **True Dragonewt** and **Divine Dragon** grow wings. **Harpies** and their evolutions glide like an elytra. Vampires can turn into bats.",
+                  "inline": false
+                },
+                {
+                  "name": "What's the Race/Mount Ability key?",
+                  "value": "**Ctrl + E** by default (Options → Controls → Tensura). It uses your race's special ability, like the vampire bat swarm or the slime super jump.",
+                  "inline": false
+                },
+                {
+                  "name": "Can I change race later?",
+                  "value": "Yes. Get a **Race Reset Scroll** from Seris the Rebirth Keeper (one every 12 hours). It resets your statistics, naming and awakening status, spirits, resistances and race with its intrinsic skills, so only use it if you're sure.",
+                  "inline": false
+                }
+              ]
+            }
+          ],
+          "buttons": [
+            {
+              "label": "Races guide",
+              "url": "https://overthronesmp.net/guide#races",
+              "emoji": "🧬"
+            },
+            {
+              "label": "Races forum",
+              "url": "https://overthronesmp.net/forums?c=races",
+              "emoji": "💬"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
