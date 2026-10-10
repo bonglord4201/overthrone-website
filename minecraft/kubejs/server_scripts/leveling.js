@@ -123,8 +123,8 @@ EntityEvents.death(event => {
   try { hp = e.maxHealth } catch (err) { hp = 0 }
   if (!hp || hp <= 0) return
   // 0.5 XP per point of max health; bosses (150+ health) get 2 XP per point.
-  const xp = (hp >= 150 ? hp * 2 : Math.max(1, hp * 0.5)) * realmMult(p)
-  addCapped(p, xp)
+  if (hp >= 150) addXp(p, hp * 2 * realmMult(p))       // bosses: full XP, never capped
+  else addCapped(p, Math.max(1, hp * 0.5) * realmMult(p))
 })
 
 const ORE_XP = {
