@@ -178,5 +178,25 @@ channels.push({ key: "bosses", messages: pack([
     fields: bossCards.map((c) => ({ name: `${c.t} · ${c.k}`, value: d(c.d), inline: false })) }
 ], [btn("Bosses guide", "/guide#bosses", "👿")]) });
 
+// ---------------------------------------------------------------- races
+const races = sec.races;
+const [raceHow, raceEvolve] = blocks("races", "list");
+const raceTable = block("races", "table");
+const raceCards = block("races", "cards");
+const raceFaq = block("races", "faq");
+const tier = { Easy: "🟢", Intermediate: "🟡", Hard: "🟠", Extreme: "🔴" };
+const chunks = (a, n) => a.reduce((out, x, i) => (i % n ? out[out.length - 1].push(x) : out.push([x]), out), []);
+channels.push({ key: "races", messages: pack([
+  { title: "🧬 Races & Evolution", description: d(races.intro) + "\n\n" + raceHow.map((x) => "🔸 " + d(x)).join("\n"), image: IMG },
+  { title: "📊 Pick Your Race", description: raceTable.rows.map((r) => `${tier[r[1]]} **${r[0]}** (${r[1]}): ${r[2]} · *MP / AP ${r[3]}*`).join("\n") +
+    "\n\n🟢 Easy · 🟡 Intermediate · 🟠 Hard · 🔴 Extreme" },
+  ...chunks(raceCards, 5).map((group, i) => ({
+    title: i ? "🧬 Races (continued)" : "🧬 Every Race & How to Evolve It",
+    fields: group.map((c) => ({ name: `${tier[c.k]} ${c.t} · ${c.k}`, value: d(c.d).replace(" **Path:**", "\n**Path:**").replace(/ \*\*Or\*\* /, "\n**Or** "), inline: false }))
+  })),
+  { title: "⬆️ How Evolving Works", description: raceEvolve.map((x) => "🔸 " + d(x)).join("\n") },
+  { title: "❓ Race FAQ", fields: raceFaq.map((f) => ({ name: f.q, value: d(f.a), inline: false })) }
+], [btn("Races guide", "/guide#races", "🧬"), btn("Races forum", "/forums?c=races", "💬")]) });
+
 fs.writeFileSync(path.join(root, "discord-bot/content.json"), JSON.stringify({ generatedFrom: "scripts/build-discord-content.mjs", channels }, null, 2) + "\n");
 console.log("wrote discord-bot/content.json:", channels.map((c) => `${c.key} (${c.messages.length})`).join(", "));
