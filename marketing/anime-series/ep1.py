@@ -317,11 +317,13 @@ FLASHES = [(0.0, 0.25, (255, 60, 70)), (12.4, 0.12, (255, 255, 255)), (29.4, 0.1
 
 if __name__ == '__main__':
     out = sys.argv[1]
-    if len(sys.argv) > 2:   # preview stills at given seconds
+    if len(sys.argv) > 2 and sys.argv[2] == '--part':
+        render.run(SHOTS, 60, out, flashes=FLASHES, frames=(int(sys.argv[3]), int(sys.argv[4])))
+    elif len(sys.argv) > 2:   # preview stills at given seconds
         for s in sys.argv[2:]:
             sec = float(s); shot = next(x for x in SHOTS if x['start'] <= sec < x['end'])
             ls = sec - shot['start']; u = ls / (shot['end'] - shot['start'])
             a = render.cap_layer(shot['fn'](ls, u, int(sec * 30)), sec, shot.get('captions', []))
             to_img(finish(a, 0, bloom=shot.get('bloom', 0.35), grade=shot.get('grade', (1.0, 0.96, 1.04)))).save(out.replace('.mp4', f'_{s}.png'))
     else:
-        render.run(SHOTS, 60, out, flashes=FLASHES)
+        render.run_parallel(__file__, 60, out)

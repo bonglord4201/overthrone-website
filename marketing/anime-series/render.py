@@ -19,11 +19,11 @@ def cap_layer(a, sec_abs, caps, y=1440):
             a = over(a, caption(text, frac, size=size, hl=hl), 0, yy, alpha=fade)
     return a
 
-def run(shots, total, out, flashes=(), whites=()):
+def run(shots, total, out, flashes=(), whites=(), frames=None):
     ff = subprocess.Popen(['ffmpeg', '-y', '-v', 'error', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{W}x{H}', '-r', str(FPS), '-i', '-',
                            '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p', out], stdin=subprocess.PIPE)
     n = int(total * FPS)
-    for fi in range(n):
+    for fi in (range(*frames) if frames else range(n)):
         sec = fi / FPS
         shot = next((s for s in shots if s['start'] <= sec < s['end']), shots[-1])
         ls = sec - shot['start']; u = ls / (shot['end'] - shot['start'])
@@ -39,3 +39,16 @@ def run(shots, total, out, flashes=(), whites=()):
         ff.stdin.write(np.clip(f, 0, 255).astype(np.uint8).tobytes())
         if fi % 150 == 0: print(f'  {sec:5.1f}s / {total}s', file=sys.stderr, flush=True)
     ff.stdin.close(); ff.wait()
+
+def run_parallel(script, total, out, jobs=4):
+    """Render frame chunks in separate processes (python3 <script> <part.mp4> --part i n), then join them."""
+    import os
+    n = int(total * FPS); parts = []; procs = []
+    for i in range(jobs):
+        p = out.replace('.mp4', f'_part{i}.mp4'); parts.append(p)
+        procs.append(subprocess.Popen([sys.executable, script, p, '--part', str(i * n // jobs), str((i + 1) * n // jobs)]))
+    for pr in procs: pr.wait()
+    lst = out + '.txt'
+    with open(lst, 'w') as f:
+        for p in parts: f.write(f"file '{os.path.abspath(p)}'\n")
+    subprocess.run(['ffmpeg', '-y', '-v', 'error', '-f', 'concat', '-safe', '0', '-i', lst, '-c', 'copy', out], check=True)
