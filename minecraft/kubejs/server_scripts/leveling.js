@@ -2,7 +2,8 @@
 // Drop into kubejs/server_scripts/ and run /reload (or restart).
 //
 // XP for the next level = 150 + 18*level + 0.002*level^2  (level 300 ~ 160h of real play, 5000 ~ 2800h)
-// XP comes from killing mobs, mining ores, a daily login bonus, and quest rewards (/level xp give ...).
+// XP comes mainly from quests (overthrone_quests.js and the FTB Quests chapters run /level xp give on completion),
+// plus a little from killing mobs, mining ores and a daily login bonus. Vanilla XP has nothing to do with it.
 // Mob and ore XP has a per-minute cap so mob farms and AFK setups can't power-level.
 //
 // HUD: every player's numbers are mirrored to vanilla scoreboard objectives, so any HUD/scoreboard mod can show them:
@@ -124,9 +125,9 @@ EntityEvents.death(event => {
   let hp = 0
   try { hp = e.maxHealth } catch (err) { hp = 0 }
   if (!hp || hp <= 0) return
-  // 0.5 XP per point of max health; bosses (150+ health) get 2 XP per point.
-  if (hp >= 150) addXp(p, hp * 2 * realmMult(p))       // bosses: full XP, never capped
-  else addCapped(p, Math.max(1, hp * 0.5) * realmMult(p))
+  // Quests are the main XP source; mobs give a little: 0.3 XP per point of max health, bosses (150+ health) 1.5.
+  if (hp >= 150) addXp(p, hp * 1.5 * realmMult(p))     // bosses: full XP, never capped
+  else addCapped(p, Math.max(1, hp * 0.3) * realmMult(p))
 })
 
 const ORE_XP = {

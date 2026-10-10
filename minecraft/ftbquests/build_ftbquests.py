@@ -28,6 +28,10 @@ MINE_TO_ITEM = {
 }
 TAG_TO_ITEM = {"#minecraft:logs": "minecraft:oak_log"}
 
+# Level XP per quest = the quest's vanilla XP-level reward x this, by rank (E, D, C, B, S).
+# Must match LEVEL_XP_MULT in kubejs/server_scripts/overthrone_quests.js. All 100 quests ~ level 255.
+LEVEL_XP_MULT = [100, 200, 350, 550, 800]
+
 used = set()
 def qid(*parts):
     """Stable 16-hex-digit FTB id from a name (same input -> same id, so re-running never breaks saves)."""
@@ -110,6 +114,11 @@ for ci, ch in enumerate(CHAPTERS):
                 ("count: %d, " % it[1]) if it[1] > 1 else "", snbt_str(qid("reward", i, "item", j)), item_snbt(it[0])))
         if r.get("xp"):
             rewards.append("{ id: %s, type: \"xp_levels\", xp_levels: %d }" % (snbt_str(qid("reward", i, "xp")), r["xp"]))
+            # OVERTHRONE level XP (leveling.js): quests are the main way to level up
+            lx = r["xp"] * LEVEL_XP_MULT[min(4, i // 20)]
+            l_id = qid("reward", i, "levelxp")
+            rewards.append("{ command: \"/level xp give {p} %d\", elevate_perms: true, id: %s, silent: true, type: \"command\" }" % (lx, snbt_str(l_id)))
+            lang["reward.%s.title" % l_id] = "{:,} Level XP".format(lx)
         if i in CRATE_FOR:
             crate = CRATE_FOR[i]
             rewards.append("{ id: %s, table_id: %dL, type: \"random\" }" % (snbt_str(qid("reward", i, "crate")), table_id(CRATES[crate])))
