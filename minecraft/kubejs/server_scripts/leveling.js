@@ -18,20 +18,22 @@
 const MAX_LEVEL = 5000
 const need = (lvl) => Math.floor(150 + 18 * lvl + 0.002 * lvl * lvl)
 
-// Realms locked behind a level. Put the realm dimension IDs here, e.g. 'mymod:ashen_realm': 300
-// (stand in the realm and run /execute in ... or check F3 to see its ID).
+// Realms locked behind a level. When you create a realm with Multiworld, its ID is multiworld:<name you gave it>.
+// If you name them differently, change the IDs here (stand in the realm and press F3; it's shown under the chunk info).
 const REALM_LOCKS = {
-  // 'modid:realm_one': 300,
-  // 'modid:realm_two': 300,
+  'multiworld:aeonia': 300,      // Aeonia, Realm of the Divine
+  'multiworld:netherfall': 300,  // Netherfall, Realm of the Dead
 }
+const REALM_NAMES = { 'multiworld:aeonia': '§eAeonia', 'multiworld:netherfall': '§4Netherfall' }
+const SEND_BACK = 'warp hub'   // run as the player when they enter a realm too early
 const REALM_XP_MULT = 2   // XP multiplier inside the locked realms (tougher mobs)
 
 // Commands run on reaching a milestone. {player} is replaced with the player's name.
 const MILESTONES = {
   100: ['tellraw @a ["",{"text":"✦ ","color":"gold"},{"text":"{player}","color":"yellow"},{"text":" reached ","color":"gray"},{"text":"Level 100","color":"gold","bold":true}]'],
   300: [
-    'tellraw @a ["",{"text":"✦ ","color":"dark_red"},{"text":"{player}","color":"red","bold":true},{"text":" has broken the Seal. ","color":"gray"},{"text":"The Realms are open to them.","color":"gold"}]',
-    'title {player} subtitle {"text":"The Realms are now open to you","color":"gold"}',
+    'tellraw @a ["",{"text":"✦ ","color":"dark_red"},{"text":"{player}","color":"red","bold":true},{"text":" has broken the Seal. ","color":"gray"},{"text":"Aeonia","color":"yellow"},{"text":" and ","color":"gray"},{"text":"Netherfall","color":"dark_red"},{"text":" are open to them.","color":"gold"}]',
+    'title {player} subtitle {"text":"Aeonia and Netherfall are now open to you","color":"gold"}',
     'execute at {player} run summon minecraft:firework_rocket ~ ~1 ~ {LifeTime:20,FireworksItem:{id:"minecraft:firework_rocket",count:1,components:{"minecraft:fireworks":{explosions:[{shape:"large_ball",colors:[I;14688826,15909198],has_trail:1b}]}}}}',
   ],
   1000: ['tellraw @a ["",{"text":"✦ ","color":"gold"},{"text":"{player}","color":"yellow","bold":true},{"text":" reached ","color":"gray"},{"text":"Level 1000","color":"gold","bold":true}]'],
@@ -88,7 +90,7 @@ const addXp = (p, amount) => {
     p.server.runCommandSilent(`playsound minecraft:entity.player.levelup player ${n} ~ ~ ~ 1 0.8`)
     p.tell(`§6✦ Level up! §eYou are now level §6§l${lvl}§e.`)
     const nextLock = Object.keys(REALM_LOCKS).map(k => REALM_LOCKS[k]).filter(l => l > lvl).sort((a, b) => a - b)[0]
-    if (nextLock && nextLock - lvl <= 20) p.tell(`§8✦ §7The Realms open at level §c${nextLock}§7: §c${nextLock - lvl}§7 to go.`)
+    if (nextLock && nextLock - lvl <= 20) p.tell(`§8✦ §7Aeonia and Netherfall open at level §c${nextLock}§7: §c${nextLock - lvl}§7 to go.`)
   } else {
     p.server.runCommandSilent(`title ${p.username} actionbar {"text":"+${amount} XP  (${xp} / ${need(lvl)})","color":"yellow"}`)
   }
@@ -162,14 +164,21 @@ PlayerEvents.loggedIn(event => {
 })
 
 // ---------------------------------------------------------------- realm locks
+const lastBounce = {}
 PlayerEvents.tick(event => {
   const p = event.player
-  if (p.server.tickCount % 40 !== 0) return
-  const req = REALM_LOCKS[dimOf(p)]
+  if (p.server.tickCount % 20 !== 0) return
+  const dim = dimOf(p)
+  const req = REALM_LOCKS[dim]
   if (req === undefined || getLvl(p) >= req || p.hasPermissions(2)) return
-  const spawn = p.server.overworld().getSharedSpawnPos()
-  p.server.runCommandSilent(`execute in minecraft:overworld run tp ${p.username} ${spawn.x + 0.5} ${spawn.y} ${spawn.z + 0.5}`)
-  p.tell(`§c✦ This realm is sealed until level §l${req}§c. You are level ${getLvl(p)}: ${req - getLvl(p)} to go.`)
+  const n = p.username
+  if (lastBounce[n] && p.server.tickCount - lastBounce[n] < 60) return
+  lastBounce[n] = p.server.tickCount
+  p.server.runCommandSilent(`execute as ${n} run ${SEND_BACK}`)
+  p.server.runCommandSilent(`title ${n} title {"text":"SEALED","color":"dark_red","bold":true}`)
+  p.server.runCommandSilent(`title ${n} subtitle {"text":"Reach level ${req} to enter","color":"gray"}`)
+  p.server.runCommandSilent(`playsound minecraft:block.respawn_anchor.deplete player ${n} ~ ~ ~ 1 0.8`)
+  p.tell(`§c✦ ${REALM_NAMES[dim] || 'This realm'}§c is sealed until level §l${req}§c. You are level ${getLvl(p)}: ${req - getLvl(p)} to go.`)
 })
 
 // ---------------------------------------------------------------- setup + commands
