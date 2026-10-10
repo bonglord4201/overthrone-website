@@ -117,8 +117,8 @@ for ci, ch in enumerate(CHAPTERS):
             # OVERTHRONE level XP (leveling.js): quests are the main way to level up
             lx = r["xp"] * LEVEL_XP_MULT[min(4, i // 20)]
             l_id = qid("reward", i, "levelxp")
-            rewards.append("{ command: \"/level xp give {p} %d\", elevate_perms: true, id: %s, silent: true, type: \"command\" }" % (lx, snbt_str(l_id)))
-            lang["reward.%s.title" % l_id] = "{:,} Level XP".format(lx)
+            # title is inline so the server's lang file never has to be replaced (FTB Quests imports it on load)
+            rewards.append("{ command: \"/level xp give {p} %d\", elevate_perms: true, id: %s, silent: true, title: \"%s Level XP\", type: \"command\" }" % (lx, snbt_str(l_id), "{:,}".format(lx)))
         if i in CRATE_FOR:
             crate = CRATE_FOR[i]
             rewards.append("{ id: %s, table_id: %dL, type: \"random\" }" % (snbt_str(qid("reward", i, "crate")), table_id(CRATES[crate])))

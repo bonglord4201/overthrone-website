@@ -16,7 +16,7 @@
 			rewards: [
 				{ count: 8, id: "576C5774735E8445", item: { count: 1, id: "minecraft:bread" }, type: "item" }
 				{ id: "2579B680104DE9D7", type: "xp_levels", xp_levels: 2 }
-				{ command: "/level xp give {p} 200", elevate_perms: true, id: "0E9C08377403D25F", silent: true, type: "command" }
+				{ command: "/level xp give {p} 200", elevate_perms: true, id: "0E9C08377403D25F", silent: true, title: "200 Level XP", type: "command" }
 				{ id: "2936D293B0461F9C", tags: ["ss_money_200"], type: "custom" }
 			]
 			tasks: [{ count: 16L, consume_items: true, id: "130D3F1E0D7A0476", item: { count: 1, id: "minecraft:oak_log" }, type: "item" }]
@@ -29,7 +29,7 @@
 			rewards: [
 				{ count: 16, id: "07B996007584E348", item: { count: 1, id: "minecraft:torch" }, type: "item" }
 				{ id: "7828A42EA0BAA639", type: "xp_levels", xp_levels: 2 }
-				{ command: "/level xp give {p} 200", elevate_perms: true, id: "401FF3BDE4B841E8", silent: true, type: "command" }
+				{ command: "/level xp give {p} 200", elevate_perms: true, id: "401FF3BDE4B841E8", silent: true, title: "200 Level XP", type: "command" }
 				{ id: "1EBFD22AF729B41B", tags: ["ss_money_200"], type: "custom" }
 			]
 			tasks: [{ count: 1L, only_from_crafting: true, id: "655A4B58E5BF9430", item: { count: 1, id: "minecraft:stone_pickaxe" }, type: "item" }]
@@ -42,7 +42,7 @@
 			rewards: [
 				{ count: 4, id: "3487A02367A6D5C6", item: { count: 1, id: "minecraft:iron_ingot" }, type: "item" }
 				{ id: "7AE8947AC0E28695", type: "xp_levels", xp_levels: 3 }
-				{ command: "/level xp give {p} 300", elevate_perms: true, id: "0F5783BD6EBD319F", silent: true, type: "command" }
+				{ command: "/level xp give {p} 300", elevate_perms: true, id: "0F5783BD6EBD319F", silent: true, title: "300 Level XP", type: "command" }
 				{ id: "59EAAB80E4B3261E", tags: ["ss_money_300"], type: "custom" }
 			]
 			tasks: [{ entity: "minecraft:zombie", id: "2E3A509C31D1B61D", type: "kill", value: 10L }]
@@ -55,7 +55,7 @@
 			rewards: [
 				{ count: 32, id: "512A2D36A1E64724", item: { count: 1, id: "minecraft:arrow" }, type: "item" }
 				{ id: "2BA604BD06AC88EC", type: "xp_levels", xp_levels: 3 }
-				{ command: "/level xp give {p} 300", elevate_perms: true, id: "105FAA9C50D8CADF", silent: true, type: "command" }
+				{ command: "/level xp give {p} 300", elevate_perms: true, id: "105FAA9C50D8CADF", silent: true, title: "300 Level XP", type: "command" }
 				{ id: "4F818DB65D48C58B", tags: ["ss_money_300"], type: "custom" }
 			]
 			tasks: [{ entity: "minecraft:skeleton", id: "58CAEA69C30E1DF0", type: "kill", value: 10L }]
@@ -68,7 +68,7 @@
 			rewards: [
 				{ count: 12, id: "1D9E71C6C1496B35", item: { count: 1, id: "minecraft:cooked_beef" }, type: "item" }
 				{ id: "6F4E8B3DB5341C2D", type: "xp_levels", xp_levels: 3 }
-				{ command: "/level xp give {p} 300", elevate_perms: true, id: "42BF8FB79E6E45D3", silent: true, type: "command" }
+				{ command: "/level xp give {p} 300", elevate_perms: true, id: "42BF8FB79E6E45D3", silent: true, title: "300 Level XP", type: "command" }
 				{ id: "1E3F2CCB9E599F83", tags: ["ss_money_300"], type: "custom" }
 			]
 			tasks: [{ entity: "minecraft:spider", id: "4748FB5DEE01EE5C", type: "kill", value: 8L }]
@@ -81,7 +81,7 @@
 			rewards: [
 				{ count: 32, id: "46F405F378CB7454", item: { count: 1, id: "minecraft:torch" }, type: "item" }
 				{ id: "0EC7DB494E0E4347", type: "xp_levels", xp_levels: 3 }
-				{ command: "/level xp give {p} 300", elevate_perms: true, id: "181368D2B0404001", silent: true, type: "command" }
+				{ command: "/level xp give {p} 300", elevate_perms: true, id: "181368D2B0404001", silent: true, title: "300 Level XP", type: "command" }
 				{ id: "3FFEE39C24237120", tags: ["ss_money_350"], type: "custom" }
 			]
 			tasks: [{ count: 16L, id: "36FDCBA0A04AF6EC", item: { count: 1, id: "minecraft:coal" }, type: "item" }]
@@ -94,7 +94,7 @@
 			rewards: [
 				{ id: "72B782E1B94F054C", item: { count: 1, id: "minecraft:shield" }, type: "item" }
 				{ id: "592FC773DD759A07", type: "xp_levels", xp_levels: 4 }
-				{ command: "/level xp give {p} 400", elevate_perms: true, id: "63FF1717B577DA78", silent: true, type: "command" }
+				{ command: "/level xp give {p} 400", elevate_perms: true, id: "63FF1717B577DA78", silent: true, title: "400 Level XP", type: "command" }
 				{ id: "63D208D6B29342B6", tags: ["ss_money_400"], type: "custom" }
 			]
 			tasks: [{ count: 12L, id: "35E7F4E2A28DC32F", item: { count: 1, id: "minecraft:raw_iron" }, type: "item" }]
@@ -107,7 +107,7 @@
 			rewards: [
 				{ count: 16, id: "0636155F62402C1D", item: { count: 1, id: "minecraft:bread" }, type: "item" }
 				{ id: "6F6F377E11709094", type: "xp_levels", xp_levels: 3 }
-				{ command: "/level xp give {p} 300", elevate_perms: true, id: "7C67CEC5D4C63D76", silent: true, type: "command" }
+				{ command: "/level xp give {p} 300", elevate_perms: true, id: "7C67CEC5D4C63D76", silent: true, title: "300 Level XP", type: "command" }
 				{ id: "7BA74F21D0518AD7", tags: ["ss_money_350"], type: "custom" }
 			]
 			tasks: [{ count: 32L, consume_items: true, id: "7210626F3E88DA0B", item: { count: 1, id: "minecraft:wheat" }, type: "item" }]
@@ -120,7 +120,7 @@
 			rewards: [
 				{ count: 8, id: "6F9529BF0F1F9B38", item: { count: 1, id: "minecraft:iron_ingot" }, type: "item" }
 				{ id: "7432BBD912F5646E", type: "xp_levels", xp_levels: 3 }
-				{ command: "/level xp give {p} 300", elevate_perms: true, id: "1AB1E4DBD42594F6", silent: true, type: "command" }
+				{ command: "/level xp give {p} 300", elevate_perms: true, id: "1AB1E4DBD42594F6", silent: true, title: "300 Level XP", type: "command" }
 				{ id: "37108FB06016A737", tags: ["ss_money_300"], type: "custom" }
 			]
 			tasks: [{ count: 1L, only_from_crafting: true, id: "0FFD51E50475B625", item: { count: 1, id: "minecraft:shield" }, type: "item" }]
@@ -133,7 +133,7 @@
 			rewards: [
 				{ id: "0DC9916F5C62D3D2", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness":2 } } }, count: 1, id: "minecraft:iron_sword" }, type: "item" }
 				{ id: "05E105DC12EBD9FC", type: "xp_levels", xp_levels: 6 }
-				{ command: "/level xp give {p} 600", elevate_perms: true, id: "09C9EAD59D0FFF27", silent: true, type: "command" }
+				{ command: "/level xp give {p} 600", elevate_perms: true, id: "09C9EAD59D0FFF27", silent: true, title: "600 Level XP", type: "command" }
 				{ id: "3F38691CB5402C7A", table_id: 6777319090239687113L, type: "random" }
 				{ id: "3564D2D82DDADFD6", tags: ["ss_money_1000"], type: "custom" }
 			]
@@ -149,7 +149,7 @@
 			rewards: [
 				{ count: 6, id: "05860A8ABEDC49CC", item: { count: 1, id: "minecraft:iron_ingot" }, type: "item" }
 				{ id: "5537851E80D9DD80", type: "xp_levels", xp_levels: 4 }
-				{ command: "/level xp give {p} 400", elevate_perms: true, id: "162ACCF9B0FB1464", silent: true, type: "command" }
+				{ command: "/level xp give {p} 400", elevate_perms: true, id: "162ACCF9B0FB1464", silent: true, title: "400 Level XP", type: "command" }
 				{ id: "4DB427142BEFC626", tags: ["ss_money_450"], type: "custom" }
 			]
 			tasks: [{ entity: "minecraft:drowned", id: "2FC3FCB7F4575CB8", type: "kill", value: 8L }]
@@ -162,7 +162,7 @@
 			rewards: [
 				{ id: "2EDADDBB8D54C0E2", item: { count: 1, id: "minecraft:iron_chestplate" }, type: "item" }
 				{ id: "6653B49B18118BB0", type: "xp_levels", xp_levels: 4 }
-				{ command: "/level xp give {p} 400", elevate_perms: true, id: "2F4C576BDDC37C86", silent: true, type: "command" }
+				{ command: "/level xp give {p} 400", elevate_perms: true, id: "2F4C576BDDC37C86", silent: true, title: "400 Level XP", type: "command" }
 				{ id: "78DCF1A6894AABD4", tags: ["ss_money_600"], type: "custom" }
 			]
 			tasks: [{ count: 24L, consume_items: true, id: "139521F1EDC55861", item: { count: 1, id: "minecraft:iron_ingot" }, type: "item" }]
@@ -175,7 +175,7 @@
 			rewards: [
 				{ count: 8, id: "530916868C5D8DFD", item: { count: 1, id: "minecraft:golden_carrot" }, type: "item" }
 				{ id: "505A889656F75200", type: "xp_levels", xp_levels: 3 }
-				{ command: "/level xp give {p} 300", elevate_perms: true, id: "5B051BC08078A6BF", silent: true, type: "command" }
+				{ command: "/level xp give {p} 300", elevate_perms: true, id: "5B051BC08078A6BF", silent: true, title: "300 Level XP", type: "command" }
 				{ id: "59E0069F64A05C50", tags: ["ss_money_450"], type: "custom" }
 			]
 			tasks: [{ count: 16L, consume_items: true, id: "422075D682DB5ACA", item: { count: 1, id: "minecraft:cooked_beef" }, type: "item" }]
@@ -188,7 +188,7 @@
 			rewards: [
 				{ count: 4, id: "32D99D80B6D3622E", item: { count: 1, id: "minecraft:gold_ingot" }, type: "item" }
 				{ id: "21F5348CB72B5804", type: "xp_levels", xp_levels: 4 }
-				{ command: "/level xp give {p} 400", elevate_perms: true, id: "0406F9C8EB6C6245", silent: true, type: "command" }
+				{ command: "/level xp give {p} 400", elevate_perms: true, id: "0406F9C8EB6C6245", silent: true, title: "400 Level XP", type: "command" }
 				{ id: "3D71C81F7637C5A0", tags: ["ss_money_500"], type: "custom" }
 			]
 			tasks: [{ entity: "minecraft:husk", id: "024691F135701C1A", type: "kill", value: 10L }]
@@ -201,7 +201,7 @@
 			rewards: [
 				{ id: "0343D9C75D7F9A11", item: { components: { "minecraft:enchantments": { levels: { "minecraft:power":1 } } }, count: 1, id: "minecraft:bow" }, type: "item" }
 				{ id: "6E14F3A3EC39C773", type: "xp_levels", xp_levels: 4 }
-				{ command: "/level xp give {p} 400", elevate_perms: true, id: "4B7E0D6F4AC0B8CF", silent: true, type: "command" }
+				{ command: "/level xp give {p} 400", elevate_perms: true, id: "4B7E0D6F4AC0B8CF", silent: true, title: "400 Level XP", type: "command" }
 				{ id: "34E4D7E3D68C2EFB", tags: ["ss_money_500"], type: "custom" }
 			]
 			tasks: [{ entity: "minecraft:stray", id: "41D7420AAA8136B0", type: "kill", value: 8L }]
@@ -214,7 +214,7 @@
 			rewards: [
 				{ id: "0B898EC4D3A65E9F", item: { count: 1, id: "minecraft:spyglass" }, type: "item" }
 				{ id: "7440E33485A99CE6", type: "xp_levels", xp_levels: 3 }
-				{ command: "/level xp give {p} 300", elevate_perms: true, id: "10936592BCD3F172", silent: true, type: "command" }
+				{ command: "/level xp give {p} 300", elevate_perms: true, id: "10936592BCD3F172", silent: true, title: "300 Level XP", type: "command" }
 				{ id: "648603E93A65AD2F", tags: ["ss_money_450"], type: "custom" }
 			]
 			tasks: [{ count: 48L, id: "477037EE7927799F", item: { count: 1, id: "minecraft:raw_copper" }, type: "item" }]
@@ -227,7 +227,7 @@
 			rewards: [
 				{ id: "76BBB7B3BE9DE41C", item: { components: { "minecraft:enchantments": { levels: { "minecraft:efficiency":2 } } }, count: 1, id: "minecraft:iron_axe" }, type: "item" }
 				{ id: "208E6534EF1F834C", type: "xp_levels", xp_levels: 4 }
-				{ command: "/level xp give {p} 400", elevate_perms: true, id: "58F5977459B523EB", silent: true, type: "command" }
+				{ command: "/level xp give {p} 400", elevate_perms: true, id: "58F5977459B523EB", silent: true, title: "400 Level XP", type: "command" }
 				{ id: "2D4756727DECA75C", tags: ["ss_money_500"], type: "custom" }
 			]
 			tasks: [{ count: 64L, consume_items: true, id: "388FBA693EDE79CD", item: { count: 1, id: "minecraft:oak_log" }, type: "item" }]
@@ -240,7 +240,7 @@
 			rewards: [
 				{ count: 64, id: "100D01964AB31E37", item: { count: 1, id: "minecraft:arrow" }, type: "item" }
 				{ id: "23D49541E9CC3D52", type: "xp_levels", xp_levels: 3 }
-				{ command: "/level xp give {p} 300", elevate_perms: true, id: "70030AD9AD0D1986", silent: true, type: "command" }
+				{ command: "/level xp give {p} 300", elevate_perms: true, id: "70030AD9AD0D1986", silent: true, title: "300 Level XP", type: "command" }
 				{ id: "3D6315FFC4BC214A", tags: ["ss_money_400"], type: "custom" }
 			]
 			tasks: [{ count: 3L, only_from_crafting: true, id: "007726563DAF26E2", item: { count: 1, id: "minecraft:bow" }, type: "item" }]
@@ -253,7 +253,7 @@
 			rewards: [
 				{ id: "0AD6B8EA6B2ECE8E", item: { count: 1, id: "minecraft:golden_apple" }, type: "item" }
 				{ id: "436D94F5A9D31D77", type: "xp_levels", xp_levels: 4 }
-				{ command: "/level xp give {p} 400", elevate_perms: true, id: "0B9E12A97FF565C8", silent: true, type: "command" }
+				{ command: "/level xp give {p} 400", elevate_perms: true, id: "0B9E12A97FF565C8", silent: true, title: "400 Level XP", type: "command" }
 				{ id: "3AC437309ED36086", tags: ["ss_money_550"], type: "custom" }
 			]
 			tasks: [{ entity: "minecraft:slime", id: "3299EDB059AC71A4", type: "kill", value: 10L }]
@@ -267,7 +267,7 @@
 				{ count: 3, id: "20B6A49B583CAB80", item: { count: 1, id: "minecraft:diamond" }, type: "item" }
 				{ id: "364AC652E4A7D21F", item: { count: 1, id: "mowziesmobs:naga_fang_dagger" }, type: "item" }
 				{ id: "48562E8C14ADC3F2", type: "xp_levels", xp_levels: 8 }
-				{ command: "/level xp give {p} 800", elevate_perms: true, id: "677C92A71CEBB15D", silent: true, type: "command" }
+				{ command: "/level xp give {p} 800", elevate_perms: true, id: "677C92A71CEBB15D", silent: true, title: "800 Level XP", type: "command" }
 				{ id: "5E42A92AE096C01B", table_id: 6777319090239687113L, type: "random" }
 				{ id: "08AF82C7F874ECFF", tags: ["ss_money_2000"], type: "custom" }
 			]

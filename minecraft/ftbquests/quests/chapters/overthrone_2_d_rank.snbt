@@ -17,7 +17,7 @@
 			rewards: [
 				{ count: 2, id: "5347823EAAF145D2", item: { count: 1, id: "minecraft:golden_apple" }, type: "item" }
 				{ id: "391BA3F675E5E904", type: "xp_levels", xp_levels: 5 }
-				{ command: "/level xp give {p} 1000", elevate_perms: true, id: "5DA911B5C3434461", silent: true, type: "command" }
+				{ command: "/level xp give {p} 1000", elevate_perms: true, id: "5DA911B5C3434461", silent: true, title: "1,000 Level XP", type: "command" }
 				{ id: "74E379CCA9F09DDD", tags: ["ss_money_800"], type: "custom" }
 			]
 			tasks: [{ count: 12L, id: "1CEC7B110E80239D", item: { count: 1, id: "minecraft:raw_gold" }, type: "item" }]
@@ -30,7 +30,7 @@
 			rewards: [
 				{ count: 16, id: "3DA67B4EDD2AABE1", item: { count: 1, id: "minecraft:experience_bottle" }, type: "item" }
 				{ id: "56661C259D436DA5", type: "xp_levels", xp_levels: 5 }
-				{ command: "/level xp give {p} 1000", elevate_perms: true, id: "62D0E8B460FD94B3", silent: true, type: "command" }
+				{ command: "/level xp give {p} 1000", elevate_perms: true, id: "62D0E8B460FD94B3", silent: true, title: "1,000 Level XP", type: "command" }
 				{ id: "1A2BDD0545A28A1F", tags: ["ss_money_900"], type: "custom" }
 			]
 			tasks: [{ entity: "minecraft:witch", id: "1F714E3F202AF244", type: "kill", value: 5L }]
@@ -43,7 +43,7 @@
 			rewards: [
 				{ count: 16, id: "69261142D85BF6EB", item: { count: 1, id: "minecraft:golden_carrot" }, type: "item" }
 				{ id: "34AE001D86095FC9", type: "xp_levels", xp_levels: 5 }
-				{ command: "/level xp give {p} 1000", elevate_perms: true, id: "3DA394ACF6F74506", silent: true, type: "command" }
+				{ command: "/level xp give {p} 1000", elevate_perms: true, id: "3DA394ACF6F74506", silent: true, title: "1,000 Level XP", type: "command" }
 				{ id: "1FC736B959F48BB8", tags: ["ss_money_900"], type: "custom" }
 			]
 			tasks: [{ entity: "minecraft:phantom", id: "242341EE1E8538EE", type: "kill", value: 6L }]
@@ -56,7 +56,7 @@
 			rewards: [
 				{ id: "00A9467839B51C8D", item: { components: { "minecraft:enchantments": { levels: { "minecraft:power":2 } } }, count: 1, id: "minecraft:bow" }, type: "item" }
 				{ id: "30B9F0EA5124319E", type: "xp_levels", xp_levels: 4 }
-				{ command: "/level xp give {p} 800", elevate_perms: true, id: "0B21F4B9E5C2993A", silent: true, type: "command" }
+				{ command: "/level xp give {p} 800", elevate_perms: true, id: "0B21F4B9E5C2993A", silent: true, title: "800 Level XP", type: "command" }
 				{ id: "7A01389C16852F6D", tags: ["ss_money_700"], type: "custom" }
 			]
 			tasks: [{ count: 32L, consume_items: true, id: "01E4597A97350665", item: { count: 1, id: "minecraft:string" }, type: "item" }]
@@ -69,7 +69,7 @@
 			rewards: [
 				{ id: "5FD6A5299A4220C7", item: { count: 1, id: "artifacts:night_vision_goggles" }, type: "item" }
 				{ id: "4C0E988EC6C0ADB5", type: "xp_levels", xp_levels: 5 }
-				{ command: "/level xp give {p} 1000", elevate_perms: true, id: "1351DCC0CE2BE235", silent: true, type: "command" }
+				{ command: "/level xp give {p} 1000", elevate_perms: true, id: "1351DCC0CE2BE235", silent: true, title: "1,000 Level XP", type: "command" }
 				{ id: "317D90E4D6405DC6", tags: ["ss_money_1000"], type: "custom" }
 			]
 			tasks: [{ entity: "minecraft:skeleton", id: "2986967D4156C26B", type: "kill", value: 30L }]
@@ -82,7 +82,7 @@
 			rewards: [
 				{ count: 16, id: "52AEFFD9423CED26", item: { count: 1, id: "minecraft:experience_bottle" }, type: "item" }
 				{ id: "0DFC85163582ABFE", type: "xp_levels", xp_levels: 5 }
-				{ command: "/level xp give {p} 1000", elevate_perms: true, id: "7449E93F18A3DD7E", silent: true, type: "command" }
+				{ command: "/level xp give {p} 1000", elevate_perms: true, id: "7449E93F18A3DD7E", silent: true, title: "1,000 Level XP", type: "command" }
 				{ id: "1D7F4B9490ED33A2", tags: ["ss_money_900"], type: "custom" }
 			]
 			tasks: [{ count: 40L, id: "75C742052E081456", item: { count: 1, id: "minecraft:lapis_lazuli" }, type: "item" }]
@@ -95,7 +95,7 @@
 			rewards: [
 				{ count: 32, id: "33B5DC47034841B1", item: { count: 1, id: "minecraft:lapis_lazuli" }, type: "item" }
 				{ id: "5D01FA709184DA2E", type: "xp_levels", xp_levels: 6 }
-				{ command: "/level xp give {p} 1200", elevate_perms: true, id: "4D9FAFFF7BE0B7D7", silent: true, type: "command" }
+				{ command: "/level xp give {p} 1200", elevate_perms: true, id: "4D9FAFFF7BE0B7D7", silent: true, title: "1,200 Level XP", type: "command" }
 				{ id: "5EDB1380C5ADBE96", tags: ["ss_money_1000"], type: "custom" }
 			]
 			tasks: [{ count: 1L, only_from_crafting: true, id: "3171EBB7D69A3060", item: { count: 1, id: "minecraft:enchanting_table" }, type: "item" }]
@@ -108,7 +108,7 @@
 			rewards: [
 				{ count: 16, id: "4F268B84894804D0", item: { count: 1, id: "minecraft:golden_carrot" }, type: "item" }
 				{ id: "3488A8ADC25F82B8", type: "xp_levels", xp_levels: 5 }
-				{ command: "/level xp give {p} 1000", elevate_perms: true, id: "13472F469E22290D", silent: true, type: "command" }
+				{ command: "/level xp give {p} 1000", elevate_perms: true, id: "13472F469E22290D", silent: true, title: "1,000 Level XP", type: "command" }
 				{ id: "255A6C7B0B5E59EB", tags: ["ss_money_900"], type: "custom" }
 			]
 			tasks: [{ count: 64L, id: "3C5CF35CE72721CF", item: { count: 1, id: "minecraft:redstone" }, type: "item" }]
@@ -121,7 +121,7 @@
 			rewards: [
 				{ id: "3908BD1C748F76E4", item: { components: { "minecraft:enchantments": { levels: { "minecraft:piercing":2 } } }, count: 1, id: "minecraft:crossbow" }, type: "item" }
 				{ id: "1B1A73ABA638DDFD", type: "xp_levels", xp_levels: 6 }
-				{ command: "/level xp give {p} 1200", elevate_perms: true, id: "30ADB6401A181DE1", silent: true, type: "command" }
+				{ command: "/level xp give {p} 1200", elevate_perms: true, id: "30ADB6401A181DE1", silent: true, title: "1,200 Level XP", type: "command" }
 				{ id: "52A28811005CA747", tags: ["ss_money_1200"], type: "custom" }
 			]
 			tasks: [{ entity: "minecraft:pillager", id: "7DF269E5FE26DB4B", type: "kill", value: 10L }]
@@ -135,7 +135,7 @@
 				{ id: "5B2CC2F9270A95A0", item: { components: { "minecraft:enchantments": { levels: { "minecraft:sharpness":2 } } }, count: 1, id: "minecraft:diamond_sword" }, type: "item" }
 				{ id: "476DB72DFFA417A5", item: { count: 1, id: "mowziesmobs:spear" }, type: "item" }
 				{ id: "63294D621093ADC0", type: "xp_levels", xp_levels: 10 }
-				{ command: "/level xp give {p} 2000", elevate_perms: true, id: "2E6F3395E8CE0D32", silent: true, type: "command" }
+				{ command: "/level xp give {p} 2000", elevate_perms: true, id: "2E6F3395E8CE0D32", silent: true, title: "2,000 Level XP", type: "command" }
 				{ id: "3DD1F9F367504D6A", table_id: 2138439913711542605L, type: "random" }
 				{ id: "176F6413C82BE3AD", tags: ["ss_money_3000"], type: "custom" }
 			]
@@ -151,7 +151,7 @@
 			rewards: [
 				{ id: "2A880FAD6F9A941B", item: { count: 1, id: "minecraft:saddle" }, type: "item" }
 				{ id: "7036C237FF34D9EC", type: "xp_levels", xp_levels: 5 }
-				{ command: "/level xp give {p} 1000", elevate_perms: true, id: "4F6F8FFAE6353586", silent: true, type: "command" }
+				{ command: "/level xp give {p} 1000", elevate_perms: true, id: "4F6F8FFAE6353586", silent: true, title: "1,000 Level XP", type: "command" }
 				{ id: "71AE8D5183784383", tags: ["ss_money_900"], type: "custom" }
 			]
 			tasks: [{ count: 24L, consume_items: true, id: "7EA3BCB781E81C59", item: { count: 1, id: "minecraft:leather" }, type: "item" }]
@@ -164,7 +164,7 @@
 			rewards: [
 				{ count: 4, id: "564A1171EEDFA225", item: { count: 1, id: "minecraft:ender_pearl" }, type: "item" }
 				{ id: "3BF525FB2F48F882", type: "xp_levels", xp_levels: 6 }
-				{ command: "/level xp give {p} 1200", elevate_perms: true, id: "1CB48993B3CB1D29", silent: true, type: "command" }
+				{ command: "/level xp give {p} 1200", elevate_perms: true, id: "1CB48993B3CB1D29", silent: true, title: "1,200 Level XP", type: "command" }
 				{ id: "6FCDF49DDEB772CC", tags: ["ss_money_1300"], type: "custom" }
 			]
 			tasks: [{ entity: "minecraft:enderman", id: "62ECC8AE1B769C85", type: "kill", value: 5L }]
@@ -177,7 +177,7 @@
 			rewards: [
 				{ id: "3631FA888A038C2A", item: { count: 1, id: "minecraft:ender_chest" }, type: "item" }
 				{ id: "5E08FA43DE1561B0", type: "xp_levels", xp_levels: 6 }
-				{ command: "/level xp give {p} 1200", elevate_perms: true, id: "47AE307691CF2887", silent: true, type: "command" }
+				{ command: "/level xp give {p} 1200", elevate_perms: true, id: "47AE307691CF2887", silent: true, title: "1,200 Level XP", type: "command" }
 				{ id: "1E1019090C69916A", tags: ["ss_money_1500"], type: "custom" }
 			]
 			tasks: [{ count: 8L, consume_items: true, id: "07C94185EB90178B", item: { count: 1, id: "minecraft:ender_pearl" }, type: "item" }]
@@ -190,7 +190,7 @@
 			rewards: [
 				{ count: 2, id: "3F2E847697A98FE8", item: { count: 1, id: "minecraft:golden_apple" }, type: "item" }
 				{ id: "718B7DC0CDF5508D", type: "xp_levels", xp_levels: 6 }
-				{ command: "/level xp give {p} 1200", elevate_perms: true, id: "0CCF0AB0636F8105", silent: true, type: "command" }
+				{ command: "/level xp give {p} 1200", elevate_perms: true, id: "0CCF0AB0636F8105", silent: true, title: "1,200 Level XP", type: "command" }
 				{ id: "623FDF7D7AD80261", tags: ["ss_money_1200"], type: "custom" }
 			]
 			tasks: [{ entity: "minecraft:drowned", id: "406E00DBC4FC0506", type: "kill", value: 20L }]
@@ -203,7 +203,7 @@
 			rewards: [
 				{ id: "2C51F83637E6F543", item: { count: 1, id: "minecraft:iron_leggings" }, type: "item" }
 				{ id: "45D9064FB252C780", type: "xp_levels", xp_levels: 5 }
-				{ command: "/level xp give {p} 1000", elevate_perms: true, id: "6050125362211A2C", silent: true, type: "command" }
+				{ command: "/level xp give {p} 1000", elevate_perms: true, id: "6050125362211A2C", silent: true, title: "1,000 Level XP", type: "command" }
 				{ id: "232003C02005816F", tags: ["ss_money_1000"], type: "custom" }
 			]
 			tasks: [{ count: 1L, only_from_crafting: true, id: "4BF94FF954320F7B", item: { count: 1, id: "minecraft:iron_chestplate" }, type: "item" }]
@@ -216,7 +216,7 @@
 			rewards: [
 				{ count: 64, id: "7E39E951C6F37AF9", item: { count: 1, id: "minecraft:arrow" }, type: "item" }
 				{ id: "3697B5A3BCAD8637", type: "xp_levels", xp_levels: 6 }
-				{ command: "/level xp give {p} 1200", elevate_perms: true, id: "0983C763E26C729B", silent: true, type: "command" }
+				{ command: "/level xp give {p} 1200", elevate_perms: true, id: "0983C763E26C729B", silent: true, title: "1,200 Level XP", type: "command" }
 				{ id: "4F07EE784D12A465", tags: ["ss_money_1300"], type: "custom" }
 			]
 			tasks: [{ entity: "minecraft:bogged", id: "15364E0EB14F0706", type: "kill", value: 8L }]
@@ -229,7 +229,7 @@
 			rewards: [
 				{ count: 2, id: "22F35FDF6A62856C", item: { count: 1, id: "minecraft:diamond" }, type: "item" }
 				{ id: "22C7631BF2261B06", type: "xp_levels", xp_levels: 6 }
-				{ command: "/level xp give {p} 1200", elevate_perms: true, id: "1A945F940EDC086F", silent: true, type: "command" }
+				{ command: "/level xp give {p} 1200", elevate_perms: true, id: "1A945F940EDC086F", silent: true, title: "1,200 Level XP", type: "command" }
 				{ id: "1FD352EB8F21B9FA", tags: ["ss_money_1800"], type: "custom" }
 			]
 			tasks: [{ count: 16L, consume_items: true, id: "775F35EC0DE63751", item: { count: 1, id: "minecraft:emerald" }, type: "item" }]
@@ -242,7 +242,7 @@
 			rewards: [
 				{ count: 2, id: "70FF5C52DA6E310D", item: { count: 1, id: "minecraft:golden_apple" }, type: "item" }
 				{ id: "75B69AA3F2EAE2DE", type: "xp_levels", xp_levels: 6 }
-				{ command: "/level xp give {p} 1200", elevate_perms: true, id: "7A420A7A00E1A7AD", silent: true, type: "command" }
+				{ command: "/level xp give {p} 1200", elevate_perms: true, id: "7A420A7A00E1A7AD", silent: true, title: "1,200 Level XP", type: "command" }
 				{ id: "30376C8A6D4E25EA", tags: ["ss_money_1400"], type: "custom" }
 			]
 			tasks: [{ entity: "minecraft:cave_spider", id: "668F69076ABB9948", type: "kill", value: 15L }]
@@ -256,7 +256,7 @@
 				{ count: 3, id: "24516A35BC080C52", item: { count: 1, id: "minecraft:golden_apple" }, type: "item" }
 				{ id: "6CBAF9C91918199A", item: { count: 1, id: "minecraft:clock" }, type: "item" }
 				{ id: "45B59931A5B7712A", type: "xp_levels", xp_levels: 6 }
-				{ command: "/level xp give {p} 1200", elevate_perms: true, id: "7CA5AB591D70A7AD", silent: true, type: "command" }
+				{ command: "/level xp give {p} 1200", elevate_perms: true, id: "7CA5AB591D70A7AD", silent: true, title: "1,200 Level XP", type: "command" }
 				{ id: "17D1E4F2D3B42450", tags: ["ss_money_1600"], type: "custom" }
 			]
 			tasks: [{ count: 32L, consume_items: true, id: "64998FC8744BDF1C", item: { count: 1, id: "minecraft:gold_ingot" }, type: "item" }]
@@ -270,7 +270,7 @@
 				{ id: "57D86FA27BF0FD82", item: { count: 1, id: "minecraft:trident" }, type: "item" }
 				{ count: 5, id: "7F8EDF066C953833", item: { count: 1, id: "minecraft:diamond" }, type: "item" }
 				{ id: "1269D4CD5F43F5D1", type: "xp_levels", xp_levels: 12 }
-				{ command: "/level xp give {p} 2400", elevate_perms: true, id: "33402AE9961449DB", silent: true, type: "command" }
+				{ command: "/level xp give {p} 2400", elevate_perms: true, id: "33402AE9961449DB", silent: true, title: "2,400 Level XP", type: "command" }
 				{ id: "432F3B1111D8546B", table_id: 2138439913711542605L, type: "random" }
 				{ id: "53172D8900162246", tags: ["ss_money_5000"], type: "custom" }
 			]
