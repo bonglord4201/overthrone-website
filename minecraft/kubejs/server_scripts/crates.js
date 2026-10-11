@@ -54,7 +54,7 @@
     },
     // "redeem" crates (like OG's armor/weapon crates): open the menu, pick an item, pay its key cost.
     armor: {
-      type: 'redeem', name: 'ARMOR CRATE', keyName: 'Armor Key', color: 'purple', dust: [0.85, 0.35, 0.95],
+      type: 'redeem', name: 'ARMOR CRATE', keyName: 'Armor Key', color: 'purple', dust: [1.0, 0.35, 0.85],
       keyHint: 'Keys available on store', particles: true,
       rewards: [
         { give: gear('netherite_helmet', 'Throne Guard Helmet', 'red', PROT4), cost: 3 },
@@ -220,7 +220,7 @@
         run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.3)} ${f(x + Math.cos(ang) * rad)} ${f(y - 0.3 + h * 2.2)} ${f(z + Math.sin(ang) * rad)} 0 0 0 0 1 normal`)
       }
       // a soft cloud of pixels puffing out of the crate, like OG Network
-      run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.6)} ${f(x)} ${f(y + 0.2)} ${f(z)} 0.6 0.45 0.6 0 3 normal`)
+      run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.6)} ${f(x)} ${f(y + 0.7)} ${f(z)} 0.75 0.5 0.75 0 3 normal`)
       if (t % 9 === 0) run(server, `execute in ${at.dim} run particle minecraft:end_rod ${f(x)} ${f(y - 0.6)} ${f(z)} 0.05 0 0.05 0.02 1 normal`)
     }
   })
@@ -283,7 +283,12 @@
   const previewChat = (p, id) => {
     var list = rewardsOf(p.server, id)
     p.tell(`§6§l${CRATES[id].name} §7rewards:`)
-    list.forEach(r => p.tell(`§7 • ${r.rare ? '§6' : '§f'}${label(p.server, r)} §8(${pctOf(list, r)}%)`))
+    list.forEach((r, i) => {
+      if (!isRedeem(id)) { p.tell(`§7 • ${r.rare ? '§6' : '§f'}${label(p.server, r)} §8(${pctOf(list, r)}%)`); return }
+      run(p.server, `tellraw ${p.username} ${JSON.stringify(['', { text: ' • ' + label(p.server, r).replace(/^1x /, '') + ' ', color: 'white' },
+        { text: '(' + r.cost + ' keys) ', color: 'gray' },
+        { text: '[Redeem]', color: 'green', bold: true, clickEvent: { action: 'run_command', value: `/crate redeem ${id} ${i + 1}` } }])}`)
+    })
   }
   const rowsFor = (n) => Math.max(3, Math.min(6, Math.ceil(n / 9) + 1))
   // Read-only: KubeJS chest GUI items can't be taken.
@@ -410,34 +415,42 @@
   }
   const serverOf = (event) => event.player.server
   // Note: in KubeJS event.cancel() stops the handler right there, so it must be the LAST thing we do.
+  // Crate clicks: block the vanilla action first (cancel), and run the crate a tick later. That way the shulker
+  // never opens or breaks, even if something in the crate code fails (errors go to staff chat + server log).
+  const later = (p, what, fn) => {
+    var go = () => { try { fn() } catch (e) {
+      console.error('[OVERTHRONE crates] ' + what + ' failed: ' + e)
+      try { if (p.hasPermissions(2)) p.tell('§c[crates] ' + what + ' failed: ' + e) } catch (e2) { }
+    } }
+    try { p.server.scheduleInTicks(1, () => go()) } catch (e) { go() }
+  }
   BlockEvents.rightClicked(event => {
-    var id = null
-    guarded('opening', event, () => {
-      id = crateAt(serverOf(event), event.block)
-      if (!id) { if (String(event.hand) === 'MAIN_HAND') explainMiss(event); return }
-      if (!debounce(event.player)) return
-      if (event.player.isShiftKeyDown()) preview(event.player, id)   // sneak + right-click = preview
-      else openCrate(event.player, id)
-    })
-    if (id) event.cancel()   // don't open the shulker box itself
+    var p = event.player, id = null
+    try { id = crateAt(serverOf(event), event.block) } catch (e) { console.error('[OVERTHRONE crates] ' + e) }
+    if (!id) { try { if (String(event.hand) === 'MAIN_HAND') explainMiss(event) } catch (e) { } return }
+    if (debounce(p)) {
+      var sneak = p.isShiftKeyDown()
+      later(p, 'opening', () => { if (sneak) preview(p, id); else openCrate(p, id) })
+    }
+    event.cancel()   // don't open the shulker box itself (must be last: cancel ends the handler)
   })
   BlockEvents.leftClicked(event => {
-    var id = null
-    guarded('preview', event, () => {
-      id = crateAt(serverOf(event), event.block)
-      if (id && debounce(event.player)) preview(event.player, id)
-    })
-    if (id) event.cancel()
+    var p = event.player, id = null
+    try { id = crateAt(serverOf(event), event.block) } catch (e) { }
+    if (!id) return
+    if (debounce(p)) later(p, 'preview', () => preview(p, id))
+    event.cancel()
   })
   BlockEvents.broken(event => {
-    if (!event.player) return
-    var id = crateAt(serverOf(event), event.block)
+    var p = event.player
+    if (!p) return
+    var id = null
+    try { id = crateAt(serverOf(event), event.block) } catch (e) { }
     if (!id) return
-    if (!(event.player.hasPermissions(2) && event.player.isShiftKeyDown())) {
-      // In creative a left-click breaks instantly, so treat it as a preview click.
-      guarded('preview', event, () => { if (debounce(event.player)) preview(event.player, id) })
-      event.cancel()
-    }
+    if (p.hasPermissions(2) && p.isShiftKeyDown()) return   // staff: sneak + break really breaks it
+    // In creative a left-click breaks instantly, so treat it as a preview click.
+    if (debounce(p)) later(p, 'preview', () => preview(p, id))
+    event.cancel()
   })
 
   // ---------------------------------------------------------------- commands
@@ -482,6 +495,13 @@
         delete all[id]; save(ctx.source.server)
         reply(ctx, `§eRemoved crate ${id}.`); return 1
       })))
+      .then(Commands.literal('redeem').then(crateArg().then(Commands.argument('number', Arguments.INTEGER.create(event)).executes(ctx => {
+        const p = ctx.source.playerOrException, id = crateOf(ctx)
+        if (!known(ctx, id) || !isRedeem(id)) return 0
+        const r = rewardsOf(p.server, id)[Arguments.INTEGER.getResult(ctx, 'number') - 1]
+        if (!r) { reply(ctx, '§cNo reward with that number.'); return 0 }
+        redeem(p, id, r); return 1
+      }))))
       .then(Commands.literal('preview').then(crateArg().executes(ctx => {
         const id = crateOf(ctx)
         if (!known(ctx, id)) return 0
