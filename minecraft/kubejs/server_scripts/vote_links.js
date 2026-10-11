@@ -1,6 +1,6 @@
 // OVERTHRONE - /vote: clickable vote links in chat.
-// Backup for when the vote menu mod's /vote is missing. If that mod is installed and has its own /vote,
-// delete this file so the two don't clash.
+// KEEP THIS FILE: the vote menu mod doesn't register /vote itself, it only replaces it with its menu.
+// This file makes /vote exist; if the menu mod isn't working, players get these chat links instead.
 
 (function () {
   const SITES = [
