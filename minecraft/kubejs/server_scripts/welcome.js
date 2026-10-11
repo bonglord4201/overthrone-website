@@ -11,7 +11,7 @@
     ['MinecraftServers.org', 'https://minecraftservers.org/vote/694195'],
     ['MinecraftBestServers', 'https://minecraftbestservers.com/server-overthrone-smp.7252'],
   ]
-  const ANNOUNCE_EVERY_MINUTES = 5
+  const ANNOUNCE_EVERY_MINUTES = 30
 
   // ---- little text-component helpers
   const t = (text, color, extra) => Object.assign({ text: text, color: color }, extra || {})
