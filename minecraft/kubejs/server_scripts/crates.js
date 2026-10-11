@@ -137,6 +137,18 @@
     },
   }
 
+  // ---- "CRATES INFO" board (floating text near the crates). Edit the lines here, then /crate infoboard place again.
+  const INFO_BOARD = [
+    { text: 'CRATES INFO', color: 'red', bold: true },
+    { text: '' },
+    { text: 'Get VOTE KEYS by voting every day: /vote', color: 'green' },
+    { text: 'WEAPON, ARMOR & RUNE KEYS at overthronesmp.tebex.store', color: 'gold' },
+    { text: 'LEGENDARY, MYTHIC & EVENT KEYS: earn them from events, bosses & quests', color: 'light_purple' },
+    { text: 'Left-click a crate to see its rewards', color: 'gray' },
+    { text: '' },
+    { text: 'ALL PAID KEYS ARE NON-RNG', color: 'red', bold: true },
+    { text: 'YOU GET TO PICK WHAT YOU WIN', color: 'red', bold: true },
+  ]
   const HOLO_COLORS = { green: 'green', red: 'red', gold: 'gold', purple: 'light_purple', aqua: 'aqua', blue: 'blue', white: 'white' }
   const StringArg = Java.loadClass('com.mojang.brigadier.arguments.StringArgumentType')
   const STORE = 'ot_crates'
@@ -642,6 +654,22 @@
             reply(ctx, `§aAdded command reward "${r.name}" to ${id}: /${cmd}`); return 1
           })))))
       )
+      .then(Commands.literal('infoboard').requires(staff)
+        .then(Commands.literal('place').executes(ctx => {
+          const p = ctx.source.playerOrException, server = p.server
+          run(server, 'kill @e[type=minecraft:text_display,tag=ot_crate_infoboard]')
+          var comp = ['']
+          INFO_BOARD.forEach((l, i) => { comp.push(Object.assign({}, l, { text: (i ? '\n' : '') + l.text })) })
+          var json = JSON.stringify(comp).replace(/'/g, "\\'")
+          run(server, `execute in ${p.level.dimension} run summon minecraft:text_display ${f(p.x)} ${f(p.y + 1.6)} ${f(p.z)} ` +
+            `{Tags:["ot_crate_infoboard"],billboard:"vertical",alignment:"center",shadow:1b,line_width:400,background:1342177280,` +
+            `transformation:[1.4f,0f,0f,0f,0f,1.4f,0f,0f,0f,0f,1.4f,0f,0f,0f,0f,1f],text:'${json}'}`)
+          reply(ctx, '§aCrates info board placed here. §7(/crate infoboard remove to take it down)'); return 1
+        }))
+        .then(Commands.literal('remove').executes(ctx => {
+          run(ctx.source.server, 'kill @e[type=minecraft:text_display,tag=ot_crate_infoboard]')
+          reply(ctx, '§eCrates info board removed.'); return 1
+        })))
       .then(Commands.literal('hologram').requires(staff).then(crateArg().executes(ctx => {
         placeHologram(ctx.source.server, crateOf(ctx)); reply(ctx, '§aHologram placed.'); return 1
       })))
