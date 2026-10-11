@@ -237,20 +237,25 @@
       }
       if (!near || c.particles === false) continue
       var x = at.x + 0.5, y = at.y + 0.5, z = at.z + 0.5, a = t * 0.08
-      // OG Network style: coloured pixels whizzing round the crate in two rings (one each way), with a few
-      // flying off and grey ash floating about. One full lap takes about a second.
-      var spin = t * 0.32
-      for (var k = 0; k < 4; k++) {
-        var ang = spin + k * Math.PI / 2
-        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.7)} ${f(x + Math.cos(ang) * 1.0)} ${f(y + 0.05)} ${f(z + Math.sin(ang) * 1.0)} 0 0 0 0 1 normal`)
+      // OG Network style: small coloured pixels racing round the crate. Each one is fired along the circle
+      // (count 0 = the numbers are its direction), so it visibly moves instead of hanging in one spot.
+      // Small particles die quickly, so you see them travel rather than piling into a blob.
+      var spin = t * 0.35
+      for (var k = 0; k < 3; k++) {                       // lower ring, clockwise
+        var ang = spin + k * 2.094, r1 = 0.95
+        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.0)} ${f(x + Math.cos(ang) * r1)} ${f(y - 0.25)} ${f(z + Math.sin(ang) * r1)} ` +
+          `${f(-Math.sin(ang))} 0.00 ${f(Math.cos(ang))} 1 0 normal`)
       }
-      for (var k = 0; k < 3; k++) {
-        var ang = -spin * 1.3 + k * 2.094
-        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.4)} ${f(x + Math.cos(ang) * 0.75)} ${f(y + 0.75)} ${f(z + Math.sin(ang) * 0.75)} 0 0 0 0 1 normal`)
+      for (var k = 0; k < 2; k++) {                       // upper ring (just below the top of the crate), the other way
+        var ang = -spin * 1.2 + k * Math.PI, r2 = 0.75
+        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 0.9)} ${f(x + Math.cos(ang) * r2)} ${f(y + 0.3)} ${f(z + Math.sin(ang) * r2)} ` +
+          `${f(Math.sin(ang))} 0.00 ${f(-Math.cos(ang))} 1 0 normal`)
       }
-      var fly = Math.random() * Math.PI * 2
-      run(server, `execute in ${at.dim} run particle ${dust(c.dust, 2.0)} ${f(x + Math.cos(fly) * 0.5)} ${f(y + 0.3)} ${f(z + Math.sin(fly) * 0.5)} ` +
-        `${f(Math.cos(fly) * 1.4)} ${f(0.3 + Math.random() * 0.5)} ${f(Math.sin(fly) * 1.4)} 1 0 normal`)
+      if (t % 4 === 0) {                                  // now and then one flies off
+        var fly = Math.random() * Math.PI * 2
+        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.2)} ${f(x + Math.cos(fly) * 0.6)} ${f(y)} ${f(z + Math.sin(fly) * 0.6)} ` +
+          `${f(Math.cos(fly))} ${f(0.4 + Math.random() * 0.4)} ${f(Math.sin(fly))} 1 0 normal`)
+      }
       if (t % 6 === 0) run(server, `execute in ${at.dim} run particle minecraft:white_ash ${f(x)} ${f(y + 0.8)} ${f(z)} 1.3 0.8 1.3 0 6 normal`)
       if (t % 10 === 0) run(server, `execute in ${at.dim} run particle minecraft:end_rod ${f(x)} ${f(y - 0.6)} ${f(z)} 0.05 0 0.05 0.02 1 normal`)
     }
