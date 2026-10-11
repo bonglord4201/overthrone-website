@@ -198,5 +198,73 @@ channels.push({ key: "races", messages: pack([
   { title: "❓ Race FAQ", fields: raceFaq.map((f) => ({ name: f.q, value: d(f.a), inline: false })) }
 ], [btn("Races guide", "/guide#races", "🧬"), btn("Races forum", "/forums?c=races", "💬")]) });
 
+// ---------------------------------------------------------------- staff commands (staff-only channel, /server staffcommands)
+channels.push({ key: "staffcommands", messages: pack([
+  { title: "📋 Staff Commands", description: [
+    "Our own server commands (not the normal Minecraft ones). In-game, you need op. `<...>` = fill in, `[a|b]` = pick one.",
+    "Crates: **vote**, **armor**, **weapon**."
+  ].join("\n") },
+  { title: "🎁 Crates: setup", description: [
+    "`/crate create <crate>` Stand **on top** of the block, makes it that crate",
+    "`/crate remove <crate>` Removes the crate (sneak + break the block as staff)",
+    "`/crate list` Where every crate is",
+    "`/crate hologram <crate>` Re-places the floating text",
+    "`/crate preview <crate>` Opens the rewards menu",
+    "Players: left-click or sneak + right-click = preview, right-click with a key = open"
+  ].join("\n") },
+  { title: "✏️ Crates: rewards", description: [
+    "`/crate edit <crate>` In-game editor: click an item in **your inventory** to add it",
+    "  Vote crate: left-click = more common, right-click = rarer, shift-left = announce on/off, shift-right = remove",
+    "  Armor/Weapon: left-click = cost +1 key, right-click = cost -1, shift-right = remove",
+    "`/crate reward cmd <crate> <weight> <command>` Command reward (hold the icon item). `{p}` = player",
+    "  e.g. `/crate reward cmd vote 20 eco give {p} 1000`",
+    "`/crate reward list <crate>` Every reward with its chance or cost",
+    "`/crate reward reset <crate>` Back to the default rewards"
+  ].join("\n") },
+  { title: "🔑 Keys", description: [
+    "`/crate key give <player> <crate> <amount>` Gives key items",
+    "`/crate key take <player> <crate> <amount>` Takes keys",
+    "`/crate keys` (anyone) How many keys you have",
+    "Tebex package command: `crate key give {username} armor 1` (or `weapon`, `vote`)",
+    "Votes also give the vote mod's Vote Key, which works on the vote crate"
+  ].join("\n") },
+  { title: "✨ Crate particles", description: [
+    "`/cratefx here <name> <style> <colour>` Stand on the crate",
+    "Styles: `helix` `orbit` `halo` `vortex`",
+    "Colours: `ember` `bloodmoon` `abyssal` `dreadforge` `regalia` `throne` `red` `gold` `purple` `aqua` `green` `white`",
+    "`/cratefx remove <name>` · `/cratefx list` · `/cratefx burst <name>`",
+    "Crates already have their own moving particles, so only add one style if you want extra"
+  ].join("\n") },
+  { title: "💎 Throne Shards & money", description: [
+    "`shards give <player> <amount>` Gives Throne Shards",
+    "`eco give <player> <amount>` Gives money"
+  ].join("\n") },
+  { title: "📈 Levels", description: [
+    "`/level` Your level (anyone)",
+    "`/level info <player>` Someone's level (anyone)",
+    "`/level set <player> <level>` · `/level reset <player>`",
+    "`/level xp give <player> <amount>` · `/level xp take <player> <amount>`",
+    "`/level debug` Checks the level system and the sidebar match"
+  ].join("\n") },
+  { title: "🎒 Rank kits", description: [
+    "Ranks: **Ronin, Valkyrie, Monarch, Godborn, Overlord**",
+    "Put the kit items in your inventory first (your own stuff in a chest), then:",
+    "`/deletekit <rank>` then `/createkit <rank> 432000` (432000 = 5 days)",
+    "`/kit <rank>` Claim / test a kit",
+    "`/kitcd check <player>` Kit cooldowns · `/kitcd reset <player>` Clear them",
+    "Each rank needs the permission `neoessentials.kits.<rank>`"
+  ].join("\n") },
+  { title: "🧬 Tensura", description: [
+    "`/tensura edit forceevo <player> demonLord` Make someone a Demon Lord",
+    "`/tensura edit race <player> tensura:god_slime true true` Set a race"
+  ].join("\n") },
+  { title: "📢 Chat & votes", description: [
+    "`/announce` Send the next server announcement now (they also go out every 30 min)",
+    "`/announce welcome` See the join message",
+    "`/vote` Vote menu (anyone)",
+    "`/neoessentials config split` Clears the NeoEssentials \"config splitting\" notice"
+  ].join("\n") }
+]) });
+
 fs.writeFileSync(path.join(root, "discord-bot/content.json"), JSON.stringify({ generatedFrom: "scripts/build-discord-content.mjs", channels }, null, 2) + "\n");
 console.log("wrote discord-bot/content.json:", channels.map((c) => `${c.key} (${c.messages.length})`).join(", "));
