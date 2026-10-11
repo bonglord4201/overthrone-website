@@ -49,13 +49,10 @@ const getXp = (p) => p.persistentData.getInt(K_XP) || 0
 
 // Writes the player's numbers to the scoreboard (for the HUD). Uses the scoreboard directly; falls back to
 // /scoreboard commands. Never throws, so a HUD problem can't break levelling.
+const VERSION = 'v3'
 const OBJECTIVES = { ot_level: 'Level', ot_xp: 'XP', ot_xpneed: 'XP Needed', ot_xppct: 'Level Progress' }
 const setScore = (p, objective, value) => {
-  try {
-    const board = p.server.getScoreboard()
-    const obj = board.getObjective(objective)
-    if (obj) { board.getOrCreatePlayerScore(p, obj).set(Math.floor(value)); return }
-  } catch (e) { /* fall through to the command */ }
+  // The /scoreboard command is the same thing the sidebar and "/scoreboard players get" read, so always run it.
   p.server.runCommandSilent(`scoreboard players set ${p.username} ${objective} ${Math.floor(value)}`)
 }
 const syncScores = (p) => {
@@ -208,7 +205,16 @@ ServerEvents.loaded(event => {
   s.runCommandSilent('scoreboard objectives add ot_xppct dummy "Level Progress"')
 })
 // Refresh the HUD numbers for everyone online after a reload.
-ServerEvents.loaded(event => { event.server.players.forEach(p => syncScores(p)) })
+ServerEvents.loaded(event => {
+  console.info('[OVERTHRONE levelling] ' + VERSION + ' loaded')
+  event.server.players.forEach(p => syncScores(p))
+})
+// Safety net: re-push everyone's numbers every 2 seconds so the HUD can never stay out of date.
+ServerEvents.tick(event => {
+  const s = event.server
+  if (s.tickCount % 40 !== 0) return
+  s.players.forEach(p => syncScores(p))
+})
 
 const bar = (pct) => {
   let s = '§6'
@@ -238,6 +244,17 @@ ServerEvents.commandRegistry(event => {
   }
   event.register(Commands.literal('level')
     .executes(safe('', ctx => { const p = ctx.source.playerOrException; syncScores(p); p.tell(describe(p)); return 1 }))
+    .then(Commands.literal('debug').requires(staff).executes(safe('debug', ctx => {
+      const p = ctx.source.playerOrException
+      syncScores(p)
+      let board = '?'
+      try {
+        const sb = p.server.getScoreboard(), obj = sb.getObjective('ot_level')
+        board = obj ? String(sb.getOrCreatePlayerScore(p, obj).get()) : 'objective ot_level is missing'
+      } catch (e) { board = 'could not read: ' + e }
+      p.tell(`§7[levelling ${VERSION}] saved level §e${getLvl(p)}§7, scoreboard ot_level §e${board}`)
+      return 1
+    })))
     .then(Commands.literal('info')
       .then(Commands.argument('target', Arguments.PLAYER.create(event)).executes(safe('info', ctx => {
         reply(ctx, describe(Arguments.PLAYER.getResult(ctx, 'target'))); return 1
