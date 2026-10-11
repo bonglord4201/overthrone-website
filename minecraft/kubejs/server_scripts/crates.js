@@ -83,6 +83,28 @@
         { give: gear('netherite_boots', 'Frostbound Boots', ['#e0f7ff', '#4fc3f7', '#0091ea'], { frost_walker: 10, feather_falling: 9, thorns: 3, unbreaking: 8, mending: 1 }), cost: 4 },
       ],
     },
+    // Random-win crates (like the vote crate): start empty, fill them in game with /crate edit <crate>.
+    // Keys for random crates should be earned in game (events, quests, voting), not sold: paid keys stay non-RNG.
+    legendary: {
+      name: 'LEGENDARY CRATE', keyName: 'Legendary Key', color: 'gold', dust: [1.0, 0.75, 0.1],
+      keyHint: 'Earn keys from events & quests', particles: true, rewards: [],
+    },
+    mythic: {
+      name: 'MYTHIC CRATE', keyName: 'Mythic Key', color: 'purple', dust: [0.65, 0.25, 1.0],
+      keyHint: 'Earn keys from bosses & Gates', particles: true, rewards: [],
+    },
+    event: {
+      name: 'EVENT CRATE', keyName: 'Event Key', color: 'red', dust: [1.0, 0.15, 0.2],
+      keyHint: 'Keys from server events', particles: true, rewards: [],
+    },
+    spawner: {
+      name: 'SPAWNER CRATE', keyName: 'Spawner Key', color: 'blue', dust: [0.25, 0.45, 1.0],
+      keyHint: 'Earn keys in game', particles: true, rewards: [],
+    },
+    cosmetic: {
+      name: 'COSMETIC CRATE', keyName: 'Cosmetic Key', color: 'white', dust: [0.9, 0.9, 1.0],
+      keyHint: 'Earn keys in game', particles: true, rewards: [],
+    },
     // Rune Crate: starts empty. Fill it in game with your modded rune items: /crate edit runes
     // (click an item in your inventory to add it; left/right-click a reward to change its key cost).
     runes: {
