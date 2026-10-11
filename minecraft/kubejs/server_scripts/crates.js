@@ -241,7 +241,8 @@
     var id = crateAt(serverOf(event), event.block)
     if (!id) return
     if (!(event.player.hasPermissions(2) && event.player.isShiftKeyDown())) {
-      event.player.tell('§7This is a crate. §8(Staff: sneak + break, then /crate remove ' + id + ')')
+      // In creative a left-click breaks instantly, so treat it as a preview click.
+      guarded('preview', event, () => { if (debounce(event.player)) preview(event.player, id) })
       event.cancel()
     }
   })
