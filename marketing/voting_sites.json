@@ -1,47 +1,5 @@
 [
   {
-    "slot": 11,
-    "item": "minecraft:diamond",
-    "name": "&b&lMinecraft-MP",
-    "lore": [
-      "&7Vote for OVERTHRONE SMP",
-      "&7on Minecraft-MP.com",
-      "",
-      "&6Reward: &f1x Vote Key &7+ &a$50,000",
-      "&eClick to get the vote link!"
-    ],
-    "enchanted": true,
-    "link": "https://minecraft-mp.com/server/364807/vote/"
-  },
-  {
-    "slot": 13,
-    "item": "minecraft:nether_star",
-    "name": "&c&lOVERTHRONE &4&lVOTE",
-    "lore": [
-      "&7Vote on every site, every day!",
-      "&7All vote links in one place:",
-      "",
-      "&foverthronesmp.net/vote",
-      "&eClick to open!"
-    ],
-    "enchanted": true,
-    "link": "https://overthronesmp.net/vote"
-  },
-  {
-    "slot": 15,
-    "item": "minecraft:emerald",
-    "name": "&a&lMinecraftServers.org",
-    "lore": [
-      "&7Vote for OVERTHRONE SMP",
-      "&7on MinecraftServers.org",
-      "",
-      "&6Reward: &f1x Vote Key &7+ &a$50,000",
-      "&eClick to get the vote link!"
-    ],
-    "enchanted": true,
-    "link": "https://minecraftservers.org/vote/694039"
-  },
-  {
     "slot": 0,
     "item": "minecraft:red_stained_glass_pane",
     "name": " "
@@ -92,6 +50,77 @@
     "name": " "
   },
   {
+    "slot": 10,
+    "item": "minecraft:diamond",
+    "name": "&b&lMinecraft-MP",
+    "lore": [
+      "&7Vote for OVERTHRONE SMP",
+      "&7on Minecraft-MP.com",
+      "",
+      "&6Reward: &f1x Vote Key &7+ &a$50,000",
+      "&eClick to get the vote link!"
+    ],
+    "enchanted": true,
+    "link": "https://minecraft-mp.com/server/364807/vote/"
+  },
+  {
+    "slot": 11,
+    "item": "minecraft:gray_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 12,
+    "item": "minecraft:emerald",
+    "name": "&a&lMinecraftServers.org",
+    "lore": [
+      "&7Vote for OVERTHRONE SMP",
+      "&7on MinecraftServers.org",
+      "",
+      "&6Reward: &f1x Vote Key &7+ &a$50,000",
+      "&eClick to get the vote link!"
+    ],
+    "enchanted": true,
+    "link": "https://minecraftservers.org/vote/694195"
+  },
+  {
+    "slot": 13,
+    "item": "minecraft:gray_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 14,
+    "item": "minecraft:gold_ingot",
+    "name": "&6&lMinecraftBestServers",
+    "lore": [
+      "&7Vote for OVERTHRONE SMP",
+      "&7on MinecraftBestServers.com",
+      "",
+      "&6Reward: &f1x Vote Key &7+ &a$50,000",
+      "&eClick to get the vote link!"
+    ],
+    "enchanted": true,
+    "link": "https://minecraftbestservers.com/server-overthrone-smp.7252"
+  },
+  {
+    "slot": 15,
+    "item": "minecraft:gray_stained_glass_pane",
+    "name": " "
+  },
+  {
+    "slot": 16,
+    "item": "minecraft:nether_star",
+    "name": "&c&lOVERTHRONE &4&lVOTE",
+    "lore": [
+      "&7Vote on every site, every day!",
+      "&7All vote links in one place:",
+      "",
+      "&foverthronesmp.net/vote",
+      "&eClick to open!"
+    ],
+    "enchanted": true,
+    "link": "https://overthronesmp.net/vote"
+  },
+  {
     "slot": 17,
     "item": "minecraft:black_stained_glass_pane",
     "name": " "
@@ -139,26 +168,6 @@
   {
     "slot": 26,
     "item": "minecraft:red_stained_glass_pane",
-    "name": " "
-  },
-  {
-    "slot": 10,
-    "item": "minecraft:gray_stained_glass_pane",
-    "name": " "
-  },
-  {
-    "slot": 12,
-    "item": "minecraft:gray_stained_glass_pane",
-    "name": " "
-  },
-  {
-    "slot": 14,
-    "item": "minecraft:gray_stained_glass_pane",
-    "name": " "
-  },
-  {
-    "slot": 16,
-    "item": "minecraft:gray_stained_glass_pane",
     "name": " "
   }
 ]

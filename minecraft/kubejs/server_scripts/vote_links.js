@@ -5,6 +5,8 @@
 (function () {
   const SITES = [
     ['Minecraft-MP', 'https://minecraft-mp.com/server/364807/vote/', 'aqua'],
+    ['MinecraftServers.org', 'https://minecraftservers.org/vote/694195', 'green'],
+    ['MinecraftBestServers', 'https://minecraftbestservers.com/server-overthrone-smp.7252', 'gold'],
   ]
   const ALL = 'https://overthronesmp.net/vote'
 
