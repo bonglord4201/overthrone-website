@@ -9,10 +9,21 @@
 //
 // Keys are real items (a glowing tripwire hook named e.g. "Vote Key"). Right-click the crate with a key in your
 // inventory to use one. Keys can be traded, stored, and given by any plugin/command that can run /crate key give.
-// Edit CRATES below to change names, colours and rewards. particles: false turns off the built-in crate particles. Each reward: item (+count) and/or cmd, a weight
-// (the chance is weight / total weight), and optional rare: true to announce it to the whole server.
+// Rewards (op) - edit them in game, any item works (modded items, enchants, custom names all kept):
+//              /crate edit <crate>     opens the editor. Click an item in YOUR inventory to add it as a reward.
+//                                      On a reward: left-click = more common, right-click = rarer,
+//                                      shift-left-click = announce to server on/off, shift-right-click = remove.
+//              /crate reward cmd <crate> <weight> <command>   adds a command reward (money, level XP, shards...);
+//                                      hold the item you want as its icon (rename it in an anvil to set the name). {p} = player.
+//              /crate reward list <crate>     /crate reward reset <crate>   (back to the defaults in this file)
+// The chance of a reward = its weight / total weight. The defaults below are used until you edit a crate in game.
+// particles: false turns off the built-in crate particles.
 
 (function () {
+  // The command that gives Throne Shards, without the amount, e.g. 'shards give {p}'. Leave '' until we know it:
+  // the Throne Shard rewards are skipped while it's empty.
+  const SHARDS_CMD = ''
+
   const CRATES = {
     vote: {
       name: 'VOTING CRATE', keyName: 'Vote Key', color: 'green', dust: [0.35, 0.95, 0.25], keyHint: 'Free keys daily: /vote',
@@ -20,13 +31,16 @@
       // Also accept the Vote Key the vote mod gives (matched on its lore, which players can't fake with an anvil).
       altKeys: ['earned by voting'],
       rewards: [
-        { item: 'minecraft:golden_apple', count: 8, weight: 30 },
-        { item: 'minecraft:experience_bottle', count: 32, weight: 25 },
-        { item: 'minecraft:diamond', count: 4, weight: 15 },
-        { cmd: 'eco give {p} 5000', icon: 'minecraft:emerald', name: '$5,000', weight: 15 },
+        { item: 'minecraft:diamond', count: 16, weight: 20 },
+        { cmd: 'eco give {p} 1000', icon: 'minecraft:emerald', name: '$1,000', weight: 20 },
+        { item: 'minecraft:golden_apple', count: 8, weight: 15 },
+        { item: 'minecraft:experience_bottle', count: 32, weight: 12 },
         { cmd: 'level xp give {p} 1500', icon: 'minecraft:nether_star', name: '1,500 Level XP', weight: 10 },
-        { item: 'minecraft:enchanted_golden_apple', count: 1, weight: 4, rare: true },
-        { item: 'minecraft:netherite_ingot', count: 1, weight: 1, rare: true },
+        { item: 'minecraft:netherite_ingot', count: 4, weight: 6 },
+        { item: 'minecraft:enchanted_golden_apple', count: 3, weight: 6 },
+        { item: 'minecraft:enchanted_golden_apple', count: 6, weight: 4, rare: true },
+        { cmd: SHARDS_CMD + ' 30', icon: 'minecraft:amethyst_shard', name: '30x Throne Shards', weight: 4, shards: true },
+        { cmd: SHARDS_CMD + ' 60', icon: 'minecraft:amethyst_shard', name: '60x Throne Shards', weight: 1, rare: true, shards: true },
       ],
     },
   }
@@ -83,9 +97,38 @@
       if (isKey(st, id)) { var k = Math.min(n, st.count); st.shrink(k); n -= k }
     }
   }
-  const totalWeight = (c) => c.rewards.reduce((s, r) => s + r.weight, 0)
-  const pct = (c, r) => (r.weight * 100 / totalWeight(c)).toFixed(2)
-  const label = (r) => r.name || ((r.count || 1) + 'x ' + String(r.item).split(':')[1].split('_').map(w => w[0].toUpperCase() + w.slice(1)).join(' '))
+  // ---- rewards: defaults from CRATES, or the in-game edited list saved on the server
+  const ItemStackJ = Java.loadClass('net.minecraft.world.item.ItemStack')
+  const TagParser = Java.loadClass('net.minecraft.nbt.TagParser')
+  const REWARD_STORE = 'ot_crate_rewards'
+  let edited = null   // { crateId: [entry] }
+  const loadEdited = (server) => {
+    if (edited) return edited
+    try { edited = JSON.parse(String(server.persistentData.getString(REWARD_STORE)) || '{}') } catch (e) { edited = {} }
+    return edited
+  }
+  const saveEdited = (server) => server.persistentData.putString(REWARD_STORE, JSON.stringify(edited))
+  const defaults = (id) => CRATES[id].rewards
+    .filter(r => !(r.shards && !SHARDS_CMD))
+    .map(r => ({ item: r.item, count: r.count, cmd: r.cmd, icon: r.icon, name: r.name, weight: r.weight, rare: !!r.rare }))
+  const rewardsOf = (server, id) => {
+    var all = loadEdited(server)
+    if (!all[id]) all[id] = defaults(id)
+    return all[id]
+  }
+  const toSnbt = (server, stack) => String(stack.save(server.registryAccess()))
+  const stackOf = (server, r) => {
+    if (r.snbt) { try { return ItemStackJ.parseOptional(server.registryAccess(), TagParser.parseTag(r.snbt)) } catch (e) { return Item.of('minecraft:barrier') } }
+    if (r.item) return Item.of(r.item, r.count || 1)
+    return Item.of(r.icon || 'minecraft:paper')
+  }
+  const totalWeight = (list) => list.reduce((s, r) => s + r.weight, 0)
+  const pctOf = (list, r) => (r.weight * 100 / Math.max(1, totalWeight(list))).toFixed(2)
+  const label = (server, r) => {
+    if (r.name) return r.name
+    var st = stackOf(server, r)
+    return st.count + 'x ' + String(st.getHoverName().getString())
+  }
   const f = (n) => n.toFixed(2)
   const run = (server, cmd) => server.runCommandSilent(cmd)
 
@@ -130,22 +173,24 @@
           run(server, `title ${p.username} actionbar {"text":"${c.name} · Keys available: ${keys(p, ids[i])}","color":"yellow"}`)
       }
       if (!near || c.particles === false) continue
-      const x = at.x + 0.5, y = at.y + 0.5, z = at.z + 0.5, a = t * 0.06
-      for (let k = 0; k < 2; k++) {   // two points circling the crate
-        const ang = a + k * Math.PI
-        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.1)} ${f(x + Math.cos(ang) * 0.85)} ${f(y + 0.1 * Math.sin(a * 3))} ${f(z + Math.sin(ang) * 0.85)} 0 0 0 0 1 normal`)
+      const x = at.x + 0.5, y = at.y + 0.5, z = at.z + 0.5, a = t * 0.08
+      // three arms spiralling up and outward around the crate
+      for (let k = 0; k < 3; k++) {
+        const h = ((t * 0.012) + k / 3) % 1, ang = a + k * 2.094 + h * 5
+        const rad = 0.45 + h * 0.8
+        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.3)} ${f(x + Math.cos(ang) * rad)} ${f(y - 0.3 + h * 2.2)} ${f(z + Math.sin(ang) * rad)} 0 0 0 0 1 normal`)
       }
-      // drifting pixels floating out of the crate, like OG Network
-      run(server, `execute in ${at.dim} run particle ${dust(c.dust, 0.9)} ${f(x)} ${f(y + 0.3)} ${f(z)} 0.45 0.35 0.45 0 2 normal`)
+      // a soft cloud of pixels puffing out of the crate, like OG Network
+      run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.6)} ${f(x)} ${f(y + 0.2)} ${f(z)} 0.6 0.45 0.6 0 3 normal`)
       if (t % 9 === 0) run(server, `execute in ${at.dim} run particle minecraft:end_rod ${f(x)} ${f(y - 0.6)} ${f(z)} 0.05 0 0.05 0.02 1 normal`)
     }
   })
 
   // ---------------------------------------------------------------- open
-  const roll = (c) => {
-    let r = Math.random() * totalWeight(c)
-    for (let i = 0; i < c.rewards.length; i++) { r -= c.rewards[i].weight; if (r <= 0) return c.rewards[i] }
-    return c.rewards[c.rewards.length - 1]
+  const roll = (list) => {
+    let r = Math.random() * totalWeight(list)
+    for (let i = 0; i < list.length; i++) { r -= list[i].weight; if (r <= 0) return list[i] }
+    return list[list.length - 1]
   }
   const openCrate = (p, id) => {
     const c = CRATES[id], server = p.server, n = p.username, at = load(server)[id]
@@ -156,52 +201,107 @@
       run(server, `execute at ${n} run playsound minecraft:block.note_block.bass player ${n} ~ ~ ~ 1 0.6`)
       return
     }
+    const list = rewardsOf(server, id)
+    if (!list.length) { p.tell('§cThis crate has no rewards yet.'); return }
     takeKeys(p, id, 1)
-    const r = roll(c)
-    if (r.item) run(server, `give ${n} ${r.item} ${r.count || 1}`)
+    const r = roll(list), what = label(server, r)
     if (r.cmd) run(server, r.cmd.split('{p}').join(n))
+    else p.give(stackOf(server, r).copy())
     run(server, `title ${n} times 5 40 10`)
-    run(server, `title ${n} subtitle {"text":"${label(r)}","color":"${r.rare ? 'gold' : 'white'}"}`)
+    run(server, `title ${n} subtitle ${JSON.stringify({ text: what, color: r.rare ? 'gold' : 'white' })}`)
     run(server, `title ${n} title {"text":"${c.name}","color":"${HOLO_COLORS[c.color] || 'gold'}","bold":true}`)
     run(server, `execute at ${n} run playsound minecraft:block.chest.open player ${n} ~ ~ ~ 1 1`)
     run(server, `execute at ${n} run playsound minecraft:entity.player.levelup player ${n} ~ ~ ~ 0.8 1.3`)
     run(server, `execute in ${at.dim} run particle minecraft:totem_of_undying ${at.x + 0.5} ${at.y + 1} ${at.z + 0.5} 0.3 0.5 0.3 0.4 ${r.rare ? 80 : 25} normal`)
-    p.tell(`§a§lCrates §7» You won §f${label(r)} §7(${pct(c, r)}% chance). §8Keys left: ${keys(p, id)}`)
+    p.tell(`§a§lCrates §7» You won §f${what} §7(${pctOf(list, r)}% chance). §8Keys left: ${keys(p, id)}`)
     if (r.rare) {
-      run(server, `tellraw @a ["",{"text":"✦ ","color":"gold"},{"text":"${n}","color":"yellow","bold":true},{"text":" won ","color":"gray"},{"text":"${label(r)}","color":"gold","bold":true},{"text":" from the ${c.name}!","color":"gray"}]`)
+      run(server, `tellraw @a ${JSON.stringify(['', { text: '✦ ', color: 'gold' }, { text: n, color: 'yellow', bold: true }, { text: ' won ', color: 'gray' }, { text: what, color: 'gold', bold: true }, { text: ' from the ' + c.name + '!', color: 'gray' }])}`)
       run(server, `execute in ${at.dim} run summon minecraft:firework_rocket ${at.x + 0.5} ${at.y + 1.5} ${at.z + 0.5} {LifeTime:15,FireworksItem:{id:"minecraft:firework_rocket",count:1,components:{"minecraft:fireworks":{explosions:[{shape:"star",colors:[I;16766720,16711680],has_twinkle:1b}]}}}}`)
     }
   }
 
-  // ---------------------------------------------------------------- preview menu (read-only)
+  // ---------------------------------------------------------------- preview menu + in-game editor
   const PREVIEW_TAG = 'ot_crate_preview'
   const isPreviewItem = (stack) => !stack.isEmpty() && String(stack.getComponents()).indexOf(PREVIEW_TAG) >= 0
-  const previewStack = (c, r) => {
-    const lore = `[\'{"text":"Chance: ${pct(c, r)}%","color":"yellow","italic":false}\'${r.rare ? ',\'{"text":"RARE","color":"gold","bold":true,"italic":false}\'' : ''}]`
-    const name = `\'{"text":"${label(r)}","color":"${r.rare ? 'gold' : 'white'}","italic":false}\'`
-    return Item.of(`${r.item || r.icon}[custom_data={${PREVIEW_TAG}:1b},custom_name=${name},lore=${lore}]`, Math.min(64, r.count || 1))
-  }
-  const previewChat = (p, c) => {
-    p.tell(`§6§l${c.name} §7rewards:`)
-    c.rewards.forEach(r => p.tell(`§7 • ${r.rare ? '§6' : '§f'}${label(r)} §8(${pct(c, r)}%)`))
-  }
-  // Uses KubeJS's own chest GUI (display only: items can't be taken). Falls back to a chat list.
-  const preview = (p, id) => {
-    const c = CRATES[id]
-    if (p.openChestGUI === undefined) { previewChat(p, c); return }
+  const DataComponents = Java.loadClass('net.minecraft.core.component.DataComponents')
+  const ItemLore = Java.loadClass('net.minecraft.world.item.component.ItemLore')
+  const ArrayList = Java.loadClass('java.util.ArrayList')
+  const line = (s) => { var c = Text.of(s); try { c = c.italic(false) } catch (e) { } return c }
+  // A copy of the reward item with extra tooltip lines (chance etc.), keeping its own lore/enchants.
+  const shown = (server, r, extra) => {
+    var st = stackOf(server, r).copy()
     try {
-      var start = Math.max(0, Math.floor((27 - c.rewards.length) / 2))
-      p.openChestGUI(Text.of(c.name + ' Rewards'), 3, gui => {
-        c.rewards.forEach((r, i) => {
-          var n = start + i
-          gui.slot(n % 9, Math.floor(n / 9), slot => { slot.item = previewStack(c, r) })
-        })
+      var lines = new ArrayList(), old = st.get(DataComponents.LORE)
+      if (old) old.lines().forEach(l => lines.add(l))
+      lines.add(line(''))
+      extra.forEach(x => lines.add(line(x)))
+      st.set(DataComponents.LORE, new ItemLore(lines))
+      if (r.name) st.set(DataComponents.CUSTOM_NAME, line((r.rare ? '§6' : '§f') + r.name))
+    } catch (e) { }
+    return st
+  }
+  const previewChat = (p, id) => {
+    var list = rewardsOf(p.server, id)
+    p.tell(`§6§l${CRATES[id].name} §7rewards:`)
+    list.forEach(r => p.tell(`§7 • ${r.rare ? '§6' : '§f'}${label(p.server, r)} §8(${pctOf(list, r)}%)`))
+  }
+  const rowsFor = (n) => Math.max(3, Math.min(6, Math.ceil(n / 9) + 1))
+  // Read-only: KubeJS chest GUI items can't be taken.
+  const preview = (p, id) => {
+    if (p.openChestGUI === undefined) { previewChat(p, id); return }
+    try {
+      var list = rewardsOf(p.server, id).slice(0, 45)
+      p.openChestGUI(Text.of(CRATES[id].name + ' Rewards'), rowsFor(list.length), gui => {
+        gui.playerSlots = true
+        list.forEach((r, i) => gui.slot(i % 9, Math.floor(i / 9), slot => {
+          slot.item = shown(p.server, r, [`§eChance: ${pctOf(list, r)}%`].concat(r.rare ? ['§6§lRARE'] : []))
+        }))
       })
     } catch (e) {
       console.warn('[OVERTHRONE crates] preview menu failed, using chat: ' + e)
       if (p.hasPermissions(2)) p.tell('§c[crates] preview menu failed: ' + e)
-      previewChat(p, c)
+      previewChat(p, id)
     }
+  }
+  // Staff editor: 5 rows of rewards + your inventory. Every change is saved straight away.
+  const editor = (p, id) => {
+    var server = p.server, list = rewardsOf(server, id)
+    var changed = () => { saveEdited(server); editor(p, id) }
+    p.openChestGUI(Text.of('Edit: ' + CRATES[id].name), 6, gui => {
+      gui.playerSlots = true
+      list.slice(0, 45).forEach((r, i) => gui.slot(i % 9, Math.floor(i / 9), slot => {
+        slot.item = shown(server, r, [
+          `§eChance: ${pctOf(list, r)}% §8(weight ${r.weight})`,
+          r.rare ? '§6§lRARE §7(announced to the server)' : '§7Not announced',
+          r.cmd ? '§8Command: /' + r.cmd : '§8Item reward',
+          '§aLeft-click§7: more common  §cRight-click§7: rarer',
+          '§eShift-left§7: announce on/off  §4Shift-right§7: remove',
+        ])
+        var step = () => (r.weight > 10 ? 5 : 1)
+        slot.leftClicked = e => { r.weight += step(); changed() }
+        slot.rightClicked = e => { r.weight = Math.max(1, r.weight - step()); changed() }
+        slot.shiftLeftClicked = e => { r.rare = !r.rare; changed() }
+        slot.shiftRightClicked = e => { list.splice(i, 1); changed() }
+      }))
+      gui.slot(4, 5, slot => {
+        slot.item = shown(server, { item: 'minecraft:writable_book', count: 1, name: 'How to edit', weight: 0 }, [
+          '§7Click any item in §fyour inventory§7 to add it',
+          '§7as a reward (you keep the item).',
+          `§7Rewards: §f${list.length}§7/45`,
+          '§7Command rewards (money, shards):',
+          '§f/crate reward cmd ' + id + ' <weight> <command>',
+        ])
+      })
+      gui.inventoryClicked = e => {
+        if (String(e.type) !== 'PICKUP' || e.button !== 0) return   // plain left-click only (no double adds)
+        var st = e.item
+        if (!st || st.isEmpty()) return
+        if (list.length >= 45) { p.tell('§cThis crate is full (45 rewards).'); return }
+        list.push({ snbt: toSnbt(server, st.copy()), weight: 10, rare: false })
+        p.tell('§a[crates] Added ' + st.count + 'x ' + String(st.getHoverName().getString()) + ' (weight 10).')
+        changed()
+      }
+    })
   }
 
   // Preview items can never be kept: remove them anywhere they turn up.
@@ -308,6 +408,40 @@
         if (!known(ctx, id)) return 0
         preview(ctx.source.playerOrException, id); return 1
       })))
+      .then(Commands.literal('edit').requires(staff).then(crateArg().executes(ctx => {
+        const id = crateOf(ctx)
+        if (!known(ctx, id)) return 0
+        try { editor(ctx.source.playerOrException, id) } catch (e) { reply(ctx, '§c[crates] editor failed: ' + e) }
+        return 1
+      })))
+      .then(Commands.literal('reward').requires(staff)
+        .then(Commands.literal('list').then(crateArg().executes(ctx => {
+          const id = crateOf(ctx)
+          if (!known(ctx, id)) return 0
+          const list = rewardsOf(ctx.source.server, id)
+          reply(ctx, `§6${CRATES[id].name}§7: ${list.length} rewards`)
+          list.forEach((r, i) => reply(ctx, `§8${i + 1}. ${r.rare ? '§6' : '§f'}${label(ctx.source.server, r)} §7${pctOf(list, r)}% §8(weight ${r.weight})`))
+          return 1
+        })))
+        .then(Commands.literal('reset').then(crateArg().executes(ctx => {
+          const id = crateOf(ctx)
+          if (!known(ctx, id)) return 0
+          loadEdited(ctx.source.server)[id] = defaults(id); saveEdited(ctx.source.server)
+          reply(ctx, `§eRewards for ${id} reset to the defaults.`); return 1
+        })))
+        .then(Commands.literal('cmd').then(crateArg().then(Commands.argument('weight', Arguments.INTEGER.create(event))
+          .then(Commands.argument('command', StringArg.greedyString()).executes(ctx => {
+            const p = ctx.source.playerOrException, id = crateOf(ctx)
+            if (!known(ctx, id)) return 0
+            const held = p.mainHandItem
+            const cmd = String(StringArg.getString(ctx, 'command')).replace(/^\//, '')
+            const r = { cmd: cmd, weight: Math.max(1, Arguments.INTEGER.getResult(ctx, 'weight')), rare: false,
+              icon: held.isEmpty() ? 'minecraft:paper' : String(held.id),
+              name: held.isEmpty() ? cmd : String(held.getHoverName().getString()) }
+            rewardsOf(p.server, id).push(r); saveEdited(p.server)
+            reply(ctx, `§aAdded command reward "${r.name}" to ${id}: /${cmd}`); return 1
+          })))))
+      )
       .then(Commands.literal('hologram').requires(staff).then(crateArg().executes(ctx => {
         placeHologram(ctx.source.server, crateOf(ctx)); reply(ctx, '§aHologram placed.'); return 1
       })))
