@@ -12,7 +12,7 @@
 //   /sidebar where        (op) shows the id of the world you're in (for SB_HUB_WORLDS / SB_RPG_WORLDS)
 //
 // 2026-10-12 additions (OG Network style):
-//   - HUB: the title is an animated OVERTHRONE that sweeps black / red / gold, and an
+//   - HUB: the title is an animated OVERTHRONE SMP that sweeps black / red, and an
 //     "Online: <players>" line is added above the last line.
 //   - RPG world: a "Use /wild to leave spawn." line is added above the last line.
 //   - {online} and {max_players} can be used in any line of scoreboard.json.
@@ -85,9 +85,9 @@ function sbLinesFor(player) {
   return out.slice(0, 15)
 }
 
-// ---- animated hub title: OVERTHRONE with a black -> red -> gold shine sweeping across it
-const SB_TITLE_TEXT = 'OVERTHRONE'
-const SB_TITLE_PALETTE = ['1C1C1C', '5A0000', 'B3001B', 'FF2A2A', 'FF8C00', 'FFD24A', 'FFF2B0', 'FFD24A', 'FF8C00', 'FF2A2A', 'B3001B', '5A0000']
+// ---- animated hub title: OVERTHRONE SMP with a red shine sweeping across black
+const SB_TITLE_TEXT = 'OVERTHRONE SMP'
+const SB_TITLE_PALETTE = ['2A2A2A', '3A0A0A', '5C0000', '8B0000', 'B3001B', 'E01020', 'FF2A2A', 'FF5050', 'FF2A2A', 'E01020', 'B3001B', '8B0000', '5C0000', '3A0A0A']
 const SB_TITLE_FRAMES = (function () {
   var frames = []
   var n = SB_TITLE_PALETTE.length
