@@ -218,35 +218,32 @@
     p.tell(`§7[crates] Not a crate: you clicked ${b.x} ${b.y} ${b.z} ${b.level.dimension}. Saved crates: ${saved || 'none'}`)
   }
   const serverOf = (event) => event.player.server
-  BlockEvents.rightClicked(event => guarded('opening', event, () => {
-    const id = crateAt(serverOf(event), event.block)
-    if (!id) { if (String(event.hand) === 'MAIN_HAND') explainMiss(event); return }
-    event.cancel()   // don't open the shulker box itself
-    if (debounce(event.player)) openCrate(event.player, id)
-  }))
-  BlockEvents.leftClicked(event => guarded('preview', event, () => {
-    const id = crateAt(serverOf(event), event.block)
-    if (!id) return
-    event.cancel()
-    if (debounce(event.player)) preview(event.player, id)
-  }))
+  // Note: in KubeJS event.cancel() stops the handler right there, so it must be the LAST thing we do.
+  BlockEvents.rightClicked(event => {
+    var id = null
+    guarded('opening', event, () => {
+      id = crateAt(serverOf(event), event.block)
+      if (!id) { if (String(event.hand) === 'MAIN_HAND') explainMiss(event); return }
+      if (debounce(event.player)) openCrate(event.player, id)
+    })
+    if (id) event.cancel()   // don't open the shulker box itself
+  })
+  BlockEvents.leftClicked(event => {
+    var id = null
+    guarded('preview', event, () => {
+      id = crateAt(serverOf(event), event.block)
+      if (id && debounce(event.player)) preview(event.player, id)
+    })
+    if (id) event.cancel()
+  })
   BlockEvents.broken(event => {
     if (!event.player) return
-    const id = crateAt(serverOf(event), event.block)
+    var id = crateAt(serverOf(event), event.block)
     if (!id) return
-    if (!(event.player && event.player.hasPermissions(2) && event.player.isShiftKeyDown())) {
+    if (!(event.player.hasPermissions(2) && event.player.isShiftKeyDown())) {
+      event.player.tell('§7This is a crate. §8(Staff: sneak + break, then /crate remove ' + id + ')')
       event.cancel()
-      if (event.player) event.player.tell('§7This is a crate. §8(Staff: sneak + break, then /crate remove ' + id + ')')
     }
-  })
-
-  // Old virtual keys (from the first version) are turned into real key items on login.
-  PlayerEvents.loggedIn(event => {
-    var p = event.player
-    Object.keys(CRATES).forEach(id => {
-      var old = p.persistentData.getInt(keyId(id)) || 0
-      if (old > 0) { p.persistentData.remove(keyId(id)); giveKeys(p, id, old); p.tell(`§a§lCrates §7» Your ${old} saved ${id} key(s) are now real key items.`) }
-    })
   })
 
   // ---------------------------------------------------------------- commands
