@@ -7,14 +7,16 @@
 //              /crate key give <player> <crate> <amount>      /crate key take <player> <crate> <amount>
 // Players:     /crate keys        how many keys you have
 //
-// Keys are virtual (saved on the player), like OG Network's "Keys available".
-// Edit CRATES below to change names, colours and rewards. Each reward: item (+count) and/or cmd, a weight
+// Keys are real items (a glowing tripwire hook named e.g. "Vote Key"). Right-click the crate with a key in your
+// inventory to use one. Keys can be traded, stored, and given by any plugin/command that can run /crate key give.
+// Edit CRATES below to change names, colours and rewards. particles: false turns off the built-in crate particles. Each reward: item (+count) and/or cmd, a weight
 // (the chance is weight / total weight), and optional rare: true to announce it to the whole server.
 
 (function () {
   const CRATES = {
     vote: {
-      name: 'VOTING CRATE', color: 'green', dust: [0.35, 0.95, 0.25], keyHint: 'Free keys daily: /vote',
+      name: 'VOTING CRATE', keyName: 'Vote Key', color: 'green', dust: [0.35, 0.95, 0.25], keyHint: 'Free keys daily: /vote',
+      particles: true,
       rewards: [
         { item: 'minecraft:golden_apple', count: 8, weight: 30 },
         { item: 'minecraft:experience_bottle', count: 32, weight: 25 },
@@ -27,6 +29,7 @@
     },
   }
 
+  const HOLO_COLORS = { green: 'green', red: 'red', gold: 'gold', purple: 'light_purple', aqua: 'aqua', blue: 'blue', white: 'white' }
   const StringArg = Java.loadClass('com.mojang.brigadier.arguments.StringArgumentType')
   const STORE = 'ot_crates'
   const keyId = (id) => 'ot_crate_key_' + id
@@ -43,12 +46,34 @@
     const ids = Object.keys(all)
     for (let i = 0; i < ids.length; i++) {
       const c = all[ids[i]]
-      if (c.x === block.x && c.y === block.y && c.z === block.z && c.dim === dim && CRATES[ids[i]]) return ids[i]
+      if (c.x === Number(block.x) && c.y === Number(block.y) && c.z === Number(block.z) && c.dim === dim && CRATES[ids[i]]) return ids[i]
     }
     return null
   }
-  const keys = (p, id) => p.persistentData.getInt(keyId(id)) || 0
-  const setKeys = (p, id, n) => p.persistentData.putInt(keyId(id), Math.max(0, n))
+  // ---- physical keys: tripwire hook tagged ot_key_<crate>
+  const KEY_ITEM = 'minecraft:tripwire_hook'
+  const keyTag = (id) => 'ot_key_' + id
+  const isKey = (stack, id) => !stack.isEmpty() && String(stack.id) === KEY_ITEM && String(stack.getComponents()).indexOf(keyTag(id)) >= 0
+  const keyStackCmd = (id) => {
+    var c = CRATES[id], col = HOLO_COLORS[c.color] || 'gold'
+    var name = `'{"text":"${c.keyName || c.name + ' Key'}","color":"${col}","bold":true,"italic":false}'`
+    var lore = `['{"text":"Right-click the ${c.name} to use","color":"gray","italic":false}','{"text":"${c.keyHint}","color":"yellow","italic":false}']`
+    return `${KEY_ITEM}[custom_data={${keyTag(id)}:1b},custom_name=${name},lore=${lore},enchantment_glint_override=true]`
+  }
+  const keys = (p, id) => {
+    var inv = p.inventory, n = 0
+    for (var i = 0; i < inv.getContainerSize(); i++) { var st = inv.getItem(i); if (isKey(st, id)) n += st.count }
+    return n
+  }
+  const giveKeys = (p, id, n) => { if (n > 0) run(p.server, `give ${p.username} ${keyStackCmd(id)} ${n}`) }
+  const takeKeys = (p, id, n) => {
+    var inv = p.inventory, held = p.mainHandItem
+    if (n > 0 && isKey(held, id)) { var t = Math.min(n, held.count); held.shrink(t); n -= t }
+    for (var i = 0; i < inv.getContainerSize() && n > 0; i++) {
+      var st = inv.getItem(i)
+      if (isKey(st, id)) { var k = Math.min(n, st.count); st.shrink(k); n -= k }
+    }
+  }
   const totalWeight = (c) => c.rewards.reduce((s, r) => s + r.weight, 0)
   const pct = (c, r) => (r.weight * 100 / totalWeight(c)).toFixed(2)
   const label = (r) => r.name || ((r.count || 1) + 'x ' + String(r.item).split(':')[1].split('_').map(w => w[0].toUpperCase() + w.slice(1)).join(' '))
@@ -56,7 +81,6 @@
   const run = (server, cmd) => server.runCommandSilent(cmd)
 
   // ---------------------------------------------------------------- hologram above the crate
-  const HOLO_COLORS = { green: 'green', red: 'red', gold: 'gold', purple: 'light_purple', aqua: 'aqua', blue: 'blue', white: 'white' }
   const placeHologram = (server, id) => {
     const c = CRATES[id], at = load(server)[id]
     if (!c || !at) return
@@ -64,7 +88,7 @@
     const col = HOLO_COLORS[c.color] || 'gold'
     const lines = [
       [2.25, `{"text":"${c.name}","color":"${col}","bold":true}`, 1.3],
-      [1.95, '{"text":"Right-click to open","color":"gray"}', 0.8],
+      [1.95, `{"text":"Right-click with a ${c.keyName || 'key'} to open","color":"gray"}`, 0.8],
       [1.75, '{"text":"Left-click to preview","color":"gray"}', 0.8],
       [1.50, `{"text":"${c.keyHint}","color":"yellow"}`, 0.75],
     ]
@@ -96,7 +120,7 @@
         if (d2 < 5 * 5 && t % 15 === 0)   // "Keys available" for this player, over the hotbar
           run(server, `title ${p.username} actionbar {"text":"${c.name} · Keys available: ${keys(p, ids[i])}","color":"yellow"}`)
       }
-      if (!near) continue
+      if (!near || c.particles === false) continue
       const x = at.x + 0.5, y = at.y + 0.5, z = at.z + 0.5, a = t * 0.06
       for (let k = 0; k < 2; k++) {   // two points circling the crate
         const ang = a + k * Math.PI
@@ -117,11 +141,11 @@
   const openCrate = (p, id) => {
     const c = CRATES[id], server = p.server, n = p.username, at = load(server)[id]
     if (keys(p, id) <= 0) {
-      p.tell(`§c§lCrates §7» You need a §f${c.name.toLowerCase().replace(/(^|\s)\S/g, s => s.toUpperCase())} Key§7 to open this crate. §e${c.keyHint}`)
+      p.tell(`§c§lCrates §7» You need a §f${c.keyName || c.name + ' Key'}§7 to open this crate. §e${c.keyHint}`)
       run(server, `execute at ${n} run playsound minecraft:block.note_block.bass player ${n} ~ ~ ~ 1 0.6`)
       return
     }
-    setKeys(p, id, keys(p, id) - 1)
+    takeKeys(p, id, 1)
     const r = roll(c)
     if (r.item) run(server, `give ${n} ${r.item} ${r.count || 1}`)
     if (r.cmd) run(server, r.cmd.split('{p}').join(n))
@@ -197,6 +221,15 @@
     }
   })
 
+  // Old virtual keys (from the first version) are turned into real key items on login.
+  PlayerEvents.loggedIn(event => {
+    var p = event.player
+    Object.keys(CRATES).forEach(id => {
+      var old = p.persistentData.getInt(keyId(id)) || 0
+      if (old > 0) { p.persistentData.remove(keyId(id)); giveKeys(p, id, old); p.tell(`§a§lCrates §7» Your ${old} saved ${id} key(s) are now real key items.`) }
+    })
+  })
+
   // ---------------------------------------------------------------- commands
   ServerEvents.commandRegistry(event => {
     const { commands: Commands, arguments: Arguments } = event
@@ -209,9 +242,9 @@
       .then(Commands.argument('amount', Arguments.INTEGER.create(event)).executes(ctx => {
         const p = Arguments.PLAYER.getResult(ctx, 'player'), id = crateOf(ctx), n = Arguments.INTEGER.getResult(ctx, 'amount')
         if (!known(ctx, id)) return 0
-        setKeys(p, id, keys(p, id) + sign * n)
-        if (sign > 0) p.tell(`§a§lCrates §7» You received §f${n}x ${CRATES[id].name} Key${n > 1 ? 's' : ''}§7. You have §f${keys(p, id)}§7.`)
-        reply(ctx, `${p.username} now has ${keys(p, id)} ${id} key(s).`); return 1
+        if (sign > 0) giveKeys(p, id, n); else takeKeys(p, id, n)
+        if (sign > 0) p.tell(`§a§lCrates §7» You received §f${n}x ${CRATES[id].keyName || CRATES[id].name + ' Key'}§7.`)
+        reply(ctx, `${sign > 0 ? 'Gave' : 'Took'} ${n} ${id} key(s) ${sign > 0 ? 'to' : 'from'} ${p.username}.`); return 1
       })))
     event.register(Commands.literal('crate')
       .then(Commands.literal('keys').executes(ctx => {
