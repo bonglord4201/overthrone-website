@@ -83,6 +83,13 @@
         { give: gear('netherite_boots', 'Frostbound Boots', ['#e0f7ff', '#4fc3f7', '#0091ea'], { frost_walker: 10, feather_falling: 9, thorns: 3, unbreaking: 8, mending: 1 }), cost: 4 },
       ],
     },
+    // Rune Crate: starts empty. Fill it in game with your modded rune items: /crate edit runes
+    // (click an item in your inventory to add it; left/right-click a reward to change its key cost).
+    runes: {
+      type: 'redeem', name: 'RUNE CRATE', keyName: 'Rune Key', color: 'aqua', dust: [0.2, 0.85, 1.0],
+      keyHint: 'Keys available on store', particles: true,
+      rewards: [],
+    },
     weapon: {
       type: 'redeem', name: 'WEAPON CRATE', keyName: 'Weapon Key', color: 'gold', dust: [1.0, 0.55, 0.1], spores: [[1.0, 0.55, 0.1], [1.0, 0.85, 0.2], [1.0, 0.25, 0.1], [1.0, 0.95, 0.7]],
       keyHint: 'Keys available on store', particles: true,
@@ -345,6 +352,7 @@
     if (p.openChestGUI === undefined) { previewChat(p, id); return }
     try {
       var list = rewardsOf(p.server, id).slice(0, 45)
+      if (!list.length) p.tell('§7This crate has no rewards yet.' + (p.hasPermissions(2) ? ' §8Staff: /crate edit ' + id : ''))
       p.openChestGUI(Text.of(CRATES[id].name + ' Rewards'), rowsFor(list.length), gui => {
         gui.playerSlots = true
         list.forEach((r, i) => gui.slot(i % 9, Math.floor(i / 9), slot => {
