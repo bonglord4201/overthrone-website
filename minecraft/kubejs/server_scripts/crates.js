@@ -24,6 +24,15 @@
   // the Throne Shard rewards are skipped while it's empty.
   const SHARDS_CMD = 'shards give {p}'
 
+  // Builds an item string with a coloured name and enchant levels (levels above vanilla max are fine).
+  const gear = (id, name, color, ench, extra) => {
+    var e = Object.keys(ench).map(k => `"minecraft:${k}":${ench[k]}`).join(',')
+    var nm = JSON.stringify({ text: name, color: color, bold: true, italic: false }).replace(/'/g, "\\'")
+    return `minecraft:${id}[custom_name='${nm}',` +
+      `enchantments={levels:{${e}}}${extra ? ',' + extra : ''}]`
+  }
+  const PROT4 = { protection: 9, blast_protection: 9, fire_protection: 9, projectile_protection: 9, unbreaking: 8, mending: 1 }
+
   const CRATES = {
     vote: {
       name: 'VOTING CRATE', keyName: 'Vote Key', color: 'green', dust: [0.35, 0.95, 0.25], keyHint: 'Free keys daily: /vote',
@@ -41,6 +50,34 @@
         { item: 'minecraft:enchanted_golden_apple', count: 6, weight: 4, rare: true },
         { cmd: SHARDS_CMD + ' 30', icon: 'minecraft:amethyst_shard', name: '30x Throne Shards', weight: 4, shards: true },
         { cmd: SHARDS_CMD + ' 60', icon: 'minecraft:amethyst_shard', name: '60x Throne Shards', weight: 1, rare: true, shards: true },
+      ],
+    },
+    // "redeem" crates (like OG's armor/weapon crates): open the menu, pick an item, pay its key cost.
+    armor: {
+      type: 'redeem', name: 'ARMOR CRATE', keyName: 'Armor Key', color: 'purple', dust: [0.85, 0.35, 0.95],
+      keyHint: 'Keys available on store', particles: true,
+      rewards: [
+        { give: gear('netherite_helmet', 'Throne Guard Helmet', 'red', PROT4), cost: 3 },
+        { give: gear('netherite_chestplate', 'Throne Guard Chestplate', 'red', PROT4), cost: 3 },
+        { give: gear('netherite_leggings', 'Throne Guard Leggings', 'red', PROT4), cost: 3 },
+        { give: gear('netherite_boots', 'Throne Guard Boots', 'red', PROT4), cost: 3 },
+        { give: gear('elytra', "Monarch's Wings", 'light_purple', { unbreaking: 8, mending: 1 }), cost: 2 },
+        { give: gear('shield', 'Bastion Shield', 'gold', { unbreaking: 8, mending: 1 }), cost: 2 },
+        { give: gear('netherite_helmet', 'Abyssal Helm', 'dark_aqua', { respiration: 8, aqua_affinity: 1, thorns: 3, unbreaking: 8, mending: 1 }), cost: 4 },
+        { give: gear('netherite_leggings', 'Shadowstep Leggings', 'dark_purple', { swift_sneak: 3, thorns: 3, unbreaking: 8, mending: 1 }), cost: 4 },
+        { give: gear('netherite_boots', 'Frostbound Boots', 'aqua', { frost_walker: 10, feather_falling: 9, thorns: 3, unbreaking: 8, mending: 1 }), cost: 4 },
+      ],
+    },
+    weapon: {
+      type: 'redeem', name: 'WEAPON CRATE', keyName: 'Weapon Key', color: 'gold', dust: [1.0, 0.55, 0.1],
+      keyHint: 'Keys available on store', particles: true,
+      rewards: [
+        { give: gear('netherite_sword', 'Kingslayer', 'dark_red', { sharpness: 8, smite: 10, bane_of_arthropods: 10 }), cost: 3 },
+        { give: gear('bow', 'Bloodmoon Bow', 'red', { power: 8, flame: 1, punch: 8 }), cost: 3 },
+        { give: gear('netherite_pickaxe', "Overlord's Pick", 'gold', { fortune: 8, efficiency: 8, unbreaking: 8, mending: 1 }), cost: 2 },
+        { give: gear('netherite_axe', "Overlord's Axe", 'gold', { sharpness: 8, fire_aspect: 2, silk_touch: 1, efficiency: 8, unbreaking: 8, mending: 1 }), cost: 4 },
+        { give: gear('netherite_hoe', "Overlord's Hoe", 'gold', { silk_touch: 1, efficiency: 8, unbreaking: 8, mending: 1 }), cost: 2 },
+        { give: gear('crossbow', 'Dreadforge Crossbow', 'dark_red', { piercing: 9, multishot: 1, quick_charge: 5, unbreaking: 8, mending: 1 }), cost: 4 },
       ],
     },
   }
@@ -110,7 +147,7 @@
   const saveEdited = (server) => server.persistentData.putString(REWARD_STORE, JSON.stringify(edited))
   const defaults = (id) => CRATES[id].rewards
     .filter(r => !(r.shards && !SHARDS_CMD))
-    .map(r => ({ item: r.item, count: r.count, cmd: r.cmd, icon: r.icon, name: r.name, weight: r.weight, rare: !!r.rare }))
+    .map(r => ({ item: r.item, count: r.count, give: r.give, cost: r.cost, cmd: r.cmd, icon: r.icon, name: r.name, weight: r.weight || 1, rare: !!r.rare }))
   const rewardsOf = (server, id) => {
     var all = loadEdited(server)
     if (!all[id]) all[id] = defaults(id)
@@ -119,9 +156,11 @@
   const toSnbt = (server, stack) => String(stack.save(server.registryAccess()))
   const stackOf = (server, r) => {
     if (r.snbt) { try { return ItemStackJ.parseOptional(server.registryAccess(), TagParser.parseTag(r.snbt)) } catch (e) { return Item.of('minecraft:barrier') } }
+    if (r.give) { try { return Item.of(r.give) } catch (e) { return Item.of('minecraft:barrier') } }
     if (r.item) return Item.of(r.item, r.count || 1)
     return Item.of(r.icon || 'minecraft:paper')
   }
+  const isRedeem = (id) => CRATES[id].type === 'redeem'
   const totalWeight = (list) => list.reduce((s, r) => s + r.weight, 0)
   const pctOf = (list, r) => (r.weight * 100 / Math.max(1, totalWeight(list))).toFixed(2)
   const label = (server, r) => {
@@ -140,8 +179,8 @@
     const col = HOLO_COLORS[c.color] || 'gold'
     const lines = [
       [2.25, `{"text":"${c.name}","color":"${col}","bold":true}`, 1.3],
-      [1.95, `{"text":"Right-click with a ${c.keyName || 'key'} to open","color":"gray"}`, 0.8],
-      [1.75, '{"text":"Left-click or sneak + right-click to preview","color":"gray"}', 0.8],
+      [1.95, c.type === 'redeem' ? '{"text":"Click to browse rewards","color":"gray"}' : `{"text":"Right-click with a ${c.keyName || 'key'} to open","color":"gray"}`, 0.8],
+      [1.75, c.type === 'redeem' ? '{"text":"Pick a reward and pay with keys","color":"gray"}' : '{"text":"Left-click or sneak + right-click to preview","color":"gray"}', 0.8],
       [1.50, `{"text":"${c.keyHint}","color":"yellow"}`, 0.75],
     ]
     lines.forEach(l => {
@@ -193,6 +232,7 @@
     return list[list.length - 1]
   }
   const openCrate = (p, id) => {
+    if (isRedeem(id)) { preview(p, id); return }
     const c = CRATES[id], server = p.server, n = p.username, at = load(server)[id]
     if (keys(p, id) <= 0) {
       p.tell(`§c§lCrates §7» You need a §f${c.keyName || c.name + ' Key'}§7 to open this crate. §e${c.keyHint}`)
@@ -254,7 +294,14 @@
       p.openChestGUI(Text.of(CRATES[id].name + ' Rewards'), rowsFor(list.length), gui => {
         gui.playerSlots = true
         list.forEach((r, i) => gui.slot(i % 9, Math.floor(i / 9), slot => {
-          slot.item = shown(p.server, r, [`§eChance: ${pctOf(list, r)}%`].concat(r.rare ? ['§6§lRARE'] : []))
+          if (isRedeem(id)) {
+            var have = keys(p, id), ok = have >= r.cost
+            slot.item = shown(p.server, r, [`§fRequired Keys: §e${r.cost}`, `§7You have: ${ok ? '§a' : '§c'}${have}`,
+              ok ? '§eLeft-click§7: redeem this reward' : '§cYou need more ' + (CRATES[id].keyName || 'keys') + 's'])
+            slot.leftClicked = e => { redeem(p, id, r); preview(p, id) }
+          } else {
+            slot.item = shown(p.server, r, [`§eChance: ${pctOf(list, r)}%`].concat(r.rare ? ['§6§lRARE'] : []))
+          }
         }))
       })
     } catch (e) {
@@ -263,6 +310,24 @@
       previewChat(p, id)
     }
   }
+  // Redeem crates: pay the key cost, get the item.
+  const redeem = (p, id, r) => {
+    var c = CRATES[id], n = p.username, server = p.server
+    if (keys(p, id) < r.cost) {
+      p.tell(`§c§lCrates §7» You need §f${r.cost} ${c.keyName}s§7 for that (you have ${keys(p, id)}). §e${c.keyHint}`)
+      run(server, `execute at ${n} run playsound minecraft:block.note_block.bass player ${n} ~ ~ ~ 1 0.6`)
+      return
+    }
+    takeKeys(p, id, r.cost)
+    p.give(stackOf(server, r).copy())
+    var what = label(server, r).replace(/^1x /, '')
+    run(server, `title ${n} times 5 40 10`)
+    run(server, `title ${n} subtitle ${JSON.stringify({ text: what, color: 'gold' })}`)
+    run(server, `title ${n} title ${JSON.stringify({ text: c.name, color: HOLO_COLORS[c.color] || 'gold', bold: true })}`)
+    run(server, `execute at ${n} run playsound minecraft:entity.player.levelup player ${n} ~ ~ ~ 0.8 1.3`)
+    p.tell(`§a§lCrates §7» You redeemed §f${what} §7for ${r.cost} keys. §8Keys left: ${keys(p, id)}`)
+  }
+
   // Staff editor: 5 rows of rewards + your inventory. Every change is saved straight away.
   const editor = (p, id) => {
     var server = p.server, list = rewardsOf(server, id)
@@ -270,6 +335,14 @@
     p.openChestGUI(Text.of('Edit: ' + CRATES[id].name), 6, gui => {
       gui.playerSlots = true
       list.slice(0, 45).forEach((r, i) => gui.slot(i % 9, Math.floor(i / 9), slot => {
+        if (isRedeem(id)) {
+          slot.item = shown(server, r, [`§fRequired Keys: §e${r.cost}`,
+            '§aLeft-click§7: cost +1  §cRight-click§7: cost -1', '§4Shift-right§7: remove'])
+          slot.leftClicked = e => { r.cost += 1; changed() }
+          slot.rightClicked = e => { r.cost = Math.max(1, r.cost - 1); changed() }
+          slot.shiftRightClicked = e => { list.splice(i, 1); changed() }
+          return
+        }
         slot.item = shown(server, r, [
           `§eChance: ${pctOf(list, r)}% §8(weight ${r.weight})`,
           r.rare ? '§6§lRARE §7(announced to the server)' : '§7Not announced',
@@ -297,8 +370,8 @@
         var st = e.item
         if (!st || st.isEmpty()) return
         if (list.length >= 45) { p.tell('§cThis crate is full (45 rewards).'); return }
-        list.push({ snbt: toSnbt(server, st.copy()), weight: 10, rare: false })
-        p.tell('§a[crates] Added ' + st.count + 'x ' + String(st.getHoverName().getString()) + ' (weight 10).')
+        list.push({ snbt: toSnbt(server, st.copy()), weight: 10, cost: 3, rare: false })
+        p.tell('§a[crates] Added ' + st.count + 'x ' + String(st.getHoverName().getString()) + (isRedeem(id) ? ' (costs 3 keys).' : ' (weight 10).'))
         changed()
       }
     })
@@ -420,7 +493,8 @@
           if (!known(ctx, id)) return 0
           const list = rewardsOf(ctx.source.server, id)
           reply(ctx, `§6${CRATES[id].name}§7: ${list.length} rewards`)
-          list.forEach((r, i) => reply(ctx, `§8${i + 1}. ${r.rare ? '§6' : '§f'}${label(ctx.source.server, r)} §7${pctOf(list, r)}% §8(weight ${r.weight})`))
+          list.forEach((r, i) => reply(ctx, `§8${i + 1}. ${r.rare ? '§6' : '§f'}${label(ctx.source.server, r)} §7` +
+            (isRedeem(id) ? `costs ${r.cost} keys` : `${pctOf(list, r)}% §8(weight ${r.weight})`)))
           return 1
         })))
         .then(Commands.literal('reset').then(crateArg().executes(ctx => {
