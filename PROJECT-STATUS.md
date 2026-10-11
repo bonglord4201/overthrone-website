@@ -17,10 +17,13 @@ Last updated: 2026-10-03. Read this first when picking the project back up.
 - Discord: the invite is **`https://discord.gg/overthronesmp`** (owner confirmed, with the "r").
   Migration 0004 updates the stored site setting from the old misspelled link.
 - [ ] Add Tensura skills from https://tensura.wiki.gg/ (none are published yet).
-- [ ] **Tebex store URL** in Admin → Site Settings: leave EMPTY until the Tebex store is approved
+- [ ] **Tebex store URL** in Admin → Site Settings: the store is live, so make sure this is set to `https://overthronesmp.tebex.store`
       (the store currently shows a 503). Then set it to `https://overthronesmp.tebex.store`.
 
-## Tebex store – SET UP, NOT LIVE YET ⏳
+## Tebex store – LIVE ✅
+
+> Update 2026-10-10: the owner confirmed the store at https://overthronesmp.tebex.store has been live for a while.
+> The setup notes below are kept for reference; the approval steps are done.
 
 - Project name: OVERTHRONE SMP. Storefront published at `https://overthronesmp.tebex.store`
   (subdomain typo fixed). Public page shows **503 Store unavailable** until the store is approved.

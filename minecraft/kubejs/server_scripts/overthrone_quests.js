@@ -19,6 +19,9 @@
 const RPG_DIMENSIONS = ['multiworld:rpg']          // where quest progress counts and rewards can be claimed
 const MONEY_CMD = 'eco give {player} {amount}'      // your economy's "give money" command ({player} / {amount})
 const MONEY_SYMBOL = '$'
+// OVERTHRONE level XP (leveling.js) per quest = the quest's XP-level reward x this, by rank (E, D, C, B, S).
+const LEVEL_XP_MULT = [100, 200, 350, 550, 800]
+const levelXp = (q) => (q.rewards.xp || 0) * LEVEL_XP_MULT[Math.min(4, Math.floor(QUESTS.indexOf(q) / 20))]
 
 // ------------------------------------------------------------------ quest data
 // type: 'kill' (entity id) | 'mine' (block id or #tag) | 'craft' (item id) | 'deliver' (item id or #tag, items are taken on claim)
@@ -259,6 +262,7 @@ function takeFromInventory(player, target, amount) {
 function rewardLines(q) {
   const lines = []
   if (q.rewards.money) lines.push('§6  ' + MONEY_SYMBOL + fmt(q.rewards.money))
+  if (levelXp(q)) lines.push('§6  ' + fmt(levelXp(q)) + ' Level XP')
   if (q.rewards.xp) lines.push('§a  ' + q.rewards.xp + ' XP levels')
   const items = q.rewards.items || []
   for (let i = 0; i < items.length; i++) {
@@ -316,6 +320,7 @@ function showQuest(player) {
 function giveRewards(player, q) {
   const name = player.username
   if (q.rewards.money) run(player, MONEY_CMD.replace('{player}', name).replace('{amount}', String(q.rewards.money)))
+  if (levelXp(q)) run(player, 'level xp give ' + name + ' ' + levelXp(q))
   if (q.rewards.xp) run(player, 'xp add ' + name + ' ' + q.rewards.xp + ' levels')
   const items = q.rewards.items || []
   for (let i = 0; i < items.length; i++) {
