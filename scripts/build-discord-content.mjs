@@ -225,7 +225,8 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/crate key give <player> <crate> <amount>` Gives key items",
     "`/crate key take <player> <crate> <amount>` Takes keys",
     "`/crate keys` (anyone) How many keys you have",
-    "Tebex package command: `crate key give {username} armor 1` (or `weapon`, `vote`)",
+    "Tebex purchase: `crate key give {username} armor 1` (or `weapon`). Refund/chargeback: `crate key take {username} armor 1`",
+    "Tebex chargeback also: `ban {username} Chargeback on the store. Open a ticket on our Discord to appeal.` · unban: `pardon <name>`",
     "Votes also give the vote mod's Vote Key, which works on the vote crate"
   ].join("\n") },
   { title: "✨ Crate particles", description: [

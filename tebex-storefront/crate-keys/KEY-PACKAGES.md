@@ -24,22 +24,98 @@ Make one package per row. Image: the matching `*-key-800.png` in this folder.
 
 Prices follow OG Network's pattern: about 3 for one key, cheaper per key in bigger bundles.
 
+## All commands (purchase, refund, chargeback)
+
+In each package → **Game server commands**, add these. Tebex lets you pick when each command runs
+(the dropdown next to the command: *When the package is purchased / refunded / charged back*).
+Don't start any command with `/`, and keep `{username}` exactly as written.
+
+- **Purchase** gives the keys.
+- **Refund** takes the same number of keys back (only the ones they still have; keys already used can't be undone).
+- **Chargeback** takes the keys back **and bans** the player. The ban works even if they're offline, so that
+  command has "require online" OFF. Unban someone with `pardon <name>` once it's sorted.
+
+### 1x Armor Crate Key
+
+| When | Command | Require online |
+|---|---|---|
+| **Purchase** | `crate key give {username} armor 1` | ON |
+| **Refund** | `crate key take {username} armor 1` | ON |
+| **Chargeback** | `crate key take {username} armor 1` | ON |
+| **Chargeback** | `ban {username} Chargeback on the store. Open a ticket on our Discord to appeal.` | OFF |
+
+### 5x Armor Crate Key
+
+| When | Command | Require online |
+|---|---|---|
+| **Purchase** | `crate key give {username} armor 5` | ON |
+| **Refund** | `crate key take {username} armor 5` | ON |
+| **Chargeback** | `crate key take {username} armor 5` | ON |
+| **Chargeback** | `ban {username} Chargeback on the store. Open a ticket on our Discord to appeal.` | OFF |
+
+### 10x Armor Crate Key
+
+| When | Command | Require online |
+|---|---|---|
+| **Purchase** | `crate key give {username} armor 10` | ON |
+| **Refund** | `crate key take {username} armor 10` | ON |
+| **Chargeback** | `crate key take {username} armor 10` | ON |
+| **Chargeback** | `ban {username} Chargeback on the store. Open a ticket on our Discord to appeal.` | OFF |
+
+### 25x Armor Crate Key
+
+| When | Command | Require online |
+|---|---|---|
+| **Purchase** | `crate key give {username} armor 25` | ON |
+| **Refund** | `crate key take {username} armor 25` | ON |
+| **Chargeback** | `crate key take {username} armor 25` | ON |
+| **Chargeback** | `ban {username} Chargeback on the store. Open a ticket on our Discord to appeal.` | OFF |
+
+### 1x Weapon Crate Key
+
+| When | Command | Require online |
+|---|---|---|
+| **Purchase** | `crate key give {username} weapon 1` | ON |
+| **Refund** | `crate key take {username} weapon 1` | ON |
+| **Chargeback** | `crate key take {username} weapon 1` | ON |
+| **Chargeback** | `ban {username} Chargeback on the store. Open a ticket on our Discord to appeal.` | OFF |
+
+### 5x Weapon Crate Key
+
+| When | Command | Require online |
+|---|---|---|
+| **Purchase** | `crate key give {username} weapon 5` | ON |
+| **Refund** | `crate key take {username} weapon 5` | ON |
+| **Chargeback** | `crate key take {username} weapon 5` | ON |
+| **Chargeback** | `ban {username} Chargeback on the store. Open a ticket on our Discord to appeal.` | OFF |
+
+### 10x Weapon Crate Key
+
+| When | Command | Require online |
+|---|---|---|
+| **Purchase** | `crate key give {username} weapon 10` | ON |
+| **Refund** | `crate key take {username} weapon 10` | ON |
+| **Chargeback** | `crate key take {username} weapon 10` | ON |
+| **Chargeback** | `ban {username} Chargeback on the store. Open a ticket on our Discord to appeal.` | OFF |
+
+### 25x Weapon Crate Key
+
+| When | Command | Require online |
+|---|---|---|
+| **Purchase** | `crate key give {username} weapon 25` | ON |
+| **Refund** | `crate key take {username} weapon 25` | ON |
+| **Chargeback** | `crate key take {username} weapon 25` | ON |
+| **Chargeback** | `ban {username} Chargeback on the store. Open a ticket on our Discord to appeal.` | OFF |
+
 ## Command settings (important)
 
-On every command:
-- **Require player to be online: ON.** Keys are items, so the player must be online to receive them. Tebex waits
-  and delivers when they next join.
-- Don't add a slash at the start: Tebex runs it from the console.
+- **Require player to be online: ON** for the give/take commands. Keys are items, so the player must be online.
+  Tebex waits and runs it when they next join.
+- **OFF** for the ban command.
 
-## Descriptions (paste into each package)
+## Descriptions
 
-Armor:
-> {N}x Armor Crate Key. Use it at the Armor Crate (`/warp crates`): pick the armor piece you want and pay with keys.
-> Keys are items, delivered when you're online.
-
-Weapon:
-> {N}x Weapon Crate Key. Use it at the Weapon Crate (`/warp crates`): pick the weapon or tool you want and pay with keys.
-> Keys are items, delivered when you're online.
+Short OG-style text for every package is in `DESCRIPTIONS.md`, with `armor-rewards.png` / `weapon-rewards.png` underneath.
 
 ## Test
 
