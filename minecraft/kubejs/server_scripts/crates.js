@@ -47,7 +47,7 @@
 
   const CRATES = {
     vote: {
-      name: 'VOTING CRATE', keyName: 'Vote Key', color: 'green', dust: [0.35, 0.95, 0.25], keyHint: 'Free keys daily: /vote',
+      name: 'VOTING CRATE', keyName: 'Vote Key', color: 'green', dust: [0.35, 0.95, 0.25], spores: [[0.35, 0.95, 0.25], [0.75, 1.0, 0.3], [0.2, 0.8, 0.6], [1.0, 1.0, 0.6]], keyHint: 'Free keys daily: /vote',
       particles: true,
       // Also accept the Vote Key the vote mod gives (matched on its lore, which players can't fake with an anvil).
       altKeys: ['earned by voting'],
@@ -66,7 +66,7 @@
     },
     // "redeem" crates (like OG's armor/weapon crates): open the menu, pick an item, pay its key cost.
     armor: {
-      type: 'redeem', name: 'ARMOR CRATE', keyName: 'Armor Key', color: 'purple', dust: [1.0, 0.35, 0.85],
+      type: 'redeem', name: 'ARMOR CRATE', keyName: 'Armor Key', color: 'purple', dust: [1.0, 0.35, 0.85], spores: [[1.0, 0.35, 0.85], [0.75, 0.3, 1.0], [1.0, 0.7, 0.9], [0.55, 0.2, 0.9]],
       petals: 'minecraft:cherry_leaves',   // extra falling pink petals
       keyHint: 'Keys available on store', particles: true,
       rewards: [
@@ -82,7 +82,7 @@
       ],
     },
     weapon: {
-      type: 'redeem', name: 'WEAPON CRATE', keyName: 'Weapon Key', color: 'gold', dust: [1.0, 0.55, 0.1],
+      type: 'redeem', name: 'WEAPON CRATE', keyName: 'Weapon Key', color: 'gold', dust: [1.0, 0.55, 0.1], spores: [[1.0, 0.55, 0.1], [1.0, 0.85, 0.2], [1.0, 0.25, 0.1], [1.0, 0.95, 0.7]],
       keyHint: 'Keys available on store', particles: true,
       rewards: [
         { give: gear('netherite_sword', "Sovereign's Reach", ['#a855f7', '#ec4899'], { sweeping_edge: 8, fire_aspect: 2, knockback: 8, looting: 8, unbreaking: 8, mending: 1 }), cost: 3 },
@@ -218,6 +218,7 @@
   // ---------------------------------------------------------------- particles (OG-style drifting pixels + a slow ring)
   // Numbers must be written as decimals (1.00, not 1): Minecraft rejects a colour list that mixes 1 and 0.35.
   const dust = (c, s) => `minecraft:dust{color:[${c[0].toFixed(2)},${c[1].toFixed(2)},${c[2].toFixed(2)}],scale:${s.toFixed(2)}}`
+  const fade = (c1, c2, s) => `minecraft:dust_color_transition{from_color:[${c1[0].toFixed(2)},${c1[1].toFixed(2)},${c1[2].toFixed(2)}],to_color:[${c2[0].toFixed(2)},${c2[1].toFixed(2)},${c2[2].toFixed(2)}],scale:${s.toFixed(2)}}`
   ServerEvents.tick(event => {
     const server = event.server, t = server.tickCount
     const all = load(server), ids = Object.keys(all)
@@ -237,21 +238,22 @@
       }
       if (!near || c.particles === false) continue
       var x = at.x + 0.5, y = at.y + 0.5, z = at.z + 0.5, a = t * 0.08
-      // OG Network style: two "comets" of coloured pixels chasing each other round the crate, plus a light
-      // sprinkle of pixels around it. Dust can't be given a speed, so the movement comes from placing a new
-      // small pixel a bit further round every tick; small pixels fade fast, so each comet leaves a short tail
-      // and you can see it travel. (Bigger pixels live longer and just pile up into a blob.)
-      var spin = t * 0.30
-      for (var k = 0; k < 2; k++) {
-        var ang = spin + k * Math.PI
-        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 0.7)} ${f(x + Math.cos(ang) * 0.95)} ${f(y - 0.3)} ${f(z + Math.sin(ang) * 0.95)} 0 0 0 0 1 normal`)
-        var ang2 = -spin * 1.15 + k * Math.PI + 1.57
-        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 0.6)} ${f(x + Math.cos(ang2) * 0.8)} ${f(y + 0.2)} ${f(z + Math.sin(ang2) * 0.8)} 0 0 0 0 1 normal`)
+      // A ring of light circling the shulker at mid height: 3 "comets" moving round it every tick (a new small
+      // pixel a little further round each tick; small pixels fade fast, so each leaves a short tail and you see it
+      // move). Each pixel fades from the crate colour to white as it dies.
+      var spin = t * 0.28
+      for (var k = 0; k < 3; k++) {
+        var ang = spin + k * 2.094
+        run(server, `execute in ${at.dim} run particle ${fade(c.dust, [1.0, 1.0, 1.0], 0.8)} ${f(x + Math.cos(ang) * 0.85)} ${f(y)} ${f(z + Math.sin(ang) * 0.85)} 0 0 0 0 1 normal`)
       }
+      // Spore-blossom style motes in several colours drifting around the crate, plus real spore blossom specks.
       if (t % 2 === 0) {
-        var r3 = 0.7 + Math.random() * 0.9, ang3 = Math.random() * Math.PI * 2
-        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.1)} ${f(x + Math.cos(ang3) * r3)} ${f(y - 0.4 + Math.random() * 1.1)} ${f(z + Math.sin(ang3) * r3)} 0 0 0 0 1 normal`)
+        var pal = c.spores || [c.dust], col = pal[Math.floor(Math.random() * pal.length)]
+        var r3 = 0.6 + Math.random() * 0.9, ang3 = Math.random() * Math.PI * 2
+        run(server, `execute in ${at.dim} run particle ${fade(col, pal[(pal.indexOf(col) + 1) % pal.length], 0.9)} ` +
+          `${f(x + Math.cos(ang3) * r3)} ${f(y - 0.4 + Math.random() * 1.2)} ${f(z + Math.sin(ang3) * r3)} 0 0 0 0 1 normal`)
       }
+      if (t % 4 === 0) run(server, `execute in ${at.dim} run particle minecraft:spore_blossom_air ${f(x)} ${f(y + 0.2)} ${f(z)} 0.9 0.6 0.9 0 2 normal`)
       if (c.petals && t % 4 === 0) run(server, `execute in ${at.dim} run particle ${c.petals} ${f(x)} ${f(y + 0.9)} ${f(z)} 0.9 0.3 0.9 0 1 normal`)
       if (t % 8 === 0) run(server, `execute in ${at.dim} run particle minecraft:white_ash ${f(x)} ${f(y + 0.8)} ${f(z)} 1.3 0.8 1.3 0 6 normal`)
       if (t % 16 === 0) run(server, `execute in ${at.dim} run particle minecraft:end_rod ${f(x)} ${f(y - 0.6)} ${f(z)} 0.05 0 0.05 0.02 1 normal`)
