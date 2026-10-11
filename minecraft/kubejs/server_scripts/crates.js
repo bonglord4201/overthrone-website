@@ -17,6 +17,8 @@
     vote: {
       name: 'VOTING CRATE', keyName: 'Vote Key', color: 'green', dust: [0.35, 0.95, 0.25], keyHint: 'Free keys daily: /vote',
       particles: true,
+      // Also accept the Vote Key the vote mod gives (matched on its lore, which players can't fake with an anvil).
+      altKeys: ['earned by voting'],
       rewards: [
         { item: 'minecraft:golden_apple', count: 8, weight: 30 },
         { item: 'minecraft:experience_bottle', count: 32, weight: 25 },
@@ -53,7 +55,14 @@
   // ---- physical keys: tripwire hook tagged ot_key_<crate>
   const KEY_ITEM = 'minecraft:tripwire_hook'
   const keyTag = (id) => 'ot_key_' + id
-  const isKey = (stack, id) => !stack.isEmpty() && String(stack.id) === KEY_ITEM && String(stack.getComponents()).indexOf(keyTag(id)) >= 0
+  const isKey = (stack, id) => {
+    if (stack.isEmpty() || String(stack.id) !== KEY_ITEM) return false
+    var comp = String(stack.getComponents())
+    if (comp.indexOf(keyTag(id)) >= 0) return true
+    var alt = CRATES[id].altKeys || []
+    for (var i = 0; i < alt.length; i++) if (comp.indexOf(alt[i]) >= 0) return true
+    return false
+  }
   const keyStackCmd = (id) => {
     var c = CRATES[id], col = HOLO_COLORS[c.color] || 'gold'
     var name = `'{"text":"${c.keyName || c.name + ' Key'}","color":"${col}","bold":true,"italic":false}'`
@@ -142,6 +151,8 @@
     const c = CRATES[id], server = p.server, n = p.username, at = load(server)[id]
     if (keys(p, id) <= 0) {
       p.tell(`§c§lCrates §7» You need a §f${c.keyName || c.name + ' Key'}§7 to open this crate. §e${c.keyHint}`)
+      if (p.hasPermissions(2) && !p.mainHandItem.isEmpty())   // staff: show what the held item looks like, to match other key items
+        p.tell('§8[crates] held item: ' + String(p.mainHandItem.id) + ' ' + String(p.mainHandItem.getComponents()).substring(0, 400))
       run(server, `execute at ${n} run playsound minecraft:block.note_block.bass player ${n} ~ ~ ~ 1 0.6`)
       return
     }
