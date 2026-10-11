@@ -660,7 +660,9 @@
           run(server, 'kill @e[type=minecraft:text_display,tag=ot_crate_infoboard]')
           var comp = ['']
           INFO_BOARD.forEach((l, i) => { comp.push(Object.assign({}, l, { text: (i ? '\n' : '') + l.text })) })
-          var json = JSON.stringify(comp).replace(/'/g, "\\'")
+          // Inside the command the text is a quoted string, where Minecraft only accepts \\ and \' escapes:
+          // so the JSON's own backslashes (the \n line breaks) must be doubled first, then quotes escaped.
+          var json = JSON.stringify(comp).replace(/\\/g, '\\\\').replace(/'/g, "\\'")
           run(server, `execute in ${p.level.dimension} run summon minecraft:text_display ${f(p.x)} ${f(p.y + 1.6)} ${f(p.z)} ` +
             `{Tags:["ot_crate_infoboard"],billboard:"vertical",alignment:"center",shadow:1b,line_width:400,background:1342177280,` +
             `transformation:[1.4f,0f,0f,0f,0f,1.4f,0f,0f,0f,0f,1.4f,0f,0f,0f,0f,1f],text:'${json}'}`)
