@@ -49,7 +49,7 @@ const getXp = (p) => p.persistentData.getInt(K_XP) || 0
 
 // Writes the player's numbers to the scoreboard (for the HUD). Uses the scoreboard directly; falls back to
 // /scoreboard commands. Never throws, so a HUD problem can't break levelling.
-const VERSION = 'v5'
+const VERSION = 'v6'
 const OBJECTIVES = { ot_level: 'Level', ot_xp: 'XP', ot_xpneed: 'XP Needed', ot_xppct: 'Level Progress' }
 // Only writes when the number actually changed, so the scoreboard isn't spammed.
 const lastScore = {}
@@ -85,6 +85,28 @@ const setLevel = (p, lvl, xp) => {
   syncScores(p)
 }
 
+// Level-up show: sounds + firework bursts around the player (particles only, so nobody takes firework damage).
+const celebrate = (p) => {
+  var server = p.server, n = p.username
+  var at = (cmd) => server.runCommandSilent(`execute as ${n} at ${n} run ${cmd}`)
+  at(`playsound minecraft:entity.player.levelup player ${n} ~ ~ ~ 1 1`)
+  at(`playsound minecraft:ui.toast.challenge_complete player ${n} ~ ~ ~ 0.7 1`)
+  var spots = [[0, 3.2, 0], [1.8, 2.6, 1.2], [-1.6, 2.8, -1.4]]
+  spots.forEach((o, i) => {
+    var burst = () => {
+      try {
+        var pos = `~${o[0]} ~${o[1]} ~${o[2]}`
+        at(`particle minecraft:firework ${pos} 0 0 0 0.22 70 force`)
+        at(`particle minecraft:flash ${pos} 0 0 0 0 1 force`)
+        at(`particle minecraft:totem_of_undying ${pos} 0.3 0.3 0.3 0.4 25 force`)
+        at(`playsound minecraft:entity.firework_rocket.blast player @a[distance=..32] ~ ~ ~ 1 1`)
+        at(`playsound minecraft:entity.firework_rocket.twinkle player @a[distance=..32] ~ ~ ~ 0.8 1`)
+      } catch (e) { /* player left */ }
+    }
+    try { server.scheduleInTicks(4 + i * 8, burst) } catch (e) { burst() }
+  })
+}
+
 // Adds XP and handles level-ups. Returns the XP actually added.
 const addXp = (p, amount) => {
   amount = Math.floor(amount)
@@ -104,7 +126,7 @@ const addXp = (p, amount) => {
       var n = p.username
       p.server.runCommandSilent(`title ${n} times 5 40 15`)
       p.server.runCommandSilent(`title ${n} title {"text":"LEVEL ${lvl}","color":"gold","bold":true}`)
-      p.server.runCommandSilent(`playsound minecraft:entity.player.levelup player ${n} ~ ~ ~ 1 0.8`)
+      celebrate(p)
       p.tell(`§6✦ Level up! §eYou are now level §6§l${lvl}§e.`)
       var nextLock = Object.keys(REALM_LOCKS).map(k => REALM_LOCKS[k]).filter(l => l > lvl).sort((a, b) => a - b)[0]
       if (nextLock && nextLock - lvl <= 20) p.tell(`§8✦ §7Aeonia and Netherfall open at level §c${nextLock}§7: §c${nextLock - lvl}§7 to go.`)
@@ -198,7 +220,7 @@ PlayerEvents.tick(event => {
   p.server.runCommandSilent(`execute as ${n} run ${SEND_BACK}`)
   p.server.runCommandSilent(`title ${n} title {"text":"SEALED","color":"dark_red","bold":true}`)
   p.server.runCommandSilent(`title ${n} subtitle {"text":"Reach level ${req} to enter","color":"gray"}`)
-  p.server.runCommandSilent(`playsound minecraft:block.respawn_anchor.deplete player ${n} ~ ~ ~ 1 0.8`)
+  p.server.runCommandSilent(`execute at ${n} run playsound minecraft:block.respawn_anchor.deplete player ${n} ~ ~ ~ 1 0.8`)
   p.tell(`§c✦ ${REALM_NAMES[dim] || 'This realm'}§c is sealed until level §l${req}§c. You are level ${getLvl(p)}: ${req - getLvl(p)} to go.`)
 })
 

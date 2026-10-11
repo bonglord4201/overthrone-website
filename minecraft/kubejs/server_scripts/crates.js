@@ -118,7 +118,7 @@
     const c = CRATES[id], server = p.server, n = p.username, at = load(server)[id]
     if (keys(p, id) <= 0) {
       p.tell(`§c§lCrates §7» You need a §f${c.name.toLowerCase().replace(/(^|\s)\S/g, s => s.toUpperCase())} Key§7 to open this crate. §e${c.keyHint}`)
-      run(server, `playsound minecraft:block.note_block.bass player ${n} ~ ~ ~ 1 0.6`)
+      run(server, `execute at ${n} run playsound minecraft:block.note_block.bass player ${n} ~ ~ ~ 1 0.6`)
       return
     }
     setKeys(p, id, keys(p, id) - 1)
@@ -128,8 +128,8 @@
     run(server, `title ${n} times 5 40 10`)
     run(server, `title ${n} subtitle {"text":"${label(r)}","color":"${r.rare ? 'gold' : 'white'}"}`)
     run(server, `title ${n} title {"text":"${c.name}","color":"${HOLO_COLORS[c.color] || 'gold'}","bold":true}`)
-    run(server, `playsound minecraft:block.chest.open player ${n} ~ ~ ~ 1 1`)
-    run(server, `playsound minecraft:entity.player.levelup player ${n} ~ ~ ~ 0.8 1.3`)
+    run(server, `execute at ${n} run playsound minecraft:block.chest.open player ${n} ~ ~ ~ 1 1`)
+    run(server, `execute at ${n} run playsound minecraft:entity.player.levelup player ${n} ~ ~ ~ 0.8 1.3`)
     run(server, `execute in ${at.dim} run particle minecraft:totem_of_undying ${at.x + 0.5} ${at.y + 1} ${at.z + 0.5} 0.3 0.5 0.3 0.4 ${r.rare ? 80 : 25} normal`)
     p.tell(`§a§lCrates §7» You won §f${label(r)} §7(${pct(c, r)}% chance). §8Keys left: ${keys(p, id)}`)
     if (r.rare) {
