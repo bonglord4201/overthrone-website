@@ -120,6 +120,14 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.12;margin:0
 .ip-line{margin:18px 0 0;color:var(--muted);font-size:13px;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
 .ip{min-height:44px;padding:0 2px;background:none;border:0;border-bottom:1px solid var(--line-strong);color:var(--text);font-size:15px;font-weight:600;letter-spacing:.06em;text-transform:none;cursor:pointer;transition:border-color .2s}
 .ip:hover{border-bottom-color:var(--gold)}
+.modpack-line{margin:6px 0 0;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.modpack-link{display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--gold);font-weight:700;transition:color .2s}
+.modpack-link:hover{color:#fff}
+.modpack-icon{position:relative;width:14px;height:14px;border-bottom:2px solid currentColor}
+.modpack-icon:before{content:"";position:absolute;left:6px;top:0;width:2px;height:9px;background:currentColor}
+.modpack-icon:after{content:"";position:absolute;left:3px;top:5px;width:6px;height:6px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg)}
+.modpack-guide{min-height:44px;display:inline-flex;align-items:center;color:var(--muted);border-bottom:0;transition:color .2s}
+.modpack-guide:hover{color:var(--text)}
 
 /* Server information strip */
 .info-strip{background:linear-gradient(180deg,var(--panel-2),var(--panel));border-bottom:1px solid var(--line)}
