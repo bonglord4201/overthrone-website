@@ -16,6 +16,7 @@
 (function () {
   const TEXTS = 'config/serversetup/npc_texts.json'
   const BACKUP = 'config/serversetup/npc_texts.backup.json'
+  const StringArg = Java.loadClass('com.mojang.brigadier.arguments.StringArgumentType')
   const LINKS = {
     discord: ['Discord', 'discord.gg/overthronesmp', 'https://discord.gg/overthronesmp', '#5865F2'],
     website: ['Website', 'overthronesmp.net', 'https://overthronesmp.net', '#55FF55'],
@@ -68,6 +69,9 @@
     event.register(Commands.literal('npcfix').requires(src => src.hasPermission(2))
       .then(Commands.literal('apply').executes(ctx => apply(ctx.source)))
       .then(Commands.literal('refresh').executes(ctx => refresh(ctx.source)))
+      .then(Commands.literal('look').then(Commands.argument('which', StringArg.word())
+        .suggests((c, b) => { ['crates', 'ranks', 'info', 'hunters'].forEach(x => b.suggest(x)); return b.buildFuture() })
+        .executes(ctx => lookFix(ctx.source, String(StringArg.getString(ctx, 'which')).toLowerCase()))))
       .then(Commands.literal('hunters').executes(ctx => placeHunters(ctx.source))))
   })
 
@@ -108,6 +112,21 @@
         },
       },
     },
+  }
+
+  const CRATE_LINES = (c) => [
+    c + 'Crates',
+    'Vote Keys: vote every day with /vote.',
+    'Weapon, Armor & Rune Keys: on the store.',
+    'Legendary, Mythic & Event Keys: events, bosses & quests.',
+    'Right-click a crate with its key to open it.',
+    'Left-click a crate to see its rewards.',
+    'All paid keys are non-RNG: you pick what you win!',
+  ]
+  const CRATE_BUTTONS = () => [btn('Vote for Keys', '/vote'), btn('Buy Keys', '/links store')]
+  const CRATES_DEF = {
+    name: 'Crates', name_color: '#FFAA00',
+    dialog: { start: 'main', pages: { main: { lines: CRATE_LINES(''), buttons: CRATE_BUTTONS() } } },
   }
 
   function upgrade(npcs, out) {
@@ -157,16 +176,8 @@
     if (k == null) out.push('§cCrates NPC not found (skipped)')
     else {
       var d3 = npcs[k], s3 = startPage(d3), c3 = codeOf(s3.page.lines && s3.page.lines[0])
-      s3.page.lines = [
-        c3 + 'Crates',
-        'Vote Keys: vote every day with /vote.',
-        'Weapon, Armor & Rune Keys: on the store.',
-        'Legendary, Mythic & Event Keys: events, bosses & quests.',
-        'Right-click a crate with its key to open it.',
-        'Left-click a crate to see its rewards.',
-        'All paid keys are non-RNG: you pick what you win!',
-      ]
-      s3.page.buttons = [btn('Vote for Keys', '/vote'), btn('Buy Keys', '/links store')]
+      s3.page.lines = CRATE_LINES(c3)
+      s3.page.buttons = CRATE_BUTTONS()
       out.push('§aCrates NPC §7(' + k + ')§a: new text, Vote for Keys + Buy Keys buttons')
     }
     // Hunters (new)
@@ -227,6 +238,36 @@
       say(src, '§c[npcfix] Error: ' + e + ' §7(send this to Claude)')
       return 0
     }
+    return 1
+  }
+
+  // ---------------------------------------------------------------- fix the NPC you are looking at
+  // For an NPC that /npcfix refresh misses (e.g. not a setup NPC, or renamed in game).
+  function lookFix(src, which) {
+    var p = src.player
+    if (p == null) { say(src, '§c[npcfix] Run this in game while looking at the NPC.'); return 0 }
+    if (typeof ssNpcUpdateNbt != 'function') { say(src, '§c[npcfix] The serversetup NPC builder is not loaded.'); return 0 }
+    var hit = p.rayTrace(8, false), e = hit == null ? null : hit.entity
+    if (e == null || String(e.type).indexOf('easy_npc') < 0) { say(src, '§c[npcfix] Look straight at the NPC (within 8 blocks) and try again.'); return 0 }
+    var def = null
+    if (which == 'crates') def = CRATES_DEF
+    else if (which == 'hunters') def = HUNTERS
+    else {
+      var data = typeof ssReadJson == 'function' ? ssReadJson(TEXTS, null) : null
+      if (data != null) {
+        data = JSON.parse(JSON.stringify(data))
+        var npcs = data.npcs != null ? data.npcs : data
+        var k = which == 'ranks'
+          ? find(npcs, (key, name, d) => d.dialog != null && (key == 'ranks' || key == 'rank' || name == 'ranks' || name == 'rank'))
+          : find(npcs, (key, name, d) => d.dialog != null && (/info/.test(key) || /info/.test(name)))
+        if (k != null) def = npcs[k]
+      }
+    }
+    if (def == null) { say(src, '§c[npcfix] Use: /npcfix look crates|ranks|info|hunters (run /npcfix apply first for ranks/info)'); return 0 }
+    var id
+    try { id = String(e.getStringUUID()) } catch (x) { id = String(e.uuid) }
+    p.server.runCommandSilent(`data merge entity ${id} ${ssNpcUpdateNbt(which, def)}`)
+    say(src, '§a[npcfix] Updated the NPC you are looking at as ' + which + '. Talk to it to check.')
     return 1
   }
 
