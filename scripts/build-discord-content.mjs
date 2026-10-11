@@ -205,7 +205,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "Crates: **vote**, **armor**, **weapon**."
   ].join("\n") },
   { title: "🎁 Crates: setup", description: [
-    "`/crate create <crate>` Stand **on top** of the block, makes it that crate",
+    "`/crate create <crate>` **Look at** the block (or stand on it), makes it that crate. Run again to move it",
     "`/crate remove <crate>` Removes the crate (sneak + break the block as staff)",
     "`/crate list` Where every crate is",
     "`/crate hologram <crate>` Re-places the floating text",

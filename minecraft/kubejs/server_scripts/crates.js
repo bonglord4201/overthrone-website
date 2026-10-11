@@ -1,7 +1,7 @@
 // OVERTHRONE - OG-style crates: a block (e.g. a shulker box) you right-click to open with a key and left-click to preview.
 // Drop into kubejs/server_scripts/ and run /reload (or restart).
 //
-// Setup (op):  place the crate block, stand ON TOP of it, then  /crate create <crate>     e.g. /crate create vote
+// Setup (op):  place the crate block, LOOK at it, then  /crate create <crate>     e.g. /crate create vote
 //              /crate remove <crate>      /crate list      /crate hologram <crate>   (re-place the floating text)
 // Keys (op / console / vote rewards / Tebex):
 //              /crate key give <player> <crate> <amount>      /crate key take <player> <crate> <amount>
@@ -466,9 +466,15 @@
         const p = ctx.source.playerOrException, id = crateOf(ctx)
         if (!known(ctx, id)) return 0
         const all = load(p.server)
-        all[id] = { x: Math.floor(p.x), y: Math.floor(p.y - 0.2), z: Math.floor(p.z), dim: String(p.level.dimension) }
+        // Use the block you're LOOKING at (within 6 blocks); if none, the block you're standing on.
+        var hit = null
+        try { var rt = p.rayTrace(6, false); if (rt && rt.block) hit = rt.block } catch (e) { hit = null }
+        var bx, by, bz, what
+        if (hit) { bx = Number(hit.x); by = Number(hit.y); bz = Number(hit.z); what = String(hit.id) }
+        else { bx = Math.floor(p.x); by = Math.floor(p.y - 0.2); bz = Math.floor(p.z); what = 'the block under you' }
+        all[id] = { x: bx, y: by, z: bz, dim: String(p.level.dimension) }
         save(p.server); placeHologram(p.server, id)
-        reply(ctx, `§a✦ ${CRATES[id].name} set at ${all[id].x} ${all[id].y} ${all[id].z}. Step off to see it.`); return 1
+        reply(ctx, `§a✦ ${CRATES[id].name} set on ${what} at ${bx} ${by} ${bz}.`); return 1
       })))
       .then(Commands.literal('remove').requires(staff).then(crateArg().executes(ctx => {
         const id = crateOf(ctx), all = load(ctx.source.server)
