@@ -266,8 +266,12 @@
     if (def == null) { say(src, '§c[npcfix] Use: /npcfix look crates|ranks|info|hunters (run /npcfix apply first for ranks/info)'); return 0 }
     var id
     try { id = String(e.getStringUUID()) } catch (x) { id = String(e.uuid) }
-    p.server.runCommandSilent(`data merge entity ${id} ${ssNpcUpdateNbt(which, def)}`)
-    say(src, '§a[npcfix] Updated the NPC you are looking at as ' + which + '. Talk to it to check.')
+    var first = ''
+    try { var sp = def.dialog.pages[def.dialog.start || Object.keys(def.dialog.pages)[0]]; first = String(sp.lines[0]) + ' | ' + String(sp.lines[1]) } catch (x) { }
+    say(src, '§7[npcfix] Text being put on the NPC starts with: §f' + first)
+    // run as you (not silent) so Minecraft shows in chat if the merge is refused
+    p.runCommand(`data merge entity ${id} ${ssNpcUpdateNbt(which, def)}`)
+    say(src, '§a[npcfix] Done. Close and talk to the NPC again to check.')
     return 1
   }
 
