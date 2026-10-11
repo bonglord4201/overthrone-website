@@ -49,12 +49,17 @@ const getXp = (p) => p.persistentData.getInt(K_XP) || 0
 
 // Writes the player's numbers to the scoreboard (for the HUD). Uses the scoreboard directly; falls back to
 // /scoreboard commands. Never throws, so a HUD problem can't break levelling.
-const VERSION = 'v4'
+const VERSION = 'v5'
 const OBJECTIVES = { ot_level: 'Level', ot_xp: 'XP', ot_xpneed: 'XP Needed', ot_xppct: 'Level Progress' }
+// Only writes when the number actually changed, so the scoreboard isn't spammed.
+const lastScore = {}
 const setScore = (p, objective, value) => {
-  // The /scoreboard command is the same thing the sidebar and "/scoreboard players get" read, so always run it.
-  p.server.runCommandSilent(`scoreboard players set ${p.username} ${objective} ${Math.floor(value)}`)
+  var v = Math.floor(value), k = p.username + ':' + objective
+  if (lastScore[k] === v) return
+  lastScore[k] = v
+  p.server.runCommandSilent(`scoreboard players set ${p.username} ${objective} ${v}`)
 }
+const forgetScores = (p) => Object.keys(lastScore).forEach(k => { if (k.indexOf(p.username + ':') === 0) delete lastScore[k] })
 const syncScores = (p) => {
   try {
     var lvl = getLvl(p), xp = getXp(p)
@@ -175,6 +180,7 @@ PlayerEvents.loggedIn(event => {
     p.tell(`§6✦ Daily login bonus: §e+${bonus} XP`)
     addXp(p, bonus)
   }
+  forgetScores(p)
   syncScores(p)
 })
 
@@ -209,12 +215,6 @@ ServerEvents.loaded(event => {
   console.info('[OVERTHRONE levelling] ' + VERSION + ' loaded')
   event.server.players.forEach(p => syncScores(p))
 })
-// Safety net: re-push everyone's numbers every 2 seconds so the HUD can never stay out of date.
-ServerEvents.tick(event => {
-  const s = event.server
-  if (s.tickCount % 40 !== 0) return
-  s.players.forEach(p => syncScores(p))
-})
 
 const bar = (pct) => {
   let s = '§6'
@@ -246,6 +246,7 @@ ServerEvents.commandRegistry(event => {
     .executes(safe('', ctx => { const p = ctx.source.playerOrException; syncScores(p); p.tell(describe(p)); return 1 }))
     .then(Commands.literal('debug').requires(staff).executes(safe('debug', ctx => {
       const p = ctx.source.playerOrException
+      forgetScores(p)
       syncScores(p)
       let board = '?'
       try {
