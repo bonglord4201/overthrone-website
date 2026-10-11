@@ -210,7 +210,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/crate list` Where every crate is",
     "`/crate hologram <crate>` Re-places the floating text",
     "`/crate preview <crate>` Opens the rewards menu",
-    "`/crate infoboard place [height]` CRATES INFO board above you (default 3 blocks up) · `/crate infoboard remove`",
+    "`/crate infoboard place [height]` CRATES INFO board above you, facing where you look (default 3 up) · `/crate infoboard flip` · `/crate infoboard remove`",
     "Players: left-click or sneak + right-click = preview, right-click with a key = open"
   ].join("\n") },
   { title: "✏️ Crates: rewards", description: [

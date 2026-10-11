@@ -564,7 +564,7 @@
             },
             {
               "title": "🎁 Crates: setup",
-              "description": "`/crate create <crate>` **Look at** the block (or stand on it), makes it that crate. Run again to move it\n`/crate remove <crate>` Removes the crate (sneak + break the block as staff)\n`/crate list` Where every crate is\n`/crate hologram <crate>` Re-places the floating text\n`/crate preview <crate>` Opens the rewards menu\n`/crate infoboard place [height]` CRATES INFO board above you (default 3 blocks up) · `/crate infoboard remove`\nPlayers: left-click or sneak + right-click = preview, right-click with a key = open"
+              "description": "`/crate create <crate>` **Look at** the block (or stand on it), makes it that crate. Run again to move it\n`/crate remove <crate>` Removes the crate (sneak + break the block as staff)\n`/crate list` Where every crate is\n`/crate hologram <crate>` Re-places the floating text\n`/crate preview <crate>` Opens the rewards menu\n`/crate infoboard place [height]` CRATES INFO board above you, facing where you look (default 3 up) · `/crate infoboard flip` · `/crate infoboard remove`\nPlayers: left-click or sneak + right-click = preview, right-click with a key = open"
             },
             {
               "title": "✏️ Crates: rewards",

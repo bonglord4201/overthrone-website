@@ -573,8 +573,9 @@
     const crateOf = (ctx) => String(StringArg.getString(ctx, 'crate')).toLowerCase()
     const known = (ctx, id) => { if (CRATES[id]) return true; reply(ctx, '§cUnknown crate. Crates: ' + Object.keys(CRATES).join(', ')); return false }
     const staff = src => src.hasPermission(2)
-    // CRATES INFO board: <height> blocks above your feet (default 3). Full brightness and a dark
-    // background so it's easy to read day and night.
+    // CRATES INFO board: <height> blocks above your feet (default 3). It stays still (doesn't turn to follow
+    // players) and faces the way you're looking, like a sign. Full brightness (glows in the dark) and a dark
+    // background so it's easy to read. /crate infoboard flip turns it round if it shows backwards.
     const placeInfoBoard = (ctx, height) => {
       const p = ctx.source.playerOrException, server = p.server
       run(server, 'kill @e[type=minecraft:text_display,tag=ot_crate_infoboard]')
@@ -584,7 +585,7 @@
       // so the JSON's own backslashes (the \n line breaks) must be doubled first, then quotes escaped.
       var json = JSON.stringify(comp).replace(/\\/g, '\\\\').replace(/'/g, "\\'")
       run(server, `execute in ${p.level.dimension} run summon minecraft:text_display ${f(p.x)} ${f(p.y + Math.max(0, height))} ${f(p.z)} ` +
-        `{Tags:["ot_crate_infoboard"],billboard:"vertical",alignment:"center",shadow:1b,line_width:400,background:-1325400064,` +
+        `{Tags:["ot_crate_infoboard"],Rotation:[${f(p.yaw)}f,0f],billboard:"fixed",alignment:"center",shadow:1b,line_width:400,background:-1325400064,` +
         `brightness:{sky:15,block:15},transformation:[1.6f,0f,0f,0f,0f,1.6f,0f,0f,0f,0f,1.6f,0f,0f,0f,0f,1f],text:'${json}'}`)
       reply(ctx, `§aCrates info board placed ${height} blocks above you. §7(/crate infoboard place <height> to move it, /crate infoboard remove to take it down)`)
       return 1
@@ -674,6 +675,10 @@
         .then(Commands.literal('place')
           .executes(ctx => placeInfoBoard(ctx, 3))
           .then(Commands.argument('height', Arguments.INTEGER.create(event)).executes(ctx => placeInfoBoard(ctx, Arguments.INTEGER.getResult(ctx, 'height')))))
+        .then(Commands.literal('flip').executes(ctx => {
+          run(ctx.source.server, 'execute as @e[type=minecraft:text_display,tag=ot_crate_infoboard] at @s run tp @s ~ ~ ~ ~180 0')
+          reply(ctx, '§aCrates info board turned round.'); return 1
+        }))
         .then(Commands.literal('remove').executes(ctx => {
           run(ctx.source.server, 'kill @e[type=minecraft:text_display,tag=ot_crate_infoboard]')
           reply(ctx, '§eCrates info board removed.'); return 1
