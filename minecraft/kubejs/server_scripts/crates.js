@@ -20,9 +20,9 @@
 // particles: false turns off the built-in crate particles.
 
 (function () {
-  // The command that gives Throne Shards, without the amount, e.g. 'shards give {p}'. Leave '' until we know it:
+  // The command that gives Throne Shards, without the amount ({p} = player). Set to '' to turn the shard rewards off:
   // the Throne Shard rewards are skipped while it's empty.
-  const SHARDS_CMD = ''
+  const SHARDS_CMD = 'shards give {p}'
 
   const CRATES = {
     vote: {
