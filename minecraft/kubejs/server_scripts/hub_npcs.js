@@ -10,7 +10,8 @@
 //                    Rank perk pages and every other NPC are left exactly as they are.
 //                    A copy of the old file is saved first as config/serversetup/npc_texts.backup.json.
 // /npcfix hunters    (op) puts the Hunters NPC where you stand (uses /placenpc if the setup knows it).
-// After /npcfix apply:  /reload   then   /setupcoords apply npcs
+// /npcfix refresh    (op) puts the new texts/buttons on the NPCs already standing in the hub WITHOUT moving them.
+// Order:  /npcfix apply   then   /npcfix refresh   then   /npcfix hunters
 
 (function () {
   const TEXTS = 'config/serversetup/npc_texts.json'
@@ -66,6 +67,7 @@
 
     event.register(Commands.literal('npcfix').requires(src => src.hasPermission(2))
       .then(Commands.literal('apply').executes(ctx => apply(ctx.source)))
+      .then(Commands.literal('refresh').executes(ctx => refresh(ctx.source)))
       .then(Commands.literal('hunters').executes(ctx => placeHunters(ctx.source))))
   })
 
@@ -194,7 +196,37 @@
     }
     say(src, '§6[npcfix] ' + TEXTS + ' updated §7(old copy: ' + BACKUP + ')')
     out.forEach(l => say(src, ' ' + l))
-    say(src, '§eNow run: §f/reload §ethen §f/setupcoords apply npcs §ethen stand where you want him and §f/npcfix hunters')
+    say(src, '§eNow run: §f/npcfix refresh §ethen stand where you want him and §f/npcfix hunters')
+    return 1
+  }
+
+  // ---------------------------------------------------------------- update NPCs in place (no moving)
+  function refresh(src) {
+    if (typeof ssReadJson != 'function' || typeof ssNpcUpdateNbt != 'function') {
+      say(src, '§c[npcfix] The serversetup scripts are not loaded, nothing changed.')
+      return 0
+    }
+    var data = ssReadJson(TEXTS, null)
+    if (data == null) { say(src, '§c[npcfix] Cannot read ' + TEXTS + ', nothing changed.'); return 0 }
+    try {
+      data = JSON.parse(JSON.stringify(data))
+      var npcs = data.npcs != null ? data.npcs : data
+      var done = []
+      Object.keys(npcs).forEach(key => {
+        var def = npcs[key]
+        if (def == null || def.name == null) return
+        var name = String(def.name).replace(/"/g, '')
+        // only the data (name, dialog, buttons) is merged: position and skin stay as they are
+        src.server.runCommandSilent(`execute as @e[type=easy_npc:humanoid,tag=setup_npc,name="${name}"] run data merge entity @s ${ssNpcUpdateNbt(key, def)}`)
+        done.push(name)
+      })
+      say(src, '§a[npcfix] Updated in place (not moved): §f' + done.join(', '))
+      say(src, '§7Talk to each NPC to check. If one did not change, tell Claude its name.')
+    } catch (e) {
+      console.error('[npcfix] ' + e)
+      say(src, '§c[npcfix] Error: ' + e + ' §7(send this to Claude)')
+      return 0
+    }
     return 1
   }
 
@@ -205,7 +237,7 @@
     var data = typeof ssReadJson == 'function' ? ssReadJson(TEXTS, null) : null
     var npcs = data == null ? null : (data.npcs != null ? data.npcs : data)
     var key = npcs == null ? null : find(npcs, (k, name) => k == 'hunters' || /hunter/.test(name))
-    if (key == null) { say(src, '§c[npcfix] Run /npcfix apply first (then /reload).'); return 0 }
+    if (key == null) { say(src, '§c[npcfix] Run /npcfix apply first.'); return 0 }
     // the setup knows the NPC -> /placenpc (saves the spot in coordinates.json and locks him there)
     if (typeof SS_NPC_KEYS != 'undefined' && SS_NPC_KEYS.indexOf(key) >= 0) {
       p.server.runCommandSilent(`execute as ${p.username} at @s run placenpc ${key}`)
