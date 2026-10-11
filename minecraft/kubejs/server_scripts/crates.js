@@ -170,23 +170,29 @@
     const name = `\'{"text":"${label(r)}","color":"${r.rare ? 'gold' : 'white'}","italic":false}\'`
     return Item.of(`${r.item || r.icon}[custom_data={${PREVIEW_TAG}:1b},custom_name=${name},lore=${lore}]`, Math.min(64, r.count || 1))
   }
+  const previewChat = (p, c) => {
+    p.tell(`§6§l${c.name} §7rewards:`)
+    c.rewards.forEach(r => p.tell(`§7 • ${r.rare ? '§6' : '§f'}${label(r)} §8(${pct(c, r)}%)`))
+  }
+  // Uses KubeJS's own chest GUI (display only: items can't be taken). Falls back to a chat list.
   const preview = (p, id) => {
     const c = CRATES[id]
+    if (p.openChestGUI === undefined) { previewChat(p, c); return }
     try {
-      var SimpleContainer = Java.loadClass('net.minecraft.world.SimpleContainer')
-      var ChestMenu = Java.loadClass('net.minecraft.world.inventory.ChestMenu')
-      var SimpleMenuProvider = Java.loadClass('net.minecraft.world.SimpleMenuProvider')
-      var box = new SimpleContainer(27)
       var start = Math.max(0, Math.floor((27 - c.rewards.length) / 2))
-      c.rewards.forEach((r, i) => box.setItem(start + i, previewStack(c, r)))
-      p.openMenu(new SimpleMenuProvider((cid, inv, pl) => ChestMenu.threeRows(cid, inv, box), Text.of(c.name + ' Rewards')))
-    } catch (e) {   // fallback: list the rewards in chat
+      p.openChestGUI(Text.of(c.name + ' Rewards'), 3, gui => {
+        c.rewards.forEach((r, i) => {
+          var n = start + i
+          gui.slot(n % 9, Math.floor(n / 9), slot => { slot.item = previewStack(c, r) })
+        })
+      })
+    } catch (e) {
       console.warn('[OVERTHRONE crates] preview menu failed, using chat: ' + e)
       if (p.hasPermissions(2)) p.tell('§c[crates] preview menu failed: ' + e)
-      p.tell(`§6§l${c.name} §7rewards:`)
-      c.rewards.forEach(r => p.tell(`§7 • ${r.rare ? '§6' : '§f'}${label(r)} §8(${pct(c, r)}%)`))
+      previewChat(p, c)
     }
   }
+
   // Preview items can never be kept: remove them anywhere they turn up.
   PlayerEvents.inventoryChanged(event => {
     const inv = event.player.inventory
