@@ -255,6 +255,11 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/kitcd check <player>` Kit cooldowns · `/kitcd reset <player>` Clear them",
     "Each rank needs the permission `neoessentials.kits.<rank>`"
   ].join("\n") },
+  { title: "👑 Ranks", description: [
+    "`giverank <player> <rank>` Gives the rank + all lower ranks, prefix and class tokens (console / op level 4)",
+    "`takerank <player>` Removes all donor ranks (staff ranks stay)",
+    "Tebex: purchase `giverank {username} <rank>` · refund/chargeback `takerank {username}` (+ ban on chargeback)"
+  ].join("\n") },
   { title: "🧬 Tensura", description: [
     "`/tensura edit forceevo <player> demonLord` Make someone a Demon Lord",
     "`/tensura edit race <player> tensura:god_slime true true` Set a race"
