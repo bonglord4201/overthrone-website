@@ -98,7 +98,7 @@
     const all = load(server), dim = String(block.level.dimension)
     const ids = Object.keys(all)
     for (let i = 0; i < ids.length; i++) {
-      const c = all[ids[i]]
+      var c = all[ids[i]]
       if (c.x === Number(block.x) && c.y === Number(block.y) && c.z === Number(block.z) && c.dim === dim && CRATES[ids[i]]) return ids[i]
     }
     return null
@@ -198,25 +198,25 @@
     if (t % 3 !== 0) return
     const all = load(server), ids = Object.keys(all)
     for (let i = 0; i < ids.length; i++) {
-      const c = CRATES[ids[i]], at = all[ids[i]]
+      var c = CRATES[ids[i]], at = all[ids[i]]
       if (!c) continue
-      let near = false
-      const ps = server.players
+      var near = false
+      var ps = server.players
       for (let j = 0; j < ps.size(); j++) {
-        const p = ps.get(j)
+        var p = ps.get(j)
         if (String(p.level.dimension) !== at.dim) continue
-        const dx = p.x - at.x - 0.5, dy = p.y - at.y, dz = p.z - at.z - 0.5
-        const d2 = dx * dx + dy * dy + dz * dz
+        var dx = p.x - at.x - 0.5, dy = p.y - at.y, dz = p.z - at.z - 0.5
+        var d2 = dx * dx + dy * dy + dz * dz
         if (d2 < 48 * 48) near = true
         if (d2 < 5 * 5 && t % 15 === 0)   // "Keys available" for this player, over the hotbar
           run(server, `title ${p.username} actionbar {"text":"${c.name} · Keys available: ${keys(p, ids[i])}","color":"yellow"}`)
       }
       if (!near || c.particles === false) continue
-      const x = at.x + 0.5, y = at.y + 0.5, z = at.z + 0.5, a = t * 0.08
+      var x = at.x + 0.5, y = at.y + 0.5, z = at.z + 0.5, a = t * 0.08
       // three arms spiralling up and outward around the crate
       for (let k = 0; k < 3; k++) {
-        const h = ((t * 0.012) + k / 3) % 1, ang = a + k * 2.094 + h * 5
-        const rad = 0.45 + h * 0.8
+        var h = ((t * 0.012) + k / 3) % 1, ang = a + k * 2.094 + h * 5
+        var rad = 0.45 + h * 0.8
         run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.3)} ${f(x + Math.cos(ang) * rad)} ${f(y - 0.3 + h * 2.2)} ${f(z + Math.sin(ang) * rad)} 0 0 0 0 1 normal`)
       }
       // a soft cloud of pixels puffing out of the crate, like OG Network

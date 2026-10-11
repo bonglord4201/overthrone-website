@@ -40,30 +40,30 @@ const frame = (cr, t) => {
   if (cr.style === 'helix') {               // two strands spiralling up from the crate
     for (let s = 0; s < 2; s++) {
       for (let k = 0; k < 2; k++) {
-        const h = ((t * 0.04 + k * 0.5) % 1)
-        const ang = a + s * Math.PI + h * Math.PI * 4
+        var h = ((t * 0.04 + k * 0.5) % 1)
+        var ang = a + s * Math.PI + h * Math.PI * 4
         out.push([dust(col, 1.1), x + Math.cos(ang) * 0.75, y + 0.2 + h * 2.2, z + Math.sin(ang) * 0.75])
       }
     }
   } else if (cr.style === 'orbit') {        // three tilted rings orbiting the crate
     for (let r = 0; r < 3; r++) {
-      const ang = a * (1 + r * 0.3) + r * 2.1
-      const tilt = r * 1.05
-      const px = Math.cos(ang) * 0.95, pz = Math.sin(ang) * 0.95
+      var ang = a * (1 + r * 0.3) + r * 2.1
+      var tilt = r * 1.05
+      var px = Math.cos(ang) * 0.95, pz = Math.sin(ang) * 0.95
       out.push([dust(col, 1.0), x + px, y + 0.6 + pz * Math.sin(tilt) * 0.6, z + pz * Math.cos(tilt)])
     }
     if (t % 12 === 0) out.push(['minecraft:enchant', x, y + 1.4, z])
   } else if (cr.style === 'halo') {         // spinning crown ring above, sparks rising
     for (let k = 0; k < 4; k++) {
-      const ang = a + k * Math.PI / 2
+      var ang = a + k * Math.PI / 2
       out.push([dust(col, 1.2), x + Math.cos(ang) * 0.6, y + 1.9, z + Math.sin(ang) * 0.6])
     }
     if (t % 6 === 0) out.push(['minecraft:end_rod', x + (Math.random() - 0.5) * 0.8, y + 1.1, z + (Math.random() - 0.5) * 0.8])
   } else {                                  // vortex: particles spiralling down into the crate
     for (let k = 0; k < 3; k++) {
-      const h = 1 - ((t * 0.03 + k / 3) % 1)
-      const ang = -a * 1.5 + k * 2.09
-      const rad = 0.2 + h * 1.0
+      var h = 1 - ((t * 0.03 + k / 3) % 1)
+      var ang = -a * 1.5 + k * 2.09
+      var rad = 0.2 + h * 1.0
       out.push([dust(col, 1.0), x + Math.cos(ang) * rad, y + 0.6 + h * 1.6, z + Math.sin(ang) * rad])
     }
     if (t % 10 === 0) out.push(['minecraft:portal', x, y + 1.0, z])
@@ -74,9 +74,9 @@ const frame = (cr, t) => {
 const playerNear = (server, cr) => {
   const list = server.players
   for (let i = 0; i < list.size(); i++) {
-    const p = list.get(i)
+    var p = list.get(i)
     if (String(p.level.dimension) !== cr.dim) continue
-    const dx = p.x - cr.x, dy = p.y - cr.y, dz = p.z - cr.z
+    var dx = p.x - cr.x, dy = p.y - cr.y, dz = p.z - cr.z
     if (dx * dx + dy * dy + dz * dz < VIEW_RANGE * VIEW_RANGE) return true
   }
   return false
@@ -89,11 +89,11 @@ ServerEvents.tick(event => {
   const all = load(server)
   const names = Object.keys(all)
   for (let i = 0; i < names.length; i++) {
-    const cr = all[names[i]]
+    var cr = all[names[i]]
     if (!playerNear(server, cr)) continue
-    const pts = frame(cr, t / EVERY)
+    var pts = frame(cr, t / EVERY)
     for (let j = 0; j < pts.length; j++) {
-      const p = pts[j]
+      var p = pts[j]
       server.runCommandSilent(`execute in ${cr.dim} run particle ${p[0]} ${f(p[1])} ${f(p[2])} ${f(p[3])} 0 0 0 0 1 normal`)
     }
   }
@@ -103,7 +103,7 @@ const burst = (server, cr) => {
   const col = COLORS[cr.color] || COLORS.gold
   const x = cr.x + 0.5, y = cr.y + 1, z = cr.z + 0.5
   for (let k = 0; k < 24; k++) {
-    const ang = k / 24 * Math.PI * 2
+    var ang = k / 24 * Math.PI * 2
     server.runCommandSilent(`execute in ${cr.dim} run particle ${dust(col, 1.6)} ${f(x + Math.cos(ang) * 1.4)} ${f(y + 0.3)} ${f(z + Math.sin(ang) * 1.4)} 0 0 0 0 1 force`)
   }
   server.runCommandSilent(`execute in ${cr.dim} run particle minecraft:totem_of_undying ${f(x)} ${f(y)} ${f(z)} 0.4 0.6 0.4 0.5 60 force`)
