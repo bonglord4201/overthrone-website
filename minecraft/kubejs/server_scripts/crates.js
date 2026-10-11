@@ -84,12 +84,23 @@
       type: 'redeem', name: 'WEAPON CRATE', keyName: 'Weapon Key', color: 'gold', dust: [1.0, 0.55, 0.1],
       keyHint: 'Keys available on store', particles: true,
       rewards: [
-        { give: gear('netherite_sword', 'Kingslayer', ['#ff0000', '#ff7b00', '#ffe600'], { sharpness: 8, smite: 10, bane_of_arthropods: 10 }), cost: 3 },
-        { give: gear('bow', 'Bloodmoon Bow', ['#8b0000', '#ff3b3b', '#8b0000'], { power: 8, flame: 1, punch: 8 }), cost: 3 },
-        { give: gear('netherite_pickaxe', "Overlord's Pick", ['#00c6ff', '#0072ff'], { fortune: 8, efficiency: 8, unbreaking: 8, mending: 1 }), cost: 2 },
-        { give: gear('netherite_axe', "Overlord's Axe", ['#f7971e', '#ffd200'], { sharpness: 8, fire_aspect: 2, silk_touch: 1, efficiency: 8, unbreaking: 8, mending: 1 }), cost: 4 },
-        { give: gear('netherite_hoe', "Overlord's Hoe", ['#56ab2f', '#a8e063'], { silk_touch: 1, efficiency: 8, unbreaking: 8, mending: 1 }), cost: 2 },
+        { give: gear('netherite_sword', "Sovereign's Reach", ['#a855f7', '#ec4899'], { sweeping_edge: 8, fire_aspect: 2, knockback: 8, looting: 8, unbreaking: 8, mending: 1 }), cost: 3 },
+        { give: gear('netherite_sword', 'Trinity Edge', ['#ff0000', '#ff9900', '#ffee00'], { sharpness: 8, smite: 10, bane_of_arthropods: 10 }), cost: 3 },
+        { give: gear('netherite_axe', "Headsman's Cleaver", ['#ff1f1f', '#7a0000'], { sharpness: 8, smite: 10, bane_of_arthropods: 10, unbreaking: 8, mending: 1 }), cost: 3 },
+        { give: gear('bow', "Warlord's Longbow", ['#3cff7a', '#00b3ff'], { power: 8, flame: 1, punch: 8 }), cost: 3 },
+        { give: gear('netherite_pickaxe', 'Throneforged Pick I', ['#00c6ff', '#0072ff'], { silk_touch: 1, efficiency: 8, unbreaking: 8, mending: 1 }), cost: 2 },
+        { give: gear('netherite_pickaxe', 'Throneforged Pick II', ['#00c6ff', '#7f00ff'], { fortune: 8, efficiency: 8, unbreaking: 8, mending: 1 }), cost: 2 },
+        { give: gear('netherite_axe', 'Throneforged Axe I', ['#f7971e', '#ffd200'], { sharpness: 8, fire_aspect: 2, silk_touch: 1, efficiency: 8, unbreaking: 8, mending: 1 }), cost: 4 },
+        { give: gear('netherite_axe', 'Throneforged Axe II', ['#f7971e', '#ff4e50'], { fortune: 8, efficiency: 8, unbreaking: 8, mending: 1 }), cost: 2 },
+        { give: gear('netherite_sword', 'Overthrone Blade', ['#ff0000', '#ffd700', '#ff0000'], { sharpness: 8, smite: 10, bane_of_arthropods: 10, sweeping_edge: 8, fire_aspect: 2, knockback: 7, looting: 8, unbreaking: 8, mending: 1 }), cost: 4 },
+        { give: gear('netherite_hoe', 'Throneforged Hoe I', ['#56ab2f', '#a8e063'], { silk_touch: 1, efficiency: 8, unbreaking: 8, mending: 1 }), cost: 2 },
+        { give: gear('netherite_hoe', 'Throneforged Hoe II', ['#11998e', '#38ef7d'], { fortune: 8, efficiency: 8, unbreaking: 8, mending: 1 }), cost: 2 },
+        { give: gear('netherite_shovel', 'Throneforged Spade I', ['#c79081', '#dfa579'], { silk_touch: 1, efficiency: 8, unbreaking: 8, mending: 1 }), cost: 2 },
+        { give: gear('netherite_shovel', 'Throneforged Spade II', ['#b06ab3', '#4568dc'], { fortune: 8, efficiency: 8, unbreaking: 8, mending: 1 }), cost: 2 },
+        { give: gear('bow', 'Bloodmoon Bow', ['#8b0000', '#ff3b3b', '#8b0000'], { power: 8, flame: 1, punch: 8, infinity: 1, unbreaking: 8, mending: 1 }), cost: 4 },
         { give: gear('crossbow', 'Dreadforge Crossbow', ['#ff6a00', '#ee0979'], { piercing: 9, multishot: 1, quick_charge: 5, unbreaking: 8, mending: 1 }), cost: 4 },
+        { give: gear('trident', 'Tidecaller', ['#00f2fe', '#4facfe'], { channeling: 1, impaling: 10, loyalty: 8, unbreaking: 8, mending: 1 }), cost: 4 },
+        { give: gear('trident', "Leviathan's Wrath", ['#43e97b', '#00c6ff', '#0072ff'], { riptide: 8, channeling: 1, impaling: 10, loyalty: 8, unbreaking: 8, mending: 1 }), cost: 4 },
       ],
     },
   }
@@ -208,7 +219,7 @@
   const dust = (c, s) => `minecraft:dust{color:[${c[0].toFixed(2)},${c[1].toFixed(2)},${c[2].toFixed(2)}],scale:${s.toFixed(2)}}`
   ServerEvents.tick(event => {
     const server = event.server, t = server.tickCount
-    if (t % 3 !== 0) return
+    if (t % 2 !== 0) return
     const all = load(server), ids = Object.keys(all)
     for (let i = 0; i < ids.length; i++) {
       var c = CRATES[ids[i]], at = all[ids[i]]
@@ -221,25 +232,27 @@
         var dx = p.x - at.x - 0.5, dy = p.y - at.y, dz = p.z - at.z - 0.5
         var d2 = dx * dx + dy * dy + dz * dz
         if (d2 < 48 * 48) near = true
-        if (d2 < 5 * 5 && t % 15 === 0)   // "Keys available" for this player, over the hotbar
+        if (d2 < 5 * 5 && t % 16 === 0)   // "Keys available" for this player, over the hotbar
           run(server, `title ${p.username} actionbar {"text":"${c.name} · Keys available: ${keys(p, ids[i])}","color":"yellow"}`)
       }
       if (!near || c.particles === false) continue
       var x = at.x + 0.5, y = at.y + 0.5, z = at.z + 0.5, a = t * 0.08
-      // OG Network style: big coloured pixels that burst out of the crate and drift away, a slow ring
-      // orbiting it, and grey ash floating around. (count 0 = the numbers are the direction it flies.)
+      // OG Network style: coloured pixels whizzing round the crate in two rings (one each way), with a few
+      // flying off and grey ash floating about. One full lap takes about a second.
+      var spin = t * 0.32
+      for (var k = 0; k < 4; k++) {
+        var ang = spin + k * Math.PI / 2
+        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.7)} ${f(x + Math.cos(ang) * 1.0)} ${f(y + 0.05)} ${f(z + Math.sin(ang) * 1.0)} 0 0 0 0 1 normal`)
+      }
       for (var k = 0; k < 3; k++) {
-        var ang = Math.random() * Math.PI * 2, out = 0.6 + Math.random() * 1.4
-        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.6 + Math.random() * 1.2)} ` +
-          `${f(x + Math.cos(ang) * 0.4)} ${f(y + Math.random() * 0.8)} ${f(z + Math.sin(ang) * 0.4)} ` +
-          `${f(Math.cos(ang) * out)} ${f(0.15 + Math.random() * 0.6)} ${f(Math.sin(ang) * out)} 1 0 normal`)
+        var ang = -spin * 1.3 + k * 2.094
+        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.4)} ${f(x + Math.cos(ang) * 0.75)} ${f(y + 0.75)} ${f(z + Math.sin(ang) * 0.75)} 0 0 0 0 1 normal`)
       }
-      for (var k = 0; k < 2; k++) {
-        var ang = a + k * Math.PI
-        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.2)} ${f(x + Math.cos(ang) * 1.1)} ${f(y + 0.2 + 0.25 * Math.sin(a * 2))} ${f(z + Math.sin(ang) * 1.1)} 0 0 0 0 1 normal`)
-      }
+      var fly = Math.random() * Math.PI * 2
+      run(server, `execute in ${at.dim} run particle ${dust(c.dust, 2.0)} ${f(x + Math.cos(fly) * 0.5)} ${f(y + 0.3)} ${f(z + Math.sin(fly) * 0.5)} ` +
+        `${f(Math.cos(fly) * 1.4)} ${f(0.3 + Math.random() * 0.5)} ${f(Math.sin(fly) * 1.4)} 1 0 normal`)
       if (t % 6 === 0) run(server, `execute in ${at.dim} run particle minecraft:white_ash ${f(x)} ${f(y + 0.8)} ${f(z)} 1.3 0.8 1.3 0 6 normal`)
-      if (t % 9 === 0) run(server, `execute in ${at.dim} run particle minecraft:end_rod ${f(x)} ${f(y - 0.6)} ${f(z)} 0.05 0 0.05 0.02 1 normal`)
+      if (t % 10 === 0) run(server, `execute in ${at.dim} run particle minecraft:end_rod ${f(x)} ${f(y - 0.6)} ${f(z)} 0.05 0 0.05 0.02 1 normal`)
     }
   })
 
@@ -324,8 +337,8 @@
             // KubeJS takes your items out while its menu is open and puts them back after it closes, so close the
             // menu, wait for the items to come back, then redeem and reopen.
             slot.leftClicked = e => {
-              try { p.closeContainer() } catch (x) { }
-              p.server.scheduleInTicks(3, () => { try { redeem(p, id, r); preview(p, id) } catch (x) { console.error('[OVERTHRONE crates] redeem failed: ' + x) } })
+              pendingRedeem[p.username] = { p: p, id: id, r: r, closedTicks: 0 }
+              try { p.closeMenu() } catch (x) { }   // KubeJS's name for closing the open menu
             }
           } else {
             slot.item = shown(p.server, r, [`§eChance: ${pctOf(list, r)}%`].concat(r.rare ? ['§6§lRARE'] : []))
@@ -338,6 +351,22 @@
       previewChat(p, id)
     }
   }
+  // KubeJS takes your items out while its menu is open and puts them back a tick after it closes. So a redeem
+  // click is queued, the menu is closed, and the redeem runs once the menu has been shut for 2 ticks.
+  const pendingRedeem = {}
+  // A menu is open when the player's current menu isn't their normal inventory.
+  const inKubeMenu = (p) => { try { return !p.containerMenu.equals(p.inventoryMenu) } catch (e) { return false } }
+  ServerEvents.tick(event => {
+    var names = Object.keys(pendingRedeem)
+    for (var i = 0; i < names.length; i++) {
+      var job = pendingRedeem[names[i]]
+      if (inKubeMenu(job.p)) { job.closedTicks = 0; continue }
+      if (++job.closedTicks < 2) continue
+      delete pendingRedeem[names[i]]
+      try { redeem(job.p, job.id, job.r); preview(job.p, job.id) } catch (e) { console.error('[OVERTHRONE crates] redeem failed: ' + e) }
+    }
+  })
+
   // Redeem crates: pay the key cost, get the item.
   const redeem = (p, id, r) => {
     var c = CRATES[id], n = p.username, server = p.server
