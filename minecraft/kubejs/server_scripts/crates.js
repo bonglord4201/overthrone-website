@@ -149,11 +149,11 @@
   const preview = (p, id) => {
     const c = CRATES[id]
     try {
-      const SimpleContainer = Java.loadClass('net.minecraft.world.SimpleContainer')
-      const ChestMenu = Java.loadClass('net.minecraft.world.inventory.ChestMenu')
-      const SimpleMenuProvider = Java.loadClass('net.minecraft.world.SimpleMenuProvider')
-      const box = new SimpleContainer(27)
-      const start = Math.max(0, Math.floor((27 - c.rewards.length) / 2))
+      var SimpleContainer = Java.loadClass('net.minecraft.world.SimpleContainer')
+      var ChestMenu = Java.loadClass('net.minecraft.world.inventory.ChestMenu')
+      var SimpleMenuProvider = Java.loadClass('net.minecraft.world.SimpleMenuProvider')
+      var box = new SimpleContainer(27)
+      var start = Math.max(0, Math.floor((27 - c.rewards.length) / 2))
       c.rewards.forEach((r, i) => box.setItem(start + i, previewStack(c, r)))
       p.openMenu(new SimpleMenuProvider((cid, inv, pl) => ChestMenu.threeRows(cid, inv, box), Text.of(c.name + ' Rewards')))
     } catch (e) {   // fallback: list the rewards in chat

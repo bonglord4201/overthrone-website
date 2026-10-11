@@ -49,7 +49,7 @@ const getXp = (p) => p.persistentData.getInt(K_XP) || 0
 
 // Writes the player's numbers to the scoreboard (for the HUD). Uses the scoreboard directly; falls back to
 // /scoreboard commands. Never throws, so a HUD problem can't break levelling.
-const VERSION = 'v3'
+const VERSION = 'v4'
 const OBJECTIVES = { ot_level: 'Level', ot_xp: 'XP', ot_xpneed: 'XP Needed', ot_xppct: 'Level Progress' }
 const setScore = (p, objective, value) => {
   // The /scoreboard command is the same thing the sidebar and "/scoreboard players get" read, so always run it.
@@ -57,8 +57,8 @@ const setScore = (p, objective, value) => {
 }
 const syncScores = (p) => {
   try {
-    const lvl = getLvl(p), xp = getXp(p)
-    const nd = lvl >= MAX_LEVEL ? 0 : need(lvl)
+    var lvl = getLvl(p), xp = getXp(p)
+    var nd = lvl >= MAX_LEVEL ? 0 : need(lvl)
     setScore(p, 'ot_level', lvl)
     setScore(p, 'ot_xp', xp)
     setScore(p, 'ot_xpneed', nd)
@@ -96,12 +96,12 @@ const addXp = (p, amount) => {
   setLevel(p, lvl, xp)
   try {
     if (lvl > start) {
-      const n = p.username
+      var n = p.username
       p.server.runCommandSilent(`title ${n} times 5 40 15`)
       p.server.runCommandSilent(`title ${n} title {"text":"LEVEL ${lvl}","color":"gold","bold":true}`)
       p.server.runCommandSilent(`playsound minecraft:entity.player.levelup player ${n} ~ ~ ~ 1 0.8`)
       p.tell(`§6✦ Level up! §eYou are now level §6§l${lvl}§e.`)
-      const nextLock = Object.keys(REALM_LOCKS).map(k => REALM_LOCKS[k]).filter(l => l > lvl).sort((a, b) => a - b)[0]
+      var nextLock = Object.keys(REALM_LOCKS).map(k => REALM_LOCKS[k]).filter(l => l > lvl).sort((a, b) => a - b)[0]
       if (nextLock && nextLock - lvl <= 20) p.tell(`§8✦ §7Aeonia and Netherfall open at level §c${nextLock}§7: §c${nextLock - lvl}§7 to go.`)
     } else {
       p.server.runCommandSilent(`title ${p.username} actionbar {"text":"+${amount} XP  (${xp} / ${need(lvl)})","color":"yellow"}`)
@@ -232,7 +232,7 @@ ServerEvents.commandRegistry(event => {
   const { commands: Commands, arguments: Arguments } = event
   const staff = src => src.hasPermission(2)
   const reply = (ctx, msg) => {
-    try { const pl = ctx.source.player; if (pl) pl.tell(msg); else console.info(String(msg).replace(/§./g, '')) }
+    try { var pl = ctx.source.player; if (pl) pl.tell(msg); else console.info(String(msg).replace(/§./g, '')) }
     catch (e) { console.info(String(msg).replace(/§./g, '')) }
   }
   // Runs a command body; any error goes to the console with the real reason instead of a vague chat error.
@@ -249,7 +249,7 @@ ServerEvents.commandRegistry(event => {
       syncScores(p)
       let board = '?'
       try {
-        const sb = p.server.getScoreboard(), obj = sb.getObjective('ot_level')
+        var sb = p.server.getScoreboard(), obj = sb.getObjective('ot_level')
         board = obj ? String(sb.getOrCreatePlayerScore(p, obj).get()) : 'objective ot_level is missing'
       } catch (e) { board = 'could not read: ' + e }
       p.tell(`§7[levelling ${VERSION}] saved level §e${getLvl(p)}§7, scoreboard ot_level §e${board}`)
