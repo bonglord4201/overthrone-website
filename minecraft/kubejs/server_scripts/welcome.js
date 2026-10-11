@@ -1,5 +1,6 @@
 // OVERTHRONE - join welcome message + rotating chat announcements (OG Network style).
 // Drop into kubejs/server_scripts/ and restart. Edit the text below; links are clickable in chat.
+// Test (op): /announce = send the next announcement now, /announce welcome = see the join message.
 
 (function () {
   const WEBSITE = 'https://overthronesmp.net'
@@ -65,10 +66,22 @@
       t('Events, giveaways and updates: ', 'gray'), link('discord.gg/overthronesmp', DISCORD, 'gold')],
   ]
   var next = 0
+  const announce = (s) => {
+    send(s, '@a', [RULE, nl].concat(ANNOUNCEMENTS[next % ANNOUNCEMENTS.length]()).concat([nl, RULE]))
+    next++
+  }
   ServerEvents.tick(event => {
     var s = event.server
     if (s.tickCount % (ANNOUNCE_EVERY_MINUTES * 1200) !== 0 || s.players.size() === 0) return
-    send(s, '@a', [RULE, nl].concat(ANNOUNCEMENTS[next % ANNOUNCEMENTS.length]()).concat([nl, RULE]))
-    next++
+    announce(s)
+  })
+
+  // Staff test commands:  /announce          sends the next announcement to everyone now
+  //                       /announce welcome  shows you the join message
+  ServerEvents.commandRegistry(event => {
+    const { commands: Commands } = event
+    event.register(Commands.literal('announce').requires(src => src.hasPermission(2))
+      .executes(ctx => { announce(ctx.source.server); return 1 })
+      .then(Commands.literal('welcome').executes(ctx => { welcome(ctx.source.playerOrException); return 1 })))
   })
 })()
