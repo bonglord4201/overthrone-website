@@ -28,7 +28,8 @@ const load = (server) => {
 }
 const save = (server) => server.persistentData.putString(STORE_KEY, JSON.stringify(crates))
 
-const dust = (c, scale) => `minecraft:dust{color:[${c[0]},${c[1]},${c[2]}],scale:${scale}}`
+// Decimals only (1.00 not 1): Minecraft rejects a colour list that mixes 1 and 0.35.
+const dust = (c, scale) => `minecraft:dust{color:[${c[0].toFixed(2)},${c[1].toFixed(2)},${c[2].toFixed(2)}],scale:${scale.toFixed(2)}}`
 const f = (n) => n.toFixed(2)
 
 // Points to draw this frame for one crate. (x, y, z) = centre of the crate block.

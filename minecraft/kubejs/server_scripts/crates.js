@@ -25,9 +25,21 @@
   const SHARDS_CMD = 'shards give {p}'
 
   // Builds an item string with a coloured name and enchant levels (levels above vanilla max are fine).
+  // color can be one colour, or a list of hex colours for a multi-coloured (gradient) name like OG's.
+  const hex = (h) => [parseInt(h.substr(1, 2), 16), parseInt(h.substr(3, 2), 16), parseInt(h.substr(5, 2), 16)]
+  const gradient = (text, stops) => {
+    var out = [''], cols = stops.map(hex), n = Math.max(1, text.length - 1)
+    for (var i = 0; i < text.length; i++) {
+      var pos = i / n * (cols.length - 1), seg = Math.min(cols.length - 2, Math.floor(pos)), u = pos - seg
+      var c = [0, 1, 2].map(j => Math.round(cols[seg][j] + (cols[seg + 1][j] - cols[seg][j]) * u))
+      out.push({ text: text[i], color: '#' + c.map(v => ('0' + v.toString(16)).slice(-2)).join(''), bold: true, italic: false })
+    }
+    return out
+  }
   const gear = (id, name, color, ench, extra) => {
     var e = Object.keys(ench).map(k => `"minecraft:${k}":${ench[k]}`).join(',')
-    var nm = JSON.stringify({ text: name, color: color, bold: true, italic: false }).replace(/'/g, "\\'")
+    var comp = Array.isArray(color) ? gradient(name, color) : { text: name, color: color, bold: true, italic: false }
+    var nm = JSON.stringify(comp).replace(/'/g, "\\'")
     return `minecraft:${id}[custom_name='${nm}',` +
       `enchantments={levels:{${e}}}${extra ? ',' + extra : ''}]`
   }
@@ -57,27 +69,27 @@
       type: 'redeem', name: 'ARMOR CRATE', keyName: 'Armor Key', color: 'purple', dust: [1.0, 0.35, 0.85],
       keyHint: 'Keys available on store', particles: true,
       rewards: [
-        { give: gear('netherite_helmet', 'Throne Guard Helmet', 'red', PROT4), cost: 3 },
-        { give: gear('netherite_chestplate', 'Throne Guard Chestplate', 'red', PROT4), cost: 3 },
-        { give: gear('netherite_leggings', 'Throne Guard Leggings', 'red', PROT4), cost: 3 },
-        { give: gear('netherite_boots', 'Throne Guard Boots', 'red', PROT4), cost: 3 },
-        { give: gear('elytra', "Monarch's Wings", 'light_purple', { unbreaking: 8, mending: 1 }), cost: 2 },
-        { give: gear('shield', 'Bastion Shield', 'gold', { unbreaking: 8, mending: 1 }), cost: 2 },
-        { give: gear('netherite_helmet', 'Abyssal Helm', 'dark_aqua', { respiration: 8, aqua_affinity: 1, thorns: 3, unbreaking: 8, mending: 1 }), cost: 4 },
-        { give: gear('netherite_leggings', 'Shadowstep Leggings', 'dark_purple', { swift_sneak: 3, thorns: 3, unbreaking: 8, mending: 1 }), cost: 4 },
-        { give: gear('netherite_boots', 'Frostbound Boots', 'aqua', { frost_walker: 10, feather_falling: 9, thorns: 3, unbreaking: 8, mending: 1 }), cost: 4 },
+        { give: gear('netherite_helmet', 'Throne Guard Helmet', ['#ff2a2a', '#ffb000'], PROT4), cost: 3 },
+        { give: gear('netherite_chestplate', 'Throne Guard Chestplate', ['#ff2a2a', '#ffb000'], PROT4), cost: 3 },
+        { give: gear('netherite_leggings', 'Throne Guard Leggings', ['#ff2a2a', '#ffb000'], PROT4), cost: 3 },
+        { give: gear('netherite_boots', 'Throne Guard Boots', ['#ff2a2a', '#ffb000'], PROT4), cost: 3 },
+        { give: gear('elytra', "Monarch's Wings", ['#c86bff', '#ff7ad9'], { unbreaking: 8, mending: 1 }), cost: 2 },
+        { give: gear('shield', 'Bastion Shield', ['#ffe36b', '#ff8c00'], { unbreaking: 8, mending: 1 }), cost: 2 },
+        { give: gear('netherite_helmet', 'Abyssal Helm', ['#00e5ff', '#3d5afe'], { respiration: 8, aqua_affinity: 1, thorns: 3, unbreaking: 8, mending: 1 }), cost: 4 },
+        { give: gear('netherite_leggings', 'Shadowstep Leggings', ['#c86bff', '#4a00e0', '#c86bff'], { swift_sneak: 3, thorns: 3, unbreaking: 8, mending: 1 }), cost: 4 },
+        { give: gear('netherite_boots', 'Frostbound Boots', ['#e0f7ff', '#4fc3f7', '#0091ea'], { frost_walker: 10, feather_falling: 9, thorns: 3, unbreaking: 8, mending: 1 }), cost: 4 },
       ],
     },
     weapon: {
       type: 'redeem', name: 'WEAPON CRATE', keyName: 'Weapon Key', color: 'gold', dust: [1.0, 0.55, 0.1],
       keyHint: 'Keys available on store', particles: true,
       rewards: [
-        { give: gear('netherite_sword', 'Kingslayer', 'dark_red', { sharpness: 8, smite: 10, bane_of_arthropods: 10 }), cost: 3 },
-        { give: gear('bow', 'Bloodmoon Bow', 'red', { power: 8, flame: 1, punch: 8 }), cost: 3 },
-        { give: gear('netherite_pickaxe', "Overlord's Pick", 'gold', { fortune: 8, efficiency: 8, unbreaking: 8, mending: 1 }), cost: 2 },
-        { give: gear('netherite_axe', "Overlord's Axe", 'gold', { sharpness: 8, fire_aspect: 2, silk_touch: 1, efficiency: 8, unbreaking: 8, mending: 1 }), cost: 4 },
-        { give: gear('netherite_hoe', "Overlord's Hoe", 'gold', { silk_touch: 1, efficiency: 8, unbreaking: 8, mending: 1 }), cost: 2 },
-        { give: gear('crossbow', 'Dreadforge Crossbow', 'dark_red', { piercing: 9, multishot: 1, quick_charge: 5, unbreaking: 8, mending: 1 }), cost: 4 },
+        { give: gear('netherite_sword', 'Kingslayer', ['#ff0000', '#ff7b00', '#ffe600'], { sharpness: 8, smite: 10, bane_of_arthropods: 10 }), cost: 3 },
+        { give: gear('bow', 'Bloodmoon Bow', ['#8b0000', '#ff3b3b', '#8b0000'], { power: 8, flame: 1, punch: 8 }), cost: 3 },
+        { give: gear('netherite_pickaxe', "Overlord's Pick", ['#00c6ff', '#0072ff'], { fortune: 8, efficiency: 8, unbreaking: 8, mending: 1 }), cost: 2 },
+        { give: gear('netherite_axe', "Overlord's Axe", ['#f7971e', '#ffd200'], { sharpness: 8, fire_aspect: 2, silk_touch: 1, efficiency: 8, unbreaking: 8, mending: 1 }), cost: 4 },
+        { give: gear('netherite_hoe', "Overlord's Hoe", ['#56ab2f', '#a8e063'], { silk_touch: 1, efficiency: 8, unbreaking: 8, mending: 1 }), cost: 2 },
+        { give: gear('crossbow', 'Dreadforge Crossbow', ['#ff6a00', '#ee0979'], { piercing: 9, multishot: 1, quick_charge: 5, unbreaking: 8, mending: 1 }), cost: 4 },
       ],
     },
   }
@@ -192,7 +204,8 @@
   }
 
   // ---------------------------------------------------------------- particles (OG-style drifting pixels + a slow ring)
-  const dust = (c, s) => `minecraft:dust{color:[${c[0]},${c[1]},${c[2]}],scale:${s}}`
+  // Numbers must be written as decimals (1.00, not 1): Minecraft rejects a colour list that mixes 1 and 0.35.
+  const dust = (c, s) => `minecraft:dust{color:[${c[0].toFixed(2)},${c[1].toFixed(2)},${c[2].toFixed(2)}],scale:${s.toFixed(2)}}`
   ServerEvents.tick(event => {
     const server = event.server, t = server.tickCount
     if (t % 3 !== 0) return
@@ -213,14 +226,19 @@
       }
       if (!near || c.particles === false) continue
       var x = at.x + 0.5, y = at.y + 0.5, z = at.z + 0.5, a = t * 0.08
-      // three arms spiralling up and outward around the crate
-      for (let k = 0; k < 3; k++) {
-        var h = ((t * 0.012) + k / 3) % 1, ang = a + k * 2.094 + h * 5
-        var rad = 0.45 + h * 0.8
-        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.3)} ${f(x + Math.cos(ang) * rad)} ${f(y - 0.3 + h * 2.2)} ${f(z + Math.sin(ang) * rad)} 0 0 0 0 1 normal`)
+      // OG Network style: big coloured pixels that burst out of the crate and drift away, a slow ring
+      // orbiting it, and grey ash floating around. (count 0 = the numbers are the direction it flies.)
+      for (var k = 0; k < 3; k++) {
+        var ang = Math.random() * Math.PI * 2, out = 0.6 + Math.random() * 1.4
+        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.6 + Math.random() * 1.2)} ` +
+          `${f(x + Math.cos(ang) * 0.4)} ${f(y + Math.random() * 0.8)} ${f(z + Math.sin(ang) * 0.4)} ` +
+          `${f(Math.cos(ang) * out)} ${f(0.15 + Math.random() * 0.6)} ${f(Math.sin(ang) * out)} 1 0 normal`)
       }
-      // a soft cloud of pixels puffing out of the crate, like OG Network
-      run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.6)} ${f(x)} ${f(y + 0.7)} ${f(z)} 0.75 0.5 0.75 0 3 normal`)
+      for (var k = 0; k < 2; k++) {
+        var ang = a + k * Math.PI
+        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.2)} ${f(x + Math.cos(ang) * 1.1)} ${f(y + 0.2 + 0.25 * Math.sin(a * 2))} ${f(z + Math.sin(ang) * 1.1)} 0 0 0 0 1 normal`)
+      }
+      if (t % 6 === 0) run(server, `execute in ${at.dim} run particle minecraft:white_ash ${f(x)} ${f(y + 0.8)} ${f(z)} 1.3 0.8 1.3 0 6 normal`)
       if (t % 9 === 0) run(server, `execute in ${at.dim} run particle minecraft:end_rod ${f(x)} ${f(y - 0.6)} ${f(z)} 0.05 0 0.05 0.02 1 normal`)
     }
   })
@@ -303,7 +321,12 @@
             var have = keys(p, id), ok = have >= r.cost
             slot.item = shown(p.server, r, [`§fRequired Keys: §e${r.cost}`, `§7You have: ${ok ? '§a' : '§c'}${have}`,
               ok ? '§eLeft-click§7: redeem this reward' : '§cYou need more ' + (CRATES[id].keyName || 'keys') + 's'])
-            slot.leftClicked = e => { redeem(p, id, r); preview(p, id) }
+            // KubeJS takes your items out while its menu is open and puts them back after it closes, so close the
+            // menu, wait for the items to come back, then redeem and reopen.
+            slot.leftClicked = e => {
+              try { p.closeContainer() } catch (x) { }
+              p.server.scheduleInTicks(3, () => { try { redeem(p, id, r); preview(p, id) } catch (x) { console.error('[OVERTHRONE crates] redeem failed: ' + x) } })
+            }
           } else {
             slot.item = shown(p.server, r, [`§eChance: ${pctOf(list, r)}%`].concat(r.rare ? ['§6§lRARE'] : []))
           }
