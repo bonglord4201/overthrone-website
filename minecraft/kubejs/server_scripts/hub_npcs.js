@@ -46,6 +46,28 @@
   }
   const header = (p, title) => tell(p, [{ text: '━━━━━━ ' + title + ' ━━━━━━', color: 'red', bold: true }])
 
+  // Talk to an NPC -> its clickable links go straight to chat.
+  const lastTalk = {}
+  const npcLinks = (p, name) => {
+    if (name == 'ranks' || name == 'rank') {
+      tell(p, [{ text: 'Buy a rank here:', color: 'gold', bold: true }]); showLink(p, 'store')
+    } else if (/info/.test(name)) {
+      header(p, 'OVERTHRONE LINKS'); Object.keys(LINKS).forEach(id => showLink(p, id)); showVotes(p)
+    } else if (/crate/.test(name)) {
+      tell(p, [{ text: 'Get crate keys:', color: 'gold', bold: true }]); showLink(p, 'store'); showVotes(p)
+    }
+  }
+  ItemEvents.entityInteracted(event => {
+    try {
+      var p = event.player, e = event.target
+      if (p == null || e == null || String(e.type).indexOf('easy_npc') < 0) return
+      var now = Date.now(), last = lastTalk[p.username] || 0
+      if (now - last < 1500) return
+      lastTalk[p.username] = now
+      npcLinks(p, String(e.getName().getString()).toLowerCase().trim())
+    } catch (x) { console.warn('[hub_npcs] ' + x) }
+  })
+
   ServerEvents.commandRegistry(event => {
     const { commands: Commands } = event
     var cmd = Commands.literal('links').executes(ctx => {
@@ -58,6 +80,7 @@
     Object.keys(LINKS).forEach(id => {
       cmd = cmd.then(Commands.literal(id).executes(ctx => {
         var p = ctx.source.playerOrException
+        console.info('[links] ' + p.username + ' ' + id)
         tell(p, [{ text: 'Click the link to open it:', color: 'gray' }])
         showLink(p, id)
         return 1
@@ -115,13 +138,10 @@
   }
 
   const CRATE_LINES = (c) => [
-    c + 'Crates',
-    'Vote Keys: vote every day with /vote.',
-    'Weapon, Armor & Rune Keys: on the store.',
-    'Legendary, Mythic & Event Keys: events, bosses & quests.',
-    'Right-click a crate with its key to open it.',
-    'Left-click a crate to see its rewards.',
-    'All paid keys are non-RNG: you pick what you win!',
+    c + 'Vote Keys: /vote every day.',
+    'Weapon, Armor & Rune Keys: store.',
+    'Right-click a crate with a key to open it.',
+    'Left-click a crate to see the rewards.',
   ]
   const CRATE_BUTTONS = () => [btn('Vote for Keys', '/vote'), btn('Buy Keys', '/links store')]
   const CRATES_DEF = {
@@ -161,8 +181,8 @@
       var d2 = npcs[k], s2 = startPage(d2), c2 = codeOf(s2.page.lines && s2.page.lines[0])
       s2.page.lines = [
         c2 + 'Welcome to OVERTHRONE SMP!',
-        'Click a button below and the link pops up in chat.',
-        'Then click the link in chat to open it.',
+        'All our links are now in your chat.',
+        'Close this and click a link to open it.',
       ]
       var keep = (s2.page.buttons || []).filter(b => b.page != null)
       s2.page.buttons = [
