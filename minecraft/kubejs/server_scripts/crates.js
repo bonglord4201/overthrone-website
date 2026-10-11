@@ -139,15 +139,15 @@
 
   // ---- "CRATES INFO" board (floating text near the crates). Edit the lines here, then /crate infoboard place again.
   const INFO_BOARD = [
-    { text: 'CRATES INFO', color: 'red', bold: true },
+    { text: 'CRATES INFO', color: '#FF3B3B', bold: true },
     { text: '' },
-    { text: 'Get VOTE KEYS by voting every day: /vote', color: 'green' },
-    { text: 'WEAPON, ARMOR & RUNE KEYS at overthronesmp.tebex.store', color: 'gold' },
-    { text: 'LEGENDARY, MYTHIC & EVENT KEYS: earn them from events, bosses & quests', color: 'light_purple' },
-    { text: 'Left-click a crate to see its rewards', color: 'gray' },
+    { text: 'Get VOTE KEYS by voting every day: /vote', color: '#5CFF5C', bold: true },
+    { text: 'WEAPON, ARMOR & RUNE KEYS at overthronesmp.tebex.store', color: '#FFD84A', bold: true },
+    { text: 'LEGENDARY, MYTHIC & EVENT KEYS: events, bosses & quests', color: '#FF8CFF', bold: true },
+    { text: 'Left-click a crate to see its rewards', color: '#FFFFFF' },
     { text: '' },
-    { text: 'ALL PAID KEYS ARE NON-RNG', color: 'red', bold: true },
-    { text: 'YOU GET TO PICK WHAT YOU WIN', color: 'red', bold: true },
+    { text: 'ALL PAID KEYS ARE NON-RNG', color: '#FF4D4D', bold: true },
+    { text: 'YOU GET TO PICK WHAT YOU WIN', color: '#FF4D4D', bold: true },
   ]
   const HOLO_COLORS = { green: 'green', red: 'red', gold: 'gold', purple: 'light_purple', aqua: 'aqua', blue: 'blue', white: 'white' }
   const StringArg = Java.loadClass('com.mojang.brigadier.arguments.StringArgumentType')
@@ -573,6 +573,22 @@
     const crateOf = (ctx) => String(StringArg.getString(ctx, 'crate')).toLowerCase()
     const known = (ctx, id) => { if (CRATES[id]) return true; reply(ctx, '§cUnknown crate. Crates: ' + Object.keys(CRATES).join(', ')); return false }
     const staff = src => src.hasPermission(2)
+    // CRATES INFO board: <height> blocks above your feet (default 3). Full brightness and a dark
+    // background so it's easy to read day and night.
+    const placeInfoBoard = (ctx, height) => {
+      const p = ctx.source.playerOrException, server = p.server
+      run(server, 'kill @e[type=minecraft:text_display,tag=ot_crate_infoboard]')
+      var comp = ['']
+      INFO_BOARD.forEach((l, i) => { comp.push(Object.assign({}, l, { text: (i ? '\n' : '') + l.text })) })
+      // Inside the command the text is a quoted string, where Minecraft only accepts \\ and \' escapes:
+      // so the JSON's own backslashes (the \n line breaks) must be doubled first, then quotes escaped.
+      var json = JSON.stringify(comp).replace(/\\/g, '\\\\').replace(/'/g, "\\'")
+      run(server, `execute in ${p.level.dimension} run summon minecraft:text_display ${f(p.x)} ${f(p.y + Math.max(0, height))} ${f(p.z)} ` +
+        `{Tags:["ot_crate_infoboard"],billboard:"vertical",alignment:"center",shadow:1b,line_width:400,background:-1325400064,` +
+        `brightness:{sky:15,block:15},transformation:[1.6f,0f,0f,0f,0f,1.6f,0f,0f,0f,0f,1.6f,0f,0f,0f,0f,1f],text:'${json}'}`)
+      reply(ctx, `§aCrates info board placed ${height} blocks above you. §7(/crate infoboard place <height> to move it, /crate infoboard remove to take it down)`)
+      return 1
+    }
     const keyCmd = (sign) => Commands.argument('player', Arguments.PLAYER.create(event)).then(crateArg()
       .then(Commands.argument('amount', Arguments.INTEGER.create(event)).executes(ctx => {
         const p = Arguments.PLAYER.getResult(ctx, 'player'), id = crateOf(ctx), n = Arguments.INTEGER.getResult(ctx, 'amount')
@@ -655,19 +671,9 @@
           })))))
       )
       .then(Commands.literal('infoboard').requires(staff)
-        .then(Commands.literal('place').executes(ctx => {
-          const p = ctx.source.playerOrException, server = p.server
-          run(server, 'kill @e[type=minecraft:text_display,tag=ot_crate_infoboard]')
-          var comp = ['']
-          INFO_BOARD.forEach((l, i) => { comp.push(Object.assign({}, l, { text: (i ? '\n' : '') + l.text })) })
-          // Inside the command the text is a quoted string, where Minecraft only accepts \\ and \' escapes:
-          // so the JSON's own backslashes (the \n line breaks) must be doubled first, then quotes escaped.
-          var json = JSON.stringify(comp).replace(/\\/g, '\\\\').replace(/'/g, "\\'")
-          run(server, `execute in ${p.level.dimension} run summon minecraft:text_display ${f(p.x)} ${f(p.y + 1.6)} ${f(p.z)} ` +
-            `{Tags:["ot_crate_infoboard"],billboard:"vertical",alignment:"center",shadow:1b,line_width:400,background:1342177280,` +
-            `transformation:[1.4f,0f,0f,0f,0f,1.4f,0f,0f,0f,0f,1.4f,0f,0f,0f,0f,1f],text:'${json}'}`)
-          reply(ctx, '§aCrates info board placed here. §7(/crate infoboard remove to take it down)'); return 1
-        }))
+        .then(Commands.literal('place')
+          .executes(ctx => placeInfoBoard(ctx, 3))
+          .then(Commands.argument('height', Arguments.INTEGER.create(event)).executes(ctx => placeInfoBoard(ctx, Arguments.INTEGER.getResult(ctx, 'height')))))
         .then(Commands.literal('remove').executes(ctx => {
           run(ctx.source.server, 'kill @e[type=minecraft:text_display,tag=ot_crate_infoboard]')
           reply(ctx, '§eCrates info board removed.'); return 1
