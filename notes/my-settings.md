@@ -16,5 +16,6 @@
 - config/serversetup/scoreboard.json  Store link in the sidebar
 - config/serversetup/npc_texts.json   Links shown by the Ranks and Server Info NPCs
 - config/votifier/voting_sites.json   Vote message and voting site URLs
+- config/serversetup/coordinates.json  Positions (x/y/z) of all the setup's holograms and NPCs
 Edit, keep quotes/commas/colour codes, save, restart. Real links: store https://overthronesmp.tebex.store,
 website https://overthronesmp.net, Discord https://discord.gg/overthronesmp
