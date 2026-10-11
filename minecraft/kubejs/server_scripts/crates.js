@@ -67,6 +67,7 @@
     // "redeem" crates (like OG's armor/weapon crates): open the menu, pick an item, pay its key cost.
     armor: {
       type: 'redeem', name: 'ARMOR CRATE', keyName: 'Armor Key', color: 'purple', dust: [1.0, 0.35, 0.85],
+      petals: 'minecraft:cherry_leaves',   // extra falling pink petals
       keyHint: 'Keys available on store', particles: true,
       rewards: [
         { give: gear('netherite_helmet', 'Throne Guard Helmet', ['#ff2a2a', '#ffb000'], PROT4), cost: 3 },
@@ -219,7 +220,6 @@
   const dust = (c, s) => `minecraft:dust{color:[${c[0].toFixed(2)},${c[1].toFixed(2)},${c[2].toFixed(2)}],scale:${s.toFixed(2)}}`
   ServerEvents.tick(event => {
     const server = event.server, t = server.tickCount
-    if (t % 2 !== 0) return
     const all = load(server), ids = Object.keys(all)
     for (let i = 0; i < ids.length; i++) {
       var c = CRATES[ids[i]], at = all[ids[i]]
@@ -232,32 +232,29 @@
         var dx = p.x - at.x - 0.5, dy = p.y - at.y, dz = p.z - at.z - 0.5
         var d2 = dx * dx + dy * dy + dz * dz
         if (d2 < 48 * 48) near = true
-        if (d2 < 5 * 5 && t % 16 === 0)   // "Keys available" for this player, over the hotbar
+        if (d2 < 5 * 5 && t % 20 === 0)   // "Keys available" for this player, over the hotbar
           run(server, `title ${p.username} actionbar {"text":"${c.name} · Keys available: ${keys(p, ids[i])}","color":"yellow"}`)
       }
       if (!near || c.particles === false) continue
       var x = at.x + 0.5, y = at.y + 0.5, z = at.z + 0.5, a = t * 0.08
-      // OG Network style: small coloured pixels racing round the crate. Each one is fired along the circle
-      // (count 0 = the numbers are its direction), so it visibly moves instead of hanging in one spot.
-      // Small particles die quickly, so you see them travel rather than piling into a blob.
-      var spin = t * 0.35
-      for (var k = 0; k < 3; k++) {                       // lower ring, clockwise
-        var ang = spin + k * 2.094, r1 = 0.95
-        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.0)} ${f(x + Math.cos(ang) * r1)} ${f(y - 0.25)} ${f(z + Math.sin(ang) * r1)} ` +
-          `${f(-Math.sin(ang))} 0.00 ${f(Math.cos(ang))} 1 0 normal`)
+      // OG Network style: two "comets" of coloured pixels chasing each other round the crate, plus a light
+      // sprinkle of pixels around it. Dust can't be given a speed, so the movement comes from placing a new
+      // small pixel a bit further round every tick; small pixels fade fast, so each comet leaves a short tail
+      // and you can see it travel. (Bigger pixels live longer and just pile up into a blob.)
+      var spin = t * 0.30
+      for (var k = 0; k < 2; k++) {
+        var ang = spin + k * Math.PI
+        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 0.7)} ${f(x + Math.cos(ang) * 0.95)} ${f(y - 0.3)} ${f(z + Math.sin(ang) * 0.95)} 0 0 0 0 1 normal`)
+        var ang2 = -spin * 1.15 + k * Math.PI + 1.57
+        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 0.6)} ${f(x + Math.cos(ang2) * 0.8)} ${f(y + 0.2)} ${f(z + Math.sin(ang2) * 0.8)} 0 0 0 0 1 normal`)
       }
-      for (var k = 0; k < 2; k++) {                       // upper ring (just below the top of the crate), the other way
-        var ang = -spin * 1.2 + k * Math.PI, r2 = 0.75
-        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 0.9)} ${f(x + Math.cos(ang) * r2)} ${f(y + 0.3)} ${f(z + Math.sin(ang) * r2)} ` +
-          `${f(Math.sin(ang))} 0.00 ${f(-Math.cos(ang))} 1 0 normal`)
+      if (t % 2 === 0) {
+        var r3 = 0.7 + Math.random() * 0.9, ang3 = Math.random() * Math.PI * 2
+        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.1)} ${f(x + Math.cos(ang3) * r3)} ${f(y - 0.4 + Math.random() * 1.1)} ${f(z + Math.sin(ang3) * r3)} 0 0 0 0 1 normal`)
       }
-      if (t % 4 === 0) {                                  // now and then one flies off
-        var fly = Math.random() * Math.PI * 2
-        run(server, `execute in ${at.dim} run particle ${dust(c.dust, 1.2)} ${f(x + Math.cos(fly) * 0.6)} ${f(y)} ${f(z + Math.sin(fly) * 0.6)} ` +
-          `${f(Math.cos(fly))} ${f(0.4 + Math.random() * 0.4)} ${f(Math.sin(fly))} 1 0 normal`)
-      }
-      if (t % 6 === 0) run(server, `execute in ${at.dim} run particle minecraft:white_ash ${f(x)} ${f(y + 0.8)} ${f(z)} 1.3 0.8 1.3 0 6 normal`)
-      if (t % 10 === 0) run(server, `execute in ${at.dim} run particle minecraft:end_rod ${f(x)} ${f(y - 0.6)} ${f(z)} 0.05 0 0.05 0.02 1 normal`)
+      if (c.petals && t % 4 === 0) run(server, `execute in ${at.dim} run particle ${c.petals} ${f(x)} ${f(y + 0.9)} ${f(z)} 0.9 0.3 0.9 0 1 normal`)
+      if (t % 8 === 0) run(server, `execute in ${at.dim} run particle minecraft:white_ash ${f(x)} ${f(y + 0.8)} ${f(z)} 1.3 0.8 1.3 0 6 normal`)
+      if (t % 16 === 0) run(server, `execute in ${at.dim} run particle minecraft:end_rod ${f(x)} ${f(y - 0.6)} ${f(z)} 0.05 0 0.05 0.02 1 normal`)
     }
   })
 
