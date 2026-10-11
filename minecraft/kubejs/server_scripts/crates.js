@@ -200,20 +200,39 @@
     if (lastClick[k] !== undefined && now - lastClick[k] < 5) return false
     lastClick[k] = now; return true
   }
-  BlockEvents.rightClicked(event => {
-    const id = crateAt(event.server, event.block)
-    if (!id) return
+  // Any error is shown to staff in chat (and the console) instead of failing silently.
+  const guarded = (what, event, fn) => {
+    try { fn() } catch (e) {
+      console.error('[OVERTHRONE crates] ' + what + ' failed: ' + e)
+      try { if (event.player.hasPermissions(2)) event.player.tell('§c[crates] ' + what + ' failed: ' + e) } catch (e2) { }
+    }
+  }
+  // Staff holding a key on a block that isn't a crate get told why, to make setup problems obvious.
+  const explainMiss = (event) => {
+    var p = event.player, b = event.block
+    if (!p.hasPermissions(2)) return
+    var ids = Object.keys(CRATES), holding = false
+    for (var i = 0; i < ids.length; i++) if (isKey(p.mainHandItem, ids[i])) holding = true
+    if (!holding) return
+    var all = load(p.server), saved = Object.keys(all).map(k => `${k} @ ${all[k].x} ${all[k].y} ${all[k].z} ${all[k].dim}`).join(', ')
+    p.tell(`§7[crates] Not a crate: you clicked ${b.x} ${b.y} ${b.z} ${b.level.dimension}. Saved crates: ${saved || 'none'}`)
+  }
+  const serverOf = (event) => event.player.server
+  BlockEvents.rightClicked(event => guarded('opening', event, () => {
+    const id = crateAt(serverOf(event), event.block)
+    if (!id) { if (String(event.hand) === 'MAIN_HAND') explainMiss(event); return }
     event.cancel()   // don't open the shulker box itself
     if (debounce(event.player)) openCrate(event.player, id)
-  })
-  BlockEvents.leftClicked(event => {
-    const id = crateAt(event.server, event.block)
+  }))
+  BlockEvents.leftClicked(event => guarded('preview', event, () => {
+    const id = crateAt(serverOf(event), event.block)
     if (!id) return
     event.cancel()
     if (debounce(event.player)) preview(event.player, id)
-  })
+  }))
   BlockEvents.broken(event => {
-    const id = crateAt(event.server, event.block)
+    if (!event.player) return
+    const id = crateAt(serverOf(event), event.block)
     if (!id) return
     if (!(event.player && event.player.hasPermissions(2) && event.player.isShiftKeyDown())) {
       event.cancel()
