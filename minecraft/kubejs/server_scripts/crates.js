@@ -89,7 +89,7 @@
     const lines = [
       [2.25, `{"text":"${c.name}","color":"${col}","bold":true}`, 1.3],
       [1.95, `{"text":"Right-click with a ${c.keyName || 'key'} to open","color":"gray"}`, 0.8],
-      [1.75, '{"text":"Left-click to preview","color":"gray"}', 0.8],
+      [1.75, '{"text":"Left-click or sneak + right-click to preview","color":"gray"}', 0.8],
       [1.50, `{"text":"${c.keyHint}","color":"yellow"}`, 0.75],
     ]
     lines.forEach(l => {
@@ -182,6 +182,7 @@
       p.openMenu(new SimpleMenuProvider((cid, inv, pl) => ChestMenu.threeRows(cid, inv, box), Text.of(c.name + ' Rewards')))
     } catch (e) {   // fallback: list the rewards in chat
       console.warn('[OVERTHRONE crates] preview menu failed, using chat: ' + e)
+      if (p.hasPermissions(2)) p.tell('§c[crates] preview menu failed: ' + e)
       p.tell(`§6§l${c.name} §7rewards:`)
       c.rewards.forEach(r => p.tell(`§7 • ${r.rare ? '§6' : '§f'}${label(r)} §8(${pct(c, r)}%)`))
     }
@@ -224,7 +225,9 @@
     guarded('opening', event, () => {
       id = crateAt(serverOf(event), event.block)
       if (!id) { if (String(event.hand) === 'MAIN_HAND') explainMiss(event); return }
-      if (debounce(event.player)) openCrate(event.player, id)
+      if (!debounce(event.player)) return
+      if (event.player.isShiftKeyDown()) preview(event.player, id)   // sneak + right-click = preview
+      else openCrate(event.player, id)
     })
     if (id) event.cancel()   // don't open the shulker box itself
   })
@@ -282,6 +285,11 @@
         run(ctx.source.server, `kill @e[type=minecraft:text_display,tag=ot_crate_${id}]`)
         delete all[id]; save(ctx.source.server)
         reply(ctx, `§eRemoved crate ${id}.`); return 1
+      })))
+      .then(Commands.literal('preview').then(crateArg().executes(ctx => {
+        const id = crateOf(ctx)
+        if (!known(ctx, id)) return 0
+        preview(ctx.source.playerOrException, id); return 1
       })))
       .then(Commands.literal('hologram').requires(staff).then(crateArg().executes(ctx => {
         placeHologram(ctx.source.server, crateOf(ctx)); reply(ctx, '§aHologram placed.'); return 1
