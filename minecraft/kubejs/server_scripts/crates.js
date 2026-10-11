@@ -45,6 +45,8 @@
   }
   const PROT4 = { protection: 9, blast_protection: 9, fire_protection: 9, projectile_protection: 9, unbreaking: 8, mending: 1 }
 
+  // NEW CRATES: copy a block below and give it a name, colour and dust: [r, g, b] (0.0-1.0). Every crate
+  // automatically gets the same particle effect (circling ring + colour motes + specks) in its own colours.
   const CRATES = {
     vote: {
       name: 'VOTING CRATE', keyName: 'Vote Key', color: 'green', dust: [0.35, 0.95, 0.25], spores: [[0.35, 0.95, 0.25], [0.75, 1.0, 0.3], [0.2, 0.8, 0.6], [1.0, 1.0, 0.6]], keyHint: 'Free keys daily: /vote',
@@ -218,6 +220,14 @@
   // ---------------------------------------------------------------- particles (OG-style drifting pixels + a slow ring)
   // Numbers must be written as decimals (1.00, not 1): Minecraft rejects a colour list that mixes 1 and 0.35.
   const dust = (c, s) => `minecraft:dust{color:[${c[0].toFixed(2)},${c[1].toFixed(2)},${c[2].toFixed(2)}],scale:${s.toFixed(2)}}`
+  // Every crate gets the same particle effect in its own colours: give a crate just a dust colour and
+  // it gets a matching palette (its colour, a lighter and a darker shade, and a near-white tint).
+  const paletteOf = (c) => {
+    if (c.spores) return c.spores
+    var d = c.dust, mix = (k, to) => d.map(v => Math.min(1, v + (to - v) * k))
+    c.spores = [d, mix(0.45, 1), d.map(v => v * 0.65), mix(0.75, 1)]
+    return c.spores
+  }
   const fade = (c1, c2, s) => `minecraft:dust_color_transition{from_color:[${c1[0].toFixed(2)},${c1[1].toFixed(2)},${c1[2].toFixed(2)}],to_color:[${c2[0].toFixed(2)},${c2[1].toFixed(2)},${c2[2].toFixed(2)}],scale:${s.toFixed(2)}}`
   ServerEvents.tick(event => {
     const server = event.server, t = server.tickCount
@@ -244,16 +254,20 @@
       var spin = t * 0.28
       for (var k = 0; k < 3; k++) {
         var ang = spin + k * 2.094
-        run(server, `execute in ${at.dim} run particle ${fade(c.dust, [1.0, 1.0, 1.0], 0.8)} ${f(x + Math.cos(ang) * 0.85)} ${f(y)} ${f(z + Math.sin(ang) * 0.85)} 0 0 0 0 1 normal`)
+        run(server, `execute in ${at.dim} run particle ${fade(c.dust, [1.0, 1.0, 1.0], 1.15)} ${f(x + Math.cos(ang) * 0.9)} ${f(y)} ${f(z + Math.sin(ang) * 0.9)} 0 0 0 0 1 normal`)
       }
       // Spore-blossom style motes in several colours drifting around the crate, plus real spore blossom specks.
       if (t % 2 === 0) {
-        var pal = c.spores || [c.dust], col = pal[Math.floor(Math.random() * pal.length)]
+        var pal = paletteOf(c), col = pal[Math.floor(Math.random() * pal.length)]
         var r3 = 0.6 + Math.random() * 0.9, ang3 = Math.random() * Math.PI * 2
         run(server, `execute in ${at.dim} run particle ${fade(col, pal[(pal.indexOf(col) + 1) % pal.length], 0.9)} ` +
           `${f(x + Math.cos(ang3) * r3)} ${f(y - 0.4 + Math.random() * 1.2)} ${f(z + Math.sin(ang3) * r3)} 0 0 0 0 1 normal`)
       }
-      if (t % 4 === 0) run(server, `execute in ${at.dim} run particle minecraft:spore_blossom_air ${f(x)} ${f(y + 0.2)} ${f(z)} 0.9 0.6 0.9 0 2 normal`)
+      // spore-blossom specks in the crate's own colours (the real spore blossom particle can't be recoloured)
+      if (t % 3 === 0) {
+        var sp = paletteOf(c)[Math.floor(Math.random() * paletteOf(c).length)]
+        run(server, `execute in ${at.dim} run particle ${dust(sp, 0.55)} ${f(x)} ${f(y + 0.2)} ${f(z)} 1.0 0.7 1.0 0 3 normal`)
+      }
       if (c.petals && t % 4 === 0) run(server, `execute in ${at.dim} run particle ${c.petals} ${f(x)} ${f(y + 0.9)} ${f(z)} 0.9 0.3 0.9 0 1 normal`)
       if (t % 8 === 0) run(server, `execute in ${at.dim} run particle minecraft:white_ash ${f(x)} ${f(y + 0.8)} ${f(z)} 1.3 0.8 1.3 0 6 normal`)
       if (t % 16 === 0) run(server, `execute in ${at.dim} run particle minecraft:end_rod ${f(x)} ${f(y - 0.6)} ${f(z)} 0.05 0 0.05 0.02 1 normal`)
