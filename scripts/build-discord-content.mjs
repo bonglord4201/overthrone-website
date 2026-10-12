@@ -140,12 +140,13 @@ channels.push({ key: "commands", messages: pack([
   ].join("\n") },
   { title: "🛒 Shop, Kits & Cosmetics", description: [
     "**In-game** (or right-click the NPCs in the hub)",
-    "`/throneshop` Throne Shop: ranks, crate keys, chat tags, name colours, flight time",
+    "`/throneshop` Throne Shop: ranks, crate keys, tags, statuses, join messages, name/chat/glow colours, gradients, flight",
     "`/cratemenu` Every crate, your keys and how to get more",
     "`/kitmenu` Your rank kits and their cooldowns",
     "`/levelguide` Your level, XP and how to level up",
     "`/links` Discord, website, store, rules and vote links in chat",
-    "`/tags` Equip a chat tag you bought · `/namecolor` Equip a name colour you bought",
+    "`/cosmetics` Equip everything you bought from the Throne Shop",
+    "`/tags` · `/namecolor` · `/chatcolor` · `/glowcolor` · `/gradient` · `/status` · `/joinmessage` Equip one kind",
     "`/flytime` Turn bought flight on/off (time only counts down while flying) · `/flytime left` Time left",
     "`/crate keys` How many crate keys you have · `/vote` Vote for free keys"
   ].join("\n") },

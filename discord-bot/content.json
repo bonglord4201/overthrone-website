@@ -205,7 +205,7 @@
             },
             {
               "title": "🛒 Shop, Kits & Cosmetics",
-              "description": "**In-game** (or right-click the NPCs in the hub)\n`/throneshop` Throne Shop: ranks, crate keys, chat tags, name colours, flight time\n`/cratemenu` Every crate, your keys and how to get more\n`/kitmenu` Your rank kits and their cooldowns\n`/levelguide` Your level, XP and how to level up\n`/links` Discord, website, store, rules and vote links in chat\n`/tags` Equip a chat tag you bought · `/namecolor` Equip a name colour you bought\n`/flytime` Turn bought flight on/off (time only counts down while flying) · `/flytime left` Time left\n`/crate keys` How many crate keys you have · `/vote` Vote for free keys"
+              "description": "**In-game** (or right-click the NPCs in the hub)\n`/throneshop` Throne Shop: ranks, crate keys, tags, statuses, join messages, name/chat/glow colours, gradients, flight\n`/cratemenu` Every crate, your keys and how to get more\n`/kitmenu` Your rank kits and their cooldowns\n`/levelguide` Your level, XP and how to level up\n`/links` Discord, website, store, rules and vote links in chat\n`/cosmetics` Equip everything you bought from the Throne Shop\n`/tags` · `/namecolor` · `/chatcolor` · `/glowcolor` · `/gradient` · `/status` · `/joinmessage` Equip one kind\n`/flytime` Turn bought flight on/off (time only counts down while flying) · `/flytime left` Time left\n`/crate keys` How many crate keys you have · `/vote` Vote for free keys"
             },
             {
               "title": "🎮 Keys Worth Knowing",

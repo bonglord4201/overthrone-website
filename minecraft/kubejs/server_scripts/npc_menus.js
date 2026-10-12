@@ -20,7 +20,7 @@
 //   /npcmenu hologram <text...>                    (re)places the hologram over the NPC you are looking at.
 //                                                  Use | for a new line, e.g. /npcmenu hologram &6&lJOBS|&7Right-click
 // Players can also open the menus with commands: /throneshop  /kitmenu  /levelguide
-// Bought cosmetics: /tags (chat tag)  /namecolor (name colour)  /flytime (flight on/off)
+// Bought cosmetics: /cosmetics (all), /tags /namecolor /chatcolor /glowcolor /gradient /status /joinmessage, /flytime
 //
 // Throne Shop balance: the shop reads your Throne Shards from the same placeholder your sidebar uses
 // (the line with "SHARD" in config/serversetup/scoreboard.json) and takes them with "shards take".
@@ -91,6 +91,71 @@
     ['white', '&f', 'White', 'minecraft:white_dye'], ['gray', '&7', 'Gray', 'minecraft:light_gray_dye'],
   ]
   const NAME_COLOR_PRICE = 650
+  const CHAT_COLOR_PRICE = 650
+  const GLOW_PRICE = 900
+  const GRADIENT_PRICE = 1499
+  const STATUS_PRICE = 499
+  const JOIN_PRICE = 599
+
+  // "&#RRGGBB" colour per letter, fading through the given colours
+  const grad = (text, stops, bold) => {
+    var t = String(text), out = '', n = t.length
+    var rgb = stops.map(h => { var v = parseInt(h.replace('#', ''), 16); return [v >> 16 & 255, v >> 8 & 255, v & 255] })
+    for (var i = 0; i < n; i++) {
+      var f = n == 1 ? 0 : i / (n - 1) * (rgb.length - 1), k = Math.min(rgb.length - 2, Math.floor(f)), r = f - k
+      if (rgb.length == 1) { k = 0; r = 0 }
+      var a = rgb[k], b = rgb[Math.min(rgb.length - 1, k + 1)]
+      var c = [0, 1, 2].map(j => Math.round(a[j] + (b[j] - a[j]) * r))
+      out += '&#' + c.map(x => ('0' + x.toString(16)).slice(-2)).join('').toUpperCase() + (bold ? '&l' : '') + t[i]
+    }
+    return out
+  }
+
+  // Chat colours (your message colour)
+  const CHAT_COLORS = NAME_COLORS.map(c => [c[0], c[1], c[2], c[3]])
+  // Glow colours (glow outline around you): [id, team colour, & code, name, icon]
+  const GLOWS = [
+    ['red', 'red', '&c', 'Red', 'minecraft:red_stained_glass'], ['dark_red', 'dark_red', '&4', 'Dark Red', 'minecraft:red_terracotta'],
+    ['gold', 'gold', '&6', 'Gold', 'minecraft:orange_stained_glass'], ['yellow', 'yellow', '&e', 'Yellow', 'minecraft:yellow_stained_glass'],
+    ['green', 'green', '&a', 'Green', 'minecraft:lime_stained_glass'], ['dark_green', 'dark_green', '&2', 'Dark Green', 'minecraft:green_stained_glass'],
+    ['aqua', 'aqua', '&b', 'Aqua', 'minecraft:light_blue_stained_glass'], ['dark_aqua', 'dark_aqua', '&3', 'Dark Aqua', 'minecraft:cyan_stained_glass'],
+    ['blue', 'blue', '&9', 'Blue', 'minecraft:blue_stained_glass'], ['pink', 'light_purple', '&d', 'Pink', 'minecraft:pink_stained_glass'],
+    ['purple', 'dark_purple', '&5', 'Purple', 'minecraft:purple_stained_glass'], ['white', 'white', '&f', 'White', 'minecraft:white_stained_glass'],
+    ['gray', 'gray', '&7', 'Gray', 'minecraft:light_gray_stained_glass'], ['black', 'black', '&0', 'Black', 'minecraft:black_stained_glass'],
+  ]
+  // Gradient bundles: your name in chat fades through these colours, and your messages use the last colour
+  const GRADIENTS = [
+    ['inferno', 'Inferno', ['#FF1E00', '#FFB300']], ['ocean', 'Ocean', ['#00E5FF', '#2B59FF']], ['toxic', 'Toxic', ['#B6FF00', '#00FF95']],
+    ['royal', 'Royal', ['#8A2BE2', '#FF4DFF']], ['sunset', 'Sunset', ['#FF4E50', '#F9D423']], ['frost', 'Frost', ['#E8FBFF', '#59C3FF']],
+    ['bloodmoon', 'Bloodmoon', ['#8B0000', '#FF3B2F']], ['gilded', 'Gilded', ['#FFB800', '#FFF2A8']], ['abyss', 'Abyss', ['#00D2FF', '#3A47D5']],
+    ['blossom', 'Blossom', ['#FF7EB3', '#FFD1E8']], ['aurora', 'Aurora', ['#00FFA3', '#DC1FFF']], ['throne', 'Throne', ['#FF3B2F', '#FFD700']],
+    ['rainbow', 'Rainbow', ['#FF4040', '#FFD040', '#40FF60', '#40C0FF', '#C040FF']], ['shadow', 'Shadow', ['#9E9E9E', '#3A3A3A']],
+  ]
+  // Statuses: a line of text that floats above your head
+  const STATUSES = [
+    ['throne_seeker', 'Throne Seeker', ['#FF3B2F', '#FFD700']], ['dragon_tamer', 'Dragon Tamer', ['#00FF95', '#00B3FF']],
+    ['loot_goblin', 'Loot Goblin', ['#7CFF00', '#FFD000']], ['crate_addict', 'Crate Addict', ['#FF6A00', '#FF00C8']],
+    ['shard_hoarder', 'Shard Hoarder', ['#C04DFF', '#FF7AF5']], ['boss_slayer', 'Boss Slayer', ['#8B0000', '#FF4D4D']],
+    ['certified_grinder', 'Certified Grinder', ['#FFAA00', '#FFF06A']], ['sleep_deprived', 'Sleep Deprived', ['#6A5ACD', '#B0C4FF']],
+    ['main_character', 'Main Character', ['#FF4DA6', '#FFD1EC']], ['professional_noob', 'Professional Noob', ['#55FF55', '#00AA00']],
+    ['afk_legend', 'AFK Legend', ['#AAAAAA', '#FFFFFF']], ['night_owl', 'Night Owl', ['#2B59FF', '#A0B4FF']],
+    ['village_menace', 'Village Menace', ['#8B5A2B', '#FFB347']], ['big_brain', 'Big Brain', ['#FF7EB3', '#7AFCFF']],
+    ['chaos_agent', 'Chaos Agent', ['#FF0000', '#8A00FF']], ['built_different', 'Built Different', ['#FFD700', '#FF6A00']],
+    ['demon_lord', 'Demon Lord in Training', ['#4B0000', '#FF2A2A']], ['touch_grass', 'Should Touch Grass', ['#00C853', '#B2FF59']],
+    ['gate_breaker', 'Gate Breaker', ['#00E5FF', '#FF00E5']], ['slime_supreme', 'Slime Supreme', ['#76FF03', '#00E676']],
+    ['hunter_s', 'S-Rank Hunter', ['#FFD700', '#FF3B2F', '#C04DFF']],
+  ]
+  // Join messages: [id, join text, leave text, colours]  ({p} = player name)
+  const JOIN_MESSAGES = [
+    ['throne_room', '{p} has entered the throne room.', '{p} has left the throne room.', ['#FF3B2F', '#FFD700']],
+    ['tremble', '{p} arrived — the realm trembles.', '{p} vanished into the mist.', ['#8A2BE2', '#FF4DFF']],
+    ['dragon', '{p} rode in on a dragon.', '{p} flew off on a dragon.', ['#00FF95', '#00B3FF']],
+    ['loot', '{p} spawned in. Hide your loot!', '{p} logged off. Your loot is safe... for now.', ['#7CFF00', '#FFD000']],
+    ['gates', '{p} returned from the Gates.', '{p} went back through the Gates.', ['#00E5FF', '#FF00E5']],
+    ['awakened', '{p} has awakened.', '{p} went back to sleep.', ['#FF4E50', '#F9D423']],
+    ['legend', 'A legend has arrived: {p}!', 'The legend {p} has left.', ['#FFD700', '#FFF2A8']],
+    ['shadow', '{p} stepped out of the shadows.', '{p} faded back into the shadows.', ['#9E9E9E', '#3A3A3A']],
+  ]
 
   // Throne Shop. Categories hold items or more categories. Item "give" types:
   //   rank / key / tag / namecolor / fly (seconds) / cmd (commands, {p} = player)
@@ -100,6 +165,7 @@
     { icon: 'minecraft:tripwire_hook', name: color + label, detail: '10x', price: Math.round(one * 8.5), give: { type: 'key', crate: id, n: 10 } },
     { icon: 'minecraft:tripwire_hook', name: color + label, detail: '25x', price: Math.round(one * 20), give: { type: 'key', crate: id, n: 25 } },
   ]
+  const cosCat = (kind, name, ic) => ({ icon: ic, name: name, layout: 'grid', cosKind: kind, children: [] })
   const SHOP = {
     name: 'Throne Shop',
     children: [
@@ -121,24 +187,15 @@
       },
       {
         slot: [3, 1], icon: 'minecraft:dark_oak_hanging_sign', name: '&a&lMESSAGE COSMETICS', kind: 'COSMETIC',
-        desc: ['Message cosmetics include tags', 'that go before your username and', 'rank in chat.', '', 'Equip them with &e/tags&f.'],
-        children: [
-          {
-            icon: 'minecraft:name_tag', name: '&b&lCHAT TAGS', layout: 'grid',
-            children: TAGS.map(t => ({ icon: 'minecraft:name_tag', name: t[1] + (t[1].length > 4 ? '' : '&f Tag'), tagShow: t[1], detail: 'Apply using /tags', price: t[2], give: { type: 'tag', id: t[0] } })),
-          },
-          { icon: 'minecraft:oak_sign', name: '&e&lJOIN MESSAGES', soon: true },
-        ],
+        desc: ['Message cosmetics include tags that', 'go before your username and rank in', 'chat, join and leave messages that', 'give you a stylish message when you', 'arrive or leave, and statuses that', 'put a message above your head.'],
+        layout: 'spaced',
+        children: [cosCat('tag', '&b&lCHAT TAGS', 'minecraft:name_tag'), cosCat('join', '&e&lJOIN MESSAGES', 'minecraft:feather'), cosCat('status', '&c&lSTATUSES', 'minecraft:oak_sign')],
       },
       {
         slot: [5, 1], icon: 'minecraft:amethyst_cluster', name: '&5&lCOLORS & GRADIENTS', kind: 'COSMETIC',
-        desc: ['Name colors change how your name', 'is shown in chat.', '', 'Equip them with &e/namecolor&f.'],
-        children: [
-          {
-            icon: 'minecraft:name_tag', name: '&a&lNAME COLORS', layout: 'grid',
-            children: NAME_COLORS.map(c => ({ icon: c[3], name: c[1] + c[2] + ' Name Color', detail: 'Apply using /namecolor', price: NAME_COLOR_PRICE, give: { type: 'namecolor', id: c[0] } })),
-          },
-        ],
+        desc: ['Name colors change how your name', 'shows in chat, chat colors change', 'your messages, glow colors give you', 'a glow outline, and gradient bundles', 'fade your name through colors.'],
+        layout: 'spaced',
+        children: [cosCat('nc', '&a&lNAME COLORS', 'minecraft:lime_dye'), cosCat('cc', '&e&lCHAT COLORS', 'minecraft:writable_book'), cosCat('glow', '&6&lGLOW COLORS', 'minecraft:glow_ink_sac'), cosCat('grad', grad('GRADIENT BUNDLES', ['#FF4DFF', '#00E5FF'], true), 'minecraft:bucket')],
       },
       {
         slot: [7, 1], icon: 'minecraft:tripwire_hook', name: '&6&lCRATE KEYS', kind: 'ITEM',
@@ -193,7 +250,15 @@
     return best
   }
   const legacy = (s) => String(s).replace(/&#([0-9a-fA-F]{6})/g, (m, h) => '&' + nearest('#' + h)).replace(/&([0-9a-fk-or])/gi, '§$1')
-  const comp = (s) => { var c = Text.of(legacy(s)); try { c = c.italic(false) } catch (e) { } return c }
+  const comp = (s) => {
+    if (String(s).indexOf('&#') >= 0) {
+      try {
+        var r = Text.of({ text: '', italic: false, extra: compParts(s) })
+        if (String(r.getString()) == strip(s)) return r
+      } catch (e) { }
+    }
+    var c = Text.of(legacy(s)); try { c = c.italic(false) } catch (e) { } return c
+  }
   const icon = (server, id, name, lore, glint) => {
     var st = Item.of(id)
     try {
@@ -296,6 +361,7 @@
     if (g.type == 'rank') return RANK_ORDER.indexOf(g.rank) <= topRankIndex(p)
     if (g.type == 'tag') return owns(p, 'tag:' + g.id)
     if (g.type == 'namecolor') return owns(p, 'nc:' + g.id)
+    if (g.type == 'cos') return owns(p, g.kind + ':' + g.id)
     return false
   }
   const balanceIcon = (s, bal) => icon(s, 'minecraft:amethyst_shard', '&d&lThrone Shards',
@@ -319,6 +385,7 @@
   }
   const itemIcon = (p, it, bal) => {
     var lore = []
+    if (it.cosLore) it.cosLore.forEach(l => lore.push(l))
     lore.push('')
     lore.push('&d&l' + fmt(it.price) + ' Throne Shards')
     if (isOwned(p, it)) lore.push('&a&lYOU OWN THIS')
@@ -338,7 +405,7 @@
         sl.item = categoryIcon(s, c)
         sl.leftClicked = e => { if (!c.soon) after(p, () => shopPage(p, [c])) }
       }))
-      gui.slot(4, 4, sl => { sl.item = icon(s, 'minecraft:lantern', '&e&lYour Cosmetics', ['&f/tags &7- equip a chat tag', '&f/namecolor &7- equip a name color', '&f/flytime &7- turn flight on/off'], false) })
+      gui.slot(4, 4, sl => { sl.item = icon(s, 'minecraft:lantern', '&e&lYour Cosmetics', ['&fEquip what you bought.', '&f/cosmetics &7(or /tags, /namecolor, /chatcolor,', '&7/glowcolor, /gradient, /status, /joinmessage)', '&f/flytime &7- turn flight on/off', '', '&e&lCLICK TO OPEN'], false); sl.leftClicked = e => after(p, () => cosmeticsMain(p)) })
       gui.slot(4, 5, sl => { sl.item = icon(s, 'minecraft:barrier', '&c&lClose', []); sl.leftClicked = e => { try { p.closeMenu() } catch (x) { } } })
       gui.slot(8, 5, sl => { sl.item = icon(s, 'minecraft:paper', '&e&lHow it works', ['&fClick a category, then click an', '&fitem to buy it with Throne Shards.', '', '&fGet Throne Shards at', '&doverthronesmp.tebex.store'], false) })
     })
@@ -347,6 +414,7 @@
   // path = list of categories from the main page down to the open one
   const shopPage = (p, path) => {
     var s = p.server, bal = shardsOf(p), cat = path[path.length - 1], list = cat.children || []
+    if (cat.cosKind) list = KINDS[cat.cosKind].list.map(c => ({ icon: c.icon, name: c.name, detail: 'Apply using ' + KINDS[cat.cosKind].cmd, price: c.price, cosLore: preview(p, cat.cosKind, c), give: { type: 'cos', kind: cat.cosKind, id: c.id } }))
     var spaced = cat.layout == 'spaced' && list.length <= 4
     var perRow = spaced ? 4 : 7
     var rows = cat.layout == 'ranks' ? 6 : Math.min(6, Math.max(4, Math.ceil(list.length / perRow) + 3))
@@ -413,40 +481,71 @@
     else if (g.type == 'tag') { addOwned(p, 'tag:' + g.id); p.tell('§7Equip it with §e/tags§7.') }
     else if (g.type == 'namecolor') { addOwned(p, 'nc:' + g.id); p.tell('§7Equip it with §e/namecolor§7.') }
     else if (g.type == 'fly') { addFly(p, g.seconds) }
+    else if (g.type == 'cos') { addOwned(p, g.kind + ':' + g.id); p.tell('§7Equip it with §e' + KINDS[g.kind].cmd + '§7 (or §e/cosmetics§7).') }
     else if (g.type == 'cmd') g.commands.forEach(c => run(s, c.split('{p}').join(p.username)))
     console.info('[throneshop] ' + p.username + ' bought ' + label + ' for ' + it.price + ' shards')
     p.tell(`§a§lThrone Shop §7» You bought §f${label}§7 for §d${fmt(it.price)} Throne Shards§7!`)
     run(s, `execute at ${p.username} run playsound minecraft:entity.player.levelup master ${p.username} ~ ~ ~ 1 1.4`)
   }
 
-  // ======================================================================= chat tags + name colours
-  const tagById = (id) => { for (var i = 0; i < TAGS.length; i++) if (TAGS[i][0] == id) return TAGS[i]; return null }
-  const ncById = (id) => { for (var i = 0; i < NAME_COLORS.length; i++) if (NAME_COLORS[i][0] == id) return NAME_COLORS[i]; return null }
-  const cosmeticsOf = (player) => {
-    var out = { tag: '', nc: '' }
-    if (player == null) return out
-    var t = tagById(String(player.persistentData.getString('ot_tag') || ''))
-    var c = ncById(String(player.persistentData.getString('ot_namecolor') || ''))
-    if (t && owns(player, 'tag:' + t[0])) out.tag = '&8[' + t[1] + '&8] '
-    if (c && owns(player, 'nc:' + c[0])) out.nc = c[1]
-    return out
+  // ======================================================================= cosmetics (tags, colours, glow, gradients, statuses, join messages)
+  // Every kind: persistentData key of the equipped one, prefix in the owned list, list of { id, name, icon, price, lore }
+  const KINDS = {
+    tag: { key: 'ot_tag', title: 'Chat Tags', cmd: '/tags', icon: 'minecraft:name_tag',
+      list: TAGS.map(t => ({ id: t[0], name: t[1] + (t[1].length > 4 ? '' : '&f Tag'), icon: 'minecraft:name_tag', price: t[2], show: t[1] })) },
+    nc: { key: 'ot_namecolor', title: 'Name Colors', cmd: '/namecolor', icon: 'minecraft:lime_dye',
+      list: NAME_COLORS.map(c => ({ id: c[0], name: c[1] + c[2] + ' Name Color', icon: c[3], price: NAME_COLOR_PRICE, code: c[1] })) },
+    cc: { key: 'ot_chatcolor', title: 'Chat Colors', cmd: '/chatcolor', icon: 'minecraft:writable_book',
+      list: CHAT_COLORS.map(c => ({ id: c[0], name: c[1] + c[2] + ' Chat Color', icon: c[3].replace('_dye', '_wool').replace('minecraft:red_wool', 'minecraft:red_wool'), price: CHAT_COLOR_PRICE, code: c[1] })) },
+    glow: { key: 'ot_glow', title: 'Glow Colors', cmd: '/glowcolor', icon: 'minecraft:glow_ink_sac',
+      list: GLOWS.map(g => ({ id: g[0], name: g[2] + g[3] + ' Glow', icon: g[4], price: GLOW_PRICE, team: g[1] })) },
+    grad: { key: 'ot_gradient', title: 'Gradient Bundles', cmd: '/gradient', icon: 'minecraft:bucket',
+      list: GRADIENTS.map(g => ({ id: g[0], name: grad(g[1] + ' Gradient Bundle', g[2], true), icon: 'minecraft:bucket', price: GRADIENT_PRICE, stops: g[2] })) },
+    status: { key: 'ot_status', title: 'Statuses', cmd: '/status', icon: 'minecraft:oak_sign',
+      list: STATUSES.map(s => ({ id: s[0], name: grad(s[1], s[2], true) + ' &f&lStatus', icon: 'minecraft:oak_sign', price: STATUS_PRICE, text: grad(s[1], s[2], true) })) },
+    join: { key: 'ot_joinmsg', title: 'Join Messages', cmd: '/joinmessage', icon: 'minecraft:feather',
+      list: JOIN_MESSAGES.map(j => ({ id: j[0], name: grad(j[1].replace('{p} ', '').replace(' {p}', '').replace('{p}', ''), j[3], false), icon: 'minecraft:feather', price: JOIN_PRICE, join: j[1], leave: j[2], stops: j[3] })) },
   }
+  const KIND_ORDER = ['tag', 'nc', 'cc', 'glow', 'grad', 'status', 'join']
+  const cosById = (kind, id) => { var l = KINDS[kind].list; for (var i = 0; i < l.length; i++) if (l[i].id == id) return l[i]; return null }
+  // the equipped cosmetic of a kind (only if still owned)
+  const equipped = (p, kind) => {
+    if (p == null) return null
+    var c = cosById(kind, String(p.persistentData.getString(KINDS[kind].key) || ''))
+    return c && owns(p, kind + ':' + c.id) ? c : null
+  }
+  // older saves used tag:<id> / nc:<id>, same as the kind names, so they keep working
+  const preview = (p, kind, c) => {
+    var n = p.username
+    if (kind == 'tag') return ['&7In chat: &8[' + c.show + '&8] &f' + n]
+    if (kind == 'nc') return ['&7In chat: ' + c.code + n]
+    if (kind == 'cc') return ['&7In chat: &f' + n + '&7: ' + c.code + 'Hello everyone!']
+    if (kind == 'glow') return ['&7A ' + strip(c.name).toLowerCase() + ' outline around you.']
+    if (kind == 'grad') return ['&7In chat: ' + grad(n, c.stops, false) + '&7: ' + '&' + c.stops[c.stops.length - 1] + 'This is a test message!', '&7Changes your name and chat colour.']
+    if (kind == 'status') return ['&7Above your head: ' + c.text]
+    if (kind == 'join') return ['&7Join: ' + grad(c.join.replace('{p}', n), c.stops, false), '&7Leave: ' + grad(c.leave.replace('{p}', n), c.stops, false)]
+    return []
+  }
+
+  // ---- chat: tag, name colour / gradient, chat colour, all on top of the rank prefix
   const CHAT_TAIL = '{neoessentials_displayname}&7: '
   const ChatFormats = (() => { try { return Java.loadClass('com.zerog.neoessentials.chat.PlayerChatFormatManager') } catch (e) { return null } })()
-  // Same chat format the rank script builds, plus the tag before the name and the name colour.
   const chatFormat = (uuid, prefix, messageColor) => {
     if (ChatFormats == null) return
     var mgr = ChatFormats.getInstance(), pl = null
     try { pl = Utils.server.getPlayerList().getPlayer(uuid) } catch (e) { pl = null }
-    var x = cosmeticsOf(pl)
+    var tag = equipped(pl, 'tag'), nc = equipped(pl, 'nc'), cc = equipped(pl, 'cc'), gr = equipped(pl, 'grad')
     prefix = prefix || ''
-    if (prefix == '' && !messageColor && !x.tag && !x.nc) { if (mgr.hasFormat(uuid)) mgr.clearFormat(uuid); return }
-    var format = prefix + x.tag + (x.nc || (prefix == '' && !x.tag ? '&7' : '&f')) + CHAT_TAIL + (messageColor || '&f') + '{MESSAGE}'
+    if (prefix == '' && !messageColor && !tag && !nc && !cc && !gr) { if (mgr.hasFormat(uuid)) mgr.clearFormat(uuid); return }
+    var tagTxt = tag ? '&8[' + tag.show + '&8] ' : ''
+    var name = gr ? grad(String(pl.username), gr.stops, false) + '&7: ' : (nc ? nc.code : (prefix == '' && !tagTxt ? '&7' : '&f')) + CHAT_TAIL
+    var msg = cc ? cc.code : (gr ? '&' + gr.stops[gr.stops.length - 1] : (messageColor || '&f'))
+    var format = prefix + tagTxt + name + msg + '{MESSAGE}'
     if (String(mgr.getFormat(uuid)) != format) mgr.setFormat(uuid, format)
   }
-  // Take over the rank script's chat format function so ranks, tags and colours all show together.
+  // Take over the rank script's chat format function so ranks and cosmetics all show together.
   ServerEvents.loaded(event => {
-    try { if (typeof rkChatFormat == 'function') { rkChatFormat = chatFormat; console.info('[npc_menus] chat tags + name colours hooked into ranks.js') } }
+    try { if (typeof rkChatFormat == 'function') { rkChatFormat = chatFormat; console.info('[npc_menus] cosmetics hooked into ranks.js chat format') } }
     catch (e) { console.warn('[npc_menus] could not hook ranks chat format: ' + e) }
   })
   const refreshChat = (p) => {
@@ -456,30 +555,119 @@
     chatFormat(p.getUuid(), '', '')
   }
 
+  // ---- glow
+  const applyGlow = (p) => {
+    var s = p.server, g = equipped(p, 'glow'), team = null
+    try { team = p.getTeam() } catch (e) { team = null }
+    var teamName = team == null ? '' : String(team.getName())
+    if (g == null) {
+      run(s, `effect clear ${p.username} minecraft:glowing`)
+      if (teamName.indexOf('ot_pglow_') == 0) run(s, `team leave ${p.username}`)
+      return
+    }
+    run(s, `effect give ${p.username} minecraft:glowing infinite 0 true`)
+    // the glow takes the colour of the player's team; only use our team if they aren't in another one
+    if (teamName == '' || teamName.indexOf('ot_pglow_') == 0) {
+      run(s, `team add ot_pglow_${g.team}`)
+      run(s, `team modify ot_pglow_${g.team} color ${g.team}`)
+      run(s, `team join ot_pglow_${g.team} ${p.username}`)
+    }
+  }
+
+  // ---- statuses: a floating text that follows the player
+  const statusEnt = {}
+  const statusJson = (c) => JSON.stringify([''].concat(compParts(c.text)))
+  const removeStatus = (p) => {
+    var e = statusEnt[p.username]
+    if (e) { try { e.discard() } catch (x) { } delete statusEnt[p.username] }
+    run(p.server, `kill @e[type=minecraft:text_display,tag=ot_status_${p.username}]`)
+  }
+  const spawnStatus = (p, c) => {
+    removeStatus(p)
+    var f = (n) => Number(n).toFixed(2), tag = 'ot_status_' + p.username
+    var json = statusJson(c).replace(/\\/g, '\\\\').replace(/'/g, "\\'")
+    run(p.server, `execute in ${p.level.dimension} run summon minecraft:text_display ${f(p.x)} ${f(p.y + 2.45)} ${f(p.z)} ` +
+      `{Tags:["ot_status","${tag}"],billboard:"center",alignment:"center",shadow:1b,teleport_duration:2,background:1073741824,` +
+      `transformation:[0.8f,0f,0f,0f,0f,0.8f,0f,0f,0f,0f,0.8f,0f,0f,0f,0f,1f],text:'${json}'}`)
+    var found = null
+    p.level.getEntities().forEach(e => { if (found == null && e.getTags().contains(tag)) found = e })
+    if (found) { statusEnt[p.username] = found; found.persistentData.putString('ot_status_id', c.id) }
+  }
+  ServerEvents.tick(event => {
+    var s = event.server
+    if (s.tickCount % 2 != 0) return
+    s.players.forEach(p => {
+      var c = equipped(p, 'status'), e = statusEnt[p.username]
+      var hide = c == null || p.isSpectator() || p.isInvisible()
+      if (hide) { if (e) removeStatus(p); return }
+      if (e == null || !e.isAlive() || String(e.level.dimension) != String(p.level.dimension) || String(e.persistentData.getString('ot_status_id')) != c.id) { spawnStatus(p, c); return }
+      e.teleportTo(p.x, p.y + (p.isShiftKeyDown() ? 2.15 : 2.45), p.z)
+    })
+  })
+  ServerEvents.loaded(event => { run(event.server, 'kill @e[type=minecraft:text_display,tag=ot_status]') })
+
+  // ---- join / leave messages
+  const announce = (s, c, text, name) => run(s, `tellraw @a ${JSON.stringify([''].concat(compParts(grad(text.replace('{p}', name), c.stops, false))))}`)
+  PlayerEvents.loggedIn(event => {
+    var p = event.player
+    p.server.scheduleInTicks(30, () => {
+      try { var c = equipped(p, 'join'); if (c) announce(p.server, c, c.join, p.username) } catch (e) { }
+      try { applyGlow(p) } catch (e) { }
+    })
+  })
+  PlayerEvents.loggedOut(event => {
+    var p = event.player
+    try { var c = equipped(p, 'join'); if (c) announce(p.server, c, c.leave, p.username) } catch (e) { }
+    try { removeStatus(p) } catch (e) { }
+  })
+
+  // ---- equip menus: /cosmetics, /tags, /namecolor, /chatcolor, /glowcolor, /gradient, /status, /joinmessage
+  const equip = (p, kind, id) => {
+    if (id == null) p.persistentData.remove(KINDS[kind].key)
+    else p.persistentData.putString(KINDS[kind].key, id)
+    // a gradient replaces a plain name colour and the other way round
+    if (id != null && kind == 'grad') p.persistentData.remove(KINDS.nc.key)
+    if (id != null && kind == 'nc') p.persistentData.remove(KINDS.grad.key)
+    if (kind == 'glow') applyGlow(p)
+    else if (kind == 'status') removeStatus(p)
+    else if (kind != 'join') refreshChat(p)
+  }
+  const cosmeticsMain = (p) => {
+    var s = p.server
+    p.openChestGUI(Text.of('Your Cosmetics'), 3, gui => {
+      gui.playerSlots = true
+      for (var y = 0; y < 3; y++) for (var x = 0; x < 9; x++) {
+        (function (xx, yy) { gui.slot(xx, yy, sl => { sl.item = pane(s, PANES.G) }) })(x, y)
+      }
+      KIND_ORDER.forEach((k, i) => gui.slot(1 + i, 1, sl => {
+        var K = KINDS[k], cur = equipped(p, k), n = K.list.filter(c => owns(p, k + ':' + c.id)).length
+        sl.item = icon(s, K.icon, '&e&l' + K.title.toUpperCase(), ['&fYou own: &a' + n + '&7/' + K.list.length, '&fEquipped: ' + (cur ? cur.name : '&7none'), '', '&7Also: &e' + K.cmd, '', '&e&lCLICK TO OPEN'], cur != null)
+        sl.leftClicked = e => after(p, () => cosmeticMenu(p, k))
+      }))
+    })
+  }
   const cosmeticMenu = (p, kind) => {
-    var s = p.server, list = kind == 'tags' ? TAGS : NAME_COLORS
-    var key = kind == 'tags' ? 'ot_tag' : 'ot_namecolor', pre = kind == 'tags' ? 'tag:' : 'nc:'
-    var mine = list.filter(t => owns(p, pre + t[0])), cur = String(p.persistentData.getString(key) || '')
+    var s = p.server, K = KINDS[kind]
+    var mine = K.list.filter(c => owns(p, kind + ':' + c.id)), cur = equipped(p, kind)
     var rows = Math.min(6, Math.max(3, Math.ceil(mine.length / 7) + 2))
-    p.openChestGUI(Text.of(kind == 'tags' ? 'Your Chat Tags' : 'Your Name Colors'), rows, gui => {
+    p.openChestGUI(Text.of('Your ' + K.title), rows, gui => {
       gui.playerSlots = true
       for (var y = 0; y < rows; y++) for (var x = 0; x < 9; x++) {
         (function (xx, yy) { gui.slot(xx, yy, sl => { sl.item = pane(s, PANES.G) }) })(x, y)
       }
-      mine.forEach((t, i) => {
+      mine.forEach((c, i) => {
         if (1 + Math.floor(i / 7) >= rows - 1) return
         gui.slot(1 + (i % 7), 1 + Math.floor(i / 7), sl => {
-          var on = cur == t[0]
-          sl.item = kind == 'tags'
-            ? icon(s, 'minecraft:name_tag', t[1] + (t[1].length > 4 ? '' : '&f Tag'), ['&7In chat: &8[' + t[1] + '&8] &f' + p.username, '', on ? '&a&lEQUIPPED' : '&e&lCLICK TO EQUIP'], on)
-            : icon(s, t[3], t[1] + t[2] + ' Name Color', ['&7In chat: ' + t[1] + p.username, '', on ? '&a&lEQUIPPED' : '&e&lCLICK TO EQUIP'], on)
-          sl.leftClicked = e => after(p, () => { p.persistentData.putString(key, t[0]); refreshChat(p); p.tell('§a✔ Equipped. §7It shows on your next message.'); cosmeticMenu(p, kind) })
+          var on = cur != null && cur.id == c.id
+          sl.item = icon(s, c.icon, c.name, preview(p, kind, c).concat(['', on ? '&a&lEQUIPPED' : '&e&lCLICK TO EQUIP']), on)
+          sl.leftClicked = e => after(p, () => { equip(p, kind, c.id); p.tell('§a✔ Equipped ' + strip(c.name) + '.'); cosmeticMenu(p, kind) })
         })
       })
       if (!mine.length) gui.slot(4, 1, sl => { sl.item = icon(s, 'minecraft:barrier', '&c&lYou don\'t own any yet', ['&7Buy them in the &dThrone Shop&7.'], false) })
-      gui.slot(4, rows - 1, sl => {
-        sl.item = icon(s, 'minecraft:bucket', '&c&lUnequip', ['&7Remove your ' + (kind == 'tags' ? 'chat tag' : 'name color')], false)
-        sl.leftClicked = e => after(p, () => { p.persistentData.remove(key); refreshChat(p); p.tell('§7Removed.'); cosmeticMenu(p, kind) })
+      gui.slot(3, rows - 1, sl => { sl.item = icon(s, 'minecraft:arrow', '&e&lAll Cosmetics', [], false); sl.leftClicked = e => after(p, () => cosmeticsMain(p)) })
+      gui.slot(5, rows - 1, sl => {
+        sl.item = icon(s, 'minecraft:bucket', '&c&lUnequip', ['&7Remove your ' + K.title.toLowerCase().replace(/s$/, '')], false)
+        sl.leftClicked = e => after(p, () => { equip(p, kind, null); p.tell('§7Removed.'); cosmeticMenu(p, kind) })
       })
     })
   }
@@ -1080,8 +1268,15 @@
         say(ctx.source, '§a[throneshop] Balance placeholder set to §f' + (t == 'auto' ? '(auto)' : t))
         return 1
       }))))
-    event.register(Commands.literal('tags').executes(ctx => { var p = ctx.source.playerOrException; try { cosmeticMenu(p, 'tags') } catch (e) { p.tell('§c' + e) } return 1 }))
-    event.register(Commands.literal('namecolor').executes(ctx => { var p = ctx.source.playerOrException; try { cosmeticMenu(p, 'colors') } catch (e) { p.tell('§c' + e) } return 1 }))
+    const cosCmd = (name, fn) => event.register(Commands.literal(name).executes(ctx => { var p = ctx.source.playerOrException; try { fn(p) } catch (e) { p.tell('§c' + e); console.error('[npc_menus] ' + e) } return 1 }))
+    cosCmd('cosmetics', p => cosmeticsMain(p))
+    cosCmd('tags', p => cosmeticMenu(p, 'tag'))
+    cosCmd('namecolor', p => cosmeticMenu(p, 'nc'))
+    cosCmd('chatcolor', p => cosmeticMenu(p, 'cc'))
+    cosCmd('glowcolor', p => cosmeticMenu(p, 'glow'))
+    cosCmd('gradient', p => cosmeticMenu(p, 'grad'))
+    cosCmd('status', p => cosmeticMenu(p, 'status'))
+    cosCmd('joinmessage', p => cosmeticMenu(p, 'join'))
     event.register(Commands.literal('flytime').executes(ctx => { flyToggle(ctx.source.playerOrException); return 1 })
       .then(Commands.literal('left').executes(ctx => {
         var p = ctx.source.playerOrException
