@@ -26,7 +26,7 @@ NOHUD = '1280:650:0:0'
 # ---- world tour (bars 0-8): (source, start, seconds, speed, options). Images: ('img:433', zoom direction)
 B3 = 3 * BEAT
 WORLD = [
-    ('n6',      14.3, B3, 1.0, {'x': 0.5}),                 # sunrise over the forest
+    ('n6',      13.6, B3, 1.0, {'x': 0.5}),                 # sunrise over the forest
     ('img:439', 0,    B3, 1.0, {'x': 0.45, 'zoom': 'in'}),
     ('n2',      0.6,  B3, 1.0, {}),                         # hub portal
     ('n1',      0.6,  B3, 1.0, {}),                         # realms hall
@@ -44,11 +44,11 @@ COMBAT = [
     ('c10', 5.9,  [(BEAT, 1.0), (BEAT, 0.45)], {'box': NOHUD}),
     ('c9', 3.6,   [(BEAT, 1.0)], {'box': NOHUD, 'x': 0.4}),
     ('c9', 6.0,   [(BEAT, 1.0)], {'box': NOHUD, 'x': 0.55}),
-    ('f1', 1.2,   [(2 * BEAT, 1.0)], {'box': '960:540:160:80', 'lift': 1.5}),
+    ('c11', 14.5, [(BEAT, 1.0), (BEAT, 0.5)], {'box': NOHUD, 'x': 0.45}),
     ('c11', 0.0,  [(BEAT, 1.0), (BEAT, 0.5)], {'box': NOHUD, 'x': 0.4}),
     ('n5', 6.3,   [(2 * BEAT, 0.6)], {'x': 0.5}),
     ('c9', 12.2,  [(BEAT, 1.0), (BEAT, 0.5)], {'box': NOHUD, 'x': 0.45}),
-    ('f2', 14.2,  [(2 * BEAT, 1.0)], {'box': '924:520:240:100', 'lift': 1.25, 'x': 0.4}),
+    ('c12', 12.6, [(2 * BEAT, 0.8)], {'box': NOHUD, 'x': 0.5}),
     ('c10', 20.3, [(BEAT, 1.0), (BEAT, 0.5)], {'box': NOHUD}),
     ('c12', 22.4, [(2 * BEAT, 0.6)], {'box': NOHUD, 'x': 0.5}),
 ]
@@ -167,7 +167,7 @@ world_paths = []
 for k, (src, start, dur, speed, opt) in enumerate(WORLD):
     p = os.path.join(tmp, 'w%02d.mp4' % k); world_paths.append((p, dur))
     d = dur + (XF if k < len(WORLD) - 1 else 0)          # extra frames for the crossfade
-    if src.startswith('img:'): jobs.append(('img', p, src[4:], d, opt, grade()))
+    if src.startswith('img:'): jobs.append(('img', p, src[4:], d, opt, 'eq=contrast=1.2:saturation=1.28:gamma=0.94,' + grade()))
     else: jobs.append(('vid', p, src, start, d, speed, opt, grade(opt.get('lift', 1.0)), True))
 combat_paths = []
 for k, (src, start, pieces, opt) in enumerate(COMBAT):
@@ -197,7 +197,7 @@ run(args + ['-filter_complex', ';'.join(fc), '-map', '[v]', '-frames:v', str(fra
 # end: blurred last combat frame + logo card
 endgfx = os.path.join(tmp, 'endgfx'); end_card(endgfx, frames(END_LEN))
 endbg = os.path.join(tmp, 'endbg.mp4')
-run(['-ss', '12.0', '-t', '%.2f' % (END_LEN / 1.5 + 0.5), '-i', os.path.join(CLIPS, 'n6.mp4'), '-framerate', str(FPS), '-i', os.path.join(endgfx, '%04d.png'),
+run(['-ss', '0.8', '-t', '%.2f' % (END_LEN / 1.5 + 0.5), '-i', os.path.join(CLIPS, 'n5.mp4'), '-framerate', str(FPS), '-i', os.path.join(endgfx, '%04d.png'),
      '-filter_complex', '[0:v]crop=%s,scale=%d:%d,setpts=1.5*(PTS-STARTPTS),fps=%d,gblur=sigma=20,eq=brightness=-0.25:saturation=0.7,vignette=PI/4,format=yuv420p[bg];'
      '[bg][1:v]overlay=format=auto,format=yuv420p,setsar=1[v]' % (vertical_crop('1280:720:0:0', 0.5), W, H, FPS),
      '-map', '[v]', '-frames:v', str(frames(END_LEN))] + X264 + [endbg])
