@@ -533,7 +533,7 @@
     grad: { key: 'ot_gradient', title: 'Gradient Bundles', cmd: '/gradient', icon: 'minecraft:bucket',
       list: GRADIENTS.map(g => ({ id: g[0], name: grad(g[1] + ' Gradient Bundle', g[2], true), icon: 'minecraft:bucket', price: GRADIENT_PRICE, stops: g[2] })) },
     status: { key: 'ot_status', title: 'Statuses', cmd: '/status', icon: 'minecraft:oak_sign',
-      list: STATUSES.map(s => ({ id: s[0], name: grad(s[1], s[2], true) + ' &f&lStatus', icon: 'minecraft:oak_sign', price: STATUS_PRICE, text: grad(s[1], s[2], true) })) },
+      list: STATUSES.map(s => ({ id: s[0], name: grad(s[1], s[2], true) + ' &f&lStatus', icon: 'minecraft:oak_sign', price: STATUS_PRICE, text: grad(s[1], s[2], true), label: s[1], stops: s[2] })) },
     join: { key: 'ot_joinmsg', title: 'Join Messages', cmd: '/joinmessage', icon: 'minecraft:feather',
       list: JOIN_MESSAGES.map(j => ({ id: j[0], name: grad(j[1].replace('{p} ', '').replace(' {p}', '').replace('{p}', ''), j[3], false), icon: 'minecraft:feather', price: JOIN_PRICE, join: j[1], leave: j[2], stops: j[3] })) },
   }
@@ -605,49 +605,117 @@
     var teamName = team == null ? '' : String(team.getName())
     if (g == null) {
       run(s, `effect clear ${p.username} minecraft:glowing`)
-      if (teamName.indexOf('ot_pglow_') == 0) run(s, `team leave ${p.username}`)
+      if (teamName.indexOf('ot_pglow_') == 0) { run(s, 'team add ot_np'); run(s, 'team modify ot_np nametagVisibility never'); run(s, `team join ot_np ${p.username}`) }
       return
     }
     run(s, `effect give ${p.username} minecraft:glowing infinite 0 true`)
     // the glow takes the colour of the player's team; only use our team if they aren't in another one
-    if (teamName == '' || teamName.indexOf('ot_pglow_') == 0) {
+    if (teamName == '' || teamName == 'ot_np' || teamName.indexOf('ot_pglow_') == 0) {
       run(s, `team add ot_pglow_${g.team}`)
       run(s, `team modify ot_pglow_${g.team} color ${g.team}`)
+      run(s, `team modify ot_pglow_${g.team} nametagVisibility never`)
       run(s, `team join ot_pglow_${g.team} ${p.username}`)
     }
   }
 
-  // ---- statuses: a floating text that follows the player
-  const statusEnt = {}
-  const statusJson = (c) => JSON.stringify([''].concat(compParts(c.text)))
-  const removeStatus = (p) => {
-    var e = statusEnt[p.username]
-    if (e) { try { e.discard() } catch (x) { } delete statusEnt[p.username] }
-    run(p.server, `kill @e[type=minecraft:text_display,tag=ot_status_${p.username}]`)
+  // ---- nameplates: a floating name above every player = [rank prefix] [tag] name (+ status line above it).
+  // Gradient names and statuses slowly flow through their colours. The vanilla name tag is hidden so it doesn't double up.
+  const ANIM_TICKS = 3                       // update rate of animated plates (ticks)
+  const gradAnim = (text, stops, bold, phase) => {
+    // looping gradient: colours slide along the text as phase goes 0 -> 1
+    var t = String(text), out = '', n = Math.max(1, t.length)
+    var loop = stops.concat([stops[0]])
+    var rgb = loop.map(h => { var v = parseInt(h.replace('#', ''), 16); return [v >> 16 & 255, v >> 8 & 255, v & 255] })
+    for (var i = 0; i < t.length; i++) {
+      var u = ((i / n) * 0.7 + phase) % 1, f = u * (rgb.length - 1), k = Math.min(rgb.length - 2, Math.floor(f)), r = f - k
+      var a = rgb[k], c2 = rgb[k + 1]
+      var c = [0, 1, 2].map(j => Math.round(a[j] + (c2[j] - a[j]) * r))
+      out += '&#' + c.map(x => ('0' + x.toString(16)).slice(-2)).join('').toUpperCase() + (bold ? '&l' : '') + t[i]
+    }
+    return out
   }
-  const spawnStatus = (p, c) => {
-    removeStatus(p)
-    var f = (n) => Number(n).toFixed(2), tag = 'ot_status_' + p.username
-    var json = statusJson(c).replace(/\\/g, '\\\\').replace(/'/g, "\\'")
-    run(p.server, `execute in ${p.level.dimension} run summon minecraft:text_display ${f(p.x)} ${f(p.y + 2.45)} ${f(p.z)} ` +
-      `{Tags:["ot_status","${tag}"],billboard:"center",alignment:"center",shadow:1b,teleport_duration:2,background:1073741824,` +
-      `transformation:[0.8f,0f,0f,0f,0f,0.8f,0f,0f,0f,0f,0.8f,0f,0f,0f,0f,1f],text:'${json}'}`)
+  const plateParts = (str) => {
+    // like compParts, but also understands &r (reset) and skips other format codes
+    var parts = [], color = 'white', bold = false, buf = '', s2 = String(str)
+    var NAMED = { 0: 'black', 1: 'dark_blue', 2: 'dark_green', 3: 'dark_aqua', 4: 'dark_red', 5: 'dark_purple', 6: 'gold', 7: 'gray', 8: 'dark_gray', 9: 'blue', a: 'green', b: 'aqua', c: 'red', d: 'light_purple', e: 'yellow', f: 'white' }
+    var flush = () => { if (buf) parts.push({ text: buf, color: color, bold: bold }); buf = '' }
+    for (var i = 0; i < s2.length; i++) {
+      var ch = s2[i]
+      if ((ch == '&' || ch == '§') && s2[i + 1] == '#' && /^[0-9a-fA-F]{6}$/.test(s2.substr(i + 2, 6))) { flush(); color = '#' + s2.substr(i + 2, 6); bold = false; i += 7; continue }
+      if ((ch == '&' || ch == '§') && i + 1 < s2.length && /[0-9a-fk-or]/i.test(s2[i + 1])) {
+        var c = s2[i + 1].toLowerCase(); flush()
+        if (NAMED[c] != null) { color = NAMED[c]; bold = false }
+        else if (c == 'l') bold = true
+        else if (c == 'r') { color = 'white'; bold = false }
+        i++; continue
+      }
+      buf += ch
+    }
+    flush()
+    return parts
+  }
+  const rankPrefixOf = (p) => {
+    try {
+      if (typeof rkTopRank == 'function' && typeof rkPrefix == 'function') { var top = rkTopRank(p); return top == 'player' ? '' : String(rkPrefix(top)) }
+    } catch (e) { }
+    return ''
+  }
+  const plateText = (p, phase) => {
+    var name = String(p.username), tag = equipped(p, 'tag'), nc = equipped(p, 'nc'), gr = equipped(p, 'grad'), st = equipped(p, 'status')
+    var line = rankPrefixOf(p) + (tag ? '&8[' + tag.show + '&8] ' : '') + (gr ? gradAnim(name, gr.stops, false, phase) : (nc ? nc.code : '&f') + name)
+    var parts = []
+    if (st) parts = parts.concat(plateParts(gradAnim(st.label, st.stops, true, phase))).concat([{ text: '\n' }])
+    return JSON.stringify([''].concat(parts).concat(plateParts(line)))
+  }
+  const animated = (p) => equipped(p, 'grad') != null || equipped(p, 'status') != null
+  const plates = {}      // username -> { e, text }
+  const killPlate = (p) => {
+    var pl = plates[p.username]
+    if (pl) { try { pl.e.discard() } catch (x) { } delete plates[p.username] }
+    run(p.server, `kill @e[type=minecraft:text_display,tag=ot_plate_${p.username}]`)
+  }
+  const removeStatus = (p) => { var pl = plates[p.username]; if (pl) pl.text = '' }   // forces a refresh
+  const hideVanillaTag = (p) => {
+    var team = null
+    try { team = p.getTeam() } catch (e) { team = null }
+    if (team == null) {
+      run(p.server, 'team add ot_np'); run(p.server, 'team modify ot_np nametagVisibility never')
+      run(p.server, `team join ot_np ${p.username}`)
+    } else run(p.server, `team modify ${team.getName()} nametagVisibility never`)
+  }
+  const spawnPlate = (p, text) => {
+    killPlate(p)
+    var f = (n) => Number(n).toFixed(2), tag = 'ot_plate_' + p.username
+    var json = text.replace(/\\/g, '\\\\').replace(/'/g, "\\'")
+    run(p.server, `execute in ${p.level.dimension} run summon minecraft:text_display ${f(p.x)} ${f(p.y + 2.05)} ${f(p.z)} ` +
+      `{Tags:["ot_plate","${tag}"],billboard:"center",alignment:"center",shadow:1b,see_through:0b,teleport_duration:2,background:1073741824,` +
+      `transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'${json}'}`)
     var found = null
     p.level.getEntities().forEach(e => { if (found == null && e.getTags().contains(tag)) found = e })
-    if (found) { statusEnt[p.username] = found; found.persistentData.putString('ot_status_id', c.id) }
+    if (found) plates[p.username] = { e: found, text: text }
+    hideVanillaTag(p)
   }
   ServerEvents.tick(event => {
     var s = event.server
     if (s.tickCount % 2 != 0) return
+    var phase = (s.tickCount / (ANIM_TICKS * 40)) % 1
     s.players.forEach(p => {
-      var c = equipped(p, 'status'), e = statusEnt[p.username]
-      var hide = c == null || p.isSpectator() || p.isInvisible()
-      if (hide) { if (e) removeStatus(p); return }
-      if (e == null || !e.isAlive() || String(e.level.dimension) != String(p.level.dimension) || String(e.persistentData.getString('ot_status_id')) != c.id) { spawnStatus(p, c); return }
-      e.teleportTo(p.x, p.y + (p.isShiftKeyDown() ? 2.15 : 2.45), p.z)
+      try {
+        var pl = plates[p.username]
+        if (p.isSpectator() || p.isInvisible()) { if (pl) killPlate(p); return }
+        var e = pl ? pl.e : null
+        var redo = s.tickCount % (animated(p) ? ANIM_TICKS * 2 : 40) == 0
+        var text = (redo || !pl || pl.text == '') ? plateText(p, phase) : pl.text
+        if (e == null || !e.isAlive() || String(e.level.dimension) != String(p.level.dimension)) { spawnPlate(p, text); return }
+        e.teleportTo(p.x, p.y + (p.isShiftKeyDown() ? 1.8 : 2.05), p.z)
+        if (text != pl.text) {
+          pl.text = text
+          s.runCommandSilent(`data merge entity ${e.getStringUUID()} {text:'${text.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'}`)
+        }
+      } catch (x) { console.warn('[npc_menus] nameplate: ' + x) }
     })
   })
-  ServerEvents.loaded(event => { run(event.server, 'kill @e[type=minecraft:text_display,tag=ot_status]') })
+  ServerEvents.loaded(event => { run(event.server, 'kill @e[type=minecraft:text_display,tag=ot_plate]'); run(event.server, 'kill @e[type=minecraft:text_display,tag=ot_status]') })
 
   // ---- join / leave messages
   const announce = (s, c, text, name) => run(s, `tellraw @a ${JSON.stringify([''].concat(compParts(grad(text.replace('{p}', name), c.stops, false))))}`)
@@ -663,7 +731,7 @@
   PlayerEvents.loggedOut(event => {
     var p = event.player
     try { var c = equipped(p, 'join'); if (c) announce(p.server, c, c.leave, p.username) } catch (e) { }
-    try { removeStatus(p) } catch (e) { }
+    try { killPlate(p) } catch (e) { }
   })
 
   // ---- equip menus: /cosmetics, /tags, /namecolor, /chatcolor, /glowcolor, /gradient, /status, /joinmessage
