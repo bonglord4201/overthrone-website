@@ -785,11 +785,20 @@
     })
     return n
   }
+  // NPCs with a dialog show their name as the dialog window's title, so their name must stay.
+  const hasDialog = (e) => {
+    try {
+      var d = e.nbt.getCompound('DialogData'), t = String(d.getString('Type'))
+      return t != '' && t != 'NONE' && d.getList('DialogDataSet', 10).size() > 0
+    } catch (x) { return false }
+  }
   const styleNpc = (server, e, title, hex) => {
     e.persistentData.putString('ot_style_title', title)
     e.persistentData.putString('ot_style_color', hex)
     e.addTag('ot_styled')
     setGlow(server, e, TEAM_OF[nearest(hex)] || 'gold')
+    // the small name under the hologram: removed (the hologram is the name now), except on dialog NPCs
+    if (!hasDialog(e)) hideName(server, e)
     clearOldTitles(e)
     placeHolo(server, e, ['&' + hex + '&l' + String(title).toUpperCase(), '&fRIGHT-CLICK TO VIEW'], idOf(e))
   }
@@ -894,10 +903,11 @@
         return 1
       }))))
       .then(Commands.literal('styleall').executes(ctx => guard(ctx, () => {
-        var p = ctx.source.playerOrException, done = [], skipped = 0
+        var p = ctx.source.playerOrException, done = [], skipped = 0, kept = []
         p.level.getEntities().forEach(e => {
           if (String(e.type).indexOf('easy_npc') < 0 || e.getTags().contains('ot_menu_npc')) return
           if (e.distanceTo(p) > 64) return
+          if (hasDialog(e)) kept.push(nameInfo(e).text || String(e.persistentData.getString('ot_style_title')))
           if (e.getTags().contains('ot_styled')) { restyle(p.server, e); done.push(String(e.persistentData.getString('ot_style_title'))); return }
           var ni = nameInfo(e)
           if (!ni.text) { skipped++; return }
@@ -906,6 +916,7 @@
         })
         say(ctx.source, '§a[npcmenu] Styled ' + done.length + ' NPCs: §f' + done.join(', ') + (skipped ? ' §7(' + skipped + ' without a name skipped)' : ''))
         say(ctx.source, '§7Only the look changed: glow, big title, RIGHT-CLICK TO VIEW. Dialogs/commands/skins are the same.')
+        if (kept.length) say(ctx.source, '§e' + kept.join(', ') + '§7 kept their small name: it is also the title of their dialog window.')
         return 1
       })))
       .then(Commands.literal('unstyle').executes(ctx => guard(ctx, () => {
@@ -914,6 +925,8 @@
         run(p.server, `kill @e[type=minecraft:text_display,tag=${idOf(e)}]`)
         run(p.server, `team leave ${uuidOf(e)}`)
         run(p.server, `data merge entity ${uuidOf(e)} {Glowing:0b}`)
+        var nameJson = JSON.stringify({ text: String(e.persistentData.getString('ot_style_title')), color: String(e.persistentData.getString('ot_style_color') || '#FFAA00'), bold: true })
+        run(p.server, `data merge entity ${uuidOf(e)} {CustomName:'${nameJson.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}',CustomNameVisible:1b}`)
         e.removeTag('ot_styled')
         say(ctx.source, '§a[npcmenu] Back to how it was (its small title text comes back with /setupcoords apply).')
         return 1

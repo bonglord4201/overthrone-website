@@ -64,7 +64,7 @@
       var now = Date.now(), last = lastTalk[p.username] || 0
       if (now - last < 1500) return
       lastTalk[p.username] = now
-      npcLinks(p, String(e.getName().getString()).toLowerCase().trim())
+      npcLinks(p, String(e.persistentData.getString('ot_style_title') || e.getName().getString()).toLowerCase().trim())
     } catch (x) { console.warn('[hub_npcs] ' + x) }
   })
 
