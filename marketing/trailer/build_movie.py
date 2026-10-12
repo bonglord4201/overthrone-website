@@ -14,7 +14,7 @@ W, H, FPS = 1920, 1080, 30
 BAR_H = 138                                # letterbox bars (2.39:1)
 WHITE, GOLD, RED = (245, 242, 236, 255), (255, 200, 90, 255), (226, 38, 58, 255)
 BEBAS = os.path.join(FONTS, 'BebasNeue-Regular.ttf')
-tmp = tempfile.mkdtemp(prefix='movie_')
+tmp = os.environ.get('MOVIE_TMP') or tempfile.mkdtemp(prefix='movie_')   # MOVIE_TMP=<dir> re-uses rendered pieces
 X264 = ['-c:v', 'libx264', '-preset', 'veryfast', '-crf', '14', '-pix_fmt', 'yuv420p', '-r', str(FPS), '-an']
 def run(args): subprocess.run(['ffmpeg', '-v', 'error', '-y'] + args, check=True)
 def frames(sec): return int(round(sec * FPS))
@@ -130,6 +130,7 @@ assert abs(sum(d for _, d, _, _ in story_paths) - STORY_LEN) < 1e-6
 assert abs(sum(d for _, _, pc, _ in ACTION for d, _ in pc) - ACTION_LEN) < 1e-6
 
 def do(j):
+    if os.path.exists(j[1]) and os.path.getsize(j[1]) > 0: return
     if j[0] == 'still': render_still(j[1], j[2], j[3], j[4], j[5])
     elif j[0] == 'clip': render_clip(*j[1:])
     else:
@@ -151,7 +152,7 @@ story = os.path.join(tmp, 'story.mp4')
 args, fc, prev, off = [], [], None, 0.0
 for i, (p, d, tr, pad) in enumerate(story_paths):
     args += ['-i', p]
-    fc.append('[%d:v]settb=AVTB,setpts=PTS-STARTPTS,fps=%d,format=yuv420p,setsar=1[i%d]' % (i, FPS, i))
+    fc.append('[%d:v]settb=AVTB,setpts=PTS-STARTPTS,fps=%d,format=yuv420p,setsar=1,settb=AVTB[i%d]' % (i, FPS, i))
     if i == 0: prev = 'i0'; off = d; continue
     if tr in ('fade', 'black'):
         fc.append('[%s][i%d]xfade=transition=%s:duration=%.2f:offset=%.3f,settb=AVTB[x%d]' % (prev, i, 'fadeblack' if tr == 'black' else 'fade', XF, off, i))
