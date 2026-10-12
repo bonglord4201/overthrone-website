@@ -8,6 +8,7 @@
 //   /npcmenu attach <throneshop|kits|levels|links>       give the NPC you are LOOKING AT this menu (keeps its skin/spot)
 //   /npcmenu attachcmd <command...>                the NPC you are looking at runs this command when clicked
 //   /npcmenu detach                                the NPC you are looking at goes back to normal
+//   /npcmenu fixall                                hides the NPC name tags + redoes all menu holograms in your world
 //   /npcmenu grab, then /npcmenu put   moves the NPC you looked at to where you stand (hologram too)
 //   /npcmenu remove                                deletes the menu NPC you are looking at (and its hologram)
 //   /npcmenu hologram <text...>                    (re)places the hologram over the NPC you are looking at.
@@ -716,6 +717,34 @@
     var c = '/' + String(command).replace(/^\//, '').replace(/\\/g, '\\\\').replace(/"/g, '\\"')
     run(server, `data merge entity ${uuidOf(e)} {ActionData:{ActionEventSet:{ON_INTERACTION:[{Type:"COMMAND",Cmd:"${c}",ExecAsUser:1b,PermLevel:0}]},ActionPermissionLevel:0},DialogData:{DialogDataSet:[],Type:"NONE"}}`)
   }
+  // the hologram is the NPC's name, so the NPC's own name tag is removed (it showed through the hologram)
+  const hideName = (server, e) => {
+    run(server, `data merge entity ${uuidOf(e)} {CustomNameVisible:0b}`)
+    run(server, `data remove entity ${uuidOf(e)} CustomName`)
+  }
+  const typeOfNpc = (e) => { var t = null; Object.keys(MENUS).forEach(k => { if (e.getTags().contains('ot_menu_' + k)) t = k }); return t }
+  // re-does every menu NPC near you: hides its name, puts its hologram back, removes stray holograms
+  const fixAll = (p) => {
+    var s = p.server, ids = [], n = 0
+    p.level.getEntities().forEach(e => {
+      if (!e.getTags().contains('ot_menu_npc')) return
+      var t = typeOfNpc(e), cmd = String(e.persistentData.getString('ot_menu_cmd') || '')
+      if (t == null && !cmd) return
+      var id = idOf(e)
+      ids.push(id)
+      hideName(s, e)
+      if (t != null) placeHolo(s, e, TITLES[t], id)
+      n++
+    })
+    var stray = 0
+    p.level.getEntities().forEach(e => {
+      if (String(e.type) != 'minecraft:text_display' || !e.getTags().contains('ot_menu_holo')) return
+      var mine = false
+      e.getTags().forEach(t => { if (ids.indexOf(String(t)) >= 0) mine = true })
+      if (!mine) { e.discard(); stray++ }
+    })
+    return [n, stray]
+  }
   const makeMenuNpc = (server, e, type, cmd, title) => {
     Object.keys(MENUS).forEach(t => e.removeTag('ot_menu_' + t))
     e.persistentData.remove('ot_menu_cmd')
@@ -724,7 +753,7 @@
     e.addTag('ot_menu_npc')
     var id = idOf(e)
     setGlow(server, e, GLOW[cmd ? 'cmd' : type])
-    run(server, `data merge entity ${uuidOf(e)} {CustomNameVisible:0b}`)
+    hideName(server, e)
     setClickAction(server, e, cmd ? cmd : OPEN_CMD[type])
     placeHolo(server, e, cmd ? ['&e&l' + String(title || 'CLICK ME').toUpperCase(), '&fRIGHT-CLICK'] : TITLES[type], id)
   }
@@ -796,6 +825,11 @@
         run(p.server, `kill @e[type=minecraft:text_display,tag=${idOf(e)}]`)
         run(p.server, `data merge entity ${uuidOf(e)} {Glowing:0b}`)
         say(ctx.source, '§a[npcmenu] NPC is back to normal.')
+        return 1
+      })))
+      .then(Commands.literal('fixall').executes(ctx => guard(ctx, () => {
+        var r = fixAll(ctx.source.playerOrException)
+        say(ctx.source, '§a[npcmenu] Fixed ' + r[0] + ' menu NPCs (names hidden, holograms redone), removed ' + r[1] + ' old holograms.')
         return 1
       })))
       .then(Commands.literal('grab').executes(ctx => guard(ctx, () => {
