@@ -805,6 +805,7 @@
       ids.push(id)
       hideName(s, e)
       clearClickAction(s, e)
+      clearOldTitles(e)
       setGlow(s, e, GLOW[t != null ? t : 'cmd'])
       if (t != null) placeHolo(s, e, TITLES[t], id)
       n++
@@ -875,6 +876,7 @@
     setGlow(server, e, GLOW[cmd ? 'cmd' : type])
     hideName(server, e)
     clearClickAction(server, e)
+    clearOldTitles(e)   // the setup's small "Click for ..." text over this NPC
     placeHolo(server, e, cmd ? ['&e&l' + String(title || 'CLICK ME').toUpperCase(), '&fRIGHT-CLICK'] : TITLES[type], id)
   }
   const spawnNpc = (p, name, color) => {
