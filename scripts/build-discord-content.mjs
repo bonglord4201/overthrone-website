@@ -141,6 +141,7 @@ channels.push({ key: "commands", messages: pack([
   { title: "🛒 Shop, Kits & Cosmetics", description: [
     "**In-game** (or right-click the NPCs in the hub)",
     "`/throneshop` Throne Shop: ranks, crate keys, chat tags, name colours, flight time",
+    "`/cratemenu` Every crate, your keys and how to get more",
     "`/kitmenu` Your rank kits and their cooldowns",
     "`/levelguide` Your level, XP and how to level up",
     "`/links` Discord, website, store, rules and vote links in chat",
@@ -272,9 +273,9 @@ channels.push({ key: "staffcommands", messages: pack([
     "Tebex: purchase `giverank {username} <rank>` · refund/chargeback `takerank {username}` (+ ban on chargeback)"
   ].join("\n") },
   { title: "🧍 Menu NPCs", description: [
-    "`/npcmenu spawn <throneshop|kits|levels|links>` New glowing NPC with hologram where you stand",
+    "`/npcmenu spawn <crates|throneshop|kits|levels|links>` New glowing NPC with hologram where you stand",
     "`/npcmenu spawncmd <title> <command>` NPC that runs a command, e.g. `/npcmenu spawncmd Hunters warp hunters`",
-    "`/npcmenu attach <throneshop|kits|levels|links>` Look at an NPC: it opens that menu",
+    "`/npcmenu attach <crates|throneshop|kits|levels|links>` Look at an NPC: it opens that menu",
     "`/npcmenu attachcmd <command>` Look at an NPC: it runs that command · `/npcmenu detach` back to normal",
     "`/npcmenu grab` then `/npcmenu put` Move an NPC + its hologram to where you stand",
     "`/npcmenu hologram <text>` New hologram text (`|` = new line, `&` colours) · `/npcmenu remove` Delete NPC",

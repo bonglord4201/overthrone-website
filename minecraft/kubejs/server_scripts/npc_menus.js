@@ -2,10 +2,10 @@
 // plus "command NPCs" that run a command for the player (e.g. /warp hunters, /ah).
 //
 // Staff (op):
-//   /npcmenu spawn <throneshop|kits|levels|links>       new NPC where you stand, glowing, with a hologram above it
+//   /npcmenu spawn <crates|throneshop|kits|levels|links>       new NPC where you stand, glowing, with a hologram above it
 //   /npcmenu spawncmd <title> <command...>         new NPC that runs <command> for the player who clicks it
 //                                                  e.g. /npcmenu spawncmd Hunters warp hunters
-//   /npcmenu attach <throneshop|kits|levels|links>       give the NPC you are LOOKING AT this menu (keeps its skin/spot)
+//   /npcmenu attach <crates|throneshop|kits|levels|links>       give the NPC you are LOOKING AT this menu (keeps its skin/spot)
 //   /npcmenu attachcmd <command...>                the NPC you are looking at runs this command when clicked
 //   /npcmenu detach                                the NPC you are looking at goes back to normal
 //   /npcmenu styleall                              ALL your other NPCs within 64 blocks get the same glow + big title +
@@ -611,14 +611,72 @@
     })
   }
 
-  const MENUS = { throneshop: shopMain, kits: kitMenu, levels: levelGuide, links: linksMenu }
+  // ======================================================================= Crates
+  const CRATE_INFO = [
+    { id: 'vote', x: 1, y: 2, icon: 'minecraft:lime_shulker_box', name: '&a&lVOTING CRATE', get: ['&fFree keys: vote every day!', '&fType &e/vote&f or click here.'], vote: true },
+    { id: 'runes', x: 3, y: 2, icon: 'minecraft:cyan_shulker_box', name: '&b&lRUNE CRATE', get: ['&fKeys on the store or for', '&dThrone Shards&f.'] },
+    { id: 'armor', x: 5, y: 2, icon: 'minecraft:magenta_shulker_box', name: '&d&lARMOR CRATE', get: ['&fKeys on the store or for', '&dThrone Shards&f.'] },
+    { id: 'weapon', x: 7, y: 2, icon: 'minecraft:orange_shulker_box', name: '&6&lWEAPON CRATE', get: ['&fKeys on the store or for', '&dThrone Shards&f.'] },
+    { id: 'legendary', x: 2, y: 3, icon: 'minecraft:yellow_shulker_box', name: '&6&lLEGENDARY CRATE', get: ['&fEarn keys from events & quests.'] },
+    { id: 'mythic', x: 4, y: 3, icon: 'minecraft:purple_shulker_box', name: '&5&lMYTHIC CRATE', get: ['&fEarn keys from bosses & Gates.'] },
+    { id: 'event', x: 6, y: 3, icon: 'minecraft:red_shulker_box', name: '&c&lEVENT CRATE', get: ['&fKeys from server events.'] },
+  ]
+  const keyCount = (p, id) => {
+    var n = 0
+    try {
+      var inv = p.getInventory()
+      for (var i = 0; i < inv.getContainerSize(); i++) {
+        var st = inv.getItem(i)
+        if (!st.isEmpty() && String(st.id) == 'minecraft:tripwire_hook' && String(st.getComponents()).indexOf('ot_key_' + id) >= 0) n += st.getCount()
+      }
+    } catch (e) { }
+    return n
+  }
+  const voteLinks = (p) => {
+    var V = [['Minecraft-MP', 'https://minecraft-mp.com/server/364807/vote/'], ['MinecraftServers.org', 'https://minecraftservers.org/vote/694195'], ['MinecraftBestServers', 'https://minecraftbestservers.com/server-overthrone-smp.7252']]
+    run(p.server, `tellraw ${p.username} ${JSON.stringify({ text: 'Vote on every site, every day for a free Vote Key:', color: 'green' })}`)
+    V.forEach(v => run(p.server, `tellraw ${p.username} ${JSON.stringify(['', { text: ' ➤ ', color: 'dark_gray' }, { text: v[0], color: 'aqua', underlined: true, clickEvent: { action: 'open_url', value: v[1] }, hoverEvent: { action: 'show_text', contents: 'Click to vote' } }])}`))
+  }
+  const crateMenu = (p) => {
+    var s = p.server, counts = {}
+    CRATE_INFO.forEach(c => { counts[c.id] = keyCount(p, c.id) })   // counted before the menu takes the inventory
+    var keysCat = null
+    SHOP.children.forEach(c => { if (strip(c.name).indexOf('CRATE KEYS') >= 0) keysCat = c })
+    p.openChestGUI(Text.of('Crates'), 6, gui => {
+      gui.playerSlots = true
+      for (var y = 0; y < 6; y++) for (var x = 0; x < 9; x++) {
+        (function (xx, yy) { gui.slot(xx, yy, sl => { sl.item = pane(s, PANES.G) }) })(x, y)
+      }
+      gui.slot(4, 0, sl => { sl.item = icon(s, 'minecraft:tripwire_hook', '&e&lCRATES', ['&fCrates are at spawn.', '', '&e&lRight-click&f a crate with its key to open it.', '&e&lLeft-click&f a crate to see its rewards.', '', '&c&lPaid keys are non-RNG:', '&fyou pick the reward you want!'], true) })
+      CRATE_INFO.forEach(c => gui.slot(c.x, c.y, sl => {
+        var lore = c.get.slice()
+        lore.push('')
+        lore.push('&fYour keys: ' + (counts[c.id] > 0 ? '&a&l' : '&c&l') + counts[c.id])
+        var shopSub = null
+        if (keysCat) keysCat.children.forEach(k => { if (k.children && k.children[0] && k.children[0].give.crate == c.id) shopSub = k })
+        if (c.vote) lore.push('', '&e&lCLICK FOR THE VOTE LINKS')
+        else if (shopSub) lore.push('', '&e&lCLICK TO BUY KEYS')
+        sl.item = icon(s, c.icon, c.name, lore, counts[c.id] > 0)
+        sl.leftClicked = e => {
+          if (c.vote) after(p, () => voteLinks(p))
+          else if (shopSub) after(p, () => shopPage(p, [keysCat, shopSub]))
+        }
+      }))
+      gui.slot(3, 5, sl => { sl.item = icon(s, 'minecraft:amethyst_shard', '&d&lThrone Shop', ['&fBuy crate keys with Throne Shards.', '', '&e&lCLICK TO OPEN'], true); sl.leftClicked = e => after(p, () => keysCat ? shopPage(p, [keysCat]) : shopMain(p)) })
+      gui.slot(4, 5, sl => { sl.item = icon(s, 'minecraft:barrier', '&c&lClose', []); sl.leftClicked = e => { try { p.closeMenu() } catch (x) { } } })
+      gui.slot(5, 5, sl => { sl.item = icon(s, 'minecraft:gold_ingot', '&e&lWebstore', ['&fKeys, ranks and Throne Shards.', '', '&e&lCLICK FOR THE LINK'], false); sl.leftClicked = e => after(p, () => storeLink(p)) })
+    })
+  }
+
+  const MENUS = { crates: crateMenu, throneshop: shopMain, kits: kitMenu, levels: levelGuide, links: linksMenu }
   const TITLES = {
+    crates: ['&e&lCRATES', '&fRIGHT-CLICK TO VIEW'],
     throneshop: ['&d&lTHRONE SHOP', '&fRIGHT-CLICK TO VIEW'],
     kits: ['&6&lKITS', '&fRIGHT-CLICK TO VIEW'],
     levels: ['&a&lLEVEL GUIDE', '&fRIGHT-CLICK TO VIEW'],
     links: ['&b&lSERVER LINKS', '&fRIGHT-CLICK TO VIEW'],
   }
-  const GLOW = { throneshop: 'light_purple', kits: 'gold', levels: 'green', links: 'aqua', cmd: 'yellow' }
+  const GLOW = { crates: 'yellow', throneshop: 'light_purple', kits: 'gold', levels: 'green', links: 'aqua', cmd: 'yellow' }
   const openMenu = (p, type) => {
     if (p.openChestGUI === undefined) { p.tell('§cMenus need KubeJS chest GUIs.'); return }
     try { MENUS[type](p) } catch (e) { console.error('[npc_menus] ' + type + ': ' + e); if (p.hasPermissions(2)) p.tell('§c[npc_menus] ' + e) }
@@ -721,7 +779,7 @@
     if (id == null) { id = 'ot_mid_' + Date.now().toString(36); e.addTag(id) }
     return id
   }
-  const OPEN_CMD = { throneshop: 'throneshop', kits: 'kitmenu', levels: 'levelguide', links: 'links' }
+  const OPEN_CMD = { crates: 'cratemenu', throneshop: 'throneshop', kits: 'kitmenu', levels: 'levelguide', links: 'links' }
   // Easy NPC's own "on click: run command" (the same thing the setup's click_command NPCs use)
   const setClickAction = (server, e, command) => {
     var c = '/' + String(command).replace(/^\//, '').replace(/\\/g, '\\\\').replace(/"/g, '\\"')
@@ -857,7 +915,7 @@
     say(ctx.source, '§a[npcmenu] Removed ' + n + ' floating texts within ' + radius + ' blocks. §7Now /npcmenu fixall and /npcmenu styleall put the right ones back.')
     return 1
   }
-  const NPC_NAMES = { throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'] }
+  const NPC_NAMES = { crates: ['Crates', '#FFFF55'], throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'] }
 
   ServerEvents.commandRegistry(event => {
     const { commands: Commands, arguments: Arguments } = event
@@ -869,7 +927,7 @@
     event.register(Commands.literal('npcmenu').requires(src => src.hasPermission(2))
       .then(Commands.literal('spawn').then(typeArg().executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, t = typeOf(ctx)
-        if (!t) { say(ctx.source, '§cUse: throneshop, kits, levels or links'); return 0 }
+        if (!t) { say(ctx.source, '§cUse: crates, throneshop, kits, levels or links'); return 0 }
         var e = spawnNpc(p, NPC_NAMES[t][0], NPC_NAMES[t][1])
         if (e == null) { say(ctx.source, '§cThe NPC did not spawn (check the server log).'); return 0 }
         makeMenuNpc(p.server, e, t, null)
@@ -886,7 +944,7 @@
       })))))
       .then(Commands.literal('attach').then(typeArg().executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, t = typeOf(ctx), e = looked(p)
-        if (!t) { say(ctx.source, '§cUse: throneshop, kits, levels or links'); return 0 }
+        if (!t) { say(ctx.source, '§cUse: crates, throneshop, kits, levels or links'); return 0 }
         if (e == null) { say(ctx.source, '§cLook straight at an NPC (within 8 blocks).'); return 0 }
         makeMenuNpc(p.server, e, t, null)
         say(ctx.source, '§a[npcmenu] This NPC now opens the ' + t + ' menu.')
@@ -1041,6 +1099,7 @@
         ctx.source.sendSystemMessage(Text.of('§a[flytime] Removed all flight time from ' + p.username + '.'))
         return 1
       }))))
+    event.register(Commands.literal('cratemenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'crates'); return 1 }))
     event.register(Commands.literal('kitmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'kits'); return 1 }))
     event.register(Commands.literal('levelguide').executes(ctx => { openMenu(ctx.source.playerOrException, 'levels'); return 1 }))
   })

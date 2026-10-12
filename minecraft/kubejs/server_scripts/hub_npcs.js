@@ -61,6 +61,7 @@
     try {
       var p = event.player, e = event.target
       if (p == null || e == null || String(e.type).indexOf('easy_npc') < 0) return
+      if (e.getTags().contains('ot_menu_npc')) return   // menu NPCs (npc_menus.js) open a menu instead
       var now = Date.now(), last = lastTalk[p.username] || 0
       if (now - last < 1500) return
       lastTalk[p.username] = now
