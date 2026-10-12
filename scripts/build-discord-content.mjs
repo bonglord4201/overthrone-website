@@ -148,7 +148,8 @@ channels.push({ key: "commands", messages: pack([
     "`/cosmetics` Equip everything you bought from the Throne Shop",
     "`/tags` · `/namecolor` · `/chatcolor` · `/glowcolor` · `/gradient` · `/status` · `/joinmessage` Equip one kind",
     "`/flytime` Turn bought flight on/off (time only counts down while flying) · `/flytime left` Time left",
-    "`/crate keys` How many crate keys you have · `/vote` Vote for free keys"
+    "`/crate keys` How many crate keys you have · `/vote` Vote for free keys",
+    "`/afkshard` Your AFK Shards and Keys · `/warp afk` AFK room: 1 AFK Shard every 30 min, 6 shards = 1 AFK Key"
   ].join("\n") },
   { title: "🎮 Keys Worth Knowing", description: [
     "`R` Epic Fight battle / mining mode",
@@ -306,6 +307,13 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/ac log` Last 20 alerts · `/ac check <player>` Strikes + mining numbers · `/ac strikes reset <player>` · `/ac alerts` Your alerts on/off",
     "Ground items are cleared every hour (warnings at 1 min, 30 s and a 10 s countdown)",
     "`/clearlag now` Clear in 10 seconds · `/clearlag status` Time to the next clear"
+  ].join("\n") },
+  { title: "💤 AFK Room", description: [
+    "`/afkzone pos1` + `/afkzone pos2` Stand in opposite corners of the room to set it",
+    "`/afkzone board [height]` Info board where you stand · `/afkzone board flip` · `/afkzone board remove`",
+    "`/afkzone info` · `/afkzone give <player> <n>` Give AFK Shards (testing)",
+    "1 AFK Shard every 30 min in the room, 6 shards = 1 AFK Key (AFK Crate: `/crate create afk`, fill with `/crate edit afk`)",
+    "Players: `/afkshard` · `/warp afk` (make it with your warp command while standing in the room)"
   ].join("\n") },
   { title: "🧬 Tensura", description: [
     "`/tensura edit forceevo <player> demonLord` Make someone a Demon Lord",

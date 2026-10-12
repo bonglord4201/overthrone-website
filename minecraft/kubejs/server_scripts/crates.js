@@ -101,6 +101,10 @@
       name: 'SPAWNER CRATE', keyName: 'Spawner Key', color: 'blue', dust: [0.25, 0.45, 1.0],
       keyHint: 'Earn keys in game', particles: true, rewards: [],
     },
+    afk: {
+      name: 'AFK CRATE', keyName: 'AFK Key', color: 'aqua', dust: [0.3, 0.9, 1.0],
+      keyHint: 'Earn keys in the AFK room: /warp afk', particles: true, rewards: [],
+    },
     cosmetic: {
       name: 'COSMETIC CRATE', keyName: 'Cosmetic Key', color: 'white', dust: [0.9, 0.9, 1.0],
       keyHint: 'Earn keys in game', particles: true, rewards: [],
