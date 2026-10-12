@@ -2,10 +2,10 @@
 // plus "command NPCs" that run a command for the player (e.g. /warp hunters, /ah).
 //
 // Staff (op):
-//   /npcmenu spawn <shop|kits|levels|links>       new NPC where you stand, glowing, with a hologram above it
+//   /npcmenu spawn <throneshop|kits|levels|links>       new NPC where you stand, glowing, with a hologram above it
 //   /npcmenu spawncmd <title> <command...>         new NPC that runs <command> for the player who clicks it
 //                                                  e.g. /npcmenu spawncmd Hunters warp hunters
-//   /npcmenu attach <shop|kits|levels|links>       give the NPC you are LOOKING AT this menu (keeps its skin/spot)
+//   /npcmenu attach <throneshop|kits|levels|links>       give the NPC you are LOOKING AT this menu (keeps its skin/spot)
 //   /npcmenu attachcmd <command...>                the NPC you are looking at runs this command when clicked
 //   /npcmenu detach                                the NPC you are looking at goes back to normal
 //   /npcmenu remove                                deletes the menu NPC you are looking at (and its hologram)
@@ -321,14 +321,14 @@
     })
   }
 
-  const MENUS = { shop: shopMain, kits: kitMenu, levels: levelGuide, links: linksMenu }
+  const MENUS = { throneshop: shopMain, kits: kitMenu, levels: levelGuide, links: linksMenu }
   const TITLES = {
-    shop: ['&d&lTHRONE SHOP', '&fRIGHT-CLICK TO VIEW'],
+    throneshop: ['&d&lTHRONE SHOP', '&fRIGHT-CLICK TO VIEW'],
     kits: ['&6&lKITS', '&fRIGHT-CLICK TO VIEW'],
     levels: ['&a&lLEVEL GUIDE', '&fRIGHT-CLICK TO VIEW'],
     links: ['&b&lSERVER LINKS', '&fRIGHT-CLICK TO VIEW'],
   }
-  const GLOW = { shop: 'light_purple', kits: 'gold', levels: 'green', links: 'aqua', cmd: 'yellow' }
+  const GLOW = { throneshop: 'light_purple', kits: 'gold', levels: 'green', links: 'aqua', cmd: 'yellow' }
   const openMenu = (p, type) => {
     if (p.openChestGUI === undefined) { p.tell('§cMenus need KubeJS chest GUIs.'); return }
     try { MENUS[type](p) } catch (e) { console.error('[npc_menus] ' + type + ': ' + e); if (p.hasPermissions(2)) p.tell('§c[npc_menus] ' + e) }
@@ -428,7 +428,7 @@
     if (found != null) found.removeTag('ot_spawn_tmp')
     return found
   }
-  const NPC_NAMES = { shop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'] }
+  const NPC_NAMES = { throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'] }
 
   ServerEvents.commandRegistry(event => {
     const { commands: Commands } = event
@@ -440,7 +440,7 @@
     event.register(Commands.literal('npcmenu').requires(src => src.hasPermission(2))
       .then(Commands.literal('spawn').then(typeArg().executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, t = typeOf(ctx)
-        if (!t) { say(ctx.source, '§cUse: shop, kits, levels or links'); return 0 }
+        if (!t) { say(ctx.source, '§cUse: throneshop, kits, levels or links'); return 0 }
         var e = spawnNpc(p, NPC_NAMES[t][0], NPC_NAMES[t][1])
         if (e == null) { say(ctx.source, '§cThe NPC did not spawn (check the server log).'); return 0 }
         makeMenuNpc(p.server, e, t, null)
@@ -457,7 +457,7 @@
       })))))
       .then(Commands.literal('attach').then(typeArg().executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, t = typeOf(ctx), e = looked(p)
-        if (!t) { say(ctx.source, '§cUse: shop, kits, levels or links'); return 0 }
+        if (!t) { say(ctx.source, '§cUse: throneshop, kits, levels or links'); return 0 }
         if (e == null) { say(ctx.source, '§cLook straight at an NPC (within 8 blocks).'); return 0 }
         makeMenuNpc(p.server, e, t, null)
         say(ctx.source, '§a[npcmenu] This NPC now opens the ' + t + ' menu.')
@@ -496,7 +496,7 @@
         return 1
       })))))
 
-    event.register(Commands.literal('throneshop').executes(ctx => { openMenu(ctx.source.playerOrException, 'shop'); return 1 })
+    event.register(Commands.literal('throneshop').executes(ctx => { openMenu(ctx.source.playerOrException, 'throneshop'); return 1 })
       .then(Commands.literal('debug').requires(src => src.hasPermission(2)).executes(ctx => {
         var p = ctx.source.playerOrException, b = shardsOf(p)
         say(ctx.source, '§7[throneshop] placeholder: §f' + (balancePlaceholder(p.server) || '(none)'))
