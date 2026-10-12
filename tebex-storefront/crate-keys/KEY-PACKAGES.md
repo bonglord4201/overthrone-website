@@ -128,3 +128,14 @@ Short OG-style text for every package is in `DESCRIPTIONS.md`, with `armor-rewar
 
 Tebex reviews stores against Minecraft's commercial usage rules. Keys that buy gear above vanilla limits count as
 paid gameplay advantages, which the rules don't allow, so Tebex may ask you to change these during review.
+
+## Rune Crate Keys
+
+| Package name | Price (AUD) | Purchase | Refund / Chargeback |
+|---|---|---|---|
+| 1x Rune Crate Key | 1.29 | `crate key give {username} runes 1` | `crate key take {username} runes 1` |
+| 5x Rune Crate Key | 4.99 | `crate key give {username} runes 5` | `crate key take {username} runes 5` |
+| 10x Rune Crate Key | 9.99 | `crate key give {username} runes 10` | `crate key take {username} runes 10` |
+| 25x Rune Crate Key | 24.99 | `crate key give {username} runes 25` | `crate key take {username} runes 25` |
+
+Chargeback also: `ban {username} Chargeback on the store. Open a ticket on our Discord to appeal.` (require online OFF). Image: `runes-key-art-transparent.png`.
