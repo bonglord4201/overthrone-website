@@ -35,11 +35,11 @@ TOTAL = bars(FINISH)
 NOHUD = '1280:650:0:0'      # cuts the Epic Fight hotbar at the bottom of the old combat clips
 SHOTS = [
     # intro: slow and scenic, typewriter title then the logo
-    ('n5', 0.0,  [(2 * BAR, 1.0)], {'x': 0.55}),
+    ('n5', 0.6,  [(2 * BAR, 1.0)], {'x': 0.55}),
     ('c6', 0.4,  [(2 * BAR, 1.0)], {'x': 0.45}),                  # the dragon
     # world tour (drop): one shot per bar, real speed
     ('n2', 0.5,  [(BAR, 1.0)], {}),
-    ('n1', 0.0,  [(BAR, 1.0)], {}),
+    ('n1', 0.5,  [(BAR, 1.0)], {}),
     ('n2', 3.0,  [(BAR, 1.0)], {'x': 0.5}),
     ('c6', 7.2,  [(BAR, 1.0)], {'x': 0.5}),
     ('n1', 8.0,  [(BAR, 1.0)], {}),
