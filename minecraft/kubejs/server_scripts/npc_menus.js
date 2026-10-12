@@ -12,6 +12,7 @@
 //                                                  RIGHT-CLICK TO VIEW (what they do when clicked is NOT changed)
 //   /npcmenu style [title]                         same for the NPC you look at (title = its name if left out)
 //   /npcmenu unstyle                               undo that for the NPC you look at
+//   /npcmenu glow <off|on>                         glow off/on for the NPC you look at (stays that way)
 //   /npcmenu clearholo [radius]                    deletes ALL floating text within radius (default 4) of you, not crates
 //   /npcmenu fixall                                hides the NPC name tags + redoes all menu holograms in your world
 //   /npcmenu grab, then /npcmenu put   moves the NPC you looked at to where you stand (hologram too)
@@ -711,7 +712,8 @@
     run(server, `team modify ot_glow_${color} color ${color}`)
     run(server, `team modify ot_glow_${color} nametagVisibility never`)
     run(server, `team join ot_glow_${color} ${uuidOf(e)}`)
-    run(server, `data merge entity ${uuidOf(e)} {Glowing:1b}`)
+    // /npcmenu glow off puts the tag ot_noglow on an NPC: it stays off through fixall/styleall
+    run(server, `data merge entity ${uuidOf(e)} {Glowing:${e.getTags().contains('ot_noglow') ? 0 : 1}b}`)
   }
   const idOf = (e) => {
     var id = null
@@ -834,6 +836,14 @@
     return found
   }
   const grabbed = {}
+  const glowCmd = (ctx, on) => {
+    var p = ctx.source.playerOrException, e = looked(p)
+    if (e == null) { say(ctx.source, '§cLook straight at an NPC (within 8 blocks).'); return 0 }
+    if (on) e.removeTag('ot_noglow'); else e.addTag('ot_noglow')
+    run(p.server, `data merge entity ${uuidOf(e)} {Glowing:${on ? 1 : 0}b}`)
+    say(ctx.source, '§a[npcmenu] Glow ' + (on ? 'ON' : 'OFF') + ' for this NPC. §7It stays that way (fixall/styleall keep it).')
+    return 1
+  }
   // deletes every floating text within <radius> blocks of you (crate holograms are kept)
   const clearHolo = (ctx, radius) => {
     var p = ctx.source.playerOrException, n = 0
@@ -945,6 +955,9 @@
         say(ctx.source, '§a[npcmenu] Back to how it was (its small title text comes back with /setupcoords apply).')
         return 1
       })))
+      .then(Commands.literal('glow')
+        .then(Commands.literal('off').executes(ctx => guard(ctx, () => glowCmd(ctx, false))))
+        .then(Commands.literal('on').executes(ctx => guard(ctx, () => glowCmd(ctx, true)))))
       .then(Commands.literal('clearholo').executes(ctx => guard(ctx, () => clearHolo(ctx, 4)))
         .then(Commands.argument('radius', Arguments.INTEGER.create(event)).executes(ctx => guard(ctx, () => clearHolo(ctx, Arguments.INTEGER.getResult(ctx, 'radius'))))))
       .then(Commands.literal('fixall').executes(ctx => guard(ctx, () => {
