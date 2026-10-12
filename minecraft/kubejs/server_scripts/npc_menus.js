@@ -336,20 +336,42 @@
 
   // ======================================================================= NPC clicks
   const lastClick = {}
-  ItemEvents.entityInteracted(event => {
-    var p = event.player, e = event.target
-    if (p == null || e == null) return
+  var clickDebug = false
+  // returns true when the click was for one of our NPCs (then the NPC's own dialog must be stopped)
+  const onNpcClick = (p, e, hand) => {
+    if (p == null || e == null || p.level.isClientSide()) return false
     var tags = e.getTags(), type = null
+    if (clickDebug && p.hasPermissions(2)) p.tell('§8[npcmenu debug] clicked ' + e.type + ' tags=' + tags + ' hand=' + hand)
     Object.keys(MENUS).forEach(t => { if (tags.contains('ot_menu_' + t)) type = t })
     var cmd = String(e.persistentData.getString('ot_menu_cmd') || '')
-    if (type == null && !cmd) return
+    if (type == null && !cmd) return false
     var now = Date.now()
-    if (String(event.hand) == 'MAIN_HAND' && now - (lastClick[p.username] || 0) > 500) {
+    if (String(hand) == 'MAIN_HAND' && now - (lastClick[p.username] || 0) > 500) {
       lastClick[p.username] = now
       if (type != null) { var pp = p, tt = type; p.server.scheduleInTicks(1, () => openMenu(pp, tt)) }
       else asPlayer(p, cmd.replace(/^\//, ''))
     }
-    event.cancel()   // stops the NPC's own dialog. Must be last (it ends the handler).
+    return true
+  }
+  // KubeJS's own event
+  ItemEvents.entityInteracted(event => {
+    var mine = false
+    try { mine = onNpcClick(event.player, event.target, event.hand) } catch (x) { console.warn('[npc_menus] ' + x) }
+    if (mine) event.cancel()   // stops the NPC's own dialog. Must be last (it ends the handler).
+  })
+  // NeoForge's events directly, in case the one above doesn't fire for Easy NPC
+  ;['net.neoforged.neoforge.event.entity.player.PlayerInteractEvent$EntityInteractSpecific',
+    'net.neoforged.neoforge.event.entity.player.PlayerInteractEvent$EntityInteract'].forEach(cls => {
+    try {
+      NativeEvents.onEvent(cls, ev => {
+        try {
+          if (onNpcClick(ev.getEntity(), ev.getTarget(), ev.getHand())) {
+            ev.setCanceled(true)
+            try { ev.setCancellationResult(Java.loadClass('net.minecraft.world.InteractionResult').SUCCESS) } catch (y) { }
+          }
+        } catch (x) { console.warn('[npc_menus] ' + x) }
+      })
+    } catch (e) { console.warn('[npc_menus] could not listen to ' + cls + ': ' + e) }
   })
 
   // ======================================================================= staff commands
@@ -402,6 +424,12 @@
     if (id == null) { id = 'ot_mid_' + Date.now().toString(36); e.addTag(id) }
     return id
   }
+  const OPEN_CMD = { throneshop: 'throneshop', kits: 'kitmenu', levels: 'levelguide', links: 'links' }
+  // Easy NPC's own "on click: run command" (the same thing the setup's click_command NPCs use)
+  const setClickAction = (server, e, command) => {
+    var c = '/' + String(command).replace(/^\//, '').replace(/\\/g, '\\\\').replace(/"/g, '\\"')
+    run(server, `data merge entity ${uuidOf(e)} {ActionData:{ActionEventSet:{ON_INTERACTION:[{Type:"COMMAND",Cmd:"${c}",ExecAsUser:1b,PermLevel:0}]},ActionPermissionLevel:0},DialogData:{DialogDataSet:[],Type:"NONE"}}`)
+  }
   const makeMenuNpc = (server, e, type, cmd, title) => {
     Object.keys(MENUS).forEach(t => e.removeTag('ot_menu_' + t))
     e.persistentData.remove('ot_menu_cmd')
@@ -410,6 +438,7 @@
     e.addTag('ot_menu_npc')
     var id = idOf(e)
     setGlow(server, e, GLOW[cmd ? 'cmd' : type])
+    setClickAction(server, e, cmd ? cmd : OPEN_CMD[type])
     placeHolo(server, e, cmd ? ['&e&l' + String(title || 'CLICK ME').toUpperCase(), '&fRIGHT-CLICK'] : TITLES[type], id)
   }
   const spawnNpc = (p, name, color) => {
@@ -470,6 +499,7 @@
         say(ctx.source, '§a[npcmenu] Clicking this NPC now runs §f/' + cmd)
         return 1
       }))))
+      .then(Commands.literal('debug').executes(ctx => { clickDebug = !clickDebug; say(ctx.source, '§e[npcmenu] click debug ' + (clickDebug ? 'ON: right-click an NPC' : 'OFF')); return 1 }))
       .then(Commands.literal('detach').executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, e = looked(p)
         if (e == null) { say(ctx.source, '§cLook straight at an NPC (within 8 blocks).'); return 0 }
