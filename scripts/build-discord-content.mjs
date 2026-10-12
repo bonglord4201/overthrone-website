@@ -300,6 +300,13 @@ channels.push({ key: "staffcommands", messages: pack([
     "`otcosmetic give|take <player> <kind> <id>` Give/take a cosmetic (Tebex uses this) · `otcosmetic list <kind>` All ids",
     "Kinds: `tag` `namecolor` `chatcolor` `glow` `gradient` `status` `joinmessage` · players equip with `/cosmetics`"
   ].join("\n") },
+  { title: "🛡️ AntiCheat & ClearLag", description: [
+    "Alerts show in staff chat automatically (X-ray-like mining, kill-aura/auto-click, impossible item stacks)",
+    "Strikes: 1st warning, 2nd kick, 3rd ban (staff/ops are never punished). X-ray mining is alert-only: check before banning",
+    "`/ac log` Last 20 alerts · `/ac check <player>` Strikes + mining numbers · `/ac strikes reset <player>` · `/ac alerts` Your alerts on/off",
+    "Ground items are cleared every hour (warnings at 1 min, 30 s and a 10 s countdown)",
+    "`/clearlag now` Clear in 10 seconds · `/clearlag status` Time to the next clear"
+  ].join("\n") },
   { title: "🧬 Tensura", description: [
     "`/tensura edit forceevo <player> demonLord` Make someone a Demon Lord",
     "`/tensura edit race <player> tensura:god_slime true true` Set a race"
