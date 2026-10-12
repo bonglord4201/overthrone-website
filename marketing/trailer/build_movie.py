@@ -5,7 +5,7 @@ All footage is OVERTHRONE's own. Music: make_movie_music.py (80 BPM, 1 bar = 3 s
     python3 build_movie.py <clips_dir> <images_dir> <music.wav> <fonts_dir> <out.mp4>
 """
 import concurrent.futures as cf, math, os, shutil, subprocess, sys, tempfile
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 
 CLIPS, IMAGES, AUDIO, FONTS, OUT = sys.argv[1:6]
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -96,9 +96,38 @@ def scenery_png(name):
     im = im.crop((0, y, im.width, y + h)).resize((W * 2, H * 2), Image.LANCZOS)
     p = os.path.join(tmp, 'sc_%s.png' % name); im.save(p); return p
 
+def remove_crosshair(im):
+    """paints out the white Minecraft crosshair left in an F2 screenshot: finds the densest patch of bright,
+    grey pixels that stand out from their surroundings and fills it from the pixels around it."""
+    L = im.convert('L'); d = ImageChops.subtract(L, L.filter(ImageFilter.MedianFilter(15)))
+    px, dp = im.load(), d.load()
+    pts = [(x, y) for y in range(im.height) for x in range(im.width)
+           if dp[x, y] > 35 and min(px[x, y]) > 120 and max(px[x, y]) - min(px[x, y]) < 45]
+    if len(pts) < 20: return im
+    cx, cy = max(pts, key=lambda c: sum(abs(x - c[0]) <= 15 and abs(y - c[1]) <= 15 for x, y in pts))
+    for _ in range(3):                     # move to the middle of the cross
+        near = [(x, y) for x, y in pts if abs(x - cx) <= 16 and abs(y - cy) <= 16]
+        cx, cy = sorted(x for x, _ in near)[len(near) // 2], sorted(y for _, y in near)[len(near) // 2]
+    m = Image.new('L', im.size, 0); mp = m.load()
+    for y in range(max(0, cy - 16), min(im.height, cy + 17)):        # the cross itself: 3px arms, any colour
+        for x in range(max(0, cx - 16), min(im.width, cx + 17)):
+            if (abs(x - cx) <= 3 or abs(y - cy) <= 3) and dp[x, y] > 25: mp[x, y] = 255
+    m = m.filter(ImageFilter.MaxFilter(7)); mp = m.load()
+    keep = ImageChops.invert(m)
+    num = ImageChops.multiply(im, Image.merge('RGB', (keep,) * 3)).filter(ImageFilter.GaussianBlur(6))
+    den = keep.filter(ImageFilter.GaussianBlur(6))
+    np_num, np_den = num.load(), den.load(); out = im.copy(); op = out.load()
+    for y in range(im.height):
+        for x in range(im.width):
+            if mp[x, y]:
+                k = max(np_den[x, y], 1) / 255
+                op[x, y] = tuple(min(255, int(c / k)) for c in np_num[x, y])
+    return out
+
 def npc_png(name):
     """small NPC screenshot: sharp portrait in the middle, the same picture blurred and darkened behind it."""
     im = Image.open(image_file(name)).convert('RGB')
+    im = remove_crosshair(im)
     bg = im.resize((W * 2, int(W * 2 * im.height / im.width)), Image.LANCZOS)
     y = (bg.height - H * 2) // 2; bg = bg.crop((0, y, W * 2, y + H * 2)).filter(ImageFilter.GaussianBlur(40))
     bg = Image.eval(bg, lambda v: int(v * 0.55))
