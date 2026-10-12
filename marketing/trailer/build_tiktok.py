@@ -34,7 +34,7 @@ TOTAL = bars(FINISH)
 # (clip, source start, [(seconds, speed)], options)   speed < 1 = slow motion
 # options: box = source crop before the 9:16 cut, x = horizontal focus 0..1, lift = brighten dark footage
 SHOTS = [
-    ('f2', 1.4,  [(HB, 1.0), (HB, 0.45)], {'box': '924:520:240:100', 'lift': 1.25, 'x': 0.55}),   # hook: boss reveal
+    ('n5', 16.4, [(HB, 1.0), (HB, 0.45)], {'x': 0.4}),                                            # hook: boss under the tree
     ('TITLE', 0, [(BAR, 1.0)], {}),
     # the hub
     ('n2', 0.2,  [(BAR, 1.35)], {}),
@@ -49,16 +49,16 @@ SHOTS = [
     # the fight
     ('n5', 3.0,  [(HB, 1.0), (HB, 0.5)], {'x': 0.45}),
     ('c10', 13.2, [(HB, 1.0), (HB, 0.5)], {'box': '948:533:60:107'}),
-    ('f2', 14.0, [(BAR, 1.0)], {'box': '924:520:240:100', 'lift': 1.2}),
     ('n5', 6.3,  [(BAR, 0.6)], {'x': 0.5}),
+    ('f1', 4.8,  [(HB, 1.0), (HB, 0.5)], {'box': '960:540:160:80', 'lift': 1.4}),
     ('c11', 12.9, [(BEAT, 1.0), (3 * BEAT, 0.5)], {}),
     ('n5', 9.4,  [(BAR, 0.7)], {'x': 0.6}),
-    ('f1', 4.8,  [(HB, 1.0), (HB, 0.5)], {'box': '960:540:160:80', 'lift': 1.4}),
+    ('c10', 16.0, [(HB, 1.0), (HB, 0.6)], {'box': '948:533:60:107'}),
     ('n5', 18.8, [(BAR, 0.8)], {'x': 0.45}),
     # the worlds
     ('n6', 0.0,  [(BAR, 1.2)], {'x': 0.35}),
-    ('n3', 20.0, [(BAR, 1.2)], {'x': 0.65}),
     ('n6', 14.4, [(BAR, 1.0)], {'x': 0.6}),
+    ('n3', 20.0, [(BAR, 1.2)], {'x': 0.65}),
     ('n5', 22.3, [(BAR, 1.0)], {'x': 0.55}),
     ('END', 0,   [(4 * BAR, 1.0)], {}),
 ]
@@ -75,8 +75,8 @@ CAPTIONS = [
     (FIGHT + 2.5, 0.5, 'word', 'DASH', None),
     (FIGHT + 3.0, 0.9, 'word', 'STRIKE', None),
     (FIGHT + 5.0, 1.5, 'slam', 'EPIC FIGHT COMBAT', None),
-    (FIGHT + 7.0, 1.0, 'slam', 'TENSURA RACES', None),
-    (WORLD + 0.1, 1.8, 'slam', 'EXPLORE', 'SURVIVAL  ·  RPG  ·  RESOURCE WORLDS'),
+    (FIGHT + 7.0, 1.0, 'slam', 'RISE TO LEVEL 5000', None),
+    (WORLD + 0.1, 1.8, 'slam', 'EXPLORE NEW WORLDS', 'SURVIVAL  ·  RPG  ·  RESOURCE'),
     (WORLD + 2.1, 1.8, 'slam', 'CRATES & LOOT', None),
 ]
 IMPACTS = [0.0, bars(HUB), bars(FIGHT), bars(WORLD), bars(END)]
