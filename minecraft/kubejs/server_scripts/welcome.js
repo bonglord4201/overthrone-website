@@ -55,6 +55,11 @@
 
   // ---- rotating announcements to everyone
   const ANNOUNCEMENTS = [
+    () => [t('Cosmetics!', 'light_purple', { bold: true }), nl,
+      t('Tags, statuses, glows, gradients and more in the ', 'gray'), t('Throne Shop', 'light_purple'), t(' (', 'gray'),
+      Object.assign(t('/throneshop', 'yellow'), { clickEvent: { action: 'run_command', value: '/throneshop' } }), t(').', 'gray'), nl,
+      t('Equip what you bought with ', 'gray'),
+      Object.assign(t('/cosmetics', 'yellow'), { clickEvent: { action: 'run_command', value: '/cosmetics' } }), t(' or visit the Cosmetics NPC at spawn.', 'gray')],
     () => [t('Server Rules!', 'green', { bold: true }), nl,
       t('Be sure to follow all our server rules found here!', 'gray'), nl, link(RULES, RULES, 'gold')],
     () => [t('Vote for rewards!', 'green', { bold: true }), nl,

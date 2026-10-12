@@ -2,10 +2,10 @@
 // plus "command NPCs" that run a command for the player (e.g. /warp hunters, /ah).
 //
 // Staff (op):
-//   /npcmenu spawn <crates|throneshop|kits|levels|links>       new NPC where you stand, glowing, with a hologram above it
+//   /npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links>       new NPC where you stand, glowing, with a hologram above it
 //   /npcmenu spawncmd <title> <command...>         new NPC that runs <command> for the player who clicks it
 //                                                  e.g. /npcmenu spawncmd Hunters warp hunters
-//   /npcmenu attach <crates|throneshop|kits|levels|links>       give the NPC you are LOOKING AT this menu (keeps its skin/spot)
+//   /npcmenu attach <cosmetics|crates|throneshop|kits|levels|links>       give the NPC you are LOOKING AT this menu (keeps its skin/spot)
 //   /npcmenu attachcmd <command...>                the NPC you are looking at runs this command when clicked
 //   /npcmenu detach                                the NPC you are looking at goes back to normal
 //   /npcmenu styleall                              ALL your other NPCs within 64 blocks get the same glow + big title +
@@ -481,7 +481,10 @@
     else if (g.type == 'tag') { addOwned(p, 'tag:' + g.id); p.tell('§7Equip it with §e/tags§7.') }
     else if (g.type == 'namecolor') { addOwned(p, 'nc:' + g.id); p.tell('§7Equip it with §e/namecolor§7.') }
     else if (g.type == 'fly') { addFly(p, g.seconds) }
-    else if (g.type == 'cos') { addOwned(p, g.kind + ':' + g.id); p.tell('§7Equip it with §e' + KINDS[g.kind].cmd + '§7 (or §e/cosmetics§7).') }
+    else if (g.type == 'cos') {
+      addOwned(p, g.kind + ':' + g.id)
+      run(s, `tellraw ${p.username} ${JSON.stringify(['', { text: 'Equip it: ', color: 'gray' }, { text: '[CLICK HERE]', color: 'light_purple', bold: true, clickEvent: { action: 'run_command', value: KINDS[g.kind].cmd }, hoverEvent: { action: 'show_text', contents: 'Opens ' + KINDS[g.kind].cmd } }, { text: ' or type ' + KINDS[g.kind].cmd + ' / /cosmetics', color: 'gray' }])}`)
+    }
     else if (g.type == 'cmd') g.commands.forEach(c => run(s, c.split('{p}').join(p.username)))
     console.info('[throneshop] ' + p.username + ' bought ' + label + ' for ' + it.price + ' shards')
     p.tell(`§a§lThrone Shop §7» You bought §f${label}§7 for §d${fmt(it.price)} Throne Shards§7!`)
@@ -634,9 +637,15 @@
   }
   const cosmeticsMain = (p) => {
     var s = p.server
-    p.openChestGUI(Text.of('Your Cosmetics'), 3, gui => {
+    p.openChestGUI(Text.of('Your Cosmetics'), 4, gui => {
       gui.playerSlots = true
-      for (var y = 0; y < 3; y++) for (var x = 0; x < 9; x++) {
+      gui.slot(4, 0, sl => { sl.item = icon(s, 'minecraft:book', '&d&lHOW COSMETICS WORK', [
+        '&f1. Buy cosmetics in the &dThrone Shop', '&f   (hub NPC or &e/throneshop&f).', '&f2. Open this menu (&e/cosmetics&f) and click', '&f   a category below.',
+        '&f3. Click a cosmetic you own to &aequip&f it.', '&f   Click &cUnequip&f to take it off.', '', '&7You can wear one of each kind at once:', '&7a tag, name colour OR gradient, chat colour,', '&7glow, status and join message.'], true) })
+      gui.slot(3, 3, sl => { sl.item = icon(s, 'minecraft:amethyst_shard', '&d&lThrone Shop', ['&fBuy more cosmetics.', '', '&e&lCLICK TO OPEN'], true); sl.leftClicked = e => after(p, () => shopMain(p)) })
+      gui.slot(5, 3, sl => { sl.item = icon(s, 'minecraft:barrier', '&c&lClose', []); sl.leftClicked = e => { try { p.closeMenu() } catch (x) { } } })
+      for (var y = 0; y < 4; y++) for (var x = 0; x < 9; x++) {
+        if ((y == 0 && x == 4) || (y == 3 && (x == 3 || x == 5))) continue
         (function (xx, yy) { gui.slot(xx, yy, sl => { sl.item = pane(s, PANES.G) }) })(x, y)
       }
       KIND_ORDER.forEach((k, i) => gui.slot(1 + i, 1, sl => {
@@ -856,15 +865,16 @@
     })
   }
 
-  const MENUS = { crates: crateMenu, throneshop: shopMain, kits: kitMenu, levels: levelGuide, links: linksMenu }
+  const MENUS = { cosmetics: p => cosmeticsMain(p), crates: crateMenu, throneshop: shopMain, kits: kitMenu, levels: levelGuide, links: linksMenu }
   const TITLES = {
+    cosmetics: ['&d&lCOSMETICS', '&fRIGHT-CLICK TO VIEW'],
     crates: ['&e&lCRATES', '&fRIGHT-CLICK TO VIEW'],
     throneshop: ['&d&lTHRONE SHOP', '&fRIGHT-CLICK TO VIEW'],
     kits: ['&6&lKITS', '&fRIGHT-CLICK TO VIEW'],
     levels: ['&a&lLEVEL GUIDE', '&fRIGHT-CLICK TO VIEW'],
     links: ['&b&lSERVER LINKS', '&fRIGHT-CLICK TO VIEW'],
   }
-  const GLOW = { crates: 'yellow', throneshop: 'light_purple', kits: 'gold', levels: 'green', links: 'aqua', cmd: 'yellow' }
+  const GLOW = { cosmetics: 'light_purple', crates: 'yellow', throneshop: 'light_purple', kits: 'gold', levels: 'green', links: 'aqua', cmd: 'yellow' }
   const openMenu = (p, type) => {
     if (p.openChestGUI === undefined) { p.tell('§cMenus need KubeJS chest GUIs.'); return }
     try { MENUS[type](p) } catch (e) { console.error('[npc_menus] ' + type + ': ' + e); if (p.hasPermissions(2)) p.tell('§c[npc_menus] ' + e) }
@@ -967,7 +977,7 @@
     if (id == null) { id = 'ot_mid_' + Date.now().toString(36); e.addTag(id) }
     return id
   }
-  const OPEN_CMD = { crates: 'cratemenu', throneshop: 'throneshop', kits: 'kitmenu', levels: 'levelguide', links: 'links' }
+  const OPEN_CMD = { cosmetics: 'cosmetics', crates: 'cratemenu', throneshop: 'throneshop', kits: 'kitmenu', levels: 'levelguide', links: 'links' }
   // Easy NPC's own "on click: run command" (the same thing the setup's click_command NPCs use)
   const setClickAction = (server, e, command) => {
     var c = '/' + String(command).replace(/^\//, '').replace(/\\/g, '\\\\').replace(/"/g, '\\"')
@@ -1105,7 +1115,7 @@
     say(ctx.source, '§a[npcmenu] Removed ' + n + ' floating texts within ' + radius + ' blocks. §7Now /npcmenu fixall and /npcmenu styleall put the right ones back.')
     return 1
   }
-  const NPC_NAMES = { crates: ['Crates', '#FFFF55'], throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'] }
+  const NPC_NAMES = { cosmetics: ['Cosmetics', '#FF55FF'], crates: ['Crates', '#FFFF55'], throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'] }
 
   ServerEvents.commandRegistry(event => {
     const { commands: Commands, arguments: Arguments } = event
@@ -1117,7 +1127,7 @@
     event.register(Commands.literal('npcmenu').requires(src => src.hasPermission(2))
       .then(Commands.literal('spawn').then(typeArg().executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, t = typeOf(ctx)
-        if (!t) { say(ctx.source, '§cUse: crates, throneshop, kits, levels or links'); return 0 }
+        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels or links'); return 0 }
         var e = spawnNpc(p, NPC_NAMES[t][0], NPC_NAMES[t][1])
         if (e == null) { say(ctx.source, '§cThe NPC did not spawn (check the server log).'); return 0 }
         makeMenuNpc(p.server, e, t, null)
@@ -1134,7 +1144,7 @@
       })))))
       .then(Commands.literal('attach').then(typeArg().executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, t = typeOf(ctx), e = looked(p)
-        if (!t) { say(ctx.source, '§cUse: crates, throneshop, kits, levels or links'); return 0 }
+        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels or links'); return 0 }
         if (e == null) { say(ctx.source, '§cLook straight at an NPC (within 8 blocks).'); return 0 }
         makeMenuNpc(p.server, e, t, null)
         say(ctx.source, '§a[npcmenu] This NPC now opens the ' + t + ' menu.')

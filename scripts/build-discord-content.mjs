@@ -274,9 +274,9 @@ channels.push({ key: "staffcommands", messages: pack([
     "Tebex: purchase `giverank {username} <rank>` · refund/chargeback `takerank {username}` (+ ban on chargeback)"
   ].join("\n") },
   { title: "🧍 Menu NPCs", description: [
-    "`/npcmenu spawn <crates|throneshop|kits|levels|links>` New glowing NPC with hologram where you stand",
+    "`/npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links>` New glowing NPC with hologram where you stand",
     "`/npcmenu spawncmd <title> <command>` NPC that runs a command, e.g. `/npcmenu spawncmd Hunters warp hunters`",
-    "`/npcmenu attach <crates|throneshop|kits|levels|links>` Look at an NPC: it opens that menu",
+    "`/npcmenu attach <cosmetics|crates|throneshop|kits|levels|links>` Look at an NPC: it opens that menu",
     "`/npcmenu attachcmd <command>` Look at an NPC: it runs that command · `/npcmenu detach` back to normal",
     "`/npcmenu grab` then `/npcmenu put` Move an NPC + its hologram to where you stand",
     "`/npcmenu hologram <text>` New hologram text (`|` = new line, `&` colours) · `/npcmenu remove` Delete NPC",
