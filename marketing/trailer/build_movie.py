@@ -151,11 +151,12 @@ story = os.path.join(tmp, 'story.mp4')
 args, fc, prev, off = [], [], None, 0.0
 for i, (p, d, tr, pad) in enumerate(story_paths):
     args += ['-i', p]
-    if i == 0: prev = '0:v'; off = d; continue
+    fc.append('[%d:v]settb=AVTB,setpts=PTS-STARTPTS,fps=%d,format=yuv420p,setsar=1[i%d]' % (i, FPS, i))
+    if i == 0: prev = 'i0'; off = d; continue
     if tr in ('fade', 'black'):
-        fc.append('[%s][%d:v]xfade=transition=%s:duration=%.2f:offset=%.3f[x%d]' % (prev, i, 'fadeblack' if tr == 'black' else 'fade', XF, off, i))
+        fc.append('[%s][i%d]xfade=transition=%s:duration=%.2f:offset=%.3f,settb=AVTB[x%d]' % (prev, i, 'fadeblack' if tr == 'black' else 'fade', XF, off, i))
     else:
-        fc.append('[%s][%d:v]concat=n=2:v=1:a=0[x%d]' % (prev, i, i))
+        fc.append('[%s][i%d]concat=n=2:v=1:a=0,settb=AVTB[x%d]' % (prev, i, i))
     prev = 'x%d' % i; off += d
 fc.append('[%s]fade=in:st=0:d=1.8,trim=duration=%.3f,setpts=PTS-STARTPTS[v]' % (prev, STORY_LEN))
 run(args + ['-filter_complex', ';'.join(fc), '-map', '[v]', '-frames:v', str(frames(STORY_LEN))] + X264 + [story])
