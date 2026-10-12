@@ -12,6 +12,7 @@
 //   /npcmenu hologram <text...>                    (re)places the hologram over the NPC you are looking at.
 //                                                  Use | for a new line, e.g. /npcmenu hologram &6&lJOBS|&7Right-click
 // Players can also open the menus with commands: /throneshop  /kitmenu  /levelguide
+// Bought cosmetics: /tags (chat tag)  /namecolor (name colour)  /flytime (flight on/off)
 //
 // Throne Shop balance: the shop reads your Throne Shards from the same placeholder your sidebar uses
 // (the line with "SHARD" in config/serversetup/scoreboard.json) and takes them with "shards take".
@@ -21,6 +22,7 @@
 (function () {
   // ======================================================================= settings
   const TAKE_SHARDS = 'shards take {p} {n}'
+  const STORE_URL = 'https://overthronesmp.tebex.store'
   const RANK_ORDER = ['ronin', 'valkyrie', 'monarch', 'godborn', 'overlord']
   const RANK_INFO = {
     ronin: { name: 'Ronin', color: '#E0434F', candle: 'minecraft:red_candle' },
@@ -30,41 +32,119 @@
     overlord: { name: 'Overlord', color: '#FF3B2F', candle: 'minecraft:orange_candle' },
   }
   const KIT_COOLDOWN_HOURS = 120   // must match kit_cooldown.js
+  const FLY_BLOCKED_WORLDS = []    // world ids where bought flight doesn't work, e.g. ['multiworld:arena']
 
-  // Throne Shop. Prices are in Throne Shards (1,000 shards = 4.99 AUD on the store). Change freely.
-  // Each item: icon, name (& colour codes ok), lore lines, price, commands ({p} = player name), optional "rank".
-  const SHOP = [
-    {
-      id: 'ranks', icon: 'minecraft:nether_star', name: '&c&lRANKS', slot: 20,
-      desc: ['Ranks give you a prefix, more homes,', 'kits, commands and much more.', 'Every rank includes the ranks below it.'],
-      items: [
-        { icon: 'minecraft:red_dye', name: '&#E0434F&l[RONIN] &fRank', price: 2500, rank: 'ronin', commands: ['giverank {p} ronin'] },
-        { icon: 'minecraft:purple_dye', name: '&#C04DFF&l[VALKYRIE] &fRank', price: 6000, rank: 'valkyrie', commands: ['giverank {p} valkyrie'] },
-        { icon: 'minecraft:yellow_dye', name: '&#E6B85C&l[MONARCH] &fRank', price: 12000, rank: 'monarch', commands: ['giverank {p} monarch'] },
-        { icon: 'minecraft:white_dye', name: '&#F3E2B0&l[GODBORN] &fRank', price: 22000, rank: 'godborn', commands: ['giverank {p} godborn'] },
-        { icon: 'minecraft:orange_dye', name: '&#FF3B2F&l[OVERLORD] &fRank', price: 35000, rank: 'overlord', commands: ['giverank {p} overlord'] },
-      ],
-    },
-    {
-      id: 'keys', icon: 'minecraft:tripwire_hook', name: '&e&lCRATE KEYS', slot: 22,
-      desc: ['Keys for the crates at spawn.', 'Paid keys are non-RNG: you pick', 'the reward you want!'],
-      items: [
-        { icon: 'minecraft:tripwire_hook', name: '&a&lVote Key', lore: ['Opens the Voting Crate.'], price: 200, commands: ['crate key give {p} vote 1'] },
-        { icon: 'minecraft:tripwire_hook', name: '&a&l5x Vote Key', lore: ['Opens the Voting Crate.'], price: 900, commands: ['crate key give {p} vote 5'] },
-        { icon: 'minecraft:tripwire_hook', name: '&b&lRune Key', lore: ['Opens the Rune Crate.'], price: 260, commands: ['crate key give {p} runes 1'] },
-        { icon: 'minecraft:tripwire_hook', name: '&b&l5x Rune Key', lore: ['Opens the Rune Crate.'], price: 1000, commands: ['crate key give {p} runes 5'] },
-        { icon: 'minecraft:tripwire_hook', name: '&d&lArmor Key', lore: ['Opens the Armor Crate.'], price: 600, commands: ['crate key give {p} armor 1'] },
-        { icon: 'minecraft:tripwire_hook', name: '&d&l5x Armor Key', lore: ['Opens the Armor Crate.'], price: 1500, commands: ['crate key give {p} armor 5'] },
-        { icon: 'minecraft:tripwire_hook', name: '&6&lWeapon Key', lore: ['Opens the Weapon Crate.'], price: 600, commands: ['crate key give {p} weapon 1'] },
-        { icon: 'minecraft:tripwire_hook', name: '&6&l5x Weapon Key', lore: ['Opens the Weapon Crate.'], price: 1500, commands: ['crate key give {p} weapon 5'] },
-      ],
-    },
-    {
-      id: 'more', icon: 'minecraft:chest', name: '&d&lMORE COMING SOON', slot: 24,
-      desc: ['New items are added here', 'over time. Stay tuned!'],
-      items: [],
-    },
+  // Rank perks shown in the shop (from the rank comparison on the store)
+  const RANK_PERKS = {
+    ronin: ['[RONIN] Prefix in Chat & Tab', 'View In-Game Chat on Discord', 'Colours in Books', '1x Class Reset Token on Purchase',
+      'Create up to 100 Chest Shops', 'Create Double-Chest Shops', 'Access to 5 Auction House Slots', 'Access to Premium Jobs',
+      '1 Active Job', 'Create up to 2 Homes', 'Access to 1 Player Vault (/vault)', 'Access to 3 Reset Vaults', 'Access to Ronin Kit (/kits)',
+      'Mine Spawners with Silk Touch', '/craft /furnace /recipe /seen /ptime /pweather'],
+    valkyrie: ['[VALKYRIE] Prefix in Chat & Tab', 'Show Items in Chat', 'Sign Formatting', 'Coloured Item Names in Anvils',
+      '2x Class Reset Tokens on Purchase', 'Create up to 200 Chest Shops', 'Access to 7 Auction House Slots', '2 Active Jobs',
+      'Create up to 3 Homes', 'Access to 2 Player Vaults', 'Access to 5 Reset Vaults', 'Create 1 Player Warp', 'Access to Valkyrie Kit (/kits)',
+      '/enchantable /grindstone /stonecutter /loom', '/cartographytable /smithingtable /firstjoin'],
+    monarch: ['[MONARCH] Prefix in Chat & Tab', '3x Class Reset Tokens on Purchase', 'Create up to 300 Chest Shops',
+      'Access to 9 Auction House Slots', '3 Active Jobs', 'Create up to 4 Homes', 'Access to 3 Player Vaults', 'Access to 7 Reset Vaults',
+      'Create up to 2 Player Warps', 'Access to Monarch Kit (/kits)', 'Mine Spawners without Silk Touch', '/anvil /echest'],
+    godborn: ['[GODBORN] Prefix in Chat & Tab', '4x Class Reset Tokens on Purchase', 'Create up to 500 Chest Shops',
+      'Remote Chest Shops (50 Blocks)', 'Access to 11 Auction House Slots', '4 Active Jobs', 'Create up to 5 Homes', 'Access to 5 Player Vaults',
+      'Access to 9 Reset Vaults', 'Create up to 3 Player Warps', 'Access to Godborn Kit (/kits)',
+      '/disposal /clearinventory /bal <player> /near', '/tprequest /rename /eglow'],
+    overlord: ['[OVERLORD] Prefix in Chat & Tab', 'Custom Chat Formatting', '5x Class Reset Tokens on Purchase', '2 Classes & Abilities at Once',
+      'Keep EXP on Death', 'Unlimited Chest Shops', 'Remote Chest Shops (200 Blocks)', 'Access to 15 Auction House Slots', '5 Active Jobs',
+      'Create up to 6 Homes', 'Access to 7 Player Vaults', 'Access to 12 Reset Vaults', 'Create up to 4 Player Warps',
+      'Access to Overlord Kit (/kits)', 'Customise Armor Stands', '/inv <player> /nick /color /me', '/hat /afk /sit /lay'],
+  }
+
+  // Chat tags (shown before your name in chat). Price in Throne Shards.
+  const TAGS = [
+    ['heart', '&c❤', 399], ['star', '&e★', 399], ['crown', '&6♔', 399], ['skull', '&7☠', 399], ['swords', '&b⚔', 399],
+    ['flower', '&d✿', 399], ['bolt', '&e⚡', 399], ['snow', '&b❄', 399], ['music', '&a♫', 399], ['sun', '&6☀', 399],
+    ['hunter', '&aHunter', 499], ['warlord', '&cWarlord', 499], ['kingslayer', '&6Kingslayer', 499], ['voidwalker', '&5Voidwalker', 499],
+    ['bloodborne', '&4Bloodborne', 499], ['frostbound', '&bFrostbound', 499], ['arcanist', '&dArcanist', 499], ['shadow', '&8Shadow', 499],
+    ['leviathan', '&9Leviathan', 499], ['dragonslayer', '&cDragonslayer', 499], ['throneguard', '&6Throneguard', 499], ['ghost', '&fGhost', 499],
   ]
+  // Name colours (your name's colour in chat). Price in Throne Shards.
+  const NAME_COLORS = [
+    ['red', '&c', 'Red', 'minecraft:red_dye'], ['dark_red', '&4', 'Dark Red', 'minecraft:red_wool'], ['gold', '&6', 'Gold', 'minecraft:orange_dye'],
+    ['yellow', '&e', 'Yellow', 'minecraft:yellow_dye'], ['green', '&a', 'Green', 'minecraft:lime_dye'], ['dark_green', '&2', 'Dark Green', 'minecraft:green_dye'],
+    ['aqua', '&b', 'Aqua', 'minecraft:light_blue_dye'], ['dark_aqua', '&3', 'Dark Aqua', 'minecraft:cyan_dye'], ['blue', '&9', 'Blue', 'minecraft:blue_dye'],
+    ['dark_blue', '&1', 'Dark Blue', 'minecraft:blue_wool'], ['pink', '&d', 'Pink', 'minecraft:pink_dye'], ['purple', '&5', 'Purple', 'minecraft:purple_dye'],
+    ['white', '&f', 'White', 'minecraft:white_dye'], ['gray', '&7', 'Gray', 'minecraft:light_gray_dye'],
+  ]
+  const NAME_COLOR_PRICE = 650
+
+  // Throne Shop. Categories hold items or more categories. Item "give" types:
+  //   rank / key / tag / namecolor / fly (seconds) / cmd (commands, {p} = player)
+  const keyItems = (id, label, color, one) => [
+    { icon: 'minecraft:tripwire_hook', name: color + label, detail: '1x', price: one, give: { type: 'key', crate: id, n: 1 } },
+    { icon: 'minecraft:tripwire_hook', name: color + label, detail: '5x', price: Math.round(one * 4.5), give: { type: 'key', crate: id, n: 5 } },
+    { icon: 'minecraft:tripwire_hook', name: color + label, detail: '10x', price: Math.round(one * 8.5), give: { type: 'key', crate: id, n: 10 } },
+    { icon: 'minecraft:tripwire_hook', name: color + label, detail: '25x', price: Math.round(one * 20), give: { type: 'key', crate: id, n: 25 } },
+  ]
+  const SHOP = {
+    name: 'Throne Shop',
+    children: [
+      {
+        slot: [1, 1], icon: 'minecraft:book', name: '&d&lRANKS', kind: 'COSMETIC',
+        desc: ['Ranks are special player roles', 'that grant exclusive permissions,', 'features and commands.', '', 'They also give you a flashy prefix', 'to show off to other players.'],
+        layout: 'spaced',
+        children: RANK_ORDER.map((r, i) => ({
+          icon: ['minecraft:red_banner', 'minecraft:purple_banner', 'minecraft:yellow_banner', 'minecraft:white_banner', 'minecraft:orange_banner'][i],
+          name: '&' + RANK_INFO[r].color + '&l[' + RANK_INFO[r].name.toUpperCase() + ']&f Rank', detail: 'Permanent',
+          perksTitle: '&' + RANK_INFO[r].color + '&l' + RANK_INFO[r].name + ' Perks' + (i ? '&f&l, ALL ' + RANK_INFO[RANK_ORDER[i - 1]].name.toUpperCase() + ' PERKS AND:' : ':'),
+          perks: RANK_PERKS[r], price: [2999, 5999, 9999, 14999, 19999][i], give: { type: 'rank', rank: r },
+        })),
+      },
+      {
+        slot: [3, 1], icon: 'minecraft:dark_oak_hanging_sign', name: '&a&lMESSAGE COSMETICS', kind: 'COSMETIC',
+        desc: ['Message cosmetics include tags', 'that go before your username and', 'rank in chat.', '', 'Equip them with &e/tags&f.'],
+        children: [
+          {
+            icon: 'minecraft:name_tag', name: '&b&lCHAT TAGS', layout: 'grid',
+            children: TAGS.map(t => ({ icon: 'minecraft:name_tag', name: t[1] + (t[1].length > 4 ? '' : '&f Tag'), tagShow: t[1], detail: 'Apply using /tags', price: t[2], give: { type: 'tag', id: t[0] } })),
+          },
+          { icon: 'minecraft:oak_sign', name: '&e&lJOIN MESSAGES', soon: true },
+        ],
+      },
+      {
+        slot: [5, 1], icon: 'minecraft:amethyst_cluster', name: '&5&lCOLORS & GRADIENTS', kind: 'COSMETIC',
+        desc: ['Name colors change how your name', 'is shown in chat.', '', 'Equip them with &e/namecolor&f.'],
+        children: [
+          {
+            icon: 'minecraft:name_tag', name: '&a&lNAME COLORS', layout: 'grid',
+            children: NAME_COLORS.map(c => ({ icon: c[3], name: c[1] + c[2] + ' Name Color', detail: 'Apply using /namecolor', price: NAME_COLOR_PRICE, give: { type: 'namecolor', id: c[0] } })),
+          },
+        ],
+      },
+      {
+        slot: [7, 1], icon: 'minecraft:tripwire_hook', name: '&6&lCRATE KEYS', kind: 'ITEM',
+        desc: ['Keys for the crates at spawn.', 'Paid keys are non-RNG: you pick', 'the reward you want!'],
+        layout: 'spaced',
+        children: [
+          { icon: 'minecraft:lime_shulker_box', name: '&a&lVote Crate Keys', layout: 'spaced', children: keyItems('vote', 'Vote Crate Key', '&a&l', 100) },
+          { icon: 'minecraft:cyan_shulker_box', name: '&b&lRune Crate Keys', layout: 'spaced', children: keyItems('runes', 'Rune Crate Key', '&b&l', 120) },
+          { icon: 'minecraft:magenta_shulker_box', name: '&d&lArmor Crate Keys', layout: 'spaced', children: keyItems('armor', 'Armor Crate Key', '&d&l', 150) },
+          { icon: 'minecraft:orange_shulker_box', name: '&6&lWeapon Crate Keys', layout: 'spaced', children: keyItems('weapon', 'Weapon Crate Key', '&6&l', 150) },
+        ],
+      },
+      {
+        slot: [1, 3], icon: 'minecraft:feather', name: '&f&lFLIGHT TIME', kind: 'VIRTUAL ITEM',
+        desc: ['Want to fly into the skies to', 'help build or get out of sticky', 'situations with monsters? Flight', 'gives you the creative mode fly', 'ability.', '', 'Turn it on and off with &e/flytime&f.', 'Time only counts down while you fly.'],
+        layout: 'spaced',
+        children: [
+          { icon: 'minecraft:feather', name: '&f&lFlight Time', detail: '30 minutes', price: 50, give: { type: 'fly', seconds: 1800 } },
+          { icon: 'minecraft:feather', name: '&f&lFlight Time', detail: '1 hour', price: 100, give: { type: 'fly', seconds: 3600 } },
+          { icon: 'minecraft:feather', name: '&f&lFlight Time', detail: '3 hours', price: 275, give: { type: 'fly', seconds: 10800 } },
+          { icon: 'minecraft:feather', name: '&f&lFlight Time', detail: '6 hours', price: 500, give: { type: 'fly', seconds: 21600 } },
+        ],
+      },
+      { slot: [3, 3], icon: 'minecraft:golden_shovel', name: '&a&lCLAIM BLOCKS', kind: 'VIRTUAL ITEM', desc: ['Claim blocks help protect your', 'builds and homes from other', 'players.'], soon: true },
+      { slot: [5, 3], icon: 'minecraft:black_shulker_box', name: '&b&lAUTOSELL CHESTS', kind: 'ITEM', desc: ['Sell the contents of a chest to', 'the server shop automatically.'], soon: true },
+      { slot: [7, 3], icon: 'minecraft:ender_chest', name: '&d&lLOOTBOXES', kind: 'ITEM', desc: ['Lootboxes contain exclusive tags,', 'runes, spawners and more.'], soon: true },
+    ],
+  }
 
   // ======================================================================= helpers
   const DataComponents = Java.loadClass('net.minecraft.core.component.DataComponents')
@@ -72,12 +152,22 @@
   const ArrayList = Java.loadClass('java.util.ArrayList')
   const Placeholders = (() => { try { return Java.loadClass('com.zerog.neoessentials.api.PlaceholderAPI') } catch (e) { return null } })()
 
-  // "&#FF0000&lText &7more" -> text component (supports & colour codes, &#RRGGBB and &l bold)
-  const RA = {}
-  const Serializer = Java.loadClass('net.minecraft.network.chat.Component$Serializer')
-  const comp = (s) => Serializer.fromJson(JSON.stringify([{ text: '', italic: false }].concat(compParts(s))), RA.ra)
+  // "&#FF0000&lText &7more" -> text component (& colour codes, &#RRGGBB, &l bold), built from vanilla parts
+  const Comp = Java.loadClass('net.minecraft.network.chat.Component')
+  const Style = Java.loadClass('net.minecraft.network.chat.Style')
+  const TextColor = Java.loadClass('net.minecraft.network.chat.TextColor')
+  const RGB = { black: 0x000000, dark_blue: 0x0000AA, dark_green: 0x00AA00, dark_aqua: 0x00AAAA, dark_red: 0xAA0000, dark_purple: 0xAA00AA,
+    gold: 0xFFAA00, gray: 0xAAAAAA, dark_gray: 0x555555, blue: 0x5555FF, green: 0x55FF55, aqua: 0x55FFFF, red: 0xFF5555,
+    light_purple: 0xFF55FF, yellow: 0xFFFF55, white: 0xFFFFFF }
+  const comp = (s) => {
+    var out = Comp.literal('').withStyle(Style.EMPTY.withItalic(false))
+    compParts(s).forEach(pt => {
+      var rgb = String(pt.color || 'white').charAt(0) == '#' ? parseInt(String(pt.color).substring(1), 16) : RGB[pt.color]
+      out.append(Comp.literal(String(pt.text)).withStyle(Style.EMPTY.withColor(TextColor.fromRgb(rgb == null ? 0xFFFFFF : rgb)).withBold(pt.bold == true).withItalic(false)))
+    })
+    return out
+  }
   const icon = (server, id, name, lore, glint) => {
-    RA.ra = server.registryAccess()
     var st = Item.of(id)
     try {
       st.set(DataComponents.CUSTOM_NAME, comp(name))
@@ -119,7 +209,7 @@
   // grey glass background, OG style
   const fill = (gui, server, rows) => {
     for (var y = 0; y < rows; y++) for (var x = 0; x < 9; x++) {
-      (function (xx, yy) { gui.slot(xx, yy, s => { s.item = icon(server, 'minecraft:gray_stained_glass_pane', ' ', []) }) })(x, y)
+      (function (xx, yy) { gui.slot(xx, yy, s => { s.item = pane(server, 'minecraft:gray_stained_glass_pane') }) })(x, y)
     }
   }
   const at = (i) => [i % 9, Math.floor(i / 9)]
@@ -170,56 +260,100 @@
   }
 
   // ======================================================================= Throne Shop
+  const strip = (s) => String(s).replace(/&#[0-9a-fA-F]{6}|&./g, '')
+  const owned = (p) => String(p.persistentData.getString('ot_owned') || '').split(',').filter(x => x)
+  const owns = (p, id) => owned(p).indexOf(id) >= 0
+  const addOwned = (p, id) => { var o = owned(p); if (o.indexOf(id) < 0) { o.push(id); p.persistentData.putString('ot_owned', o.join(',')) } }
+  const isOwned = (p, it) => {
+    var g = it.give || {}
+    if (g.type == 'rank') return RANK_ORDER.indexOf(g.rank) <= topRankIndex(p)
+    if (g.type == 'tag') return owns(p, 'tag:' + g.id)
+    if (g.type == 'namecolor') return owns(p, 'nc:' + g.id)
+    return false
+  }
+  const balanceIcon = (s, bal) => icon(s, 'minecraft:amethyst_shard', '&d&lThrone Shards',
+    ['&fYou have: &d&l' + (bal.ok ? fmt(bal.value) : '?'), '', '&fThrone Shards are the currency used', '&fto buy ranks, cosmetics and more.', '',
+      '&fGet them on our webstore or', '&ffrom different gameplay activities.', '', '&e&lCLICK FOR A LINK TO THE WEBSTORE'], true)
+  const storeLink = (p) => run(p.server, `tellraw ${p.username} ${JSON.stringify(['', { text: ' ➤ ', color: 'dark_gray' },
+    { text: 'overthronesmp.tebex.store', color: 'light_purple', bold: true, underlined: true, clickEvent: { action: 'open_url', value: STORE_URL }, hoverEvent: { action: 'show_text', contents: 'Click to open the webstore' } }])}`)
+  const pane = (s, id) => { var st = icon(s, id, ' ', []); try { st.set(DataComponents.HIDE_TOOLTIP, Java.loadClass('net.minecraft.util.Unit').INSTANCE) } catch (e) { } return st }
+
+  // OG layout of the main page: G grey, P pink, W white, L lime
+  const MAIN_ROWS = ['GGGGGGGGG', 'GGPGPGPGG', 'GPWPWPWPG', 'GGPGPGPGG', 'GLLLLLLLG', 'GGGGGGGGG']
+  const PANES = { G: 'minecraft:gray_stained_glass_pane', P: 'minecraft:pink_stained_glass_pane', W: 'minecraft:white_stained_glass_pane', L: 'minecraft:lime_stained_glass_pane' }
+
+  const categoryIcon = (s, c) => {
+    var lore = []
+    if (c.kind) lore.push('&8' + c.kind)
+    if (c.desc) { lore.push(''); c.desc.forEach(d => lore.push('&f' + d)) }
+    lore.push('')
+    lore.push(c.soon ? '&8&lCOMING SOON' : '&7&lCLICK TO OPEN THIS CATEGORY')
+    return icon(s, c.icon, c.name, lore, false)
+  }
+  const itemIcon = (p, it, bal) => {
+    var lore = []
+    if (it.perks) { lore.push(it.perksTitle); it.perks.forEach(l => lore.push('&8 • &f' + l)) }
+    lore.push('')
+    lore.push('&d&l' + fmt(it.price) + ' Throne Shards')
+    if (isOwned(p, it)) lore.push('&a&lYOU OWN THIS')
+    else if (bal.ok && bal.value < it.price) lore.push('&c&lNOT ENOUGH SHARDS')
+    return icon(p.server, it.icon, it.name + (it.detail ? ' &7(' + it.detail + ')' : ''), lore, false)
+  }
+
   const shopMain = (p) => {
     var s = p.server, bal = shardsOf(p)
     p.openChestGUI(Text.of('Throne Shop'), 6, gui => {
       gui.playerSlots = true
-      fill(gui, s, 6)
-      gui.slot(4, 0, sl => { sl.item = icon(s, 'minecraft:amethyst_shard', '&d&lYour Throne Shards', [bal.ok ? '&f' + fmt(bal.value) + ' &dShards' : '&cUnknown', '', 'Get more at &eoverthronesmp.tebex.store'], true) })
-      SHOP.forEach(cat => {
-        var xy = at(cat.slot)
-        gui.slot(xy[0], xy[1], sl => {
-          sl.item = icon(s, cat.icon, cat.name, cat.desc.concat(['', cat.items.length ? '&e&lCLICK TO OPEN THIS CATEGORY' : '&8Nothing here yet']), true)
-          sl.leftClicked = e => { if (cat.items.length) after(p, () => shopCategory(p, cat)) }
-        })
-      })
-      gui.slot(8, 5, sl => {
-        sl.item = icon(s, 'minecraft:barrier', '&c&lClose', [])
-        sl.leftClicked = e => { try { p.closeMenu() } catch (x) { } }
-      })
+      for (var y = 0; y < 6; y++) for (var x = 0; x < 9; x++) {
+        (function (xx, yy) { gui.slot(xx, yy, sl => { sl.item = pane(s, PANES[MAIN_ROWS[yy][xx]]) }) })(x, y)
+      }
+      gui.slot(4, 0, sl => { sl.item = balanceIcon(s, bal); sl.leftClicked = e => after(p, () => storeLink(p)) })
+      SHOP.children.forEach(c => gui.slot(c.slot[0], c.slot[1], sl => {
+        sl.item = categoryIcon(s, c)
+        sl.leftClicked = e => { if (!c.soon) after(p, () => shopPage(p, [c])) }
+      }))
+      gui.slot(4, 4, sl => { sl.item = icon(s, 'minecraft:lantern', '&e&lYour Cosmetics', ['&f/tags &7- equip a chat tag', '&f/namecolor &7- equip a name color', '&f/flytime &7- turn flight on/off'], false) })
+      gui.slot(4, 5, sl => { sl.item = icon(s, 'minecraft:barrier', '&c&lClose', []); sl.leftClicked = e => { try { p.closeMenu() } catch (x) { } } })
+      gui.slot(8, 5, sl => { sl.item = icon(s, 'minecraft:paper', '&e&lHow it works', ['&fClick a category, then click an', '&fitem to buy it with Throne Shards.', '', '&fGet Throne Shards at', '&doverthronesmp.tebex.store'], false) })
     })
   }
 
-  const shopCategory = (p, cat) => {
-    var s = p.server, bal = shardsOf(p), top = topRankIndex(p)
-    var rows = Math.max(3, Math.min(6, Math.ceil(cat.items.length / 7) + 2))
-    p.openChestGUI(Text.of('Throne Shop > ' + cat.name.replace(/&#[0-9a-fA-F]{6}|&./g, '')), rows, gui => {
+  // path = list of categories from the main page down to the open one
+  const shopPage = (p, path) => {
+    var s = p.server, bal = shardsOf(p), cat = path[path.length - 1], list = cat.children || []
+    var spaced = cat.layout == 'spaced' && list.length <= 4
+    var perRow = spaced ? 4 : 7
+    var rows = Math.min(6, Math.max(4, Math.ceil(list.length / perRow) + 3))
+    var title = 'Throne Shop > ' + path.map(c => strip(c.name)).map(t => t.charAt(0) + t.slice(1).toLowerCase()).join(' > ')
+    p.openChestGUI(Text.of(title.length > 40 ? 'Throne Shop > ' + strip(cat.name) : title), rows, gui => {
       gui.playerSlots = true
-      fill(gui, s, rows)
-      cat.items.forEach((it, i) => {
-        var x = 1 + (i % 7), y = 1 + Math.floor(i / 7)
+      for (var y = 0; y < rows; y++) for (var x = 0; x < 9; x++) {
+        (function (xx, yy) { gui.slot(xx, yy, sl => { sl.item = pane(s, PANES.G) }) })(x, y)
+      }
+      list.forEach((it, i) => {
+        var x = spaced ? 1 + (i % 4) * 2 : 1 + (i % 7), y = 1 + Math.floor(i / perRow)
+        if (y >= rows - 1) return
         gui.slot(x, y, sl => {
-          var lore = (it.lore || []).slice(), owned = it.rank != null && RANK_ORDER.indexOf(it.rank) <= top
-          lore.push('')
-          lore.push('&fPrice: &d' + fmt(it.price) + ' Throne Shards')
-          if (owned) lore.push('&a&lYOU ALREADY HAVE THIS')
-          else if (bal.ok && bal.value < it.price) lore.push('&c&lNOT ENOUGH SHARDS')
-          else lore.push('&e&lCLICK TO BUY')
-          sl.item = icon(s, it.icon, it.name, lore, !owned)
-          sl.leftClicked = e => { if (!owned) after(p, () => buy(p, cat, it)) }
+          if (it.children || it.soon) {
+            sl.item = categoryIcon(s, it)
+            sl.leftClicked = e => { if (!it.soon) after(p, () => shopPage(p, path.concat([it]))) }
+          } else {
+            sl.item = itemIcon(p, it, bal)
+            sl.leftClicked = e => { if (!isOwned(p, it)) after(p, () => { buy(p, it); shopPage(p, path) }) }
+          }
         })
       })
-      gui.slot(0, rows - 1, sl => {
-        sl.item = icon(s, 'minecraft:arrow', '&e&lBack', [])
-        sl.leftClicked = e => after(p, () => shopMain(p))
+      gui.slot(4, rows - 1, sl => {
+        sl.item = icon(s, 'minecraft:hopper', '&e&lBack', ['&7Go back'], false)
+        sl.leftClicked = e => after(p, () => path.length > 1 ? shopPage(p, path.slice(0, -1)) : shopMain(p))
       })
-      gui.slot(4, rows - 1, sl => { sl.item = icon(s, 'minecraft:amethyst_shard', '&d&lYour Throne Shards', [bal.ok ? '&f' + fmt(bal.value) : '&cUnknown'], true) })
+      gui.slot(5, rows - 1, sl => { sl.item = balanceIcon(s, bal); sl.leftClicked = e => after(p, () => storeLink(p)) })
     })
   }
 
-  const buy = (p, cat, it) => {
-    var s = p.server
-    if (it.rank != null && RANK_ORDER.indexOf(it.rank) <= topRankIndex(p)) { p.tell('§c§lThrone Shop §7» You already have this rank (or a higher one).'); return }
+  const buy = (p, it) => {
+    var s = p.server, g = it.give, label = strip(it.name) + (it.detail ? ' (' + it.detail + ')' : '')
+    if (isOwned(p, it)) { p.tell('§c§lThrone Shop §7» You already own this.'); return }
     var before = shardsOf(p)
     if (!before.ok) {
       p.tell('§c§lThrone Shop §7» The shop could not read your Throne Shards. Please tell staff.')
@@ -227,7 +361,8 @@
       return
     }
     if (before.value < it.price) {
-      p.tell(`§c§lThrone Shop §7» You need §d${fmt(it.price)} Throne Shards§7, you have §d${fmt(before.value)}§7. Get more at §eoverthronesmp.tebex.store`)
+      p.tell(`§c§lThrone Shop §7» You need §d${fmt(it.price)} Throne Shards§7, you have §d${fmt(before.value)}§7.`)
+      storeLink(p)
       return
     }
     run(s, TAKE_SHARDS.replace('{p}', p.username).replace('{n}', String(it.price)))
@@ -238,11 +373,129 @@
       console.warn('[throneshop] shards take failed for ' + p.username + ' (' + before.raw + ' -> ' + afterBal.raw + ')')
       return
     }
-    it.commands.forEach(c => run(s, c.split('{p}').join(p.username)))
-    console.info('[throneshop] ' + p.username + ' bought ' + it.name.replace(/&#[0-9a-fA-F]{6}|&./g, '') + ' for ' + it.price + ' shards')
-    p.tell(`§a§lThrone Shop §7» You bought §f${it.name.replace(/&#[0-9a-fA-F]{6}|&./g, '')}§7 for §d${fmt(it.price)} Throne Shards§7!`)
+    if (g.type == 'rank') run(s, `giverank ${p.username} ${g.rank}`)
+    else if (g.type == 'key') run(s, `crate key give ${p.username} ${g.crate} ${g.n}`)
+    else if (g.type == 'tag') { addOwned(p, 'tag:' + g.id); p.tell('§7Equip it with §e/tags§7.') }
+    else if (g.type == 'namecolor') { addOwned(p, 'nc:' + g.id); p.tell('§7Equip it with §e/namecolor§7.') }
+    else if (g.type == 'fly') { addFly(p, g.seconds) }
+    else if (g.type == 'cmd') g.commands.forEach(c => run(s, c.split('{p}').join(p.username)))
+    console.info('[throneshop] ' + p.username + ' bought ' + label + ' for ' + it.price + ' shards')
+    p.tell(`§a§lThrone Shop §7» You bought §f${label}§7 for §d${fmt(it.price)} Throne Shards§7!`)
     run(s, `execute at ${p.username} run playsound minecraft:entity.player.levelup master ${p.username} ~ ~ ~ 1 1.4`)
   }
+
+  // ======================================================================= chat tags + name colours
+  const tagById = (id) => { for (var i = 0; i < TAGS.length; i++) if (TAGS[i][0] == id) return TAGS[i]; return null }
+  const ncById = (id) => { for (var i = 0; i < NAME_COLORS.length; i++) if (NAME_COLORS[i][0] == id) return NAME_COLORS[i]; return null }
+  const cosmeticsOf = (player) => {
+    var out = { tag: '', nc: '' }
+    if (player == null) return out
+    var t = tagById(String(player.persistentData.getString('ot_tag') || ''))
+    var c = ncById(String(player.persistentData.getString('ot_namecolor') || ''))
+    if (t && owns(player, 'tag:' + t[0])) out.tag = '&8[' + t[1] + '&8] '
+    if (c && owns(player, 'nc:' + c[0])) out.nc = c[1]
+    return out
+  }
+  const CHAT_TAIL = '{neoessentials_displayname}&7: '
+  const ChatFormats = (() => { try { return Java.loadClass('com.zerog.neoessentials.chat.PlayerChatFormatManager') } catch (e) { return null } })()
+  // Same chat format the rank script builds, plus the tag before the name and the name colour.
+  const chatFormat = (uuid, prefix, messageColor) => {
+    if (ChatFormats == null) return
+    var mgr = ChatFormats.getInstance(), pl = null
+    try { pl = Utils.server.getPlayerList().getPlayer(uuid) } catch (e) { pl = null }
+    var x = cosmeticsOf(pl)
+    prefix = prefix || ''
+    if (prefix == '' && !messageColor && !x.tag && !x.nc) { if (mgr.hasFormat(uuid)) mgr.clearFormat(uuid); return }
+    var format = prefix + x.tag + (x.nc || (prefix == '' && !x.tag ? '&7' : '&f')) + CHAT_TAIL + (messageColor || '&f') + '{MESSAGE}'
+    if (String(mgr.getFormat(uuid)) != format) mgr.setFormat(uuid, format)
+  }
+  // Take over the rank script's chat format function so ranks, tags and colours all show together.
+  ServerEvents.loaded(event => {
+    try { if (typeof rkChatFormat == 'function') { rkChatFormat = chatFormat; console.info('[npc_menus] chat tags + name colours hooked into ranks.js') } }
+    catch (e) { console.warn('[npc_menus] could not hook ranks chat format: ' + e) }
+  })
+  const refreshChat = (p) => {
+    try {
+      if (typeof rkSyncPlayer == 'function') { rkSyncPlayer(p.server, p); return }
+    } catch (e) { console.warn('[npc_menus] rkSyncPlayer: ' + e) }
+    chatFormat(p.getUuid(), '', '')
+  }
+
+  const cosmeticMenu = (p, kind) => {
+    var s = p.server, list = kind == 'tags' ? TAGS : NAME_COLORS
+    var key = kind == 'tags' ? 'ot_tag' : 'ot_namecolor', pre = kind == 'tags' ? 'tag:' : 'nc:'
+    var mine = list.filter(t => owns(p, pre + t[0])), cur = String(p.persistentData.getString(key) || '')
+    var rows = Math.min(6, Math.max(3, Math.ceil(mine.length / 7) + 2))
+    p.openChestGUI(Text.of(kind == 'tags' ? 'Your Chat Tags' : 'Your Name Colors'), rows, gui => {
+      gui.playerSlots = true
+      for (var y = 0; y < rows; y++) for (var x = 0; x < 9; x++) {
+        (function (xx, yy) { gui.slot(xx, yy, sl => { sl.item = pane(s, PANES.G) }) })(x, y)
+      }
+      mine.forEach((t, i) => {
+        if (1 + Math.floor(i / 7) >= rows - 1) return
+        gui.slot(1 + (i % 7), 1 + Math.floor(i / 7), sl => {
+          var on = cur == t[0]
+          sl.item = kind == 'tags'
+            ? icon(s, 'minecraft:name_tag', t[1] + (t[1].length > 4 ? '' : '&f Tag'), ['&7In chat: &8[' + t[1] + '&8] &f' + p.username, '', on ? '&a&lEQUIPPED' : '&e&lCLICK TO EQUIP'], on)
+            : icon(s, t[3], t[1] + t[2] + ' Name Color', ['&7In chat: ' + t[1] + p.username, '', on ? '&a&lEQUIPPED' : '&e&lCLICK TO EQUIP'], on)
+          sl.leftClicked = e => after(p, () => { p.persistentData.putString(key, t[0]); refreshChat(p); p.tell('§a✔ Equipped. §7It shows on your next message.'); cosmeticMenu(p, kind) })
+        })
+      })
+      if (!mine.length) gui.slot(4, 1, sl => { sl.item = icon(s, 'minecraft:barrier', '&c&lYou don\'t own any yet', ['&7Buy them in the &dThrone Shop&7.'], false) })
+      gui.slot(4, rows - 1, sl => {
+        sl.item = icon(s, 'minecraft:bucket', '&c&lUnequip', ['&7Remove your ' + (kind == 'tags' ? 'chat tag' : 'name color')], false)
+        sl.leftClicked = e => after(p, () => { p.persistentData.remove(key); refreshChat(p); p.tell('§7Removed.'); cosmeticMenu(p, kind) })
+      })
+    })
+  }
+
+  // ======================================================================= flight time
+  const flyLeft = (p) => p.persistentData.getInt('ot_fly_left') || 0
+  const flyBlocked = (p) => FLY_BLOCKED_WORLDS.indexOf(String(p.level.dimension)) >= 0
+  const setFlight = (p, on) => {
+    try {
+      var a = p.getAbilities()
+      if (on) { a.mayfly = true } else if (!p.isCreative() && !p.isSpectator()) { a.mayfly = false; a.flying = false }
+      p.onUpdateAbilities()
+    } catch (e) { console.warn('[npc_menus] flight: ' + e) }
+  }
+  const addFly = (p, sec) => {
+    p.persistentData.putInt('ot_fly_left', flyLeft(p) + sec)
+    p.tell('§a✈ +' + dur(sec * 1000) + 'of flight time. §7Turn it on with §e/flytime§7. Time left: §f' + dur(flyLeft(p) * 1000))
+  }
+  const flyToggle = (p) => {
+    var on = p.persistentData.getBoolean('ot_fly_on')
+    if (on) { p.persistentData.putBoolean('ot_fly_on', false); setFlight(p, false); p.tell('§e✈ Flight turned §cOFF§e. §7Time left: §f' + dur(flyLeft(p) * 1000)); return }
+    if (flyLeft(p) <= 0) { p.tell('§c✈ You have no flight time. §7Buy some in the §dThrone Shop§7.'); return }
+    if (flyBlocked(p)) { p.tell('§c✈ Flight is not allowed in this world.'); return }
+    p.persistentData.putBoolean('ot_fly_on', true); setFlight(p, true)
+    p.tell('§a✈ Flight turned §aON§a! §7Double-jump to fly. Time only counts down while flying. Left: §f' + dur(flyLeft(p) * 1000))
+  }
+  ServerEvents.tick(event => {
+    var s = event.server
+    if (s.tickCount % 20 != 0) return
+    try { if (typeof rkChatFormat == 'function' && rkChatFormat !== chatFormat) rkChatFormat = chatFormat } catch (e) { }
+    s.players.forEach(p => {
+      if (!p.persistentData.getBoolean('ot_fly_on') || p.isCreative() || p.isSpectator()) return
+      var a = p.getAbilities()
+      if (flyBlocked(p)) { if (a.mayfly) { setFlight(p, false); p.tell('§c✈ Flight is off in this world.') } return }
+      if (!a.mayfly) setFlight(p, true)
+      if (!a.flying) return
+      var left = flyLeft(p) - 1
+      p.persistentData.putInt('ot_fly_left', Math.max(0, left))
+      if (left == 60 || left == 10) p.tell('§e✈ ' + left + ' seconds of flight left!')
+      if (left <= 0) {
+        p.persistentData.putBoolean('ot_fly_on', false)
+        setFlight(p, false)
+        run(s, `effect give ${p.username} minecraft:slow_falling 15 0 true`)
+        p.tell('§c✈ Your flight time ran out.')
+      }
+    })
+  })
+  PlayerEvents.loggedIn(event => {
+    var p = event.player
+    if (p.persistentData.getBoolean('ot_fly_on') && flyLeft(p) > 0) p.server.scheduleInTicks(20, () => setFlight(p, true))
+  })
 
   // ======================================================================= Kit Selector
   const KIT_MS = KIT_COOLDOWN_HOURS * 3600 * 1000
@@ -539,6 +792,9 @@
         say(ctx.source, '§a[throneshop] Balance placeholder set to §f' + (t == 'auto' ? '(auto)' : t))
         return 1
       }))))
+    event.register(Commands.literal('tags').executes(ctx => { var p = ctx.source.playerOrException; try { cosmeticMenu(p, 'tags') } catch (e) { p.tell('§c' + e) } return 1 }))
+    event.register(Commands.literal('namecolor').executes(ctx => { var p = ctx.source.playerOrException; try { cosmeticMenu(p, 'colors') } catch (e) { p.tell('§c' + e) } return 1 }))
+    event.register(Commands.literal('flytime').executes(ctx => { flyToggle(ctx.source.playerOrException); return 1 }))
     event.register(Commands.literal('kitmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'kits'); return 1 }))
     event.register(Commands.literal('levelguide').executes(ctx => { openMenu(ctx.source.playerOrException, 'levels'); return 1 }))
   })
