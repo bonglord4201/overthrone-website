@@ -12,6 +12,7 @@
 //                                                  RIGHT-CLICK TO VIEW (what they do when clicked is NOT changed)
 //   /npcmenu style [title]                         same for the NPC you look at (title = its name if left out)
 //   /npcmenu unstyle                               undo that for the NPC you look at
+//   /npcmenu clearholo [radius]                    deletes ALL floating text within radius (default 4) of you, not crates
 //   /npcmenu fixall                                hides the NPC name tags + redoes all menu holograms in your world
 //   /npcmenu grab, then /npcmenu put   moves the NPC you looked at to where you stand (hologram too)
 //   /npcmenu remove                                deletes the menu NPC you are looking at (and its hologram)
@@ -833,6 +834,19 @@
     return found
   }
   const grabbed = {}
+  // deletes every floating text within <radius> blocks of you (crate holograms are kept)
+  const clearHolo = (ctx, radius) => {
+    var p = ctx.source.playerOrException, n = 0
+    p.level.getEntities().forEach(t => {
+      if (String(t.type) != 'minecraft:text_display' || t.distanceTo(p) > radius) return
+      var crate = false
+      t.getTags().forEach(g => { if (String(g).indexOf('ot_crate') == 0) crate = true })
+      if (crate) return
+      t.discard(); n++
+    })
+    say(ctx.source, '§a[npcmenu] Removed ' + n + ' floating texts within ' + radius + ' blocks. §7Now /npcmenu fixall and /npcmenu styleall put the right ones back.')
+    return 1
+  }
   const NPC_NAMES = { throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'] }
 
   ServerEvents.commandRegistry(event => {
@@ -931,6 +945,8 @@
         say(ctx.source, '§a[npcmenu] Back to how it was (its small title text comes back with /setupcoords apply).')
         return 1
       })))
+      .then(Commands.literal('clearholo').executes(ctx => guard(ctx, () => clearHolo(ctx, 4)))
+        .then(Commands.argument('radius', Arguments.INTEGER.create(event)).executes(ctx => guard(ctx, () => clearHolo(ctx, Arguments.INTEGER.getResult(ctx, 'radius'))))))
       .then(Commands.literal('fixall').executes(ctx => guard(ctx, () => {
         var r = fixAll(ctx.source.playerOrException)
         say(ctx.source, '§a[npcmenu] Fixed ' + r[0] + ' menu NPCs (names hidden, holograms redone), removed ' + r[1] + ' old holograms.')
