@@ -192,7 +192,7 @@
         children: [cosCat('tag', '&b&lCHAT TAGS', 'minecraft:name_tag'), cosCat('join', '&e&lJOIN MESSAGES', 'minecraft:feather'), cosCat('status', '&c&lSTATUSES', 'minecraft:oak_sign')],
       },
       {
-        slot: [5, 1], icon: 'minecraft:amethyst_cluster', name: '&5&lCOLORS & GRADIENTS', kind: 'COSMETIC',
+        slot: [5, 1], icon: 'minecraft:magenta_dye', name: '&5&lCOLORS & GRADIENTS', kind: 'COSMETIC',
         desc: ['Name colors change how your name', 'shows in chat, chat colors change', 'your messages, glow colors give you', 'a glow outline, and gradient bundles', 'fade your name through colors.'],
         layout: 'spaced',
         children: [cosCat('nc', '&a&lNAME COLORS', 'minecraft:lime_dye'), cosCat('cc', '&e&lCHAT COLORS', 'minecraft:writable_book'), cosCat('glow', '&6&lGLOW COLORS', 'minecraft:glow_ink_sac'), cosCat('grad', grad('GRADIENT BUNDLES', ['#FF4DFF', '#00E5FF'], true), 'minecraft:bucket')],
@@ -561,10 +561,15 @@
   // ---- chat: tag, name colour / gradient, chat colour, all on top of the rank prefix
   const CHAT_TAIL = '{neoessentials_displayname}&7: '
   const ChatFormats = (() => { try { return Java.loadClass('com.zerog.neoessentials.chat.PlayerChatFormatManager') } catch (e) { return null } })()
-  const chatFormat = (uuid, prefix, messageColor) => {
+  var serverRef = null
+  ServerEvents.loaded(event => { serverRef = event.server })
+  const playerByUuid = (uuid) => {
+    try { if (serverRef != null) return serverRef.getPlayerList().getPlayer(uuid) } catch (e) { }
+    return null
+  }
+  const chatFormat = (uuid, prefix, messageColor, player) => {
     if (ChatFormats == null) return
-    var mgr = ChatFormats.getInstance(), pl = null
-    try { pl = Utils.server.getPlayerList().getPlayer(uuid) } catch (e) { pl = null }
+    var mgr = ChatFormats.getInstance(), pl = player || playerByUuid(uuid)
     var tag = equipped(pl, 'tag'), nc = equipped(pl, 'nc'), cc = equipped(pl, 'cc'), gr = equipped(pl, 'grad')
     prefix = prefix || ''
     if (prefix == '' && !messageColor && !tag && !nc && !cc && !gr) { if (mgr.hasFormat(uuid)) mgr.clearFormat(uuid); return }
@@ -579,11 +584,18 @@
     try { if (typeof rkChatFormat == 'function') { rkChatFormat = chatFormat; console.info('[npc_menus] cosmetics hooked into ranks.js chat format') } }
     catch (e) { console.warn('[npc_menus] could not hook ranks chat format: ' + e) }
   })
-  const refreshChat = (p) => {
+  // Puts rank prefix + cosmetics into the player's chat format directly (does not depend on the ranks.js hook).
+  const applyChat = (p) => {
+    var prefix = '', color = ''
     try {
-      if (typeof rkSyncPlayer == 'function') { rkSyncPlayer(p.server, p); return }
-    } catch (e) { console.warn('[npc_menus] rkSyncPlayer: ' + e) }
-    chatFormat(p.getUuid(), '', '')
+      if (typeof rkTopRank == 'function' && typeof rkPrefix == 'function') { var top = rkTopRank(p); prefix = top == 'player' ? '' : String(rkPrefix(top)) }
+    } catch (e) { console.warn('[npc_menus] rank prefix: ' + e) }
+    try { if (typeof chColorFor == 'function') color = String(chColorFor(p) || '') } catch (e) { }
+    try { chatFormat(p.getUuid(), prefix, color, p) } catch (e) { console.warn('[npc_menus] chat format: ' + e) }
+  }
+  const refreshChat = (p) => {
+    try { if (typeof rkSyncPlayer == 'function') rkSyncPlayer(p.server, p) } catch (e) { console.warn('[npc_menus] rkSyncPlayer: ' + e) }
+    applyChat(p)
   }
 
   // ---- glow
@@ -645,6 +657,8 @@
       try { var c = equipped(p, 'join'); if (c) announce(p.server, c, c.join, p.username) } catch (e) { }
       try { applyGlow(p) } catch (e) { }
     })
+    // after ranks.js has set the rank prefix on join, add the cosmetics on top
+    p.server.scheduleInTicks(60, () => { try { applyChat(p) } catch (e) { } })
   })
   PlayerEvents.loggedOut(event => {
     var p = event.player
@@ -735,6 +749,11 @@
     var s = event.server
     if (s.tickCount % 20 != 0) return
     try { if (typeof rkChatFormat == 'function' && rkChatFormat !== chatFormat) rkChatFormat = chatFormat } catch (e) { }
+    if (serverRef == null) serverRef = s
+    // every 30 s: make sure chat cosmetics are still in the chat format (other scripts may rewrite it)
+    if (s.tickCount % 600 == 0) s.players.forEach(p => {
+      if (equipped(p, 'tag') || equipped(p, 'nc') || equipped(p, 'cc') || equipped(p, 'grad')) applyChat(p)
+    })
     s.players.forEach(p => {
       if (!p.persistentData.getBoolean('ot_fly_on') || p.isCreative() || p.isSpectator()) return
       var a = p.getAbilities()
