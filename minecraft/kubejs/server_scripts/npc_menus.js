@@ -383,9 +383,37 @@
     lore.push(c.soon ? '&8&lCOMING SOON' : '&7&lCLICK TO OPEN THIS CATEGORY')
     return icon(s, c.icon, c.name, lore, false)
   }
+  // OG-style hover text: what you get, an example, and how to use it
+  const KEY_NAMES = { vote: 'Vote Crate Key', runes: 'Rune Crate Key', armor: 'Armor Crate Key', weapon: 'Weapon Crate Key' }
+  const howTo = (p, it) => {
+    var g = it.give || {}, n = p.username, L = []
+    var contents = (a) => { L.push('&8&lCONTENTS:'); a.forEach(x => L.push('&f • ' + x)) }
+    var example = (a) => { L.push(''); L.push('&8&lEXAMPLE:'); a.forEach(x => L.push(x)) }
+    var use = (a) => { L.push(''); a.forEach(x => L.push('&7' + x)) }
+    if (g.type == 'cos') {
+      var c = cosById(g.kind, g.id), K = KINDS[g.kind]
+      if (g.kind == 'tag') { contents(['1x Chat Tag']); example(['&8[' + c.show + '&8] &f' + n + '&7: &fHello everyone!']) }
+      if (g.kind == 'nc') { contents(['1x Name Color']); example([c.code + n + '&7: &fHello everyone!']) }
+      if (g.kind == 'cc') { contents(['1x Chat Color']); example(['&f' + n + '&7: ' + c.code + 'This is a test message!']) }
+      if (g.kind == 'glow') { contents(['1x Glow Color']); example([c.name.split(' ')[0] + ' glowing outline around you,', '&7seen through walls by other players.']) }
+      if (g.kind == 'grad') { contents(['1x Name Color Gradient', '1x Matching Chat Color']); example([grad(n, c.stops, false) + '&7: &' + c.stops[c.stops.length - 1] + 'This is a test message!']) }
+      if (g.kind == 'status') { contents(['1x Status']); example(['&7Floats above your head:', c.text]) }
+      if (g.kind == 'join') { contents(['1x Join Message', '1x Leave Message']); example([grad(c.join.replace('{p}', n), c.stops, false), grad(c.leave.replace('{p}', n), c.stops, false)]) }
+      use(['Apply using &e' + K.cmd + '&7 or &e/cosmetics', 'Wear one of each kind at a time.'])
+    } else if (g.type == 'key') {
+      contents([g.n + 'x ' + (KEY_NAMES[g.crate] || 'Crate Key')])
+      use(['How to use: &fright-click&7 the crate at', 'spawn with the key in your hand.', '&fLeft-click&7 a crate to see its rewards.', 'Your keys: &e/crate keys&7 · Crates: &e/cratemenu'])
+    } else if (g.type == 'fly') {
+      contents([it.detail + ' of Flight Time'])
+      use(['Turn it on/off with &e/flytime&7, then', 'double-jump to fly. Time only counts', 'down while you are flying.', 'Time left: &e/flytime left'])
+    } else if (g.type == 'rank') {
+      contents(['Permanent ' + strip(it.name).replace(' Rank', '') + ' rank', 'Every rank below it is included'])
+      use(['Hover the &fbook&7 and &fsign&7 under this', 'rank to see its perks and commands.', 'You get it straight away after buying.'])
+    }
+    return L
+  }
   const itemIcon = (p, it, bal) => {
-    var lore = []
-    if (it.cosLore) it.cosLore.forEach(l => lore.push(l))
+    var lore = howTo(p, it)
     lore.push('')
     lore.push('&d&l' + fmt(it.price) + ' Throne Shards')
     if (isOwned(p, it)) lore.push('&a&lYOU OWN THIS')
@@ -414,7 +442,7 @@
   // path = list of categories from the main page down to the open one
   const shopPage = (p, path) => {
     var s = p.server, bal = shardsOf(p), cat = path[path.length - 1], list = cat.children || []
-    if (cat.cosKind) list = KINDS[cat.cosKind].list.map(c => ({ icon: c.icon, name: c.name, detail: 'Apply using ' + KINDS[cat.cosKind].cmd, price: c.price, cosLore: preview(p, cat.cosKind, c), give: { type: 'cos', kind: cat.cosKind, id: c.id } }))
+    if (cat.cosKind) list = KINDS[cat.cosKind].list.map(c => ({ icon: c.icon, name: c.name, price: c.price, give: { type: 'cos', kind: cat.cosKind, id: c.id } }))
     var spaced = cat.layout == 'spaced' && list.length <= 4
     var perRow = spaced ? 4 : 7
     var rows = cat.layout == 'ranks' ? 6 : Math.min(6, Math.max(4, Math.ceil(list.length / perRow) + 3))
