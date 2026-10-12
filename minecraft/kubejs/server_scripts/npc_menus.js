@@ -623,10 +623,10 @@
   const onNpcClick = (p, e, hand) => {
     if (p == null || e == null || p.level.isClientSide()) return false
     var tags = e.getTags(), type = null
-    if (clickDebug && p.hasPermissions(2)) p.tell('§8[npcmenu debug] clicked ' + e.type + ' tags=' + tags + ' hand=' + hand)
     // Holding an Easy NPC tool (mover, wand, editor...) or staff sneak-clicking: let Easy NPC handle it.
     var held = ''
-    try { held = String(p.getMainHandItem().getId()) } catch (x) { held = '' }
+    try { held = String(p.getMainHandItem().getItem().builtInRegistryHolder().key().location()) } catch (x) { try { held = String(p.getMainHandItem().getId()) } catch (y) { held = '' } }
+    if (clickDebug && p.hasPermissions(2)) p.tell('§8[npcmenu debug] clicked ' + e.type + ' holding=' + held + ' hand=' + hand)
     if (held.indexOf('easy_npc:') == 0) return false
     if (p.hasPermissions(2) && p.isShiftKeyDown()) return false
     Object.keys(MENUS).forEach(t => { if (tags.contains('ot_menu_' + t)) type = t })
@@ -719,9 +719,11 @@
   }
   // the hologram is the NPC's name, so the NPC's own name tag is removed (it showed through the hologram)
   const hideName = (server, e) => {
-    run(server, `data merge entity ${uuidOf(e)} {CustomNameVisible:0b}`)
-    run(server, `data remove entity ${uuidOf(e)} CustomName`)
+    run(server, `data merge entity ${uuidOf(e)} {CustomName:'""',CustomNameVisible:0b}`)
   }
+  // Easy NPC runs its own "on click" command BEFORE the wand/mover get the click, which blocked the tools.
+  // Our click handler opens the menus, so that Easy NPC action is removed.
+  const clearClickAction = (server, e) => run(server, `data remove entity ${uuidOf(e)} ActionData.ActionEventSet.ON_INTERACTION`)
   const typeOfNpc = (e) => { var t = null; Object.keys(MENUS).forEach(k => { if (e.getTags().contains('ot_menu_' + k)) t = k }); return t }
   // re-does every menu NPC near you: hides its name, puts its hologram back, removes stray holograms
   const fixAll = (p) => {
@@ -733,6 +735,7 @@
       var id = idOf(e)
       ids.push(id)
       hideName(s, e)
+      clearClickAction(s, e)
       if (t != null) placeHolo(s, e, TITLES[t], id)
       n++
     })
@@ -754,7 +757,7 @@
     var id = idOf(e)
     setGlow(server, e, GLOW[cmd ? 'cmd' : type])
     hideName(server, e)
-    setClickAction(server, e, cmd ? cmd : OPEN_CMD[type])
+    clearClickAction(server, e)
     placeHolo(server, e, cmd ? ['&e&l' + String(title || 'CLICK ME').toUpperCase(), '&fRIGHT-CLICK'] : TITLES[type], id)
   }
   const spawnNpc = (p, name, color) => {
