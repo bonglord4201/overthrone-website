@@ -138,6 +138,16 @@ channels.push({ key: "commands", messages: pack([
     "`/suggest` Suggest something for the server",
     "`/rank` Your chat level · `/leaderboard` Top chatters"
   ].join("\n") },
+  { title: "🛒 Shop, Kits & Cosmetics", description: [
+    "**In-game** (or right-click the NPCs in the hub)",
+    "`/throneshop` Throne Shop: ranks, crate keys, chat tags, name colours, flight time",
+    "`/kitmenu` Your rank kits and their cooldowns",
+    "`/levelguide` Your level, XP and how to level up",
+    "`/links` Discord, website, store, rules and vote links in chat",
+    "`/tags` Equip a chat tag you bought · `/namecolor` Equip a name colour you bought",
+    "`/flytime` Turn bought flight on/off (time only counts down while flying) · `/flytime left` Time left",
+    "`/crate keys` How many crate keys you have · `/vote` Vote for free keys"
+  ].join("\n") },
   { title: "🎮 Keys Worth Knowing", description: [
     "`R` Epic Fight battle / mining mode",
     "`Left Alt` Dodge · `Right Mouse` Guard · `G` Lock on",
@@ -260,6 +270,28 @@ channels.push({ key: "staffcommands", messages: pack([
     "`giverank <player> <rank>` Gives the rank + all lower ranks, prefix and class tokens (console / op level 4)",
     "`takerank <player>` Removes all donor ranks (staff ranks stay)",
     "Tebex: purchase `giverank {username} <rank>` · refund/chargeback `takerank {username}` (+ ban on chargeback)"
+  ].join("\n") },
+  { title: "🧍 Menu NPCs", description: [
+    "`/npcmenu spawn <throneshop|kits|levels|links>` New glowing NPC with hologram where you stand",
+    "`/npcmenu spawncmd <title> <command>` NPC that runs a command, e.g. `/npcmenu spawncmd Hunters warp hunters`",
+    "`/npcmenu attach <throneshop|kits|levels|links>` Look at an NPC: it opens that menu",
+    "`/npcmenu attachcmd <command>` Look at an NPC: it runs that command · `/npcmenu detach` back to normal",
+    "`/npcmenu grab` then `/npcmenu put` Move an NPC + its hologram to where you stand",
+    "`/npcmenu hologram <text>` New hologram text (`|` = new line, `&` colours) · `/npcmenu remove` Delete NPC",
+    "`/npcmenu fixall` Hide NPC name tags + redo all holograms nearby · `/npcmenu debug` Click debug on/off",
+    "Easy NPC wand / mover / sneak-click still work on menu NPCs (skins etc.)"
+  ].join("\n") },
+  { title: "🗣️ Hub dialog NPCs", description: [
+    "`/npcfix apply` Updates Ranks / Server Info / Crates / Hunters texts in npc_texts.json (backup kept)",
+    "`/npcfix refresh` Puts the new texts on the NPCs without moving them",
+    "`/npcfix look <crates|ranks|info|hunters>` Updates the NPC you look at · `/npcfix hunters` Places the Hunters NPC"
+  ].join("\n") },
+  { title: "🛒 Throne Shop & flight", description: [
+    "`/throneshop debug` Shows the shard balance the shop reads (check this works before selling!)",
+    "`/throneshop placeholder <text|auto>` Set the balance placeholder by hand",
+    "Purchases take shards with `shards take <player> <amount>`",
+    "`/flytime give <player> <minutes>` Give flight time · `/flytime take <player>` Remove all of it",
+    "Bought tags/name colours: players use `/tags` and `/namecolor`"
   ].join("\n") },
   { title: "🧬 Tensura", description: [
     "`/tensura edit forceevo <player> demonLord` Make someone a Demon Lord",
