@@ -297,7 +297,8 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/throneshop placeholder <text|auto>` Set the balance placeholder by hand",
     "Purchases take shards with `shards take <player> <amount>`",
     "`/flytime give <player> <minutes>` Give flight time · `/flytime take <player>` Remove all of it",
-    "Bought tags/name colours: players use `/tags` and `/namecolor`"
+    "`otcosmetic give|take <player> <kind> <id>` Give/take a cosmetic (Tebex uses this) · `otcosmetic list <kind>` All ids",
+    "Kinds: `tag` `namecolor` `chatcolor` `glow` `gradient` `status` `joinmessage` · players equip with `/cosmetics`"
   ].join("\n") },
   { title: "🧬 Tensura", description: [
     "`/tensura edit forceevo <player> demonLord` Make someone a Demon Lord",

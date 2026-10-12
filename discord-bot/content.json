@@ -612,7 +612,7 @@
             },
             {
               "title": "🛒 Throne Shop & flight",
-              "description": "`/throneshop debug` Shows the shard balance the shop reads (check this works before selling!)\n`/throneshop placeholder <text|auto>` Set the balance placeholder by hand\nPurchases take shards with `shards take <player> <amount>`\n`/flytime give <player> <minutes>` Give flight time · `/flytime take <player>` Remove all of it\nBought tags/name colours: players use `/tags` and `/namecolor`"
+              "description": "`/throneshop debug` Shows the shard balance the shop reads (check this works before selling!)\n`/throneshop placeholder <text|auto>` Set the balance placeholder by hand\nPurchases take shards with `shards take <player> <amount>`\n`/flytime give <player> <minutes>` Give flight time · `/flytime take <player>` Remove all of it\n`otcosmetic give|take <player> <kind> <id>` Give/take a cosmetic (Tebex uses this) · `otcosmetic list <kind>` All ids\nKinds: `tag` `namecolor` `chatcolor` `glow` `gradient` `status` `joinmessage` · players equip with `/cosmetics`"
             },
             {
               "title": "🧬 Tensura",

@@ -1315,6 +1315,47 @@
     cosCmd('gradient', p => cosmeticMenu(p, 'grad'))
     cosCmd('status', p => cosmeticMenu(p, 'status'))
     cosCmd('joinmessage', p => cosmeticMenu(p, 'join'))
+
+    // Tebex / staff: otcosmetic give|take <player> <kind> <id>     (console works, player must be online)
+    // kinds: tag, namecolor, chatcolor, glow, gradient, status, joinmessage   (ids: /otcosmetic list)
+    const KIND_ALIAS = { tag: 'tag', namecolor: 'nc', chatcolor: 'cc', glow: 'glow', gradient: 'grad', status: 'status', joinmessage: 'join' }
+    const kindSuggest = (c, b) => { Object.keys(KIND_ALIAS).forEach(k => b.suggest(k)); return b.buildFuture() }
+    const idSuggest = (c, b) => {
+      var k = KIND_ALIAS[String(StringArg.getString(c, 'kind')).toLowerCase()]
+      if (k) KINDS[k].list.forEach(x => b.suggest(x.id))
+      return b.buildFuture()
+    }
+    const cosGive = (ctx, take) => {
+      var src = ctx.source, p = Arguments.PLAYER.getResult(ctx, 'player')
+      var kname = String(StringArg.getString(ctx, 'kind')).toLowerCase(), k = KIND_ALIAS[kname], id = String(StringArg.getString(ctx, 'id')).toLowerCase()
+      if (!k) { say(src, '§c[otcosmetic] Unknown kind "' + kname + '". Use: ' + Object.keys(KIND_ALIAS).join(', ')); return 0 }
+      var c = cosById(k, id)
+      if (!c) { say(src, '§c[otcosmetic] Unknown ' + kname + ' "' + id + '". See /otcosmetic list ' + kname); return 0 }
+      if (take) {
+        p.persistentData.putString('ot_owned', owned(p).filter(x => x != k + ':' + id).join(','))
+        if (String(p.persistentData.getString(KINDS[k].key)) == id) equip(p, k, null)
+        say(src, '§a[otcosmetic] Took ' + kname + ' ' + id + ' from ' + p.username)
+      } else {
+        addOwned(p, k + ':' + id)
+        say(src, '§a[otcosmetic] Gave ' + kname + ' ' + id + ' to ' + p.username)
+        p.tell('§d§lThrone Shop §7» You received §f' + strip(c.name) + '§7!')
+        run(p.server, `tellraw ${p.username} ${JSON.stringify(['', { text: 'Equip it: ', color: 'gray' }, { text: '[CLICK HERE]', color: 'light_purple', bold: true, clickEvent: { action: 'run_command', value: KINDS[k].cmd } }, { text: ' or type ' + KINDS[k].cmd, color: 'gray' }])}`)
+      }
+      console.info('[otcosmetic] ' + (take ? 'take ' : 'give ') + p.username + ' ' + kname + ' ' + id)
+      return 1
+    }
+    const giveTake = (take) => Commands.argument('player', Arguments.PLAYER.create(event))
+      .then(Commands.argument('kind', StringArg.word()).suggests(kindSuggest)
+        .then(Commands.argument('id', StringArg.word()).suggests(idSuggest).executes(ctx => cosGive(ctx, take))))
+    event.register(Commands.literal('otcosmetic').requires(src => src.hasPermission(2))
+      .then(Commands.literal('give').then(giveTake(false)))
+      .then(Commands.literal('take').then(giveTake(true)))
+      .then(Commands.literal('list').then(Commands.argument('kind', StringArg.word()).suggests(kindSuggest).executes(ctx => {
+        var k = KIND_ALIAS[String(StringArg.getString(ctx, 'kind')).toLowerCase()]
+        if (!k) { say(ctx.source, '§cUse: ' + Object.keys(KIND_ALIAS).join(', ')); return 0 }
+        say(ctx.source, '§e' + KINDS[k].list.map(x => x.id).join(', '))
+        return 1
+      }))))
     event.register(Commands.literal('flytime').executes(ctx => { flyToggle(ctx.source.playerOrException); return 1 })
       .then(Commands.literal('left').executes(ctx => {
         var p = ctx.source.playerOrException
