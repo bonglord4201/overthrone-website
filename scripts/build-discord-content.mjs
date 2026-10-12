@@ -278,6 +278,8 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/npcmenu attachcmd <command>` Look at an NPC: it runs that command · `/npcmenu detach` back to normal",
     "`/npcmenu grab` then `/npcmenu put` Move an NPC + its hologram to where you stand",
     "`/npcmenu hologram <text>` New hologram text (`|` = new line, `&` colours) · `/npcmenu remove` Delete NPC",
+    "`/npcmenu styleall` Every other NPC within 64 blocks gets the same glow + big title + RIGHT-CLICK TO VIEW (clicking them is unchanged)",
+    "`/npcmenu style [title]` Same for the NPC you look at · `/npcmenu unstyle` Undo",
     "`/npcmenu fixall` Hide NPC name tags + redo all holograms nearby · `/npcmenu debug` Click debug on/off",
     "Easy NPC wand / mover / sneak-click still work on menu NPCs (skins etc.)"
   ].join("\n") },

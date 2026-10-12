@@ -8,6 +8,10 @@
 //   /npcmenu attach <throneshop|kits|levels|links>       give the NPC you are LOOKING AT this menu (keeps its skin/spot)
 //   /npcmenu attachcmd <command...>                the NPC you are looking at runs this command when clicked
 //   /npcmenu detach                                the NPC you are looking at goes back to normal
+//   /npcmenu styleall                              ALL your other NPCs within 64 blocks get the same glow + big title +
+//                                                  RIGHT-CLICK TO VIEW (what they do when clicked is NOT changed)
+//   /npcmenu style [title]                         same for the NPC you look at (title = its name if left out)
+//   /npcmenu unstyle                               undo that for the NPC you look at
 //   /npcmenu fixall                                hides the NPC name tags + redoes all menu holograms in your world
 //   /npcmenu grab, then /npcmenu put   moves the NPC you looked at to where you stand (hologram too)
 //   /npcmenu remove                                deletes the menu NPC you are looking at (and its hologram)
@@ -704,6 +708,7 @@
   const setGlow = (server, e, color) => {
     run(server, `team add ot_glow_${color}`)
     run(server, `team modify ot_glow_${color} color ${color}`)
+    run(server, `team modify ot_glow_${color} nametagVisibility never`)
     run(server, `team join ot_glow_${color} ${uuidOf(e)}`)
     run(server, `data merge entity ${uuidOf(e)} {Glowing:1b}`)
   }
@@ -731,6 +736,7 @@
   const fixAll = (p) => {
     var s = p.server, ids = [], n = 0
     p.level.getEntities().forEach(e => {
+      if (e.getTags().contains('ot_styled') && !e.getTags().contains('ot_menu_npc')) { restyle(s, e); ids.push(idOf(e)); n++; return }
       if (!e.getTags().contains('ot_menu_npc')) return
       var t = typeOfNpc(e), cmd = String(e.persistentData.getString('ot_menu_cmd') || '')
       if (t == null && !cmd) return
@@ -738,6 +744,7 @@
       ids.push(id)
       hideName(s, e)
       clearClickAction(s, e)
+      setGlow(s, e, GLOW[t != null ? t : 'cmd'])
       if (t != null) placeHolo(s, e, TITLES[t], id)
       n++
     })
@@ -750,6 +757,44 @@
     })
     return [n, stray]
   }
+  // ---- "style only": glow + big hologram for your other NPCs (dialogs/commands/skins untouched)
+  const TEAM_OF = {}
+  Object.keys(LEGACY).forEach(k => { TEAM_OF[LEGACY[k]] = k })
+  const nameInfo = (e) => {
+    var out = { text: '', hex: '#FFAA00' }
+    try {
+      var nm = e.getCustomName()
+      if (nm == null) return out
+      out.text = String(nm.getString()).trim()
+      var c = nm.getStyle().getColor()
+      if (c == null && nm.getSiblings().size() > 0) c = nm.getSiblings().get(0).getStyle().getColor()
+      if (c != null) { var v = Number(c.getValue()); out.hex = '#' + ('000000' + v.toString(16)).slice(-6).toUpperCase() }
+    } catch (x) { }
+    return out
+  }
+  // removes the small old title text (e.g. "Click to open your quest book") floating over this NPC
+  const clearOldTitles = (e) => {
+    var n = 0
+    e.level.getEntities().forEach(t => {
+      if (String(t.type) != 'minecraft:text_display') return
+      var mine = false
+      t.getTags().forEach(g => { var x = String(g); if (x.indexOf('ot_') == 0 || x == 'holo' || x.indexOf('holo_') == 0) mine = true })
+      if (mine) return
+      var dx = t.x - e.x, dz = t.z - e.z, dy = t.y - e.y
+      if (dx * dx + dz * dz <= 2.25 && dy > 0.5 && dy < 4.5) { t.discard(); n++ }
+    })
+    return n
+  }
+  const styleNpc = (server, e, title, hex) => {
+    e.persistentData.putString('ot_style_title', title)
+    e.persistentData.putString('ot_style_color', hex)
+    e.addTag('ot_styled')
+    setGlow(server, e, TEAM_OF[nearest(hex)] || 'gold')
+    clearOldTitles(e)
+    placeHolo(server, e, ['&' + hex + '&l' + String(title).toUpperCase(), '&fRIGHT-CLICK TO VIEW'], idOf(e))
+  }
+  const restyle = (server, e) => styleNpc(server, e, String(e.persistentData.getString('ot_style_title')), String(e.persistentData.getString('ot_style_color') || '#FFAA00'))
+
   const makeMenuNpc = (server, e, type, cmd, title) => {
     Object.keys(MENUS).forEach(t => e.removeTag('ot_menu_' + t))
     e.persistentData.remove('ot_menu_cmd')
@@ -830,6 +875,47 @@
         run(p.server, `kill @e[type=minecraft:text_display,tag=${idOf(e)}]`)
         run(p.server, `data merge entity ${uuidOf(e)} {Glowing:0b}`)
         say(ctx.source, '§a[npcmenu] NPC is back to normal.')
+        return 1
+      })))
+      .then(Commands.literal('style').executes(ctx => guard(ctx, () => {
+        var p = ctx.source.playerOrException, e = looked(p)
+        if (e == null) { say(ctx.source, '§cLook straight at an NPC (within 8 blocks).'); return 0 }
+        var ni = nameInfo(e)
+        if (!ni.text) { say(ctx.source, '§cThis NPC has no name. Use /npcmenu style <title>'); return 0 }
+        styleNpc(p.server, e, ni.text, ni.hex)
+        say(ctx.source, '§a[npcmenu] Styled "' + ni.text + '". §7Clicking it works exactly like before.')
+        return 1
+      })).then(Commands.argument('title', StringArg.greedyString()).executes(ctx => guard(ctx, () => {
+        var p = ctx.source.playerOrException, e = looked(p)
+        if (e == null) { say(ctx.source, '§cLook straight at an NPC (within 8 blocks).'); return 0 }
+        var t = String(StringArg.getString(ctx, 'title')), ni = nameInfo(e)
+        styleNpc(p.server, e, t, ni.hex)
+        say(ctx.source, '§a[npcmenu] Styled "' + t + '". §7Clicking it works exactly like before.')
+        return 1
+      }))))
+      .then(Commands.literal('styleall').executes(ctx => guard(ctx, () => {
+        var p = ctx.source.playerOrException, done = [], skipped = 0
+        p.level.getEntities().forEach(e => {
+          if (String(e.type).indexOf('easy_npc') < 0 || e.getTags().contains('ot_menu_npc')) return
+          if (e.distanceTo(p) > 64) return
+          if (e.getTags().contains('ot_styled')) { restyle(p.server, e); done.push(String(e.persistentData.getString('ot_style_title'))); return }
+          var ni = nameInfo(e)
+          if (!ni.text) { skipped++; return }
+          styleNpc(p.server, e, ni.text, ni.hex)
+          done.push(ni.text)
+        })
+        say(ctx.source, '§a[npcmenu] Styled ' + done.length + ' NPCs: §f' + done.join(', ') + (skipped ? ' §7(' + skipped + ' without a name skipped)' : ''))
+        say(ctx.source, '§7Only the look changed: glow, big title, RIGHT-CLICK TO VIEW. Dialogs/commands/skins are the same.')
+        return 1
+      })))
+      .then(Commands.literal('unstyle').executes(ctx => guard(ctx, () => {
+        var p = ctx.source.playerOrException, e = looked(p)
+        if (e == null || !e.getTags().contains('ot_styled')) { say(ctx.source, '§cLook straight at a styled NPC.'); return 0 }
+        run(p.server, `kill @e[type=minecraft:text_display,tag=${idOf(e)}]`)
+        run(p.server, `team leave ${uuidOf(e)}`)
+        run(p.server, `data merge entity ${uuidOf(e)} {Glowing:0b}`)
+        e.removeTag('ot_styled')
+        say(ctx.source, '§a[npcmenu] Back to how it was (its small title text comes back with /setupcoords apply).')
         return 1
       })))
       .then(Commands.literal('fixall').executes(ctx => guard(ctx, () => {
