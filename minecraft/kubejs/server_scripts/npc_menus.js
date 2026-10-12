@@ -726,6 +726,18 @@
     })
   })
   PlayerEvents.loggedIn(event => { var st = tagState[event.player.username]; if (st) st.key = '' })
+  // clean-up: any old floating name/status text that isn't riding a player (left over from earlier versions, /reload, crashes)
+  ServerEvents.tick(event => {
+    var s = event.server
+    if (s.tickCount % 100 != 0) return
+    s.getAllLevels().forEach(level => level.getEntities().forEach(e => {
+      try {
+        var tags = e.getTags()
+        if (!(tags.contains('ot_plate') || tags.contains('ot_status'))) return
+        if (e.getVehicle() == null) e.discard()
+      } catch (x) { }
+    }))
+  })
   ServerEvents.loaded(event => { run(event.server, 'kill @e[type=minecraft:text_display,tag=ot_plate]'); run(event.server, 'kill @e[type=minecraft:text_display,tag=ot_status]') })
 
   // ---- join / leave messages
