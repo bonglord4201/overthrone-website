@@ -16,6 +16,8 @@
 (function () {
   const REWARD_MINUTES = 30
   const SHARDS_PER_KEY = 6
+  const EXTRA_UP = 10     // blocks above the saved corners that still count (stairs, jumping, upper floors)
+  const EXTRA_DOWN = 3
   const ANNOUNCE_EVERY_MINUTES = 45   // "AFK Rewards! ... /warp afk" chat message
   const P = '§b§lAFK ROOM §8» §7'
 
@@ -31,7 +33,7 @@
     var d = dimOf(p), zd = String(z.dim)
     if (d != zd && d.indexOf(zd) < 0 && zd.indexOf(d) < 0) return false
     var x = Number(p.getX()), y = Number(p.getY()), zz = Number(p.getZ())
-    return x >= Number(z.x1) && x <= Number(z.x2) + 1 && y >= Number(z.y1) - 1 && y <= Number(z.y2) + 1 && zz >= Number(z.z1) && zz <= Number(z.z2) + 1
+    return x >= Number(z.x1) && x <= Number(z.x2) + 1 && y >= Number(z.y1) - EXTRA_DOWN && y <= Number(z.y2) + EXTRA_UP && zz >= Number(z.z1) && zz <= Number(z.z2) + 1
   }
   var lastErr = 0
   const report = (s, e) => {
