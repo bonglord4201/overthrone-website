@@ -8,6 +8,7 @@
 //   /npcmenu attach <throneshop|kits|levels|links>       give the NPC you are LOOKING AT this menu (keeps its skin/spot)
 //   /npcmenu attachcmd <command...>                the NPC you are looking at runs this command when clicked
 //   /npcmenu detach                                the NPC you are looking at goes back to normal
+//   /npcmenu grab, then /npcmenu put   moves the NPC you looked at to where you stand (hologram too)
 //   /npcmenu remove                                deletes the menu NPC you are looking at (and its hologram)
 //   /npcmenu hologram <text...>                    (re)places the hologram over the NPC you are looking at.
 //                                                  Use | for a new line, e.g. /npcmenu hologram &6&lJOBS|&7Right-click
@@ -595,6 +596,11 @@
     if (p == null || e == null || p.level.isClientSide()) return false
     var tags = e.getTags(), type = null
     if (clickDebug && p.hasPermissions(2)) p.tell('§8[npcmenu debug] clicked ' + e.type + ' tags=' + tags + ' hand=' + hand)
+    // Holding an Easy NPC tool (mover, wand, editor...) or staff sneak-clicking: let Easy NPC handle it.
+    var held = ''
+    try { held = String(p.getMainHandItem().getId()) } catch (x) { held = '' }
+    if (held.indexOf('easy_npc:') == 0) return false
+    if (p.hasPermissions(2) && p.isShiftKeyDown()) return false
     Object.keys(MENUS).forEach(t => { if (tags.contains('ot_menu_' + t)) type = t })
     var cmd = String(e.persistentData.getString('ot_menu_cmd') || '')
     if (type == null && !cmd) return false
@@ -710,6 +716,7 @@
     if (found != null) found.removeTag('ot_spawn_tmp')
     return found
   }
+  const grabbed = {}
   const NPC_NAMES = { throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'] }
 
   ServerEvents.commandRegistry(event => {
@@ -761,6 +768,32 @@
         run(p.server, `kill @e[type=minecraft:text_display,tag=${idOf(e)}]`)
         run(p.server, `data merge entity ${uuidOf(e)} {Glowing:0b}`)
         say(ctx.source, '§a[npcmenu] NPC is back to normal.')
+        return 1
+      })))
+      .then(Commands.literal('grab').executes(ctx => guard(ctx, () => {
+        var p = ctx.source.playerOrException, e = looked(p)
+        if (e == null) { say(ctx.source, '§cLook straight at an NPC (within 8 blocks).'); return 0 }
+        grabbed[p.username] = e
+        say(ctx.source, '§a[npcmenu] Got it. §7Now stand where it should go, face the way it should look, and type §f/npcmenu put')
+        return 1
+      })))
+      .then(Commands.literal('put').executes(ctx => guard(ctx, () => {
+        var p = ctx.source.playerOrException, e = grabbed[p.username]
+        if (e == null || !e.isAlive()) { say(ctx.source, '§cFirst look at the NPC and type /npcmenu grab'); return 0 }
+        var f = (n) => Number(n).toFixed(2), id = uuidOf(e)
+        run(p.server, `execute in ${p.level.dimension} run tp ${id} ${f(p.x)} ${f(p.y)} ${f(p.z)} ${f(p.yaw)} 0`)
+        // the hub NPC lock (npclock) keeps NPCs on their saved spot: give it the new spot
+        try { e.persistentData.remove('ss_npc_anchor') } catch (x) { }
+        p.server.scheduleInTicks(2, () => {
+          try {
+            var holo = null
+            e.getTags().forEach(t => { if (String(t).indexOf('ot_mid_') == 0) holo = String(t) })
+            if (holo) run(p.server, `execute in ${p.level.dimension} run tp @e[type=minecraft:text_display,tag=${holo}] ${f(e.x)} ${f(e.y + 2.25)} ${f(e.z)}`)
+            asPlayer(p, `npclock here`)
+          } catch (x) { }
+        })
+        delete grabbed[p.username]
+        say(ctx.source, '§a[npcmenu] NPC moved here (hologram too).')
         return 1
       })))
       .then(Commands.literal('remove').executes(ctx => guard(ctx, () => {
