@@ -627,7 +627,7 @@
     var held = ''
     try { held = String(p.getMainHandItem().getItem().builtInRegistryHolder().key().location()) } catch (x) { try { held = String(p.getMainHandItem().getId()) } catch (y) { held = '' } }
     if (clickDebug && p.hasPermissions(2)) p.tell('§8[npcmenu debug] clicked ' + e.type + ' holding=' + held + ' hand=' + hand)
-    if (held.indexOf('easy_npc:') == 0) return false
+    if (held.indexOf('easy_npc') == 0) return false   // easy_npc:..., easy_npc_config_ui:easy_npc_wand, ...
     if (p.hasPermissions(2) && p.isShiftKeyDown()) return false
     Object.keys(MENUS).forEach(t => { if (tags.contains('ot_menu_' + t)) type = t })
     var cmd = String(e.persistentData.getString('ot_menu_cmd') || '')
