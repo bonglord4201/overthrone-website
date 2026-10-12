@@ -600,22 +600,10 @@
 
   // ---- glow
   const applyGlow = (p) => {
-    var s = p.server, g = equipped(p, 'glow'), team = null
-    try { team = p.getTeam() } catch (e) { team = null }
-    var teamName = team == null ? '' : String(team.getName())
-    if (g == null) {
-      run(s, `effect clear ${p.username} minecraft:glowing`)
-      if (teamName.indexOf('ot_pglow_') == 0) { run(s, 'team add ot_np'); run(s, 'team modify ot_np nametagVisibility never'); run(s, `team join ot_np ${p.username}`) }
-      return
-    }
-    run(s, `effect give ${p.username} minecraft:glowing infinite 0 true`)
-    // the glow takes the colour of the player's team; only use our team if they aren't in another one
-    if (teamName == '' || teamName == 'ot_np' || teamName.indexOf('ot_pglow_') == 0) {
-      run(s, `team add ot_pglow_${g.team}`)
-      run(s, `team modify ot_pglow_${g.team} color ${g.team}`)
-      run(s, `team modify ot_pglow_${g.team} nametagVisibility never`)
-      run(s, `team join ot_pglow_${g.team} ${p.username}`)
-    }
+    var s = p.server, g = equipped(p, 'glow')
+    if (g == null) run(s, `effect clear ${p.username} minecraft:glowing`)
+    else run(s, `effect give ${p.username} minecraft:glowing infinite 0 true`)
+    var pl = tagState[p.username]; if (pl) pl.key = ''          // team colour follows the glow
   }
 
   // ---- nameplates: a floating name above every player = [rank prefix] [tag] name (+ status line above it).
@@ -660,40 +648,63 @@
     } catch (e) { }
     return ''
   }
-  const plateText = (p, phase) => {
+  const _unusedPlateText = (p, phase) => {
     var name = String(p.username), tag = equipped(p, 'tag'), nc = equipped(p, 'nc'), gr = equipped(p, 'grad'), st = equipped(p, 'status')
     var line = rankPrefixOf(p) + (tag ? '&8[' + tag.show + '&8] ' : '') + (gr ? gradAnim(name, gr.stops, false, phase) : (nc ? nc.code : '&f') + name)
     var parts = []
     if (st) parts = parts.concat(plateParts(gradAnim(st.label, st.stops, true, phase))).concat([{ text: '\n' }])
     return JSON.stringify([''].concat(parts).concat(plateParts(line)))
   }
-  const animated = (p) => equipped(p, 'grad') != null || equipped(p, 'status') != null
-  const plates = {}      // username -> { e, text }
+  // The real Minecraft name tag (follows the player perfectly, like OG): each player gets their own scoreboard team
+  // whose prefix is [rank] [tag] and whose colour is their name colour (or glow colour). Your own tag is never shown to you.
+  const COLOR_NAME = { 0: 'black', 1: 'dark_blue', 2: 'dark_green', 3: 'dark_aqua', 4: 'dark_red', 5: 'dark_purple', 6: 'gold', 7: 'gray',
+    8: 'dark_gray', 9: 'blue', a: 'green', b: 'aqua', c: 'red', d: 'light_purple', e: 'yellow', f: 'white' }
+  const tagState = {}     // username -> { key, status entity, statusText }
+  const teamOf = (p) => 'otn_' + String(p.getStringUUID()).replace(/-/g, '').substring(0, 12)
+  const nameColor = (p) => {
+    var g = equipped(p, 'glow'); if (g) return g.team
+    var nc = equipped(p, 'nc'); if (nc) return COLOR_NAME[nc.code.charAt(1)] || 'white'
+    var gr = equipped(p, 'grad'); if (gr) return COLOR_NAME[nearest(gr.stops[0])] || 'white'
+    return 'white'
+  }
+  const updateNameTag = (p) => {
+    var st = tagState[p.username] || (tagState[p.username] = { key: '' })
+    var tag = equipped(p, 'tag')
+    var prefix = rankPrefixOf(p) + (tag ? '&8[' + tag.show + '&8] ' : '')
+    var color = nameColor(p), team = teamOf(p)
+    var cur = null
+    try { cur = p.getTeam() } catch (e) { cur = null }
+    var key = prefix + '|' + color + '|' + (cur == null ? '' : String(cur.getName()))
+    if (key == st.key) return
+    var s = p.server
+    run(s, `team add ${team}`)
+    run(s, `team modify ${team} prefix ${JSON.stringify([''].concat(plateParts(prefix)))}`)
+    run(s, `team modify ${team} color ${color}`)
+    run(s, 'team modify ' + team + ' nametagVisibility always')
+    if (cur == null || String(cur.getName()) != team) run(s, `team join ${team} ${p.username}`)
+    try { cur = p.getTeam() } catch (e) { cur = null }
+    st.key = prefix + '|' + color + '|' + (cur == null ? '' : String(cur.getName()))
+  }
+  // status: a text display riding on the player, so it moves exactly with them (no lag), animated colours
   const killPlate = (p) => {
-    var pl = plates[p.username]
-    if (pl) { try { pl.e.discard() } catch (x) { } delete plates[p.username] }
+    var st = tagState[p.username]
+    if (st && st.e) { try { st.e.discard() } catch (x) { } st.e = null }
     run(p.server, `kill @e[type=minecraft:text_display,tag=ot_plate_${p.username}]`)
   }
-  const removeStatus = (p) => { var pl = plates[p.username]; if (pl) pl.text = '' }   // forces a refresh
-  const hideVanillaTag = (p) => {
-    var team = null
-    try { team = p.getTeam() } catch (e) { team = null }
-    if (team == null) {
-      run(p.server, 'team add ot_np'); run(p.server, 'team modify ot_np nametagVisibility never')
-      run(p.server, `team join ot_np ${p.username}`)
-    } else run(p.server, `team modify ${team.getName()} nametagVisibility never`)
-  }
-  const spawnPlate = (p, text) => {
+  const removeStatus = (p) => { killPlate(p); var st = tagState[p.username]; if (st) st.key = '' }
+  const statusJson = (c, phase) => JSON.stringify([''].concat(plateParts(gradAnim(c.label, c.stops, true, phase))))
+  const spawnStatus = (p, json) => {
     killPlate(p)
     var f = (n) => Number(n).toFixed(2), tag = 'ot_plate_' + p.username
-    var json = text.replace(/\\/g, '\\\\').replace(/'/g, "\\'")
-    run(p.server, `execute in ${p.level.dimension} run summon minecraft:text_display ${f(p.x)} ${f(p.y + 2.05)} ${f(p.z)} ` +
-      `{Tags:["ot_plate","${tag}"],billboard:"center",alignment:"center",shadow:1b,see_through:0b,teleport_duration:2,background:1073741824,` +
-      `transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'${json}'}`)
+    var j = json.replace(/\\/g, '\\\\').replace(/'/g, "\\'")
+    run(p.server, `execute in ${p.level.dimension} run summon minecraft:text_display ${f(p.x)} ${f(p.y + 2)} ${f(p.z)} ` +
+      `{Tags:["ot_plate","${tag}"],billboard:"center",alignment:"center",shadow:1b,background:0,` +
+      `transformation:{left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f],translation:[0f,0.72f,0f],scale:[0.85f,0.85f,0.85f]},text:'${j}'}`)
     var found = null
     p.level.getEntities().forEach(e => { if (found == null && e.getTags().contains(tag)) found = e })
-    if (found) plates[p.username] = { e: found, text: text }
-    hideVanillaTag(p)
+    if (found) { try { found.startRiding(p, true) } catch (x) { console.warn('[npc_menus] status ride: ' + x) } }
+    var st = tagState[p.username] || (tagState[p.username] = { key: '' })
+    st.e = found; st.json = json
   }
   ServerEvents.tick(event => {
     var s = event.server
@@ -701,20 +712,20 @@
     var phase = (s.tickCount / (ANIM_TICKS * 40)) % 1
     s.players.forEach(p => {
       try {
-        var pl = plates[p.username]
-        if (p.isSpectator() || p.isInvisible()) { if (pl) killPlate(p); return }
-        var e = pl ? pl.e : null
-        var redo = s.tickCount % (animated(p) ? ANIM_TICKS * 2 : 40) == 0
-        var text = (redo || !pl || pl.text == '') ? plateText(p, phase) : pl.text
-        if (e == null || !e.isAlive() || String(e.level.dimension) != String(p.level.dimension)) { spawnPlate(p, text); return }
-        e.teleportTo(p.x, p.y + (p.isShiftKeyDown() ? 1.8 : 2.05), p.z)
-        if (text != pl.text) {
-          pl.text = text
-          s.runCommandSilent(`data merge entity ${e.getStringUUID()} {text:'${text.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'}`)
+        if (s.tickCount % 20 == 0) updateNameTag(p)
+        var st = tagState[p.username] || (tagState[p.username] = { key: '' })
+        var c = equipped(p, 'status')
+        if (c == null || p.isSpectator() || p.isInvisible()) { if (st.e) killPlate(p); return }
+        var e = st.e
+        if (e == null || !e.isAlive() || e.getVehicle() == null || e.getVehicle().getStringUUID() != p.getStringUUID()) { spawnStatus(p, statusJson(c, phase)); return }
+        if (s.tickCount % (ANIM_TICKS * 2) == 0) {
+          var json = statusJson(c, phase)
+          if (json != st.json) { st.json = json; s.runCommandSilent(`data merge entity ${e.getStringUUID()} {text:'${json.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'}`) }
         }
-      } catch (x) { console.warn('[npc_menus] nameplate: ' + x) }
+      } catch (x) { console.warn('[npc_menus] name tag: ' + x) }
     })
   })
+  PlayerEvents.loggedIn(event => { var st = tagState[event.player.username]; if (st) st.key = '' })
   ServerEvents.loaded(event => { run(event.server, 'kill @e[type=minecraft:text_display,tag=ot_plate]'); run(event.server, 'kill @e[type=minecraft:text_display,tag=ot_status]') })
 
   // ---- join / leave messages
@@ -744,6 +755,7 @@
     if (kind == 'glow') applyGlow(p)
     else if (kind == 'status') removeStatus(p)
     else if (kind != 'join') refreshChat(p)
+    var tst = tagState[p.username]; if (tst) tst.key = ''
   }
   const cosmeticsMain = (p) => {
     var s = p.server
