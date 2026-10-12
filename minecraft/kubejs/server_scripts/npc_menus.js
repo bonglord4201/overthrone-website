@@ -512,6 +512,8 @@
       if (!a.flying) return
       var left = flyLeft(p) - 1
       p.persistentData.putInt('ot_fly_left', Math.max(0, left))
+      // live countdown above the hotbar while flying
+      run(s, `title ${p.username} actionbar {"text":"✈ Flight time left: ${dur(Math.max(0, left) * 1000)}","color":"aqua"}`)
       if (left == 60 || left == 10) p.tell('§e✈ ' + left + ' seconds of flight left!')
       if (left <= 0) {
         p.persistentData.putBoolean('ot_fly_on', false)
@@ -780,7 +782,7 @@
   const NPC_NAMES = { throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'] }
 
   ServerEvents.commandRegistry(event => {
-    const { commands: Commands } = event
+    const { commands: Commands, arguments: Arguments } = event
     const StringArg = Java.loadClass('com.mojang.brigadier.arguments.StringArgumentType')
     const typeArg = () => Commands.argument('type', StringArg.word()).suggests((c, b) => { Object.keys(MENUS).forEach(t => b.suggest(t)); return b.buildFuture() })
     const typeOf = (ctx) => { var t = String(StringArg.getString(ctx, 'type')).toLowerCase(); return MENUS[t] ? t : null }
@@ -892,7 +894,25 @@
       }))))
     event.register(Commands.literal('tags').executes(ctx => { var p = ctx.source.playerOrException; try { cosmeticMenu(p, 'tags') } catch (e) { p.tell('§c' + e) } return 1 }))
     event.register(Commands.literal('namecolor').executes(ctx => { var p = ctx.source.playerOrException; try { cosmeticMenu(p, 'colors') } catch (e) { p.tell('§c' + e) } return 1 }))
-    event.register(Commands.literal('flytime').executes(ctx => { flyToggle(ctx.source.playerOrException); return 1 }))
+    event.register(Commands.literal('flytime').executes(ctx => { flyToggle(ctx.source.playerOrException); return 1 })
+      .then(Commands.literal('left').executes(ctx => {
+        var p = ctx.source.playerOrException
+        p.tell('§b✈ Flight time left: §f' + dur(flyLeft(p) * 1000) + (p.persistentData.getBoolean('ot_fly_on') ? ' §a(ON)' : ' §7(OFF)'))
+        return 1
+      }))
+      .then(Commands.literal('give').requires(src => src.hasPermission(2)).then(Commands.argument('player', Arguments.PLAYER.create(event))
+        .then(Commands.argument('minutes', Arguments.INTEGER.create(event)).executes(ctx => {
+          var p = Arguments.PLAYER.getResult(ctx, 'player'), m = Arguments.INTEGER.getResult(ctx, 'minutes')
+          addFly(p, m * 60)
+          ctx.source.sendSystemMessage(Text.of('§a[flytime] Gave ' + p.username + ' ' + m + ' minutes of flight.'))
+          return 1
+        }))))
+      .then(Commands.literal('take').requires(src => src.hasPermission(2)).then(Commands.argument('player', Arguments.PLAYER.create(event)).executes(ctx => {
+        var p = Arguments.PLAYER.getResult(ctx, 'player')
+        p.persistentData.putInt('ot_fly_left', 0); p.persistentData.putBoolean('ot_fly_on', false); setFlight(p, false)
+        ctx.source.sendSystemMessage(Text.of('§a[flytime] Removed all flight time from ' + p.username + '.'))
+        return 1
+      }))))
     event.register(Commands.literal('kitmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'kits'); return 1 }))
     event.register(Commands.literal('levelguide').executes(ctx => { openMenu(ctx.source.playerOrException, 'levels'); return 1 }))
   })
