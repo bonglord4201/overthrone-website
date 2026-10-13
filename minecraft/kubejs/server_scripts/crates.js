@@ -65,9 +65,9 @@
         { item: 'minecraft:enchanted_golden_apple', count: 6, weight: 4, rare: true },
         { cmd: SHARDS_CMD + ' 30', icon: 'minecraft:amethyst_shard', name: '30x Throne Shards', weight: 4, shards: true },
         { cmd: SHARDS_CMD + ' 60', icon: 'minecraft:amethyst_shard', name: '60x Throne Shards', weight: 1, rare: true, shards: true },
-        { cmd: 'flan giveClaimBlocks {p} 100', icon: 'minecraft:dirt', name: '100 Claim Blocks', weight: 15 },
-        { cmd: 'flan giveClaimBlocks {p} 250', icon: 'minecraft:dirt', name: '250 Claim Blocks', weight: 6 },
-        { cmd: 'flan giveClaimBlocks {p} 1000', icon: 'minecraft:dirt', name: '1,000 Claim Blocks', weight: 1, rare: true },
+        { cmd: 'flan giveClaimBlocks {p} 100', icon: 'minecraft:grass_block', name: '100 Claim Blocks', weight: 15 },
+        { cmd: 'flan giveClaimBlocks {p} 250', icon: 'minecraft:grass_block', name: '250 Claim Blocks', weight: 6 },
+        { cmd: 'flan giveClaimBlocks {p} 1000', icon: 'minecraft:grass_block', name: '1,000 Claim Blocks', weight: 1, rare: true },
       ],
     },
     // "redeem" crates (like OG's armor/weapon crates): open the menu, pick an item, pay its key cost.
@@ -217,9 +217,9 @@
   const loadEdited = (server) => {
     if (edited) return edited
     try { edited = JSON.parse(String(server.persistentData.getString(REWARD_STORE)) || '{}') } catch (e) { edited = {} }
-    // claim block rewards show a dirt block (older saved ones used a golden shovel)
+    // claim block rewards show a dirt block (older saved ones used a golden shovel or dirt)
     Object.keys(edited).forEach(k => (edited[k] || []).forEach(r => {
-      if (r.cmd && String(r.cmd).indexOf('flan giveClaimBlocks') == 0 && r.icon == 'minecraft:golden_shovel') r.icon = 'minecraft:dirt'
+      if (r.cmd && String(r.cmd).indexOf('flan giveClaimBlocks') == 0 && (r.icon == 'minecraft:golden_shovel' || r.icon == 'minecraft:dirt')) r.icon = 'minecraft:grass_block'
     }))
     return edited
   }
@@ -676,7 +676,7 @@
             if (!known(ctx, id)) return 0
             const n = Math.max(1, Arguments.INTEGER.getResult(ctx, 'amount'))
             const r = { cmd: 'flan giveClaimBlocks {p} ' + n, weight: Math.max(1, Arguments.INTEGER.getResult(ctx, 'weight')), rare: false,
-              icon: 'minecraft:dirt', name: String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' Claim Blocks' }
+              icon: 'minecraft:grass_block', name: String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' Claim Blocks' }
             rewardsOf(ctx.source.server, id).push(r); saveEdited(ctx.source.server)
             reply(ctx, `§aAdded "${r.name}" to ${id} (weight ${r.weight}).`); return 1
           })))))
