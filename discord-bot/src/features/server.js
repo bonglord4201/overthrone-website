@@ -322,6 +322,29 @@ async function apply(guild, plan, log) {
   save();
 }
 
+// ------------------------------------------------------------------ staff commands
+// Only adds the #staff-commands channel inside the staff category (it copies that category's staff-only
+// permissions) and posts/updates the commands list there. No other channel, role or post is touched.
+async function postStaffCommands(guild, log) {
+  await guild.channels.fetch();
+  const staffDef = LAYOUT.find((c) => c.key === "staff");
+  const chDef = staffDef.channels.find((d) => d.key === "staffcommands");
+  let category = guild.channels.cache.get(db.server.layout.staff ?? "0");
+  if (!category) category = guild.channels.cache.find((c) => c.type === ChannelType.GuildCategory && [staffDef.name, ...staffDef.aliases].map(norm).includes(norm(c.name)));
+  if (!category) throw new Error("No staff category found. Run /server apply first, or make a STAFF category.");
+  let ch = guild.channels.cache.get(db.server.layout["staff/staffcommands"] ?? "0");
+  if (!ch) ch = guild.channels.cache.find((c) => c.parentId === category.id && c.type === ChannelType.GuildText && [chDef.name, ...chDef.aliases].map(norm).includes(norm(c.name)));
+  if (!ch) {
+    ch = await guild.channels.create({ name: chDef.name, type: ChannelType.GuildText, parent: category.id,
+      permissionOverwrites: category.permissionOverwrites.cache.map((o) => ({ id: o.id, type: o.type, allow: o.allow, deny: o.deny })),
+      reason: "/server staffcommands" });
+    log(`➕ Created #${ch.name} in ${category.name} (same staff-only permissions as the category)`);
+  }
+  db.server.layout["staff/staffcommands"] = ch.id;
+  save();
+  await postContent(guild, false, log, "staffcommands");
+}
+
 // ------------------------------------------------------------------ content
 const channelFor = (guild, key) => {
   for (const cat of LAYOUT) {
@@ -468,6 +491,7 @@ export const commands = [
         .addStringOption((o) => o.setName("only").setDescription("Just one channel (default: all of them)").addChoices(
           ...["welcome", "link", "rules", "links", "faq", "commands", "mods", "quests", "bosses", "races", "tickets", "roles"].map((v) => ({ name: v, value: v }))))
         .addBooleanOption((o) => o.setName("clear_old").setDescription("Archive (to bot-logs) and remove the old messages in those channels first")))
+      .addSubcommand((s) => s.setName("staffcommands").setDescription("Create (if needed) and post the staff-only commands list. Touches nothing else."))
       .addSubcommand((s) => s.setName("restore").setDescription("Put permissions, categories and order back from a backup")
         .addBooleanOption((o) => o.setName("confirm").setDescription("Set to True to really restore").setRequired(true))
         .addBooleanOption((o) => o.setName("original").setDescription("True = back to before the FIRST /server apply (default: before the last one)"))),
@@ -512,6 +536,11 @@ export const commands = [
         return done("✅ Content posted");
       }
 
+      if (sub === "staffcommands") {
+        await postStaffCommands(g, log);
+        return done("✅ Staff commands posted");
+      }
+
       if (sub === "restore") {
         if (!i.options.getBoolean("confirm")) return i.editReply({ embeds: [fail("Nothing changed. Run `/server restore confirm:True` to restore.")] });
         const file = i.options.getBoolean("original") ? db.server.firstBackup : db.server.lastBackup;
@@ -524,4 +553,4 @@ export const commands = [
 ];
 
 // For the offline test harness only.
-export const _internals = { buildPlan, apply, postContent, restore, backup };
+export const _internals = { buildPlan, apply, postContent, restore, backup, postStaffCommands };

@@ -47,15 +47,30 @@ const K_LVL = 'ot_level', K_XP = 'ot_xp', K_WIN = 'ot_xp_window', K_WAMT = 'ot_x
 const getLvl = (p) => Math.max(1, p.persistentData.getInt(K_LVL) || 1)
 const getXp = (p) => p.persistentData.getInt(K_XP) || 0
 
+// Writes the player's numbers to the scoreboard (for the HUD). Uses the scoreboard directly; falls back to
+// /scoreboard commands. Never throws, so a HUD problem can't break levelling.
+const VERSION = 'v6'
+const OBJECTIVES = { ot_level: 'Level', ot_xp: 'XP', ot_xpneed: 'XP Needed', ot_xppct: 'Level Progress' }
+// Only writes when the number actually changed, so the scoreboard isn't spammed.
+const lastScore = {}
+const setScore = (p, objective, value) => {
+  var v = Math.floor(value), k = p.username + ':' + objective
+  if (lastScore[k] === v) return
+  lastScore[k] = v
+  p.server.runCommandSilent(`scoreboard players set ${p.username} ${objective} ${v}`)
+}
+const forgetScores = (p) => Object.keys(lastScore).forEach(k => { if (k.indexOf(p.username + ':') === 0) delete lastScore[k] })
 const syncScores = (p) => {
-  const lvl = getLvl(p), xp = getXp(p)
-  const nd = lvl >= MAX_LEVEL ? 0 : need(lvl)
-  const pct = lvl >= MAX_LEVEL ? 100 : Math.floor(xp * 100 / nd)
-  const s = p.server, n = p.username
-  s.runCommandSilent(`scoreboard players set ${n} ot_level ${lvl}`)
-  s.runCommandSilent(`scoreboard players set ${n} ot_xp ${xp}`)
-  s.runCommandSilent(`scoreboard players set ${n} ot_xpneed ${nd}`)
-  s.runCommandSilent(`scoreboard players set ${n} ot_xppct ${pct}`)
+  try {
+    var lvl = getLvl(p), xp = getXp(p)
+    var nd = lvl >= MAX_LEVEL ? 0 : need(lvl)
+    setScore(p, 'ot_level', lvl)
+    setScore(p, 'ot_xp', xp)
+    setScore(p, 'ot_xpneed', nd)
+    setScore(p, 'ot_xppct', lvl >= MAX_LEVEL ? 100 : Math.floor(xp * 100 / nd))
+  } catch (e) {
+    console.error('[OVERTHRONE levelling] could not update the scoreboard for ' + p.username + ': ' + e)
+  }
 }
 
 const runMilestone = (p, lvl) => {
@@ -68,6 +83,28 @@ const setLevel = (p, lvl, xp) => {
   p.persistentData.putInt(K_LVL, Math.min(MAX_LEVEL, Math.max(1, lvl)))
   p.persistentData.putInt(K_XP, Math.max(0, xp || 0))
   syncScores(p)
+}
+
+// Level-up show: sounds + firework bursts around the player (particles only, so nobody takes firework damage).
+const celebrate = (p) => {
+  var server = p.server, n = p.username
+  var at = (cmd) => server.runCommandSilent(`execute as ${n} at ${n} run ${cmd}`)
+  at(`playsound minecraft:entity.player.levelup player ${n} ~ ~ ~ 1 1`)
+  at(`playsound minecraft:ui.toast.challenge_complete player ${n} ~ ~ ~ 0.7 1`)
+  var spots = [[0, 3.2, 0], [1.8, 2.6, 1.2], [-1.6, 2.8, -1.4]]
+  spots.forEach((o, i) => {
+    var burst = () => {
+      try {
+        var pos = `~${o[0]} ~${o[1]} ~${o[2]}`
+        at(`particle minecraft:firework ${pos} 0 0 0 0.22 70 force`)
+        at(`particle minecraft:flash ${pos} 0 0 0 0 1 force`)
+        at(`particle minecraft:totem_of_undying ${pos} 0.3 0.3 0.3 0.4 25 force`)
+        at(`playsound minecraft:entity.firework_rocket.blast player @a[distance=..32] ~ ~ ~ 1 1`)
+        at(`playsound minecraft:entity.firework_rocket.twinkle player @a[distance=..32] ~ ~ ~ 0.8 1`)
+      } catch (e) { /* player left */ }
+    }
+    try { server.scheduleInTicks(4 + i * 8, burst) } catch (e) { burst() }
+  })
 }
 
 // Adds XP and handles level-ups. Returns the XP actually added.
@@ -84,16 +121,20 @@ const addXp = (p, amount) => {
   }
   if (lvl >= MAX_LEVEL) xp = 0
   setLevel(p, lvl, xp)
-  if (lvl > start) {
-    const n = p.username
-    p.server.runCommandSilent(`title ${n} times 5 40 15`)
-    p.server.runCommandSilent(`title ${n} title {"text":"LEVEL ${lvl}","color":"gold","bold":true}`)
-    p.server.runCommandSilent(`playsound minecraft:entity.player.levelup player ${n} ~ ~ ~ 1 0.8`)
-    p.tell(`§6✦ Level up! §eYou are now level §6§l${lvl}§e.`)
-    const nextLock = Object.keys(REALM_LOCKS).map(k => REALM_LOCKS[k]).filter(l => l > lvl).sort((a, b) => a - b)[0]
-    if (nextLock && nextLock - lvl <= 20) p.tell(`§8✦ §7Aeonia and Netherfall open at level §c${nextLock}§7: §c${nextLock - lvl}§7 to go.`)
-  } else {
-    p.server.runCommandSilent(`title ${p.username} actionbar {"text":"+${amount} XP  (${xp} / ${need(lvl)})","color":"yellow"}`)
+  try {
+    if (lvl > start) {
+      var n = p.username
+      p.server.runCommandSilent(`title ${n} times 5 40 15`)
+      p.server.runCommandSilent(`title ${n} title {"text":"LEVEL ${lvl}","color":"gold","bold":true}`)
+      celebrate(p)
+      p.tell(`§6✦ Level up! §eYou are now level §6§l${lvl}§e.`)
+      var nextLock = Object.keys(REALM_LOCKS).map(k => REALM_LOCKS[k]).filter(l => l > lvl).sort((a, b) => a - b)[0]
+      if (nextLock && nextLock - lvl <= 20) p.tell(`§8✦ §7Aeonia and Netherfall open at level §c${nextLock}§7: §c${nextLock - lvl}§7 to go.`)
+    } else {
+      p.server.runCommandSilent(`title ${p.username} actionbar {"text":"+${amount} XP  (${xp} / ${need(lvl)})","color":"yellow"}`)
+    }
+  } catch (e) {
+    console.error('[OVERTHRONE levelling] level-up effects failed for ' + p.username + ': ' + e)
   }
   return amount
 }
@@ -161,6 +202,7 @@ PlayerEvents.loggedIn(event => {
     p.tell(`§6✦ Daily login bonus: §e+${bonus} XP`)
     addXp(p, bonus)
   }
+  forgetScores(p)
   syncScores(p)
 })
 
@@ -178,7 +220,7 @@ PlayerEvents.tick(event => {
   p.server.runCommandSilent(`execute as ${n} run ${SEND_BACK}`)
   p.server.runCommandSilent(`title ${n} title {"text":"SEALED","color":"dark_red","bold":true}`)
   p.server.runCommandSilent(`title ${n} subtitle {"text":"Reach level ${req} to enter","color":"gray"}`)
-  p.server.runCommandSilent(`playsound minecraft:block.respawn_anchor.deplete player ${n} ~ ~ ~ 1 0.8`)
+  p.server.runCommandSilent(`execute at ${n} run playsound minecraft:block.respawn_anchor.deplete player ${n} ~ ~ ~ 1 0.8`)
   p.tell(`§c✦ ${REALM_NAMES[dim] || 'This realm'}§c is sealed until level §l${req}§c. You are level ${getLvl(p)}: ${req - getLvl(p)} to go.`)
 })
 
@@ -189,6 +231,11 @@ ServerEvents.loaded(event => {
   s.runCommandSilent('scoreboard objectives add ot_xp dummy "XP"')
   s.runCommandSilent('scoreboard objectives add ot_xpneed dummy "XP Needed"')
   s.runCommandSilent('scoreboard objectives add ot_xppct dummy "Level Progress"')
+})
+// Refresh the HUD numbers for everyone online after a reload.
+ServerEvents.loaded(event => {
+  console.info('[OVERTHRONE levelling] ' + VERSION + ' loaded')
+  event.server.players.forEach(p => syncScores(p))
 })
 
 const bar = (pct) => {
@@ -206,42 +253,64 @@ const describe = (p) => {
 ServerEvents.commandRegistry(event => {
   const { commands: Commands, arguments: Arguments } = event
   const staff = src => src.hasPermission(2)
-  const reply = (ctx, msg) => ctx.source.sendSystemMessage(Text.of(msg))
+  const reply = (ctx, msg) => {
+    try { var pl = ctx.source.player; if (pl) pl.tell(msg); else console.info(String(msg).replace(/§./g, '')) }
+    catch (e) { console.info(String(msg).replace(/§./g, '')) }
+  }
+  // Runs a command body; any error goes to the console with the real reason instead of a vague chat error.
+  const safe = (name, fn) => ctx => {
+    try { return fn(ctx) } catch (e) {
+      console.error('[OVERTHRONE levelling] /level ' + name + ' failed: ' + e)
+      reply(ctx, '§cThat failed: ' + e + ' (details in the server console)'); return 0
+    }
+  }
   event.register(Commands.literal('level')
-    .executes(ctx => { const p = ctx.source.playerOrException; p.tell(describe(p)); return 1 })
+    .executes(safe('', ctx => { const p = ctx.source.playerOrException; syncScores(p); p.tell(describe(p)); return 1 }))
+    .then(Commands.literal('debug').requires(staff).executes(safe('debug', ctx => {
+      const p = ctx.source.playerOrException
+      forgetScores(p)
+      syncScores(p)
+      let board = '?'
+      try {
+        var sb = p.server.getScoreboard(), obj = sb.getObjective('ot_level')
+        board = obj ? String(sb.getOrCreatePlayerScore(p, obj).get()) : 'objective ot_level is missing'
+      } catch (e) { board = 'could not read: ' + e }
+      p.tell(`§7[levelling ${VERSION}] saved level §e${getLvl(p)}§7, scoreboard ot_level §e${board}`)
+      return 1
+    })))
     .then(Commands.literal('info')
-      .then(Commands.argument('target', Arguments.PLAYER.create(event)).executes(ctx => {
+      .then(Commands.argument('target', Arguments.PLAYER.create(event)).executes(safe('info', ctx => {
         reply(ctx, describe(Arguments.PLAYER.getResult(ctx, 'target'))); return 1
-      })))
+      }))))
     .then(Commands.literal('set').requires(staff)
       .then(Commands.argument('target', Arguments.PLAYER.create(event))
-        .then(Commands.argument('level', Arguments.INTEGER.create(event)).executes(ctx => {
+        .then(Commands.argument('level', Arguments.INTEGER.create(event)).executes(safe('set', ctx => {
           const p = Arguments.PLAYER.getResult(ctx, 'target')
           setLevel(p, Arguments.INTEGER.getResult(ctx, 'level'), 0)
           reply(ctx, `${p.username} is now level ${getLvl(p)}.`); return 1
-        }))))
+        })))))
     .then(Commands.literal('reset').requires(staff)
-      .then(Commands.argument('target', Arguments.PLAYER.create(event)).executes(ctx => {
+      .then(Commands.argument('target', Arguments.PLAYER.create(event)).executes(safe('reset', ctx => {
         const p = Arguments.PLAYER.getResult(ctx, 'target')
         setLevel(p, 1, 0)
         reply(ctx, `${p.username} was reset to level 1.`); return 1
-      })))
+      }))))
     .then(Commands.literal('xp').requires(staff)
       .then(Commands.literal('give')
         .then(Commands.argument('target', Arguments.PLAYER.create(event))
-          .then(Commands.argument('amount', Arguments.INTEGER.create(event)).executes(ctx => {
+          .then(Commands.argument('amount', Arguments.INTEGER.create(event)).executes(safe('xp give', ctx => {
             const p = Arguments.PLAYER.getResult(ctx, 'target')
             const amt = Arguments.INTEGER.getResult(ctx, 'amount')
             p.tell(`§6✦ §e+${amt} XP`)
             addXp(p, amt)
             reply(ctx, `Gave ${amt} XP to ${p.username} (now level ${getLvl(p)}).`); return 1
-          }))))
+          })))))
       .then(Commands.literal('take')
         .then(Commands.argument('target', Arguments.PLAYER.create(event))
-          .then(Commands.argument('amount', Arguments.INTEGER.create(event)).executes(ctx => {
+          .then(Commands.argument('amount', Arguments.INTEGER.create(event)).executes(safe('xp take', ctx => {
             const p = Arguments.PLAYER.getResult(ctx, 'target')
             setLevel(p, getLvl(p), Math.max(0, getXp(p) - Arguments.INTEGER.getResult(ctx, 'amount')))
             reply(ctx, `${p.username} now has ${getXp(p)} XP into level ${getLvl(p)}.`); return 1
-          })))))
+          }))))))
   )
 })

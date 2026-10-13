@@ -16,16 +16,16 @@
   {
     "slot": 13,
     "item": "minecraft:nether_star",
-    "name": "&c&lOVERTHRONE &4&lVOTE",
+    "name": "&6&lMinecraftBestServers",
     "lore": [
-      "&7Vote on every site, every day!",
-      "&7All vote links in one place:",
+      "&7Vote for OVERTHRONE SMP",
+      "&7on MinecraftBestServers.com",
       "",
-      "&foverthronesmp.net/vote",
-      "&eClick to open!"
+      "&6Reward: &f1x Vote Key &7+ &a$50,000",
+      "&eClick to get the vote link!"
     ],
     "enchanted": true,
-    "link": "https://overthronesmp.net/vote"
+    "link": "https://minecraftbestservers.com/server-overthrone-smp.7252"
   },
   {
     "slot": 15,
@@ -39,7 +39,7 @@
       "&eClick to get the vote link!"
     ],
     "enchanted": true,
-    "link": "https://minecraftservers.org/vote/694039"
+    "link": "https://minecraftservers.org/vote/694195"
   },
   {
     "slot": 0,

@@ -26,7 +26,7 @@ const DEFAULT_HEIGHT = 3
 const holoText = (lines) => {
   const parts = []
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i]
+    var line = lines[i]
     parts.push(JSON.stringify({ text: line[0] + (i < lines.length - 1 ? '\n' : ''), color: line[1], bold: !!line[2] }))
   }
   return '{"text":"","extra":[' + parts.join(',') + ']}'

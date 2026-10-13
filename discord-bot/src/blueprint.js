@@ -83,6 +83,8 @@ export const LAYOUT = [
   { key: "staff", name: "🛡️ STAFF", aliases: ["staff", "staff only", "staff area", "staff logs", "admin", "management", "team"], perm: "staff", channels: [
     { key: "staffchat", name: "🛡️・staff-chat", aliases: ["staff chat", "staff", "staff general", "staff talk"] },
     { key: "staffannouncements", name: "📣・staff-announcements", aliases: ["staff announcements", "staff news"] },
+    // Only made by /server staffcommands (optional, so /server apply never creates it).
+    { key: "staffcommands", name: "📋・staff-commands", aliases: ["staff commands", "admin commands", "owner commands", "server commands staff"], optional: true },
     { key: "devchat", name: "🛠️・dev-chat", aliases: ["dev chat", "dev", "developers", "development", "dev team"], perm: "team", team: ["developer"] },
     { key: "buildteam", name: "🧱・build-team", aliases: ["build team", "builders", "builds", "build chat"], perm: "team", team: ["builder"] },
     { key: "ingamestaff", name: "⛏️・in-game-staff", aliases: ["in game staff", "ingame staff", "in game admins", "game staff"], perm: "team", team: ["ingame", "moderator"] },

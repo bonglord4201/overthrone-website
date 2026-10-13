@@ -19,3 +19,11 @@
 - config/serversetup/coordinates.json  Positions (x/y/z) of all the setup's holograms and NPCs
 Edit, keep quotes/commas/colour codes, save, restart. Real links: store https://overthronesmp.tebex.store,
 website https://overthronesmp.net, Discord https://discord.gg/overthronesmp
+
+## Crate particle standard (agreed 2026-10-12)
+Every crate (current and future) uses the same particle effect from `crates.js`, in that crate's own colours:
+- a ring of 3 circling "comets" round the shulker at mid height (dust_color_transition, crate colour to white, scale 1.15, radius 0.9, ~1 lap/sec)
+- multi-colour motes drifting around it (crate palette)
+- small spore-blossom-style specks in the crate palette (NOT the vanilla spore blossom particle: it can't be recoloured)
+- grey white_ash and a small end_rod glow underneath
+New crates only need `dust: [r, g, b]`; the palette is generated from it.

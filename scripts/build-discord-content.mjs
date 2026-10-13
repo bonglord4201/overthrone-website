@@ -138,6 +138,19 @@ channels.push({ key: "commands", messages: pack([
     "`/suggest` Suggest something for the server",
     "`/rank` Your chat level · `/leaderboard` Top chatters"
   ].join("\n") },
+  { title: "🛒 Shop, Kits & Cosmetics", description: [
+    "**In-game** (or right-click the NPCs in the hub)",
+    "`/throneshop` Throne Shop: ranks, crate keys, tags, statuses, join messages, name/chat/glow colours, gradients, flight",
+    "`/cratemenu` Every crate, your keys and how to get more",
+    "`/kitmenu` Your rank kits and their cooldowns",
+    "`/levelguide` Your level, XP and how to level up",
+    "`/links` Discord, website, store, rules and vote links in chat",
+    "`/cosmetics` Equip everything you bought from the Throne Shop",
+    "`/tags` · `/namecolor` · `/chatcolor` · `/glowcolor` · `/gradient` · `/status` · `/joinmessage` Equip one kind",
+    "`/flytime` Turn bought flight on/off (time only counts down while flying) · `/flytime left` Time left",
+    "`/crate keys` How many crate keys you have · `/vote` Vote for free keys",
+    "`/afkshard` Your AFK Shards and Keys · `/warp afk` AFK room: 1 AFK Shard every 30 min, 6 shards = 1 AFK Key"
+  ].join("\n") },
   { title: "🎮 Keys Worth Knowing", description: [
     "`R` Epic Fight battle / mining mode",
     "`Left Alt` Dodge · `Right Mouse` Guard · `G` Lock on",
@@ -197,6 +210,122 @@ channels.push({ key: "races", messages: pack([
   { title: "⬆️ How Evolving Works", description: raceEvolve.map((x) => "🔸 " + d(x)).join("\n") },
   { title: "❓ Race FAQ", fields: raceFaq.map((f) => ({ name: f.q, value: d(f.a), inline: false })) }
 ], [btn("Races guide", "/guide#races", "🧬"), btn("Races forum", "/forums?c=races", "💬")]) });
+
+// ---------------------------------------------------------------- staff commands (staff-only channel, /server staffcommands)
+channels.push({ key: "staffcommands", messages: pack([
+  { title: "📋 Staff Commands", description: [
+    "Our own server commands (not the normal Minecraft ones). In-game, you need op. `<...>` = fill in, `[a|b]` = pick one.",
+    "Crates: **vote**, **armor**, **weapon**."
+  ].join("\n") },
+  { title: "🎁 Crates: setup", description: [
+    "`/crate create <crate>` **Look at** the block (or stand on it), makes it that crate. Run again to move it",
+    "`/crate remove <crate>` Removes the crate (sneak + break the block as staff)",
+    "`/crate list` Where every crate is",
+    "`/crate hologram <crate>` Re-places the floating text",
+    "`/crate preview <crate>` Opens the rewards menu",
+    "`/crate infoboard place [height]` CRATES INFO board above you, facing where you look (default 3 up) · `/crate infoboard flip` · `/crate infoboard remove`",
+    "Players: left-click or sneak + right-click = preview, right-click with a key = open"
+  ].join("\n") },
+  { title: "✏️ Crates: rewards", description: [
+    "`/crate edit <crate>` In-game editor: click an item in **your inventory** to add it",
+    "  Vote crate: left-click = more common, right-click = rarer, shift-left = announce on/off, shift-right = remove",
+    "  Armor/Weapon: left-click = cost +1 key, right-click = cost -1, shift-right = remove",
+    "`/crate reward cmd <crate> <weight> <command>` Command reward (hold the icon item). `{p}` = player",
+    "  e.g. `/crate reward cmd vote 20 eco give {p} 1000`",
+    "`/crate reward list <crate>` Every reward with its chance or cost",
+    "`/crate reward reset <crate>` Back to the default rewards"
+  ].join("\n") },
+  { title: "🔑 Keys", description: [
+    "`/crate key give <player> <crate> <amount>` Gives key items",
+    "`/crate key take <player> <crate> <amount>` Takes keys",
+    "`/crate keys` (anyone) How many keys you have",
+    "Tebex purchase: `crate key give {username} armor 1` (or `weapon`). Refund/chargeback: `crate key take {username} armor 1`",
+    "Tebex chargeback also: `ban {username} Chargeback on the store. Open a ticket on our Discord to appeal.` · unban: `pardon <name>`",
+    "Votes also give the vote mod's Vote Key, which works on the vote crate"
+  ].join("\n") },
+  { title: "✨ Crate particles", description: [
+    "`/cratefx here <name> <style> <colour>` Stand on the crate",
+    "Styles: `helix` `orbit` `halo` `vortex`",
+    "Colours: `ember` `bloodmoon` `abyssal` `dreadforge` `regalia` `throne` `red` `gold` `purple` `aqua` `green` `white`",
+    "`/cratefx remove <name>` · `/cratefx list` · `/cratefx burst <name>`",
+    "Crates already have their own moving particles, so only add one style if you want extra"
+  ].join("\n") },
+  { title: "💎 Throne Shards & money", description: [
+    "`shards give <player> <amount>` Gives Throne Shards",
+    "`eco give <player> <amount>` Gives money"
+  ].join("\n") },
+  { title: "📈 Levels", description: [
+    "`/level` Your level (anyone)",
+    "`/level info <player>` Someone's level (anyone)",
+    "`/level set <player> <level>` · `/level reset <player>`",
+    "`/level xp give <player> <amount>` · `/level xp take <player> <amount>`",
+    "`/level debug` Checks the level system and the sidebar match"
+  ].join("\n") },
+  { title: "🎒 Rank kits", description: [
+    "Ranks: **Ronin, Valkyrie, Monarch, Godborn, Overlord**",
+    "Put the kit items in your inventory first (your own stuff in a chest), then:",
+    "`/deletekit <rank>` then `/createkit <rank> 432000` (432000 = 5 days)",
+    "`/kit <rank>` Claim / test a kit",
+    "`/kitcd check <player>` Kit cooldowns · `/kitcd reset <player>` Clear them",
+    "Each rank needs the permission `neoessentials.kits.<rank>`"
+  ].join("\n") },
+  { title: "👑 Ranks", description: [
+    "`giverank <player> <rank>` Gives the rank + all lower ranks, prefix and class tokens (console / op level 4)",
+    "`takerank <player>` Removes all donor ranks (staff ranks stay)",
+    "Tebex: purchase `giverank {username} <rank>` · refund/chargeback `takerank {username}` (+ ban on chargeback)"
+  ].join("\n") },
+  { title: "🧍 Menu NPCs", description: [
+    "`/npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links>` New glowing NPC with hologram where you stand",
+    "`/npcmenu spawncmd <title> <command>` NPC that runs a command, e.g. `/npcmenu spawncmd Hunters warp hunters`",
+    "`/npcmenu attach <cosmetics|crates|throneshop|kits|levels|links>` Look at an NPC: it opens that menu",
+    "`/npcmenu attachcmd <command>` Look at an NPC: it runs that command · `/npcmenu detach` back to normal",
+    "`/npcmenu grab` then `/npcmenu put` Move an NPC + its hologram to where you stand",
+    "`/npcmenu hologram <text>` New hologram text (`|` = new line, `&` colours) · `/npcmenu remove` Delete NPC",
+    "`/npcmenu styleall` Every other NPC within 64 blocks gets the same glow + big title + RIGHT-CLICK TO VIEW (clicking them is unchanged)",
+    "`/npcmenu style [title]` Same for the NPC you look at · `/npcmenu unstyle` Undo",
+    "`/npcmenu glow off` / `/npcmenu glow on` Glow off/on for the NPC you look at (stays that way)",
+    "`/npcmenu clearholo [radius]` Delete all floating text near you (not crates), then `/npcmenu fixall` + `/npcmenu styleall`",
+    "`/npcmenu fixall` Hide NPC name tags + redo all holograms nearby · `/npcmenu debug` Click debug on/off",
+    "Easy NPC wand / mover / sneak-click still work on menu NPCs (skins etc.)"
+  ].join("\n") },
+  { title: "🗣️ Hub dialog NPCs", description: [
+    "`/npcfix apply` Updates Ranks / Server Info / Crates / Hunters texts in npc_texts.json (backup kept)",
+    "`/npcfix refresh` Puts the new texts on the NPCs without moving them",
+    "`/npcfix look <crates|ranks|info|hunters>` Updates the NPC you look at · `/npcfix hunters` Places the Hunters NPC"
+  ].join("\n") },
+  { title: "🛒 Throne Shop & flight", description: [
+    "`/throneshop debug` Shows the shard balance the shop reads (check this works before selling!)",
+    "`/throneshop placeholder <text|auto>` Set the balance placeholder by hand",
+    "Purchases take shards with `shards take <player> <amount>`",
+    "`/flytime give <player> <minutes>` Give flight time · `/flytime take <player>` Remove all of it",
+    "`otcosmetic give|take <player> <kind> <id>` Give/take a cosmetic (Tebex uses this) · `otcosmetic list <kind>` All ids",
+    "Kinds: `tag` `namecolor` `chatcolor` `glow` `gradient` `status` `joinmessage` · players equip with `/cosmetics`"
+  ].join("\n") },
+  { title: "🛡️ AntiCheat & ClearLag", description: [
+    "Alerts show in staff chat automatically (X-ray-like mining, kill-aura/auto-click, impossible item stacks)",
+    "Strikes: 1st warning, 2nd kick, 3rd ban (staff/ops are never punished). X-ray mining is alert-only: check before banning",
+    "`/ac log` Last 20 alerts · `/ac check <player>` Strikes + mining numbers · `/ac strikes reset <player>` · `/ac alerts` Your alerts on/off",
+    "Ground items are cleared every hour (warnings at 1 min, 30 s and a 10 s countdown)",
+    "`/clearlag now` Clear in 10 seconds · `/clearlag status` Time to the next clear"
+  ].join("\n") },
+  { title: "💤 AFK Room", description: [
+    "`/afkzone pos1` + `/afkzone pos2` Stand in opposite corners of the room to set it",
+    "`/afkzone board [height]` Info board where you stand · `/afkzone board flip` · `/afkzone board remove`",
+    "`/afkzone info` · `/afkzone give <player> <n>` Give AFK Shards (testing)",
+    "1 AFK Shard every 30 min in the room, 6 shards = 1 AFK Key (AFK Crate: `/crate create afk`, fill with `/crate edit afk`)",
+    "Players: `/afkshard` · `/warp afk` (make it with your warp command while standing in the room)"
+  ].join("\n") },
+  { title: "🧬 Tensura", description: [
+    "`/tensura edit forceevo <player> demonLord` Make someone a Demon Lord",
+    "`/tensura edit race <player> tensura:god_slime true true` Set a race"
+  ].join("\n") },
+  { title: "📢 Chat & votes", description: [
+    "`/announce` Send the next server announcement now (they also go out every 30 min)",
+    "`/announce welcome` See the join message",
+    "`/vote` Vote menu (anyone)",
+    "`/neoessentials config split` Clears the NeoEssentials \"config splitting\" notice"
+  ].join("\n") }
+]) });
 
 fs.writeFileSync(path.join(root, "discord-bot/content.json"), JSON.stringify({ generatedFrom: "scripts/build-discord-content.mjs", channels }, null, 2) + "\n");
 console.log("wrote discord-bot/content.json:", channels.map((c) => `${c.key} (${c.messages.length})`).join(", "));
