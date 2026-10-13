@@ -30,26 +30,28 @@ BAND = 'scale=%d:%d:flags=lanczos,unsharp=5:5:0.5,pad=%d:%d:0:%d:black,setsar=1,
 WARM = 'eq=contrast=1.08:saturation=1.12:gamma=1.03,colorbalance=rh=0.08:gh=0.03:bh=-0.08:bs=0.03'
 
 # (kind, source, start, seconds, speed)   ref = old trailer, clip = OVERTHRONE footage
+# every cut sits on the 80 BPM grid (1 beat = 0.75 s, 1 bar = 3 s); the big hit at 39 s (bar 13) lands on the bridge
 CUT = [
-    ('ref', None, 0.733, 8.034, 1),        # crops & village, aerial valley
-    ('clip', 'c6', 0.4, 2.2, 0.75),        # OVERTHRONE: dragon over the sky city
-    ('ref', None, 8.767, 2.6, 1),          # walking through the crops
-    ('clip', 'c2', 4.0, 1.97, 0.75),       # OVERTHRONE: temples and red chains (replaces the dark house)
-    ('ref', None, 13.333, 3.333, 1),       # villager, wheat, cliff
-    ('clip', 'c12', 12.0, 2.63, 0.75),     # OVERTHRONE: red bridge to the temples (replaces the old town panorama)
-    ('ref', None, 19.3, 1.3, 1),           # blacksmith
-    ('clip', 'c7', 0.5, 1.47, 0.8),        # OVERTHRONE market (replaces the old market street)
+    ('clip', 'c3', 0.0, 3.0, 0.75),        # OVERTHRONE first: temples and red chains above the clouds
+    ('clip', 'c4', 13.0, 3.0, 0.75),       # the spawn plaza under blue sky
+    ('ref', None, 0.733, 7.5, 1),          # crops & village, aerial valley
+    ('ref', None, 8.767, 2.25, 1),         # walking through the crops
+    ('clip', 'c3', 10.0, 2.25, 0.75),      # OVERTHRONE rooftops and chains (replaces the dark house)
+    ('ref', None, 13.333, 3.0, 1),         # villager, wheat, cliff
+    ('clip', 'c4', 16.0, 2.25, 0.75),      # OVERTHRONE courtyard (replaces the old town panorama)
+    ('ref', None, 19.3, 1.5, 1),           # blacksmith
+    ('clip', 'n1', 9.0, 1.5, 0.75),        # OVERTHRONE golden hall to the portal (replaces the old market street)
     ('ref', None, 22.067, 6.0, 1),         # armour, faces, mage, into the forest and the mine
-    ('ref', None, 34.0, 4.067, 1),         # swing, weapon
+    ('ref', None, 34.0, 2.25, 1),          # the swing (the staff close-up after it is left out)
     ('fight', 'f2', 1.5, 1.5, 1),          # OVERTHRONE Epic Fight: the Lycanth werewolf boss appears
-    ('fight', 'f1', 1.0, 1.5, 1),          # skill blast through the wither skeletons
+    ('fight', 'f1', 1.0, 0.75, 1),         # skill blast through the wither skeletons
     ('fight', 'f2', 4.4, 0.75, 1),         # trading blows with the werewolf
     ('fight', 'f1', 10.4, 0.75, 1),        # combo burst
-    ('fight', 'f2', 22.5, 0.9, 1),         # the werewolf lunges
-    ('ref', None, 38.067, 7.533, 1),       # bridge, tilt up into the blur (cut before the old logo)
+    ('fight', 'f2', 22.5, 0.75, 1),        # the werewolf lunges
+    ('ref', None, 38.067, 7.5, 1),         # bridge (on the hit), tilt up into the blur (cut before the old logo)
 ]
 FIGHT = 'eq=contrast=1.12:saturation=1.2:gamma=1.35,colorbalance=rs=-0.03:bs=0.05:rh=0.06'
-XF, LOGO_LEN, END_LEN = 0.6, 5.93, 4.0
+XF, LOGO_LEN, END_LEN = 0.6, 5.35, 4.0     # JOIN NOW lands at 50.75 s, on bar 17
 
 pieces = []
 for i, (kind, src, start, dur, speed) in enumerate(CUT):
