@@ -2,10 +2,10 @@
 // plus "command NPCs" that run a command for the player (e.g. /warp hunters, /ah).
 //
 // Staff (op):
-//   /npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links|claims>       new NPC where you stand, glowing, with a hologram above it
+//   /npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links|claims|smp>       new NPC where you stand, glowing, with a hologram above it
 //   /npcmenu spawncmd <title> <command...>         new NPC that runs <command> for the player who clicks it
 //                                                  e.g. /npcmenu spawncmd Hunters warp hunters
-//   /npcmenu attach <cosmetics|crates|throneshop|kits|levels|links|claims>       give the NPC you are LOOKING AT this menu (keeps its skin/spot)
+//   /npcmenu attach <cosmetics|crates|throneshop|kits|levels|links|claims|smp>       give the NPC you are LOOKING AT this menu (keeps its skin/spot)
 //   /npcmenu attachcmd <command...>                the NPC you are looking at runs this command when clicked
 //   /npcmenu detach                                the NPC you are looking at goes back to normal
 //   /npcmenu styleall                              ALL your other NPCs within 64 blocks get the same glow + big title +
@@ -991,7 +991,40 @@
         sl.item = icon(s, 'minecraft:player_head', '&d&lTRUST FRIENDS', ['&fStand in your claim and type', '&e/flan menu&f to let friends build', '&for open chests, and change settings.'], false)
       })
       gui.slot(5, 2, sl => {
-        sl.item = icon(s, 'minecraft:barrier', '&c&lWHERE CAN I CLAIM?', ['&fIn the &aWild&f and &aSurvival&f worlds.', '&fNot in the hub, the RPG World', '&for the Resource World.', '', '&7Remove a claim: stand in it and', '&7type &e/flan delete'], false)
+        sl.item = icon(s, 'minecraft:barrier', '&c&lWHERE CAN I CLAIM?', ['&fIn the &aWild&f, &aSMP&f and &aSurvival&f worlds.', '&fNot in the hub, the RPG World', '&for the Resource World.', '', '&7Remove a claim: stand in it and', '&7type &e/flan delete'], false)
+      })
+    })
+  }
+
+  // ======================================================================= SMP world
+  const smpMenu = (p) => {
+    var s = p.server
+    p.openChestGUI(Text.of('The SMP World'), 3, gui => {
+      gui.playerSlots = true
+      fill(gui, s, 3)
+      gui.slot(1, 1, sl => {
+        sl.item = icon(s, 'minecraft:written_book', '&a&lWHAT IS THE SMP?', [
+          '&fSMP = &aSurvival Multiplayer&f.', '&fOne big shared survival world for', '&fthe whole server: build a base, farm,',
+          '&ftrade and make friends (or rivals).', '', '&7Everything you build stays,', '&7it never resets.'], false)
+      })
+      gui.slot(3, 1, sl => {
+        sl.item = icon(s, 'minecraft:oak_sapling', '&2&lSETTLE DOWN', [
+          '&fFind your own land with &e/rtp&f,', '&fthen build your home, farms', '&fand storage. Team up with friends', '&for start a town together.'], false)
+      })
+      gui.slot(5, 1, sl => {
+        sl.item = icon(s, 'minecraft:golden_shovel', '&6&lPROTECT YOUR BASE', [
+          '&fClaim your land with a &6golden shovel&f', '&fso nobody can grief or steal.', '', '&7No tool? Visit the &6Land Claims', '&7NPC or type &e/claimtool&7.'], false)
+      })
+      gui.slot(7, 1, sl => {
+        sl.item = icon(s, 'minecraft:emerald', '&e&lPLAY TOGETHER', [
+          '&fTrade with other players, sell your', '&ffarm loot in &e/shop&f and grow rich.', '', '&7Be fair: no griefing, no stealing,', '&7no scamming. &e/rules'], false)
+      })
+      gui.slot(3, 2, sl => {
+        sl.item = icon(s, 'minecraft:ender_pearl', '&a&lTRAVEL TO THE SMP', ['&fTakes you to the SMP spawn.', '&fType &e/smp&f any time to come back.', '', '&a&lCLICK TO GO'], true)
+        sl.leftClicked = e => after(p, () => run(s, `execute as ${p.username} run smp`))
+      })
+      gui.slot(5, 2, sl => {
+        sl.item = icon(s, 'minecraft:compass', '&b&lFIND LAND', ['&fIn the SMP world, type &e/rtp&f to', '&fjump to a random spot and', '&fexplore for the perfect base.'], false)
       })
     })
   }
@@ -1053,7 +1086,7 @@
     })
   }
 
-  const MENUS = { cosmetics: p => cosmeticsMain(p), crates: crateMenu, throneshop: shopMain, kits: kitMenu, levels: levelGuide, links: linksMenu, claims: claimsMenu }
+  const MENUS = { cosmetics: p => cosmeticsMain(p), crates: crateMenu, throneshop: shopMain, kits: kitMenu, levels: levelGuide, links: linksMenu, claims: claimsMenu, smp: smpMenu }
   const TITLES = {
     cosmetics: ['&d&lCOSMETICS', '&fRIGHT-CLICK TO VIEW'],
     crates: ['&e&lCRATES', '&fRIGHT-CLICK TO VIEW'],
@@ -1062,8 +1095,9 @@
     levels: ['&a&lLEVEL GUIDE', '&fRIGHT-CLICK TO VIEW'],
     links: ['&b&lSERVER LINKS', '&fRIGHT-CLICK TO VIEW'],
     claims: ['&6&lLAND CLAIMS', '&fRIGHT-CLICK TO VIEW'],
+    smp: ['&a&lTHE SMP WORLD', '&fRIGHT-CLICK TO VIEW'],
   }
-  const GLOW = { cosmetics: 'light_purple', crates: 'yellow', throneshop: 'light_purple', kits: 'gold', levels: 'green', links: 'aqua', claims: 'gold', cmd: 'yellow' }
+  const GLOW = { cosmetics: 'light_purple', crates: 'yellow', throneshop: 'light_purple', kits: 'gold', levels: 'green', links: 'aqua', claims: 'gold', smp: 'green', cmd: 'yellow' }
   const openMenu = (p, type) => {
     if (p.openChestGUI === undefined) { p.tell('§cMenus need KubeJS chest GUIs.'); return }
     try { MENUS[type](p) } catch (e) { console.error('[npc_menus] ' + type + ': ' + e); if (p.hasPermissions(2)) p.tell('§c[npc_menus] ' + e) }
@@ -1166,7 +1200,7 @@
     if (id == null) { id = 'ot_mid_' + Date.now().toString(36); e.addTag(id) }
     return id
   }
-  const OPEN_CMD = { cosmetics: 'cosmetics', crates: 'cratemenu', throneshop: 'throneshop', kits: 'kitmenu', levels: 'levelguide', links: 'links', claims: 'claimmenu' }
+  const OPEN_CMD = { cosmetics: 'cosmetics', crates: 'cratemenu', throneshop: 'throneshop', kits: 'kitmenu', levels: 'levelguide', links: 'links', claims: 'claimmenu', smp: 'smpmenu' }
   // Easy NPC's own "on click: run command" (the same thing the setup's click_command NPCs use)
   const setClickAction = (server, e, command) => {
     var c = '/' + String(command).replace(/^\//, '').replace(/\\/g, '\\\\').replace(/"/g, '\\"')
@@ -1304,7 +1338,7 @@
     say(ctx.source, '§a[npcmenu] Removed ' + n + ' floating texts within ' + radius + ' blocks. §7Now /npcmenu fixall and /npcmenu styleall put the right ones back.')
     return 1
   }
-  const NPC_NAMES = { cosmetics: ['Cosmetics', '#FF55FF'], crates: ['Crates', '#FFFF55'], throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'], claims: ['Land Claims', '#FFAA00'] }
+  const NPC_NAMES = { cosmetics: ['Cosmetics', '#FF55FF'], crates: ['Crates', '#FFFF55'], throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'], claims: ['Land Claims', '#FFAA00'], smp: ['SMP World', '#55FF55'] }
 
   ServerEvents.commandRegistry(event => {
     const { commands: Commands, arguments: Arguments } = event
@@ -1316,7 +1350,7 @@
     event.register(Commands.literal('npcmenu').requires(src => src.hasPermission(2))
       .then(Commands.literal('spawn').then(typeArg().executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, t = typeOf(ctx)
-        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels, links or claims'); return 0 }
+        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels, links, claims or smp'); return 0 }
         var e = spawnNpc(p, NPC_NAMES[t][0], NPC_NAMES[t][1])
         if (e == null) { say(ctx.source, '§cThe NPC did not spawn (check the server log).'); return 0 }
         makeMenuNpc(p.server, e, t, null)
@@ -1333,7 +1367,7 @@
       })))))
       .then(Commands.literal('attach').then(typeArg().executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, t = typeOf(ctx), e = looked(p)
-        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels, links or claims'); return 0 }
+        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels, links, claims or smp'); return 0 }
         if (e == null) { say(ctx.source, '§cLook straight at an NPC (within 8 blocks).'); return 0 }
         makeMenuNpc(p.server, e, t, null)
         say(ctx.source, '§a[npcmenu] This NPC now opens the ' + t + ' menu.')
@@ -1540,5 +1574,6 @@
     event.register(Commands.literal('kitmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'kits'); return 1 }))
     event.register(Commands.literal('levelguide').executes(ctx => { openMenu(ctx.source.playerOrException, 'levels'); return 1 }))
     event.register(Commands.literal('claimmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'claims'); return 1 }))
+    event.register(Commands.literal('smpmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'smp'); return 1 }))
   })
 })()
