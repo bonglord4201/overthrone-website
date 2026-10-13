@@ -219,7 +219,17 @@
           { icon: 'minecraft:feather', name: '&f&lFlight Time', detail: '6 hours', price: 500, give: { type: 'fly', seconds: 21600 } },
         ],
       },
-      { slot: [3, 3], icon: 'minecraft:golden_shovel', name: '&a&lCLAIM BLOCKS', kind: 'VIRTUAL ITEM', desc: ['Claim blocks help protect your', 'builds and homes from other', 'players.'], soon: true },
+      {
+        slot: [3, 3], icon: 'minecraft:golden_shovel', name: '&a&lCLAIM BLOCKS', kind: 'VIRTUAL ITEM',
+        desc: ['Claim blocks let you protect', 'more land. Claim with a &6golden', '&6shovel&f: right-click two opposite', 'corners of your base.'],
+        layout: 'spaced',
+        children: [
+          { icon: 'minecraft:golden_shovel', name: '&a&lClaim Blocks', detail: '500 blocks', price: 100, give: { type: 'claim', n: 500 } },
+          { icon: 'minecraft:golden_shovel', name: '&a&lClaim Blocks', detail: '1,000 blocks', price: 180, give: { type: 'claim', n: 1000 } },
+          { icon: 'minecraft:golden_shovel', name: '&a&lClaim Blocks', detail: '2,500 blocks', price: 400, give: { type: 'claim', n: 2500 } },
+          { icon: 'minecraft:golden_shovel', name: '&a&lClaim Blocks', detail: '5,000 blocks', price: 750, give: { type: 'claim', n: 5000 } },
+        ],
+      },
       { slot: [5, 3], icon: 'minecraft:black_shulker_box', name: '&b&lAUTOSELL CHESTS', kind: 'ITEM', desc: ['Sell the contents of a chest to', 'the server shop automatically.'], soon: true },
       { slot: [7, 3], icon: 'minecraft:ender_chest', name: '&d&lLOOTBOXES', kind: 'ITEM', desc: ['Lootboxes contain exclusive tags,', 'runes, spawners and more.'], soon: true },
     ],
@@ -406,6 +416,9 @@
     } else if (g.type == 'fly') {
       contents([it.detail + ' of Flight Time'])
       use(['Turn it on/off with &e/flytime&7, then', 'double-jump to fly. Time only counts', 'down while you are flying.', 'Time left: &e/flytime left'])
+    } else if (g.type == 'claim') {
+      contents([it.detail.replace(' blocks', '') + ' Claim Blocks'])
+      use(['Claim land with a &6golden shovel&7:', '&fright-click&7 one corner, then the', 'opposite corner. 1 block of area = 1', 'claim block. No shovel? &e/claimtool', 'Check your blocks: &e/flan info'])
     } else if (g.type == 'rank') {
       contents(['Permanent ' + strip(it.name).replace(' Rank', '') + ' rank', 'Every rank below it is included'])
       use(['Hover the &fbook&7 and &fsign&7 under this', 'rank to see its perks and commands.', 'You get it straight away after buying.'])
@@ -509,6 +522,7 @@
     else if (g.type == 'tag') { addOwned(p, 'tag:' + g.id); p.tell('§7Equip it with §e/tags§7.') }
     else if (g.type == 'namecolor') { addOwned(p, 'nc:' + g.id); p.tell('§7Equip it with §e/namecolor§7.') }
     else if (g.type == 'fly') { addFly(p, g.seconds) }
+    else if (g.type == 'claim') { run(s, `flan giveClaimBlocks ${p.username} ${g.n}`); p.tell('§7Claim with a §6golden shovel§7. Your claim blocks: §e/flan info') }
     else if (g.type == 'cos') {
       addOwned(p, g.kind + ':' + g.id)
       run(s, `tellraw ${p.username} ${JSON.stringify(['', { text: 'Equip it: ', color: 'gray' }, { text: '[CLICK HERE]', color: 'light_purple', bold: true, clickEvent: { action: 'run_command', value: KINDS[g.kind].cmd }, hoverEvent: { action: 'show_text', contents: 'Opens ' + KINDS[g.kind].cmd } }, { text: ' or type ' + KINDS[g.kind].cmd + ' / /cosmetics', color: 'gray' }])}`)

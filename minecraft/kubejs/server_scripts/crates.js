@@ -64,6 +64,9 @@
         { item: 'minecraft:enchanted_golden_apple', count: 6, weight: 4, rare: true },
         { cmd: SHARDS_CMD + ' 30', icon: 'minecraft:amethyst_shard', name: '30x Throne Shards', weight: 4, shards: true },
         { cmd: SHARDS_CMD + ' 60', icon: 'minecraft:amethyst_shard', name: '60x Throne Shards', weight: 1, rare: true, shards: true },
+        { cmd: 'flan giveClaimBlocks {p} 100', icon: 'minecraft:golden_shovel', name: '100 Claim Blocks', weight: 15 },
+        { cmd: 'flan giveClaimBlocks {p} 250', icon: 'minecraft:golden_shovel', name: '250 Claim Blocks', weight: 6 },
+        { cmd: 'flan giveClaimBlocks {p} 1000', icon: 'minecraft:golden_shovel', name: '1,000 Claim Blocks', weight: 1, rare: true },
       ],
     },
     // "redeem" crates (like OG's armor/weapon crates): open the menu, pick an item, pay its key cost.
