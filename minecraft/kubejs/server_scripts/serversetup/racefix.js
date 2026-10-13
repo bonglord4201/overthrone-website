@@ -23,6 +23,7 @@
 const RF_OLD_KEY = 'ss_manascore_storage'
 const RfNbtIo = Java.loadClass('net.minecraft.nbt.NbtIo')
 const RfNbtAccounter = Java.loadClass('net.minecraft.nbt.NbtAccounter')
+const RfLevelResource = Java.loadClass('net.minecraft.world.level.storage.LevelResource')
 const RfRaceAPI = Java.loadClass('io.github.manasmods.manascore.race.api.RaceAPI')
 const RfStorageManager = Java.loadClass('io.github.manasmods.manascore.storage.impl.StorageManager')
 
@@ -39,8 +40,10 @@ function rfRaceId(player) {
 NativeEvents.onEvent(Java.loadClass('net.neoforged.neoforge.event.entity.player.PlayerEvent$SaveToFile'), event => {
   let player = event.getEntity()
   try {
-    // (getPlayerFile('dat') is not allowed: NeoForge reserves the 'dat' suffix)
-    let file = event.getPlayerDirectory().toPath().resolve(String(event.getPlayerUUID()) + '.dat')
+    // the player's file in <world>/playerdata/ (the event's own directory can't be trusted: on this
+    // server it pointed at the server folder)
+    let file = player.getServer().getWorldPath(RfLevelResource.PLAYER_DATA_DIR).resolve(String(player.getStringUuid()) + '.dat')
+    if (!file.toFile().exists()) return
     let tag = RfNbtIo.readCompressed(file, RfNbtAccounter.unlimitedHeap())
     tag.put('ManasCoreStorage', player.manasCore$getCombinedStorage().toNBT())
     RfNbtIo.writeCompressed(tag, file)
