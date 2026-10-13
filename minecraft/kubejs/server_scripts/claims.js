@@ -19,7 +19,7 @@
     p.tell('§8 • §7Each block of area costs §e1 claim block§7. Check yours: §e/flan list')
     p.tell('§8 • §7Get more: playing time, §e/throneshop§7, vote crates and the store.')
     p.tell('§8 • §7Manage trust and settings: §e/flan menu§7 · see claims: hold a §fstick')
-    p.tell('§8 • §7Claims work in the §fWild§7, §fSMP§7 and §fSurvival§7, not in the hub or RPG World.')
+    p.tell('§8 • §7Claims work in the §fWild§7 and §fSurvival§7, not in the hub, RPG World, Resource World or SMP.')
   }
 
   // "clear <player> <item> 0" removes nothing and returns how many the player has

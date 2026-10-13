@@ -991,7 +991,7 @@
         sl.item = icon(s, 'minecraft:player_head', '&d&lTRUST FRIENDS', ['&fStand in your claim and type', '&e/flan menu&f to let friends build', '&for open chests, and change settings.'], false)
       })
       gui.slot(5, 2, sl => {
-        sl.item = icon(s, 'minecraft:barrier', '&c&lWHERE CAN I CLAIM?', ['&fIn the &aWild&f, &aSMP&f and &aSurvival&f worlds.', '&fNot in the hub, the RPG World', '&for the Resource World.', '', '&7Remove a claim: stand in it and', '&7type &e/flan delete'], false)
+        sl.item = icon(s, 'minecraft:barrier', '&c&lWHERE CAN I CLAIM?', ['&fIn the &aWild&f and &aSurvival&f worlds.', '&fNot in the hub, the RPG World,', '&fthe Resource World or the &cSMP&f.', '', '&7Remove a claim: stand in it and', '&7type &e/flan delete'], false)
       })
     })
   }
@@ -1005,19 +1005,22 @@
       gui.slot(1, 1, sl => {
         sl.item = icon(s, 'minecraft:written_book', '&a&lWHAT IS THE SMP?', [
           '&fSMP = &aSurvival Multiplayer&f.', '&fOne big shared survival world for', '&fthe whole server: build a base, farm,',
-          '&ftrade and make friends (or rivals).', '', '&7Everything you build stays,', '&7it never resets.'], false)
+          '&ftrade, raid and make friends (or rivals).', '', '&7Everything you build stays,', '&7it never resets.'], false)
       })
       gui.slot(3, 1, sl => {
         sl.item = icon(s, 'minecraft:oak_sapling', '&2&lSETTLE DOWN', [
-          '&fFind your own land with &e/rtp&f,', '&fthen build your home, farms', '&fand storage. Team up with friends', '&for start a town together.'], false)
+          '&fFind your own land with &e/rtp&f,', '&fthen build your home, farms', '&fand storage. Team up with friends', '&for start a town together.', '', '&7Tip: build far out and hide', '&7your base well.'], false)
       })
       gui.slot(5, 1, sl => {
-        sl.item = icon(s, 'minecraft:golden_shovel', '&6&lPROTECT YOUR BASE', [
-          '&fClaim your land with a &6golden shovel&f', '&fso nobody can grief or steal.', '', '&7No tool? Visit the &6Land Claims', '&7NPC or type &e/claimtool&7.'], false)
+        sl.item = icon(s, 'minecraft:tnt', '&c&lNO CLAIMS - RAIDING ON', [
+          '&fLand claims &cdo not work&f in the SMP.', '&fAny base can be raided: players can', '&fbreak in, grief and steal your loot.', '',
+          '&7Protect yourself: hide your base,', '&7lock it behind traps and walls,', '&7and keep valuables in your ender chest.', '',
+          '&7Want a safe base? Build in the &aWild', '&7or &aSurvival&7 and claim it there.'], false)
       })
       gui.slot(7, 1, sl => {
-        sl.item = icon(s, 'minecraft:emerald', '&e&lPLAY TOGETHER', [
-          '&fTrade with other players, sell your', '&ffarm loot in &e/shop&f and grow rich.', '', '&7Be fair: no griefing, no stealing,', '&7no scamming. &e/rules'], false)
+        sl.item = icon(s, 'minecraft:bell', '&e&lANYTHING GOES', [
+          '&fRaiding, griefing and stealing are', '&fpart of the game here. Make allies,', '&fmake enemies, trade or take.', '',
+          '&cStill banned: hacks, cheats, x-ray', '&cand exploits. &e/rules'], false)
       })
       gui.slot(3, 2, sl => {
         sl.item = icon(s, 'minecraft:ender_pearl', '&a&lTRAVEL TO THE SMP', ['&fTakes you to the SMP spawn.', '&fType &e/smp&f any time to come back.', '', '&a&lCLICK TO GO'], true)

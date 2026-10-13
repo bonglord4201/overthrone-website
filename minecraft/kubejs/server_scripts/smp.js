@@ -2,6 +2,7 @@
 // The SMP world is the old Multiworld world "wild" (multiworld:wild). Its id stays "wild" on purpose:
 // renaming a Multiworld world makes a brand-new empty world, so players only ever see the name "SMP".
 // (/wild now goes to the Overworld, see config/serversetup/worlds.json.)
+// No claims in the SMP (raiding allowed): multiworld:wild is in Flan's blacklistedWorlds.
 //
 // Everyone:
 //   /smp              go to the SMP spawn
@@ -34,7 +35,7 @@
       server.runCommandSilent(`execute in ${SMP_WORLD} run tp ${name} ${sp.x + 0.5} ${sp.y} ${sp.z + 0.5}`)
     }
     server.runCommandSilent(`playsound minecraft:entity.enderman.teleport player ${name} ~ ~ ~ 0.6 1.2`)
-    p.tell(P + '§aWelcome to the §2§lSMP§a! §7Find a spot with §e/rtp§7, then claim it with a §6golden shovel§7.')
+    p.tell(P + '§aWelcome to the §2§lSMP§a! §7Find a spot with §e/rtp§7. §cNo claims here: bases can be raided!')
     return 1
   }
 

@@ -55,7 +55,7 @@
       "player_warps": true,
       "selector_icon": "minecraft:grass_block",
       "selector_slot": 24,
-      "description": ["One big shared survival world.", "Build, farm, trade and settle down.", "/smp to travel, /rtp to find land."]
+      "description": ["One big shared survival world.", "No claims: raiding and stealing allowed!", "/smp to travel, /rtp to find land."]
     },
     "rpg": {
       "name": "RPG World",

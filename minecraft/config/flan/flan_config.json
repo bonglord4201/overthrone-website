@@ -16,7 +16,8 @@
   "blacklistedWorlds": [
     "multiworld:hub",
     "multiworld:rpg",
-    "multiworld:resource"
+    "multiworld:resource",
+    "multiworld:wild"
   ],
   "worldWhitelist": false,
   "claimingItem": "minecraft:golden_shovel",
