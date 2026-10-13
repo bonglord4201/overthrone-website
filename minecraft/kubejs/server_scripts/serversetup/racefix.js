@@ -1,5 +1,5 @@
 // ============================================================================
-// Race persistence fix (Tensura / ManasCore + Epic Fight) - v4 (2026-10-14)
+// Race persistence fix (Tensura / ManasCore + Epic Fight) - v5 (2026-10-14)
 //
 // THE BUG (checked in both mods' source code):
 //   ManasCore saves a player's race/skills/EP by wrapping the call to addAdditionalSaveData inside
@@ -16,8 +16,8 @@
 //   server stop), the "ManasCoreStorage" tag is added to that file. On the next load ManasCore reads
 //   it itself, at the normal moment, exactly as if Epic Fight's bug did not exist.
 //
-// One-time move: players who still have the old KubeJS copy and no race get it loaded once (old way),
-//   the copy is then deleted. From their next login on, only the normal ManasCore load is used.
+// LOAD: ManasCore does not read the tag back on this server either, so it is loaded here once when the
+//   player file is read (v5). Nothing is copied while players are online.
 // ============================================================================
 
 const RF_OLD_KEY = 'ss_manascore_storage'
@@ -52,28 +52,37 @@ NativeEvents.onEvent(Java.loadClass('net.neoforged.neoforge.event.entity.player.
   }
 })
 
-// one-time move from the old KubeJS copy (v1-v3)
-const rfMoved = {}
+// Load side. ManasCore should read "ManasCoreStorage" itself, but on this server it doesn't (Epic Fight
+// wraps the load call too). So when the player file is read and the player has no race, the saved tag
+// is loaded here - once, at file-read time, with nothing copied while they play (that is what blocked
+// damage in v1). Also takes over the old KubeJS copy from v1-v3 once and deletes it.
+const rfLoaded = {}
 NativeEvents.onEvent(Java.loadClass('net.neoforged.neoforge.event.entity.player.PlayerEvent$LoadFromFile'), event => {
-  let player = event.getEntity()
+  let player = event.getEntity(), name = String(player.getGameProfile().getName())
   try {
     let data = player.persistentData
-    if (data == null || !data.contains(RF_OLD_KEY)) return
-    if (rfRaceId(player) == null) {
-      player.manasCore$getCombinedStorage().load(data.getCompound(RF_OLD_KEY))
-      rfMoved[String(player.getGameProfile().getName())] = true
-      console.info('[racefix] moved old race copy of ' + player.getGameProfile().getName() + ' (race: ' + rfRaceId(player) + ')')
+    let old = data != null && data.contains(RF_OLD_KEY) ? data.getCompound(RF_OLD_KEY) : null
+    if (old != null) data.remove(RF_OLD_KEY)
+    if (rfRaceId(player) != null) { console.info('[racefix] ' + name + ': race loaded normally (' + rfRaceId(player) + ')'); return }
+    let saved = null
+    let file = player.getServer().getWorldPath(RfLevelResource.PLAYER_DATA_DIR).resolve(String(player.getStringUuid()) + '.dat')
+    if (file.toFile().exists()) {
+      let tag = RfNbtIo.readCompressed(file, RfNbtAccounter.unlimitedHeap())
+      if (tag.contains('ManasCoreStorage')) saved = tag.getCompound('ManasCoreStorage')
     }
-    data.remove(RF_OLD_KEY)
+    let src = saved != null ? 'player file' : old != null ? 'old KubeJS copy' : null
+    if (src == null) { console.info('[racefix] ' + name + ': no saved race data (new player or never saved)'); return }
+    player.manasCore$getCombinedStorage().load(saved != null ? saved : old)
+    rfLoaded[name] = true
+    console.info('[racefix] ' + name + ': race loaded from ' + src + ' (' + rfRaceId(player) + ')')
   } catch (e) {
-    console.error('[racefix] could not move old race copy of ' + player.getGameProfile().getName() + ': ' + e)
+    console.error('[racefix] could not load race data of ' + name + ': ' + e)
   }
 })
 
 PlayerEvents.loggedIn(event => {
   let player = event.player, name = String(player.getGameProfile().getName())
-  if (!rfMoved[name]) return
-  delete rfMoved[name]
-  try { RfStorageManager.syncTracking(player, true) } catch (e) { }
-  player.tell('§e[Race] Your race was restored. If you can\'t take damage, relog once.')
+  if (!rfLoaded[name]) return
+  delete rfLoaded[name]
+  try { RfStorageManager.syncTracking(player, true) } catch (e) { console.warn('[racefix] sync failed for ' + name + ': ' + e) }
 })
