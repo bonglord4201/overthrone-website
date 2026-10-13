@@ -1,4 +1,4 @@
-// OVERTHRONE - Solo Leveling (SLR) gate waves: 6 gates open together every 2 hours.
+// OVERTHRONE - Solo Leveling (SLR) gate waves: 2 gates open together every hour.
 //
 // Uses SLR's own gate spawning, so the gates are real SLR gates (right ranks, loot, bosses):
 //   - between waves the gamerule soloGateDelay is set very high, so no random gates appear
@@ -12,8 +12,8 @@
 //   /gatewave info    time until the next wave
 
 (function () {
-  const WAVE_EVERY_MINUTES = 120
-  const BURST_SECONDS = 6          // ~1 gate per second -> 6 gates. Raise/lower if a wave gives too few/many.
+  const WAVE_EVERY_MINUTES = 60
+  const BURST_SECONDS = 2          // ~1 gate per second -> 2 gates. Raise/lower if a wave gives too few/many.
   const OFF_DELAY = 1000000        // soloGateDelay between waves (seconds) = no natural gates
   const WORLD = 'minecraft:overworld'
 
@@ -37,7 +37,7 @@
     if (inOverworld(server) == 0) return 'nobody'
     bursting = true
     server.runCommandSilent('gamerule soloGateDelay 1')
-    server.runCommandSilent('tellraw @a ["",{"text":"GATES ","color":"dark_purple","bold":true},{"text":"» ","color":"dark_gray"},{"text":"6 Gates are opening in the ","color":"gray"},{"text":"Wild","color":"light_purple","bold":true},{"text":"! Type /wild to hunt them.","color":"gray"}]')
+    server.runCommandSilent('tellraw @a ["",{"text":"GATES ","color":"dark_purple","bold":true},{"text":"» ","color":"dark_gray"},{"text":"2 Gates are opening in the ","color":"gray"},{"text":"Wild","color":"light_purple","bold":true},{"text":"! Type /wild to hunt them.","color":"gray"}]')
     server.runCommandSilent('execute as @a at @s run playsound minecraft:block.end_portal.spawn master @s ~ ~ ~ 0.6 1.2')
     later(server, BURST_SECONDS * 20, () => {
       server.runCommandSilent('gamerule soloGateDelay ' + OFF_DELAY)
