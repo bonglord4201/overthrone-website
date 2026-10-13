@@ -9,20 +9,19 @@
   var seen = null    // what our listener saw
 
   // Extra listeners straight on NeoForge's event bus: one that runs FIRST and one that runs LAST,
-  // both also called for cancelled events. Registered once per server start (a /reload can't remove them).
-  var bus = { first: null, last: null }
-  global.otDmgDbg = global.otDmgDbg || { first: null, last: null, registered: false }
-  if (!global.otDmgDbg.registered) {
+  // both also called for cancelled events. (Each /reload adds another pair; harmless, the old ones just go quiet.)
+  var dbg = { first: null, last: null, registered: false, watch: null }
+  {
     try {
       const EVENT_BUS = Java.loadClass('net.neoforged.neoforge.common.NeoForge').EVENT_BUS
       const Prio = Java.loadClass('net.neoforged.bus.api.EventPriority')
       EVENT_BUS.addListener(Prio.HIGHEST, true, LivingIncomingDamageEvent, e => {
-        var g = global.otDmgDbg; if (g.watch && e.getEntity().isPlayer() && String(e.getEntity().getName().getString()) == g.watch) g.first = { cancelled: e.isCanceled(), amount: Number(e.getAmount()) }
+        var g = dbg; if (g.watch && e.getEntity().isPlayer() && String(e.getEntity().getName().getString()) == g.watch) g.first = { cancelled: e.isCanceled(), amount: Number(e.getAmount()) }
       })
       EVENT_BUS.addListener(Prio.LOWEST, true, LivingIncomingDamageEvent, e => {
-        var g = global.otDmgDbg; if (g.watch && e.getEntity().isPlayer() && String(e.getEntity().getName().getString()) == g.watch) g.last = { cancelled: e.isCanceled(), amount: Number(e.getAmount()) }
+        var g = dbg; if (g.watch && e.getEntity().isPlayer() && String(e.getEntity().getName().getString()) == g.watch) g.last = { cancelled: e.isCanceled(), amount: Number(e.getAmount()) }
       })
-      global.otDmgDbg.registered = true
+      dbg.registered = true
     } catch (e) { console.warn('[dmgdebug] could not add bus listeners: ' + e) }
   }
 
@@ -47,16 +46,16 @@
     say('§7difficulty: §f' + p.level.getDifficulty() + '  §7health before: §f' + Number(p.getHealth()).toFixed(1) + '/' + Number(p.getMaxHealth()).toFixed(1))
     var before = Number(p.getHealth())
     watch = name; seen = null
-    global.otDmgDbg.watch = name; global.otDmgDbg.first = null; global.otDmgDbg.last = null
+    dbg.watch = name; dbg.first = null; dbg.last = null
     p.invulnerableTime = 0
     var ok = false
     try { ok = Number(p.server.runCommandSilent('damage ' + name + ' 1 minecraft:generic')) > 0 } catch (e) { say('§cdamage error: ' + e) }
-    watch = null; global.otDmgDbg.watch = null
+    watch = null; dbg.watch = null
     var after = Number(p.getHealth())
     say('§7/damage worked: §f' + ok + '  §7health after: §f' + after.toFixed(1) + ' §7(change ' + (after - before).toFixed(2) + ')')
     if (seen == null) say('§c→ The damage event never reached KubeJS: either a vanilla check above is true, or ANOTHER MOD cancelled it first.')
     else say('§7→ KubeJS saw the damage event: amount §f' + seen.amount + '§7, already cancelled: §f' + seen.cancelled + (ok ? '' : ' §c(blocked AFTER KubeJS by another mod or by damage reduction)'))
-    var g = global.otDmgDbg
+    var g = dbg
     if (!g.registered) say('§c(first/last listeners not available, see server log)')
     else {
       say('§7FIRST listener: §f' + (g.first ? 'saw it, cancelled=' + g.first.cancelled + ', amount=' + g.first.amount : 'never called'))
