@@ -2,7 +2,7 @@
 // Flan does the claiming and protection; this script only helps players get started:
 //   - new players get a Claim Tool (golden shovel) once, with a short how-to
 //   - /claimtool   gives a golden shovel if you don't have one
-//   - /claims      how claiming works
+//   - /claiminfo   how claiming works
 // Claim blocks are given with:  flan giveClaimBlocks <player> <amount>
 //   (Throne Shop, vote crate rewards, Tebex packages). Use a negative amount to take them back.
 
@@ -33,19 +33,19 @@
     try {
       p.server.scheduleInTicks(80, () => {
         giveTool(p)
-        p.tell(P + '§aYou got a §6Claim Tool§a! Type §e/claims §ato learn how to protect your base.')
+        p.tell(P + '§aYou got a §6Claim Tool§a! Type §e/claiminfo §ato learn how to protect your base.')
       })
     } catch (e) { }
   })
 
   ServerEvents.commandRegistry(event => {
     const { commands: Commands } = event
-    event.register(Commands.literal('claims').executes(ctx => { help(ctx.source.playerOrException); return 1 }))
+    event.register(Commands.literal('claiminfo').executes(ctx => { help(ctx.source.playerOrException); return 1 }))
     event.register(Commands.literal('claimtool').executes(ctx => {
       var p = ctx.source.playerOrException
       if (hasTool(p)) { p.tell(P + 'You already have a golden shovel in your inventory.'); return 0 }
       giveTool(p)
-      p.tell(P + '§aHere is your §6Claim Tool§a. Type §e/claims §afor how it works.')
+      p.tell(P + '§aHere is your §6Claim Tool§a. Type §e/claiminfo §afor how it works.')
       return 1
     }))
   })
