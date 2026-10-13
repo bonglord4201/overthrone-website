@@ -1,0 +1,94 @@
+{
+  "_configVersion": 1,
+  "teleportation": {
+    "homeSettings": {
+      "maxHomes": 1,
+      "allowCrossDimensionHomes": true,
+      "homeSetCooldown": 30,
+      "homeTeleportCooldown": 5,
+      "homeDeleteCooldown": 10,
+      "requireConfirmationForDelete": true,
+      "enableHomeTeleportSafety": true,
+      "logHomeActions": true
+    },
+    "warpSettings": {
+      "allowPlayerWarps": true,
+      "maxPlayerWarps": 0,
+      "warpCooldown": 10,
+      "warpSetCooldown": 60,
+      "allowCrossDimensionWarps": true,
+      "enableWarpSafety": true,
+      "logWarpActions": true,
+      "perWarpPermission": false
+    },
+    "spawnSettings": {
+      "spawnOnJoin": false,
+      "spawnOnDeath": false,
+      "spawnCooldown": 5,
+      "allowSpawnSet": true,
+      "enableSpawnSafety": true,
+      "logSpawnActions": true
+    },
+    "teleportRequestSettings": {
+      "requestTimeout": 60,
+      "maxPendingRequests": 5,
+      "cooldownBetweenRequests": 10,
+      "allowMultipleRequests": false,
+      "enableRequestNotifications": true,
+      "autoAcceptFromFriends": false,
+      "enableTeleportSafety": true,
+      "logTeleportRequests": true
+    },
+    "generalSettings": {
+      "teleportDelay": 3,
+      "cancelOnMovement": true,
+      "cancelOnDamage": false,
+      "enableTeleportWarmup": true,
+      "allowTeleportInCombat": false,
+      "maxTeleportDistance": -1,
+      "enableParticleEffects": true,
+      "enableSoundEffects": true,
+      "protectedAreas": []
+    },
+    "randomTeleportSettings": {
+      "defaultLocation": "{world}",
+      "defaultMinRange": 0,
+      "defaultMaxRange": 9500,
+      "findAttempts": 10,
+      "cacheThreshold": 10,
+      "cooldown": 60,
+      "excludedBiomes": [],
+      "locations": {
+        "default": {
+          "center": {
+            "x": 0,
+            "y": 64,
+            "z": 0,
+            "world": "minecraft:overworld"
+          },
+          "minRange": 0,
+          "maxRange": 9500,
+          "excludedBiomes": [
+            "minecraft:ocean",
+            "minecraft:deep_ocean",
+            "minecraft:frozen_ocean",
+            "minecraft:deep_frozen_ocean",
+            "minecraft:cold_ocean",
+            "minecraft:deep_cold_ocean",
+            "minecraft:lukewarm_ocean",
+            "minecraft:deep_lukewarm_ocean",
+            "minecraft:warm_ocean",
+            "minecraft:the_void"
+          ]
+        }
+      }
+    },
+    "backSettings": {
+      "enableDeathBack": true,
+      "enableTeleportBack": true,
+      "enableBackSafety": true,
+      "teleportDelay": 3,
+      "backCooldown": 0
+    }
+  }
+}
