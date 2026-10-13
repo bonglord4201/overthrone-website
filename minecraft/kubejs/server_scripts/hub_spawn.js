@@ -43,13 +43,43 @@
     return dx * dx + dz * dz <= SPAWN_RADIUS * SPAWN_RADIUS
   }
 
+  // Tensura: a player without a race gets the race selection screen on join. Teleporting them to the
+  // hub (another world = loading screen) closes that screen, so they never pick a race. Players
+  // without a race are therefore only sent to the hub once they have one (checked every second).
+  var RaceAPI = null
+  try { RaceAPI = Java.loadClass('io.github.manasmods.manascore.race.api.RaceAPI') } catch (e) { }
+  const hasRace = (p) => {
+    if (RaceAPI == null) return true
+    try { return RaceAPI.getRaceFrom(p).getRace().isPresent() } catch (e) { return true }
+  }
+  const waitingForRace = {}   // username -> true while we wait for them to pick a race
+
+  const loginTeleport = (p, first) => {
+    if (!hasRace(p)) { waitingForRace[p.username] = first ? 'first' : 'login'; return }
+    if (first || LOGIN_TO_HUB || atOverworldSpawn(p)) sendToHub(p, !first)
+  }
+
   // First join, every join (LOGIN_TO_HUB), or logging in at the overworld spawn
   PlayerEvents.loggedIn(event => {
     var p = event.player
     var first = !p.persistentData.getBoolean(SEEN)
     p.persistentData.putBoolean(SEEN, true)
-    later(p, 5, () => { if (first || LOGIN_TO_HUB || atOverworldSpawn(p)) sendToHub(p, !first) })
+    later(p, 5, () => loginTeleport(p, first))
   })
+
+  // once a player who was waiting has picked a race: now send them to the hub
+  ServerEvents.tick(event => {
+    if (event.server.tickCount % 20 != 0) return
+    Object.keys(waitingForRace).forEach(name => {
+      var p = event.server.getPlayerList().getPlayerByName(name)
+      if (p == null) { delete waitingForRace[name]; return }
+      if (!hasRace(p)) return
+      var first = waitingForRace[name] == 'first'
+      delete waitingForRace[name]
+      later(p, 40, () => sendToHub(p, !first))
+    })
+  })
+  PlayerEvents.loggedOut(event => { delete waitingForRace[event.player.username] })
 
   // Died with no bed: vanilla puts them at the overworld spawn, so move them to the hub instead
   PlayerEvents.respawned(event => {
