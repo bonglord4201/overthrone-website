@@ -13,7 +13,14 @@ REF, CLIPS, STILL, AUDIO, FONTS, OUT = sys.argv[1:7]
 HERE = os.path.dirname(os.path.abspath(__file__))
 LOGO = os.path.join(HERE, '..', 'server-icon', 'overthrone-logo-enhanced.png')
 W, H, FPS = 1920, 1080, 30
-PH = 708; PY = (H - PH) // 2                 # picture band (2.71:1), black bars above and below
+MODE = os.environ.get('REMIX_MODE', 'scope')   # scope = 2.71:1 with black bars, full = 16:9 full screen
+if MODE == 'full':
+    PH, PY = H, 0
+    REF_CROP = '732:412:166:82'              # 16:9 window inside the old trailer that misses both TikTok watermarks
+    CLIP_CROP = '1156:650:62:0'              # 16:9 above the hotbar
+else:
+    PH = 708; PY = (H - PH) // 2             # picture band (2.71:1), black bars above and below
+    REF_CROP, CLIP_CROP = '1024:378:0:98', '1280:472:0:89'
 BEBAS = os.path.join(FONTS, 'BebasNeue-Regular.ttf')
 X264 = ['-c:v', 'libx264', '-preset', 'veryfast', '-crf', '14', '-pix_fmt', 'yuv420p', '-r', str(FPS), '-an']
 tmp = tempfile.mkdtemp(prefix='remix_')
@@ -32,9 +39,16 @@ CUT = [
     ('clip', 'c12', 12.0, 2.63, 0.75),     # OVERTHRONE: red bridge to the temples (replaces the old town panorama)
     ('ref', None, 19.3, 1.3, 1),           # blacksmith
     ('clip', 'c7', 0.5, 1.47, 0.8),        # OVERTHRONE market (replaces the old market street)
-    ('ref', None, 22.067, 11.5, 1),        # armour, faces, mage, forest, mine
-    ('ref', None, 34.0, 11.6, 1),          # swing, weapon, bridge, tilt up into the blur (cut before the old logo)
+    ('ref', None, 22.067, 6.0, 1),         # armour, faces, mage, into the forest and the mine
+    ('ref', None, 34.0, 4.067, 1),         # swing, weapon
+    ('fight', 'f2', 1.5, 1.5, 1),          # OVERTHRONE Epic Fight: the Lycanth werewolf boss appears
+    ('fight', 'f1', 1.0, 1.5, 1),          # skill blast through the wither skeletons
+    ('fight', 'f2', 4.4, 0.75, 1),         # trading blows with the werewolf
+    ('fight', 'f1', 10.4, 0.75, 1),        # combo burst
+    ('fight', 'f2', 22.5, 0.9, 1),         # the werewolf lunges
+    ('ref', None, 38.067, 7.533, 1),       # bridge, tilt up into the blur (cut before the old logo)
 ]
+FIGHT = 'eq=contrast=1.12:saturation=1.2:gamma=1.35,colorbalance=rs=-0.03:bs=0.05:rh=0.06'
 XF, LOGO_LEN, END_LEN = 0.6, 5.93, 4.0
 
 pieces = []
@@ -42,9 +56,12 @@ for i, (kind, src, start, dur, speed) in enumerate(CUT):
     p = os.path.join(tmp, 'p%02d.mp4' % i); pieces.append(p)
     if kind == 'ref':
         run(['-ss', '%.3f' % start, '-t', '%.3f' % (dur + 0.3), '-i', REF, '-vf',
-             'crop=1024:378:0:98,' + BAND + ',' + 'eq=saturation=1.05', '-frames:v', str(frames(dur))] + X264 + [p])
+             'crop=' + REF_CROP + ',' + BAND + ',' + 'eq=saturation=1.05', '-frames:v', str(frames(dur))] + X264 + [p])
+    elif kind == 'fight':   # real speed, brightened, hard cuts
+        run(['-ss', '%.3f' % start, '-t', '%.3f' % (dur + 0.3), '-i', os.path.join(CLIPS, src + '.mp4'), '-vf',
+             'crop=' + CLIP_CROP + ',' + FIGHT + ',' + BAND, '-frames:v', str(frames(dur))] + X264 + [p])
     else:   # 1280x720 gameplay: crop the band above the hotbar, slow it down smoothly
-        vf = ['crop=1280:472:0:89', 'setpts=%.4f*(PTS-STARTPTS)' % (1 / speed),
+        vf = ['crop=' + CLIP_CROP, 'setpts=%.4f*(PTS-STARTPTS)' % (1 / speed),
               'minterpolate=fps=%d:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1' % FPS, WARM, BAND]
         run(['-ss', '%.3f' % start, '-t', '%.3f' % (dur * speed + 0.5), '-i', os.path.join(CLIPS, src + '.mp4'),
              '-vf', ','.join(vf), '-frames:v', str(frames(dur))] + X264 + [p])
@@ -54,7 +71,7 @@ n = frames(LOGO_LEN); still = os.path.join(tmp, 'still.mp4')
 FOCUS = "split[a][b];[b]gblur=sigma=18[bb];[a][bb]blend=all_expr='A+(B-A)*clip(1-(T-0.3)/2.2,0,1)',vignette=PI/4,pad=%d:%d:0:%d:black" % (W, H, PY)
 if STILL.startswith('clip:'):
     _, name, st = STILL.split(':')
-    vf = ['crop=1280:472:0:89', 'setpts=2*(PTS-STARTPTS)', 'minterpolate=fps=%d:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1' % FPS,
+    vf = ['crop=' + CLIP_CROP, 'setpts=2*(PTS-STARTPTS)', 'minterpolate=fps=%d:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1' % FPS,
           WARM, 'scale=%d:%d:flags=lanczos' % (W, PH), 'setsar=1,fps=%d' % FPS]
     run(['-ss', st, '-t', '%.2f' % (LOGO_LEN / 2 + 0.5), '-i', os.path.join(CLIPS, name + '.mp4'), '-filter_complex',
          '[0:v]' + ','.join(vf) + ',' + FOCUS + '[v]', '-map', '[v]', '-frames:v', str(n)] + X264 + [still])
@@ -114,8 +131,10 @@ fc = ('[0:v]settb=AVTB,fps=%d,format=yuv420p,settb=AVTB[a];[1:v]settb=AVTB,fps=%
       '[2:v]settb=AVTB,fps=%d,format=yuv420p,settb=AVTB[c];'
       '[a][b]xfade=transition=fade:duration=%.2f:offset=%.3f,settb=AVTB[ab];'
       '[ab][c]xfade=transition=fadeblack:duration=0.5:offset=%.3f,settb=AVTB,fade=in:st=0:d=1.0,'
-      'noise=alls=5:allf=t,drawbox=x=0:y=0:w=%d:h=%d:color=black:t=fill,drawbox=x=0:y=%d:w=%d:h=%d:color=black:t=fill[v]'
-      % (FPS, FPS, FPS, XF, blen - XF, blen - XF + LOGO_LEN - 0.5, W, PY, PY + PH, W, H - PY - PH))
+      'noise=alls=5:allf=t%s[v]'
+      % (FPS, FPS, FPS, XF, blen - XF, blen - XF + LOGO_LEN - 0.5,
+         ',drawbox=x=0:y=0:w=%d:h=%d:color=black:t=fill,drawbox=x=0:y=%d:w=%d:h=%d:color=black:t=fill'
+         % (W, PY, PY + PH, W, H - PY - PH) if PY else ''))
 run(['-i', body, '-i', logov, '-i', endv, '-i', AUDIO, '-filter_complex', fc + ';[3:a]afade=t=out:st=%.2f:d=2[au]' % (total - 2),
      '-map', '[v]', '-map', '[au]', '-t', '%.3f' % total, '-c:v', 'libx264', '-preset', 'slow', '-crf', '17',
      '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart', OUT])
