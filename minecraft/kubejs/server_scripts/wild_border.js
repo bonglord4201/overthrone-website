@@ -48,7 +48,12 @@ PlayerEvents.tick(event => {
   var d = wildDimOf(p), name = p.username
   if (wildLastDim[name] !== d) {
     wildLastDim[name] = d
-    if (d.indexOf(WILD_BORDER.world) >= 0) wildBorderSync(p, p.level)
+    if (d.indexOf(WILD_BORDER.world) >= 0) {
+      // Multiworld can load this world after server start (and borders on extra worlds aren't saved),
+      // so make sure the border is set before sending it
+      try { wildBorderApply(p.server) } catch (e) { console.error('wild_border apply: ' + e) }
+      wildBorderSync(p, p.level)
+    }
   }
 })
 
