@@ -39,7 +39,8 @@ function rfRaceId(player) {
 NativeEvents.onEvent(Java.loadClass('net.neoforged.neoforge.event.entity.player.PlayerEvent$SaveToFile'), event => {
   let player = event.getEntity()
   try {
-    let file = event.getPlayerFile('dat').toPath()
+    // (getPlayerFile('dat') is not allowed: NeoForge reserves the 'dat' suffix)
+    let file = event.getPlayerDirectory().toPath().resolve(String(event.getPlayerUUID()) + '.dat')
     let tag = RfNbtIo.readCompressed(file, RfNbtAccounter.unlimitedHeap())
     tag.put('ManasCoreStorage', player.manasCore$getCombinedStorage().toNBT())
     RfNbtIo.writeCompressed(tag, file)
