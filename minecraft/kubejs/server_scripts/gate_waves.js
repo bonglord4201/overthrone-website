@@ -2,9 +2,11 @@
 //
 // Uses SLR's own gate spawning, so the gates are real SLR gates (right ranks, loot, bosses):
 //   - between waves the gamerule soloGateDelay is set very high, so no random gates appear
-//   - when a wave starts, soloGateDelay is set to 1 second and the script counts SLR gate entities
-//     in the Overworld; as soon as GATES_PER_WAVE new ones exist (or MAX_BURST_SECONDS pass) it goes
-//     back to "off". Each wave shows a title on screen with fireworks.
+//   - when a wave starts, soloGateDelay is set to 1 second for BURST_SECONDS, then straight back to "off".
+//     SLR opens roughly one gate every 4 seconds while it's on (measured: ~8 gates in 30 s), so
+//     BURST_SECONDS = 6 gives about 2 gates. Tune it if waves give too many/few.
+//     (SLR gates can't be counted from a script, so the window is time-based.)
+//   - each wave shows a title on screen with fireworks.
 // SLR only spawns gates in the Overworld and only near players there, so a wave waits until
 // at least one player is in the Overworld (checked every minute).
 //
@@ -15,7 +17,7 @@
 (function () {
   const WAVE_EVERY_MINUTES = 60
   const GATES_PER_WAVE = 2
-  const MAX_BURST_SECONDS = 30     // safety stop if gates can't be counted
+  const BURST_SECONDS = 6          // how long SLR may open gates per wave (~4 s per gate)
   const OFF_DELAY = 1000000        // soloGateDelay between waves (seconds) = no natural gates
   const WORLD = 'minecraft:overworld'
 
@@ -33,18 +35,6 @@
 
   var nextWave = 0      // server tick of the next wave
   var bursting = false
-
-  // SLR gates = entities from the sololeveling mod with "gate" in their id
-  const countGates = (server) => {
-    var n = 0
-    try {
-      server.overworld().getAllEntities().forEach(e => {
-        var id = String(e.type)
-        if (id.indexOf('sololeveling') >= 0 && id.indexOf('gate') >= 0) n++
-      })
-    } catch (e) { return -1 }
-    return n
-  }
 
   const celebrate = (server) => {
     server.runCommandSilent('title @a times 10 60 20')
@@ -64,19 +54,14 @@
     if (bursting) return 'busy'
     if (inOverworld(server) == 0) return 'nobody'
     bursting = true
-    var start = countGates(server), waited = 0
     server.runCommandSilent('gamerule soloGateDelay 1')
-    const check = () => {
-      waited += 10
-      var now = countGates(server)
-      var done = (start >= 0 && now - start >= GATES_PER_WAVE) || waited >= MAX_BURST_SECONDS * 20
-      if (!done) { later(server, 10, check); return }
+    later(server, BURST_SECONDS * 20, () => {
       server.runCommandSilent('gamerule soloGateDelay ' + OFF_DELAY)
       bursting = false
-      console.info('[gate_waves] wave done: ' + (start < 0 ? '?' : (now - start)) + ' new gates in ' + (waited / 20) + ' s')
       celebrate(server)
-    }
-    later(server, 10, check)
+    })
+    // safety net: whatever happens, spawning is switched off again
+    later(server, (BURST_SECONDS + 5) * 20, () => server.runCommandSilent('gamerule soloGateDelay ' + OFF_DELAY))
     nextWave = server.tickCount + WAVE_EVERY_MINUTES * 60 * 20
     return 'started'
   }
@@ -100,7 +85,7 @@
     event.register(Commands.literal('gatewave').requires(src => src.hasPermission(2))
       .then(Commands.literal('now').executes(ctx => {
         var r = startWave(ctx.source.server)
-        say(ctx, P + (r == 'started' ? '§aWave started (gates counted now: §f' + countGates(ctx.source.server) + '§a).' : r == 'nobody' ? '§cNobody is in the Overworld (SLR only spawns gates there).' : '§cA wave is already opening.'))
+        say(ctx, P + (r == 'started' ? '§aWave started (' + BURST_SECONDS + ' s).' : r == 'nobody' ? '§cNobody is in the Overworld (SLR only spawns gates there).' : '§cA wave is already opening.'))
         return 1
       }))
       .then(Commands.literal('info').executes(ctx => {
