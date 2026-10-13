@@ -660,7 +660,9 @@
   const COLOR_NAME = { 0: 'black', 1: 'dark_blue', 2: 'dark_green', 3: 'dark_aqua', 4: 'dark_red', 5: 'dark_purple', 6: 'gold', 7: 'gray',
     8: 'dark_gray', 9: 'blue', a: 'green', b: 'aqua', c: 'red', d: 'light_purple', e: 'yellow', f: 'white' }
   const tagState = {}     // username -> { key, status entity, statusText }
-  const teamOf = (p) => 'otn_' + String(p.getStringUUID()).replace(/-/g, '').substring(0, 12)
+  // KubeJS names it getStringUuid(); keep the other spellings as fallbacks
+  const uidOf = (e) => { try { return String(e.getStringUuid()) } catch (x) { try { return String(e.getStringUUID()) } catch (y) { return String(e.uuid) } } }
+  const teamOf = (p) => 'otn_' + uidOf(p).replace(/-/g, '').substring(0, 12)
   const nameColor = (p) => {
     var g = equipped(p, 'glow'); if (g) return g.team
     var nc = equipped(p, 'nc'); if (nc) return COLOR_NAME[nc.code.charAt(1)] || 'white'
@@ -717,10 +719,10 @@
         var c = equipped(p, 'status')
         if (c == null || p.isSpectator() || p.isInvisible()) { if (st.e) killPlate(p); return }
         var e = st.e
-        if (e == null || !e.isAlive() || e.getVehicle() == null || e.getVehicle().getStringUUID() != p.getStringUUID()) { spawnStatus(p, statusJson(c, phase)); return }
+        if (e == null || !e.isAlive() || e.getVehicle() == null || uidOf(e.getVehicle()) != uidOf(p)) { spawnStatus(p, statusJson(c, phase)); return }
         if (s.tickCount % (ANIM_TICKS * 2) == 0) {
           var json = statusJson(c, phase)
-          if (json != st.json) { st.json = json; s.runCommandSilent(`data merge entity ${e.getStringUUID()} {text:'${json.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'}`) }
+          if (json != st.json) { st.json = json; s.runCommandSilent(`data merge entity ${uidOf(e)} {text:'${json.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'}`) }
         }
       } catch (x) { console.warn('[npc_menus] name tag: ' + x) }
     })
@@ -1070,7 +1072,7 @@
     var hit = p.rayTrace(8, false), e = hit == null ? null : hit.entity
     return e == null || String(e.type).indexOf('easy_npc') < 0 ? null : e
   }
-  const uuidOf = (e) => { try { return String(e.getStringUUID()) } catch (x) { return String(e.uuid) } }
+  const uuidOf = (e) => { try { return String(e.getStringUuid()) } catch (x) { try { return String(e.getStringUUID()) } catch (y) { return String(e.uuid) } } }
   const holoJson = (lines) => JSON.stringify(lines.map((l, i) => {
     var c = compParts(l)
     if (i) c.unshift({ text: '\n' })
