@@ -10,6 +10,7 @@ import os, shutil, subprocess, sys, tempfile
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 REF, CLIPS, STILL, AUDIO, FONTS, OUT = sys.argv[1:7]
+IMAGES = os.environ.get('REMIX_IMAGES', CLIPS)        # folder with the hub screenshots ('img' shots)
 HERE = os.path.dirname(os.path.abspath(__file__))
 LOGO = os.path.join(HERE, '..', 'server-icon', 'overthrone-logo-enhanced.png')
 W, H, FPS = 1920, 1080, 30
@@ -32,13 +33,13 @@ WARM = 'eq=contrast=1.08:saturation=1.12:gamma=1.03,colorbalance=rh=0.08:gh=0.03
 # (kind, source, start, seconds, speed)   ref = old trailer, clip = OVERTHRONE footage
 # every cut sits on the 80 BPM grid (1 beat = 0.75 s, 1 bar = 3 s); the big hit at 39 s (bar 13) lands on the bridge
 CUT = [
-    ('clip', 'c3', 0.0, 3.0, 0.75),        # OVERTHRONE first: temples and red chains above the clouds
-    ('clip', 'c4', 13.0, 3.0, 0.75),       # the spawn plaza under blue sky
+    ('img', '458', 0, 3.0, 'in'),          # OVERTHRONE first: the red temple tower between the trees
+    ('clip', 'c3', 4.0, 3.0, 0.75),        # flying past the temples above the clouds
     ('ref', None, 0.733, 7.5, 1),          # crops & village, aerial valley
     ('ref', None, 8.767, 2.25, 1),         # walking through the crops
-    ('clip', 'c3', 10.0, 2.25, 0.75),      # OVERTHRONE rooftops and chains (replaces the dark house)
+    ('img', '457', 0, 2.25, 'out'),        # OVERTHRONE pagoda and statue (replaces the dark house)
     ('ref', None, 13.333, 3.0, 1),         # villager, wheat, cliff
-    ('clip', 'c4', 16.0, 2.25, 0.75),      # OVERTHRONE courtyard (replaces the old town panorama)
+    ('img', '461', 0, 2.25, 'in'),         # OVERTHRONE courtyard and pillars (replaces the old town panorama)
     ('ref', None, 19.3, 1.5, 1),           # blacksmith
     ('clip', 'n1', 9.0, 1.5, 0.75),        # OVERTHRONE golden hall to the portal (replaces the old market street)
     ('ref', None, 22.067, 6.0, 1),         # armour, faces, mage, into the forest and the mine
@@ -59,6 +60,14 @@ for i, (kind, src, start, dur, speed) in enumerate(CUT):
     if kind == 'ref':
         run(['-ss', '%.3f' % start, '-t', '%.3f' % (dur + 0.3), '-i', REF, '-vf',
              'crop=' + REF_CROP + ',' + BAND + ',' + 'eq=saturation=1.05', '-frames:v', str(frames(dur))] + X264 + [p])
+    elif kind == 'img':     # hub screenshot: slow push in / pull out
+        im = Image.open([os.path.join(IMAGES, src + e) for e in ('.webp', '.png', '.jpg') if os.path.exists(os.path.join(IMAGES, src + e))][0]).convert('RGB')
+        bh = int(im.width * PH / W); y0 = max(0, (im.height - bh) // 2)
+        im = im.crop((0, y0, im.width, y0 + min(bh, im.height))).resize((W * 2, PH * 2), Image.LANCZOS)
+        sp = p + '.png'; im.save(sp); n = frames(dur)
+        z = "1.0+0.08*on/%d" % n if speed == 'in' else "1.08-0.08*on/%d" % n
+        run(['-i', sp, '-vf', "zoompan=z='%s':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=%d:s=%dx%d:fps=%d,%s,pad=%d:%d:0:%d:black,setsar=1"
+             % (z, n, W, PH, FPS, 'eq=contrast=1.04:saturation=1.08,colorbalance=rh=0.05:bh=-0.05', W, H, PY), '-frames:v', str(n)] + X264 + [p])
     elif kind == 'fight':   # real speed, brightened, hard cuts
         run(['-ss', '%.3f' % start, '-t', '%.3f' % (dur + 0.3), '-i', os.path.join(CLIPS, src + '.mp4'), '-vf',
              'crop=' + CLIP_CROP + ',' + FIGHT + ',' + BAND, '-frames:v', str(frames(dur))] + X264 + [p])
@@ -71,6 +80,8 @@ for i, (kind, src, start, dur, speed) in enumerate(CUT):
 # hub shot under the logo: slow push / slow motion, out of focus -> sharp
 n = frames(LOGO_LEN); still = os.path.join(tmp, 'still.mp4')
 FOCUS = "split[a][b];[b]gblur=sigma=18[bb];[a][bb]blend=all_expr='A+(B-A)*clip(1-(T-0.3)/2.2,0,1)',vignette=PI/4,pad=%d:%d:0:%d:black" % (W, H, PY)
+if STILL.startswith('img:'):
+    STILL = [os.path.join(IMAGES, STILL[4:] + e) for e in ('.webp', '.png', '.jpg') if os.path.exists(os.path.join(IMAGES, STILL[4:] + e))][0]
 if STILL.startswith('clip:'):
     _, name, st = STILL.split(':')
     vf = ['crop=' + CLIP_CROP, 'setpts=2*(PTS-STARTPTS)', 'minterpolate=fps=%d:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1' % FPS,
