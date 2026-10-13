@@ -1,0 +1,94 @@
+{
+  "_help": [
+    "Game modes / worlds used by /hub /survival /resource /rpg /wild, /rtp, the server selector, the HUD and the hub inventory.",
+    "NO coordinates here: travel points are the warps.<warp> keys in config/serversetup/coordinates.json (created by /setupcoords apply).",
+    "world        : the Multiworld dimension (must exist, see /mw list).",
+    "warp         : NeoEssentials warp used for travel. If that warp does not exist yet, players go to the world's own",
+    "               Multiworld spawn point instead (mw tp <world>), so travel never silently fails.",
+    "command      : the simple player command (/survival etc.), null = no command of its own. Changing it needs a server restart.",
+    "travel       : \"rtp\" = travelling to this world (selector, /wild) is a random teleport into it instead of a fixed point.",
+    "resource     : id of this mode's resource world (another entry here), or null when the mode has none yet.",
+    "parent       : for resource worlds: the mode they belong to (its NPC/menus send players back there).",
+    "rtp          : true = /rtp works while the player is IN this world (random spot in the same world).",
+    "               /rtp is refused everywhere else (hub, RPG World, nether, dungeons...). rtp.* numbers are in coordinates.json settings.",
+    "wild         : /wild (from ANY world, also the RPG World and the hub) = random teleport into the world of mode wild.target.",
+    "               The RPG NPC Kael the Wayfinder runs /wild, so he sends players into that world too.",
+    "player_warps : true = players may set player warps (/pwarp set) in this world (never inside someone else's claim).",
+    "               Player warps in other worlds are not allowed and are not shown in /pwarp menu.",
+    "selector_*   : how the entry looks in the server selector (icon = item id, slot = chest slot 10-34 inside the border).",
+    "After editing: /reload (or restart)."
+  ],
+  "wild": {
+    "command": "wild",
+    "target": "wild"
+  },
+  "hub": {
+    "name": "Hub",
+    "world": "multiworld:hub",
+    "warp": "hub",
+    "command": "hub",
+    "selector_icon": "minecraft:nether_star",
+    "selector_slot": 10,
+    "description": ["The heart of the realm.", "Shops, warps, NPCs and events."]
+  },
+  "modes": {
+    "wild": {
+      "name": "Wild",
+      "world": "minecraft:overworld",
+      "warp": "wild",
+      "command": null,
+      "travel": "rtp",
+      "resource": null,
+      "rtp": true,
+      "player_warps": true,
+      "selector_icon": "minecraft:oak_sapling",
+      "selector_slot": 12,
+      "description": ["Normal survival terrain.", "Explore, build and settle down.", "/wild = random spot, /rtp works here."]
+    },
+    "smp": {
+      "name": "SMP",
+      "world": "multiworld:wild",
+      "warp": "smp",
+      "command": null,
+      "resource": null,
+      "rtp": true,
+      "player_warps": true,
+      "selector_icon": "minecraft:grass_block",
+      "selector_slot": 24,
+      "description": ["One big shared survival world.", "Build, farm, trade and settle down.", "/smp to travel, /rtp to find land."]
+    },
+    "rpg": {
+      "name": "RPG World",
+      "world": "multiworld:rpg",
+      "warp": "rpg",
+      "command": "rpg",
+      "resource": null,
+      "rtp": false,
+      "selector_icon": "minecraft:netherite_sword",
+      "selector_slot": 14,
+      "description": ["Races, classes, skills and dungeons.", "Your adventure begins here."]
+    },
+    "survival": {
+      "name": "Survival",
+      "world": "multiworld:survival",
+      "warp": "survival",
+      "command": "survival",
+      "resource": "resource",
+      "rtp": false,
+      "selector_icon": "minecraft:grass_block",
+      "selector_slot": 16,
+      "description": ["Classic survival with claims,", "jobs, economy and quests."]
+    },
+    "resource": {
+      "name": "Resource World",
+      "world": "multiworld:resource",
+      "warp": "resource",
+      "command": "resource",
+      "parent": "survival",
+      "rtp": false,
+      "selector_icon": "minecraft:diamond_pickaxe",
+      "selector_slot": 22,
+      "description": ["Mine and gather freely.", "No claims, resets from time to time."]
+    }
+  }
+}
