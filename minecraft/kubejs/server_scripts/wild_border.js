@@ -1,13 +1,13 @@
 // OVERTHRONE - world border for the Wild world (multiworld:wild), where /wild sends players.
 // Vanilla /worldborder only changes the overworld, so this sets it on the Wild world directly.
-// Keep SIZE equal to the area pre-generated with Chunky (radius 5000 = size 10000), so /wild and
+// Keep SIZE equal to the area pre-generated with Chunky (radius 10000 = size 20000), so /wild and
 // exploring never have to generate new chunks. Applied on every server start; /wildborder applies it now.
 
 const WILD_BORDER = {
   world: 'multiworld:wild',
   centerX: 0,
   centerZ: 0,
-  size: 10000      // width of the square in blocks (10000 = 5000 each way from the centre)
+  size: 20000      // width of the square in blocks (20000 = 10000 each way from the centre)
 }
 
 function applyWildBorder(server) {
