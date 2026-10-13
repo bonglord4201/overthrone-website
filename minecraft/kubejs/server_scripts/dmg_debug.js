@@ -31,10 +31,10 @@
     watch = name; seen = null
     p.invulnerableTime = 0
     var ok = false
-    try { ok = p['hurt(net.minecraft.world.damagesource.DamageSource,float)'](src, 1.0) } catch (e) { say('§churt() error: ' + e) }
+    try { ok = Number(p.server.runCommandSilent('damage ' + name + ' 1 minecraft:generic')) > 0 } catch (e) { say('§cdamage error: ' + e) }
     watch = null
     var after = Number(p.getHealth())
-    say('§7hurt() returned: §f' + ok + '  §7health after: §f' + after.toFixed(1) + ' §7(change ' + (after - before).toFixed(2) + ')')
+    say('§7/damage worked: §f' + ok + '  §7health after: §f' + after.toFixed(1) + ' §7(change ' + (after - before).toFixed(2) + ')')
     if (seen == null) say('§c→ The damage event never reached KubeJS: either a vanilla check above is true, or ANOTHER MOD cancelled it first.')
     else say('§7→ KubeJS saw the damage event: amount §f' + seen.amount + '§7, already cancelled: §f' + seen.cancelled + (ok ? '' : ' §c(blocked AFTER KubeJS by another mod or by damage reduction)'))
     return 1
