@@ -122,8 +122,7 @@ run(['-i', still, '-framerate', str(FPS), '-i', os.path.join(logo_dir, '%04d.png
      '[0:v][1:v]overlay=format=auto,format=yuv420p[v]', '-map', '[v]', '-frames:v', str(n)] + X264 + [logov])
 
 end_dir = os.path.join(tmp, 'end'); os.makedirs(end_dir)
-lines = (text('JOIN NOW', 120, (245, 242, 236, 255), 14, 400), text('51.161.196.66', 64, (255, 200, 90, 255), 8, 545),
-         text('OVERTHRONESMP.NET', 40, (226, 38, 58, 255), 8, 630))
+lines = (text('JOIN NOW', 120, (245, 242, 236, 255), 14, 410), text('OVERTHRONESMP.NET', 72, (255, 200, 90, 255), 8, 560))
 for i in range(frames(END_LEN)):
     f = Image.new('RGBA', (W, H), (0, 0, 0, 255))
     for k, l in enumerate(lines):
