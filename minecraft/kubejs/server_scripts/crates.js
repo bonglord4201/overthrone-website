@@ -13,6 +13,7 @@
 //              /crate edit <crate>     opens the editor. Click an item in YOUR inventory to add it as a reward.
 //                                      On a reward: left-click = more common, right-click = rarer,
 //                                      shift-left-click = announce to server on/off, shift-right-click = remove.
+//              /crate reward claimblocks <crate> <weight> <amount>   adds a claim block reward (Flan)
 //              /crate reward cmd <crate> <weight> <command>   adds a command reward (money, level XP, shards...);
 //                                      hold the item you want as its icon (rename it in an anvil to set the name). {p} = player.
 //              /crate reward list <crate>     /crate reward reset <crate>   (back to the defaults in this file)
@@ -665,6 +666,16 @@
           loadEdited(ctx.source.server)[id] = defaults(id); saveEdited(ctx.source.server)
           reply(ctx, `§eRewards for ${id} reset to the defaults.`); return 1
         })))
+        .then(Commands.literal('claimblocks').then(crateArg().then(Commands.argument('weight', Arguments.INTEGER.create(event))
+          .then(Commands.argument('amount', Arguments.INTEGER.create(event)).executes(ctx => {
+            const id = crateOf(ctx)
+            if (!known(ctx, id)) return 0
+            const n = Math.max(1, Arguments.INTEGER.getResult(ctx, 'amount'))
+            const r = { cmd: 'flan giveClaimBlocks {p} ' + n, weight: Math.max(1, Arguments.INTEGER.getResult(ctx, 'weight')), rare: false,
+              icon: 'minecraft:golden_shovel', name: String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' Claim Blocks' }
+            rewardsOf(ctx.source.server, id).push(r); saveEdited(ctx.source.server)
+            reply(ctx, `§aAdded "${r.name}" to ${id} (weight ${r.weight}).`); return 1
+          })))))
         .then(Commands.literal('cmd').then(crateArg().then(Commands.argument('weight', Arguments.INTEGER.create(event))
           .then(Commands.argument('command', StringArg.greedyString()).executes(ctx => {
             const p = ctx.source.playerOrException, id = crateOf(ctx)

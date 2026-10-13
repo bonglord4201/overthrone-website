@@ -41,5 +41,5 @@ Example for 2,500: purchase `flan giveClaimBlocks {username} 2500`, refund `flan
 > Claim a bigger base and keep it safe from griefers.
 > • Adds 2,500 claim blocks to your account instantly
 > • Claim with a golden shovel: right-click two opposite corners (`/claimtool` if you need one)
-> • Check your blocks with `/flan info` · How claims work: `/claiminfo`
+> • Check your blocks with `/flan list` · How claims work: `/claiminfo`
 > • Works in the Wild and Survival worlds

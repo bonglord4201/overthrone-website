@@ -2,10 +2,10 @@
 // plus "command NPCs" that run a command for the player (e.g. /warp hunters, /ah).
 //
 // Staff (op):
-//   /npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links>       new NPC where you stand, glowing, with a hologram above it
+//   /npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links|claims>       new NPC where you stand, glowing, with a hologram above it
 //   /npcmenu spawncmd <title> <command...>         new NPC that runs <command> for the player who clicks it
 //                                                  e.g. /npcmenu spawncmd Hunters warp hunters
-//   /npcmenu attach <cosmetics|crates|throneshop|kits|levels|links>       give the NPC you are LOOKING AT this menu (keeps its skin/spot)
+//   /npcmenu attach <cosmetics|crates|throneshop|kits|levels|links|claims>       give the NPC you are LOOKING AT this menu (keeps its skin/spot)
 //   /npcmenu attachcmd <command...>                the NPC you are looking at runs this command when clicked
 //   /npcmenu detach                                the NPC you are looking at goes back to normal
 //   /npcmenu styleall                              ALL your other NPCs within 64 blocks get the same glow + big title +
@@ -418,7 +418,7 @@
       use(['Turn it on/off with &e/flytime&7, then', 'double-jump to fly. Time only counts', 'down while you are flying.', 'Time left: &e/flytime left'])
     } else if (g.type == 'claim') {
       contents([it.detail.replace(' blocks', '') + ' Claim Blocks'])
-      use(['Claim land with a &6golden shovel&7:', '&fright-click&7 one corner, then the', 'opposite corner. 1 block of area = 1', 'claim block. No shovel? &e/claimtool', 'Check your blocks: &e/flan info'])
+      use(['Claim land with a &6golden shovel&7:', '&fright-click&7 one corner, then the', 'opposite corner. 1 block of area = 1', 'claim block. No shovel? &e/claimtool', 'Check your blocks: &e/flan list'])
     } else if (g.type == 'rank') {
       contents(['Permanent ' + strip(it.name).replace(' Rank', '') + ' rank', 'Every rank below it is included'])
       use(['Hover the &fbook&7 and &fsign&7 under this', 'rank to see its perks and commands.', 'You get it straight away after buying.'])
@@ -522,7 +522,7 @@
     else if (g.type == 'tag') { addOwned(p, 'tag:' + g.id); p.tell('§7Equip it with §e/tags§7.') }
     else if (g.type == 'namecolor') { addOwned(p, 'nc:' + g.id); p.tell('§7Equip it with §e/namecolor§7.') }
     else if (g.type == 'fly') { addFly(p, g.seconds) }
-    else if (g.type == 'claim') { run(s, `flan giveClaimBlocks ${p.username} ${g.n}`); p.tell('§7Claim with a §6golden shovel§7. Your claim blocks: §e/flan info') }
+    else if (g.type == 'claim') { run(s, `flan giveClaimBlocks ${p.username} ${g.n}`); p.tell('§7Claim with a §6golden shovel§7. Your claim blocks: §e/flan list') }
     else if (g.type == 'cos') {
       addOwned(p, g.kind + ':' + g.id)
       run(s, `tellraw ${p.username} ${JSON.stringify(['', { text: 'Equip it: ', color: 'gray' }, { text: '[CLICK HERE]', color: 'light_purple', bold: true, clickEvent: { action: 'run_command', value: KINDS[g.kind].cmd }, hoverEvent: { action: 'show_text', contents: 'Opens ' + KINDS[g.kind].cmd } }, { text: ' or type ' + KINDS[g.kind].cmd + ' / /cosmetics', color: 'gray' }])}`)
@@ -963,6 +963,39 @@
     })
   }
 
+  // ======================================================================= Land claims (Flan, golden shovel)
+  const claimsMenu = (p) => {
+    var s = p.server
+    p.openChestGUI(Text.of('Land Claims'), 3, gui => {
+      gui.playerSlots = true
+      fill(gui, s, 3)
+      gui.slot(1, 1, sl => {
+        sl.item = icon(s, 'minecraft:written_book', '&6&lHOW TO CLAIM', [
+          '&f1. Hold a &6golden shovel&f.', '&f2. &eRight-click&f one corner of your base.', '&f3. &eRight-click&f the opposite corner.',
+          '&fDone! Nobody else can build, break', '&for open chests inside your claim.', '',
+          '&71 block of area = 1 claim block.', '&7Claims go from the ground up, so', '&7corner to corner is all you need.'], true)
+        sl.leftClicked = e => after(p, () => run(s, `execute as ${p.username} run claiminfo`))
+      })
+      gui.slot(3, 1, sl => {
+        sl.item = icon(s, 'minecraft:golden_shovel', '&a&lGET YOUR CLAIM TOOL', ['&fA free golden shovel to claim', '&fyour land with.', '', '&e&lCLICK TO GET IT'], true)
+        sl.leftClicked = e => after(p, () => run(s, `execute as ${p.username} run claimtool`))
+      })
+      gui.slot(5, 1, sl => {
+        sl.item = icon(s, 'minecraft:stick', '&b&lSEE CLAIMS', ['&fHold a &bstick&f and right-click a', '&fblock to see who owns that land', '&fand where its edges are.'], false)
+      })
+      gui.slot(7, 1, sl => {
+        sl.item = icon(s, 'minecraft:emerald', '&e&lYOUR CLAIM BLOCKS', ['&fSee how many claim blocks you have', '&fand where your claims are.', '', '&fGet more: playing time, &d/throneshop&f,', '&fvote crates and the store.', '', '&e&lCLICK TO CHECK'], true)
+        sl.leftClicked = e => after(p, () => run(s, `execute as ${p.username} run flan list`))
+      })
+      gui.slot(3, 2, sl => {
+        sl.item = icon(s, 'minecraft:player_head', '&d&lTRUST FRIENDS', ['&fStand in your claim and type', '&e/flan menu&f to let friends build', '&for open chests, and change settings.'], false)
+      })
+      gui.slot(5, 2, sl => {
+        sl.item = icon(s, 'minecraft:barrier', '&c&lWHERE CAN I CLAIM?', ['&fIn the &aWild&f and &aSurvival&f worlds.', '&fNot in the hub, the RPG World', '&for the Resource World.', '', '&7Remove a claim: stand in it and', '&7type &e/flan delete'], false)
+      })
+    })
+  }
+
   // ======================================================================= Crates
   const CRATE_INFO = [
     { id: 'vote', x: 1, y: 2, icon: 'minecraft:lime_shulker_box', name: '&a&lVOTING CRATE', get: ['&fFree keys: vote every day!', '&fType &e/vote&f or click here.'], vote: true },
@@ -1020,7 +1053,7 @@
     })
   }
 
-  const MENUS = { cosmetics: p => cosmeticsMain(p), crates: crateMenu, throneshop: shopMain, kits: kitMenu, levels: levelGuide, links: linksMenu }
+  const MENUS = { cosmetics: p => cosmeticsMain(p), crates: crateMenu, throneshop: shopMain, kits: kitMenu, levels: levelGuide, links: linksMenu, claims: claimsMenu }
   const TITLES = {
     cosmetics: ['&d&lCOSMETICS', '&fRIGHT-CLICK TO VIEW'],
     crates: ['&e&lCRATES', '&fRIGHT-CLICK TO VIEW'],
@@ -1028,8 +1061,9 @@
     kits: ['&6&lKITS', '&fRIGHT-CLICK TO VIEW'],
     levels: ['&a&lLEVEL GUIDE', '&fRIGHT-CLICK TO VIEW'],
     links: ['&b&lSERVER LINKS', '&fRIGHT-CLICK TO VIEW'],
+    claims: ['&6&lLAND CLAIMS', '&fRIGHT-CLICK TO VIEW'],
   }
-  const GLOW = { cosmetics: 'light_purple', crates: 'yellow', throneshop: 'light_purple', kits: 'gold', levels: 'green', links: 'aqua', cmd: 'yellow' }
+  const GLOW = { cosmetics: 'light_purple', crates: 'yellow', throneshop: 'light_purple', kits: 'gold', levels: 'green', links: 'aqua', claims: 'gold', cmd: 'yellow' }
   const openMenu = (p, type) => {
     if (p.openChestGUI === undefined) { p.tell('§cMenus need KubeJS chest GUIs.'); return }
     try { MENUS[type](p) } catch (e) { console.error('[npc_menus] ' + type + ': ' + e); if (p.hasPermissions(2)) p.tell('§c[npc_menus] ' + e) }
@@ -1132,7 +1166,7 @@
     if (id == null) { id = 'ot_mid_' + Date.now().toString(36); e.addTag(id) }
     return id
   }
-  const OPEN_CMD = { cosmetics: 'cosmetics', crates: 'cratemenu', throneshop: 'throneshop', kits: 'kitmenu', levels: 'levelguide', links: 'links' }
+  const OPEN_CMD = { cosmetics: 'cosmetics', crates: 'cratemenu', throneshop: 'throneshop', kits: 'kitmenu', levels: 'levelguide', links: 'links', claims: 'claimmenu' }
   // Easy NPC's own "on click: run command" (the same thing the setup's click_command NPCs use)
   const setClickAction = (server, e, command) => {
     var c = '/' + String(command).replace(/^\//, '').replace(/\\/g, '\\\\').replace(/"/g, '\\"')
@@ -1270,7 +1304,7 @@
     say(ctx.source, '§a[npcmenu] Removed ' + n + ' floating texts within ' + radius + ' blocks. §7Now /npcmenu fixall and /npcmenu styleall put the right ones back.')
     return 1
   }
-  const NPC_NAMES = { cosmetics: ['Cosmetics', '#FF55FF'], crates: ['Crates', '#FFFF55'], throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'] }
+  const NPC_NAMES = { cosmetics: ['Cosmetics', '#FF55FF'], crates: ['Crates', '#FFFF55'], throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'], claims: ['Land Claims', '#FFAA00'] }
 
   ServerEvents.commandRegistry(event => {
     const { commands: Commands, arguments: Arguments } = event
@@ -1282,7 +1316,7 @@
     event.register(Commands.literal('npcmenu').requires(src => src.hasPermission(2))
       .then(Commands.literal('spawn').then(typeArg().executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, t = typeOf(ctx)
-        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels or links'); return 0 }
+        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels, links or claims'); return 0 }
         var e = spawnNpc(p, NPC_NAMES[t][0], NPC_NAMES[t][1])
         if (e == null) { say(ctx.source, '§cThe NPC did not spawn (check the server log).'); return 0 }
         makeMenuNpc(p.server, e, t, null)
@@ -1299,7 +1333,7 @@
       })))))
       .then(Commands.literal('attach').then(typeArg().executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, t = typeOf(ctx), e = looked(p)
-        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels or links'); return 0 }
+        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels, links or claims'); return 0 }
         if (e == null) { say(ctx.source, '§cLook straight at an NPC (within 8 blocks).'); return 0 }
         makeMenuNpc(p.server, e, t, null)
         say(ctx.source, '§a[npcmenu] This NPC now opens the ' + t + ' menu.')
@@ -1505,5 +1539,6 @@
     event.register(Commands.literal('cratemenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'crates'); return 1 }))
     event.register(Commands.literal('kitmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'kits'); return 1 }))
     event.register(Commands.literal('levelguide').executes(ctx => { openMenu(ctx.source.playerOrException, 'levels'); return 1 }))
+    event.register(Commands.literal('claimmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'claims'); return 1 }))
   })
 })()

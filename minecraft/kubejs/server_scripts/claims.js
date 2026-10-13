@@ -16,7 +16,7 @@
     p.tell('§71. Hold a §6golden shovel §7(§e/claimtool§7).')
     p.tell('§72. §fRight-click §7one corner of your base, then the §fopposite corner§7.')
     p.tell('§73. Nobody else can build, break or open chests inside.')
-    p.tell('§8 • §7Each block of area costs §e1 claim block§7. Check yours: §e/flan info')
+    p.tell('§8 • §7Each block of area costs §e1 claim block§7. Check yours: §e/flan list')
     p.tell('§8 • §7Get more: playing time, §e/throneshop§7, vote crates and the store.')
     p.tell('§8 • §7Manage trust and settings: §e/flan menu§7 · see claims: hold a §fstick')
     p.tell('§8 • §7Claims work in the §fWild§7 and §fSurvival§7, not in the hub or RPG World.')
