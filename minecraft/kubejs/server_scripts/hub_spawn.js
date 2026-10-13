@@ -14,7 +14,7 @@
 
 (function () {
   const RETURN_PORTAL_WORLDS = ['multiworld:rpg']   // every nether portal in these worlds goes to the hub
-  const LOGIN_TO_HUB = true      // true = OG style: everyone starts in the hub every time they log in
+  const LOGIN_TO_HUB = false     // false = players log back in where they logged out (true = always start in the hub)
   const SPAWN_RADIUS = 24        // blocks around the overworld spawn that count as "spawned in the overworld"
   const STORE = 'ot_hub_spawn'
   const SEEN = 'ot_hub_seen'
