@@ -964,7 +964,121 @@
       gui.slot(2, 1, sl => { sl.item = icon(s, 'minecraft:gold_ingot', '&6&lLevel 100', ['Announced to the whole server.'], lvl >= 100) })
       gui.slot(4, 1, sl => { sl.item = icon(s, 'minecraft:end_portal_frame', '&4&lLevel 300', ['Breaks the Seal: unlocks the realms', '&eAeonia&7 and &4Netherfall&7.', 'Mobs there give &a2x XP&7.'], lvl >= 300) })
       gui.slot(6, 1, sl => { sl.item = icon(s, 'minecraft:nether_star', '&6&lLevel 1000 & 5000', ['Announced to the whole server.', 'Level 5000 is the max level.'], lvl >= 1000) })
+      gui.slot(4, 3, sl => {
+        var free = pointsOf(p) - spentOf(statsOf(p))
+        sl.item = icon(s, 'minecraft:enchanted_book', '&d&lYOUR STATS', ['Spend stat points on damage,', 'health, crits, dodge and more.', '', 'Free points: &e' + free, '', '&e&lCLICK TO OPEN'], free > 0)
+        sl.leftClicked = e => after(p, () => statsMenu(p))
+      })
       gui.slot(8, 3, sl => { sl.item = icon(s, 'minecraft:barrier', '&c&lClose', []); sl.leftClicked = e => { try { p.closeMenu() } catch (x) { } } })
+    })
+  }
+
+  // ======================================================================= Stats (1 point per level, spent here)
+  // Every stat is a percent bonus with a hard cap, so leftover points are simply saved for stats added later.
+  // Bonuses are applied with otSetAttrBonus (professions.js) as attribute modifiers "overthrone:stat_<id>".
+  const STATS = [
+    { id: 'str', name: '&c&l⚔ Strength', icon: 'minecraft:iron_sword', attr: 'minecraft:generic.attack_damage', per: 0.01, max: 25, op: 'mult', what: 'melee damage' },
+    { id: 'vit', name: '&4&l❤ Vitality', icon: 'minecraft:golden_apple', attr: 'minecraft:generic.max_health', per: 0.01, max: 25, op: 'mult', what: 'max health' },
+    { id: 'def', name: '&7&l🛡 Defense', icon: 'minecraft:iron_chestplate', attr: 'minecraft:generic.armor', per: 0.01, max: 20, op: 'mult', what: 'armor' },
+    { id: 'aspd', name: '&e&l🗡 Attack Speed', icon: 'minecraft:golden_sword', attr: 'minecraft:generic.attack_speed', per: 0.01, max: 15, op: 'mult', what: 'attack speed' },
+    { id: 'crit', name: '&6&l🎯 Crit Chance', icon: 'minecraft:spectral_arrow', attr: 'apothic_attributes:crit_chance', per: 0.005, max: 20, op: 'add', what: 'crit chance' },
+    { id: 'critdmg', name: '&6&l💥 Crit Damage', icon: 'minecraft:tnt', attr: 'apothic_attributes:crit_damage', per: 0.02, max: 25, op: 'add', what: 'crit damage' },
+    { id: 'dodge', name: '&b&l💨 Dodge Chance', icon: 'minecraft:feather', attr: 'apothic_attributes:dodge_chance', per: 0.005, max: 10, op: 'add', what: 'dodge chance' },
+    { id: 'steal', name: '&4&l🩸 Lifesteal', icon: 'minecraft:fermented_spider_eye', attr: 'apothic_attributes:life_steal', per: 0.005, max: 10, op: 'add', what: 'lifesteal' },
+    { id: 'spd', name: '&f&l👟 Speed', icon: 'minecraft:leather_boots', attr: 'minecraft:generic.movement_speed', per: 0.005, max: 10, op: 'mult', what: 'movement speed' },
+    { id: 'mine', name: '&8&l⛏ Mining Speed', icon: 'minecraft:diamond_pickaxe', attr: 'minecraft:player.block_break_speed', per: 0.02, max: 15, op: 'mult', what: 'mining speed' },
+  ]
+  const RESET_SHARDS = 500, RESET_MONEY = 2000000
+  const TAKE_MONEY = 'eco take {p} {n}'
+  const statsOf = (p) => { try { return JSON.parse(String(p.persistentData.getString('ot_stats')) || '{}') } catch (e) { return {} } }
+  const spentOf = (st) => Object.keys(st).reduce((a, k) => a + (st[k] || 0), 0)
+  const pointsOf = (p) => Math.max(1, p.persistentData.getInt('ot_level') || 1)   // 1 point per level
+  const applyStats = (p) => {
+    var st = statsOf(p)
+    STATS.forEach(d => { if (typeof otSetAttrBonus == 'function') otSetAttrBonus(p, d.attr, 'overthrone:stat_' + d.id, (st[d.id] || 0) * d.per, d.op) })
+  }
+  PlayerEvents.loggedIn(event => { var p = event.player; p.server.scheduleInTicks(40, () => { try { applyStats(p) } catch (e) { } }) })
+  PlayerEvents.respawned(event => { var p = event.player; p.server.scheduleInTicks(5, () => { try { applyStats(p) } catch (e) { } }) })
+  const pctTxt = (n) => (Math.round(n * 1000) / 10) + '%'
+
+  // money balance, read like the shards (from the scoreboard's money placeholder; staff can set it: /stats moneyplaceholder)
+  const moneyPlaceholder = (server) => {
+    var manual = String(store(server).getString('ot_money_placeholder') || '')
+    if (manual) return manual
+    try {
+      var cfg = typeof ssReadJson == 'function' ? ssReadJson('config/serversetup/scoreboard.json', null) : null
+      var lines = cfg == null ? [] : (cfg.lines || [])
+      for (var i = 0; i < lines.length; i++) {
+        var l = String(lines[i])
+        if (/money|balance|\$/i.test(l) && !/shard/i.test(l)) { var m = l.match(/%[^%\s]+%/) || l.match(/\{[^}\s]+\}/); if (m) return m[0] }
+      }
+    } catch (e) { }
+    return ''
+  }
+  const moneyOf = (p) => {
+    var ph = moneyPlaceholder(p.server)
+    if (!ph || Placeholders == null) return { ok: false, raw: ph ? '(no placeholder mod)' : '(no placeholder found)' }
+    var raw = ''
+    try { raw = String(Placeholders.setPlaceholders(p, ph)) } catch (e) { return { ok: false, raw: String(e) } }
+    var clean = raw.replace(/§./g, '').replace(/&[0-9a-fk-or]/gi, '').replace(/[,\s$]/g, '')
+    var m = clean.match(/^(-?\d+(?:\.\d+)?)([kKmMbB]?)$/)
+    if (!m || raw == ph) return { ok: false, raw: raw }
+    var mult = { '': 1, k: 1e3, m: 1e6, b: 1e9 }[m[2].toLowerCase()]
+    return { ok: true, value: Number(m[1]) * mult, exact: m[2] == '', raw: raw }
+  }
+  // takes a payment and checks it really went through (like the Throne Shop does)
+  const pay = (p, kind) => {
+    var s = p.server, price = kind == 'shards' ? RESET_SHARDS : RESET_MONEY, read = kind == 'shards' ? shardsOf : moneyOf
+    var label = kind == 'shards' ? fmt(price) + ' Throne Shards' : '$' + fmt(price)
+    var before = read(p)
+    if (!before.ok) { p.tell('§c§lStats §7» Could not read your ' + (kind == 'shards' ? 'shards' : 'money') + '. Please tell staff.'); console.warn('[stats] cannot read ' + kind + ' for ' + p.username + ': ' + before.raw); return false }
+    if (before.value < price) { p.tell('§c§lStats §7» A reset costs §f' + label + '§7. You do not have enough.'); return false }
+    run(s, (kind == 'shards' ? TAKE_SHARDS : TAKE_MONEY).replace('{p}', p.username).replace('{n}', String(price)))
+    var after = read(p)
+    var paid = after.ok && (before.exact && after.exact ? Math.round(before.value - after.value) == price : after.value < before.value)
+    if (!paid) { p.tell('§c§lStats §7» Payment failed, nothing was taken. Please tell staff.'); console.warn('[stats] ' + kind + ' take failed for ' + p.username + ' (' + before.raw + ' -> ' + after.raw + ')'); return false }
+    return true
+  }
+  const statsMenu = (p) => {
+    var s = p.server, st = statsOf(p), total = pointsOf(p), free = total - spentOf(st)
+    p.openChestGUI(Text.of('Your Stats'), 6, gui => {
+      gui.playerSlots = true
+      fill(gui, s, 6)
+      gui.slot(4, 0, sl => { sl.item = icon(s, 'minecraft:nether_star', '&6&lStat Points: &e&l' + free, ['You get &e1 point every level&7.', 'Total earned: &f' + fmt(total) + ' &7- spent: &f' + spentOf(st), '', 'Every stat has a &cmax&7. Points you', 'can\'t use yet stay saved for', 'stats added in the future.'], free > 0) })
+      STATS.forEach((d, i) => {
+        var have = st[d.id] || 0, maxed = have >= d.max, x = [0, 2, 4, 6, 8][i % 5], y = i < 5 ? 2 : 3
+        gui.slot(x, y, sl => {
+          var bar = ''
+          for (var b = 0; b < d.max; b++) bar += (b < have ? '&a' : '&8') + '|'
+          sl.item = icon(s, d.icon, d.name + ' &7(' + have + '/' + d.max + ')', [bar, '&7Bonus: &a+' + pctTxt(have * d.per) + ' &7' + d.what, '&7Each point: &f+' + pctTxt(d.per) + ' &7- max &f+' + pctTxt(d.max * d.per), '',
+            maxed ? '&a&lMAXED' : free <= 0 ? '&cNo free points (level up!)' : '&eLeft-click&7: +1 point', maxed || free <= 0 ? '' : '&eShift-left-click&7: +5 points'], have > 0)
+          var spend = (add) => {
+            after(p, () => {
+              var cur = statsOf(p), left = pointsOf(p) - spentOf(cur), n = Math.min(add, left, d.max - (cur[d.id] || 0))
+              if (n <= 0) { p.tell(left <= 0 ? '§c§lStats §7» You have no free points. Level up to get more!' : '§c§lStats §7» That stat is already maxed.'); statsMenu(p); return }
+              cur[d.id] = (cur[d.id] || 0) + n
+              p.persistentData.putString('ot_stats', JSON.stringify(cur))
+              applyStats(p)
+              run(s, `execute at ${p.username} run playsound minecraft:entity.player.levelup player ${p.username} ~ ~ ~ 0.6 1.6`)
+              p.tell('§a§lStats §7» +' + n + ' ' + strip(d.name) + ' §7(now +' + pctTxt(cur[d.id] * d.per) + ' ' + d.what + ')')
+              statsMenu(p)
+            })
+          }
+          sl.leftClicked = e => spend(1)
+          sl.shiftLeftClicked = e => spend(5)
+        })
+      })
+      var resetLore = (cost) => ['Takes back &fall&7 your spent points', 'so you can build again.', '', '&7Cost: ' + cost, '', '&eClick to reset']
+      gui.slot(2, 5, sl => {
+        sl.item = icon(s, 'minecraft:amethyst_shard', '&d&lReset Stats (Shards)', resetLore('&d' + fmt(RESET_SHARDS) + ' Throne Shards'), false)
+        sl.leftClicked = e => after(p, () => { if (spentOf(statsOf(p)) == 0) { p.tell('§7§lStats §7» You have no points spent.'); return } if (pay(p, 'shards')) { p.persistentData.putString('ot_stats', '{}'); applyStats(p); p.tell('§a§lStats §7» Your stats were reset. All points are free again.'); statsMenu(p) } })
+      })
+      gui.slot(6, 5, sl => {
+        sl.item = icon(s, 'minecraft:emerald', '&a&lReset Stats (Money)', resetLore('&a$' + fmt(RESET_MONEY)), false)
+        sl.leftClicked = e => after(p, () => { if (spentOf(statsOf(p)) == 0) { p.tell('§7§lStats §7» You have no points spent.'); return } if (pay(p, 'money')) { p.persistentData.putString('ot_stats', '{}'); applyStats(p); p.tell('§a§lStats §7» Your stats were reset. All points are free again.'); statsMenu(p) } })
+      })
+      gui.slot(0, 5, sl => { sl.item = icon(s, 'minecraft:arrow', '&e&lBack', ['Back to the Level Guide']); sl.leftClicked = e => after(p, () => levelGuide(p)) })
+      gui.slot(8, 5, sl => { sl.item = icon(s, 'minecraft:barrier', '&c&lClose', []); sl.leftClicked = e => { try { p.closeMenu() } catch (x) { } } })
     })
   }
 
@@ -974,6 +1088,7 @@
     ['gemology', '&d&l💎 Gemology', 'minecraft:amethyst_shard', 'Gather gem nodes: amethyst, quartz, emerald...'],
     ['farming', '&a&l🌾 Farming', 'minecraft:wheat', 'Gather crop nodes: wheat, carrots, melons...'],
     ['foraging', '&2&l🌲 Foraging', 'minecraft:oak_log', 'Gather tree nodes: oak, birch, spruce...'],
+    ['combat', '&c&l⚔ Combat', 'minecraft:iron_sword', 'Kill mobs! Stronger mobs give more.', '&7Perk: up to &a+10% melee damage'],
   ]
   const profNeed = (lvl) => typeof PROF_NEED === 'function' ? PROF_NEED(lvl) : Math.floor(100 * Math.pow(lvl, 1.4))
   const professionMenu = (p) => {
@@ -986,8 +1101,8 @@
         var need = profNeed(lvl), max = lvl >= 100, pct = max ? 100 : Math.floor(xp * 100 / need), bar = ''
         total += lvl
         for (var b = 0; b < 20; b++) bar += (b < pct / 5 ? '&a' : '&8') + '|'
-        gui.slot(1 + i * 2, 1, sl => {
-          sl.item = icon(s, pr[2], pr[1] + ' &f&lLv ' + lvl, [bar + ' &f' + pct + '%', '&7XP: &f' + (max ? 'MAX' : fmt(xp) + ' &7/ &f' + fmt(need)), '', pr[3], '', '&8Max level 100'], lvl > 1)
+        gui.slot([0, 2, 4, 6, 8][i], 1, sl => {
+          sl.item = icon(s, pr[2], pr[1] + ' &f&lLv ' + lvl, [bar + ' &f' + pct + '%', '&7XP: &f' + (max ? 'MAX' : fmt(xp) + ' &7/ &f' + fmt(need)), '', pr[3]].concat(pr[4] ? [pr[4]] : (pr[0] == 'mining' ? ['&7Perk: up to &a+20% mining speed'] : [])).concat(['', '&8Max level 100']), lvl > 1)
         })
       })
       gui.slot(4, 0, sl => { sl.item = icon(s, 'minecraft:nether_star', '&6&lYour Professions', ['Total level: &e' + total, '', 'Gather nodes to level up!'], true) })
@@ -1671,6 +1786,33 @@
         return 1
       })))
     event.register(Commands.literal('levelguide').executes(ctx => { openMenu(ctx.source.playerOrException, 'levels'); return 1 }))
+    event.register(Commands.literal('stats').executes(ctx => { var p = ctx.source.playerOrException; try { statsMenu(p) } catch (e) { p.tell('§c[stats] ' + e) } return 1 })
+      .then(Commands.literal('check').requires(src => src.hasPermission(2)).then(Commands.argument('player', Arguments.PLAYER.create(event)).executes(ctx => {
+        var p = Arguments.PLAYER.getResult(ctx, 'player'), st = statsOf(p)
+        say(ctx.source, '§6[stats] §f' + p.username + '§7: points §e' + (pointsOf(p) - spentOf(st)) + ' free§7 / ' + pointsOf(p) + ' total')
+        STATS.forEach(d => { if (st[d.id]) say(ctx.source, '§7 - ' + strip(d.name) + ': §f' + st[d.id] + '/' + d.max + ' §a(+' + pctTxt(st[d.id] * d.per) + ')') })
+        return 1
+      })))
+      .then(Commands.literal('reset').requires(src => src.hasPermission(2)).then(Commands.argument('player', Arguments.PLAYER.create(event)).executes(ctx => {
+        var p = Arguments.PLAYER.getResult(ctx, 'player')
+        p.persistentData.putString('ot_stats', '{}'); applyStats(p)
+        say(ctx.source, '§a[stats] Reset ' + p.username + "'s stats for free.")
+        p.tell('§a§lStats §7» Staff reset your stats. All your points are free again.')
+        return 1
+      })))
+      .then(Commands.literal('debug').requires(src => src.hasPermission(2)).executes(ctx => {
+        var p = ctx.source.playerOrException, sh = shardsOf(p), mo = moneyOf(p)
+        say(ctx.source, '§7[stats] shards placeholder §f' + (balancePlaceholder(p.server) || '(none)') + ' §7-> §f' + sh.raw + (sh.ok ? ' §a(ok)' : ' §c(cannot read)'))
+        say(ctx.source, '§7[stats] money placeholder §f' + (moneyPlaceholder(p.server) || '(none)') + ' §7-> §f' + mo.raw + (mo.ok ? ' §a(ok)' : ' §c(cannot read)'))
+        STATS.forEach(d => { var ok = typeof otSetAttrBonus == 'function' && otSetAttrBonus(p, d.attr, 'overthrone:stat_' + d.id, (statsOf(p)[d.id] || 0) * d.per, d.op); if (!ok) say(ctx.source, '§c[stats] ' + strip(d.name) + ': attribute ' + d.attr + ' not found') })
+        return 1
+      }))
+      .then(Commands.literal('moneyplaceholder').requires(src => src.hasPermission(2)).then(Commands.argument('text', StringArg.greedyString()).executes(ctx => {
+        var t = String(StringArg.getString(ctx, 'text'))
+        ctx.source.server.persistentData.putString('ot_money_placeholder', t == 'auto' ? '' : t)
+        say(ctx.source, '§a[stats] Money placeholder set to §f' + (t == 'auto' ? '(auto)' : t))
+        return 1
+      }))))
     event.register(Commands.literal('professionmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'professions'); return 1 }))
     event.register(Commands.literal('claimmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'claims'); return 1 }))
     event.register(Commands.literal('smpmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'smp'); return 1 }))

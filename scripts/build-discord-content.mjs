@@ -316,7 +316,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "Players: `/afkshard` · `/warp afk` (make it with your warp command while standing in the room)"
   ].join("\n") },
   { title: "⛏️ Professions & Nodes", description: [
-    "Professions: `mining` `gemology` `farming` `foraging` (levels 1-100). Nodes give profession XP + half as normal level XP, **drop nothing**, and respawn after 1 minute with a countdown",
+    "Professions: `mining` `gemology` `farming` `foraging` + `combat` from mob kills (levels 1-100). Nodes give profession XP + half as normal level XP, **drop nothing**, and respawn after 1 minute with a countdown",
     "**Look at the block** (within 6 blocks), then:",
     "`/node create <profession> <level> <xp> [name]` Make it a node, e.g. `/node create mining 25 100 Diamond` (crops: use FULLY grown ones)",
     "`/node remove` Back to a normal block (deletes its text) · `/node info` What node it is + respawn time",
@@ -366,6 +366,14 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/node create foraging 10 25 Jungle` Jungle Log (Lv 10 · 25 XP)",
     "`/node create foraging 15 35 Dark Oak` Dark Oak Log (Lv 15 · 35 XP)",
     "`/node create foraging 20 45 Cherry` Cherry Log (Lv 20 · 45 XP)"
+  ].join("\n") },
+  { title: "📊 Stats & Combat", description: [
+    "Players get **1 stat point per level** and spend them in the Level Guide NPC → **YOUR STATS** (or `/stats`)",
+    "Stats (each has a max): Strength +25% dmg · Vitality +25% HP · Defense +20% armor · Attack Speed +15% · Crit Chance +10% · Crit Damage +50% · Dodge +5% · Lifesteal +5% · Speed +5% · Mining Speed +30%",
+    "Reset: 500 Throne Shards or $2,000,000 (in the menu)",
+    "`/stats check <player>` Their points + stats · `/stats reset <player>` Free reset",
+    "`/stats debug` Checks shards/money can be read + every stat works · `/stats moneyplaceholder <text|auto>` Set the money placeholder by hand",
+    "**Combat** profession: killing mobs gives Combat XP (max 400/min). Perks at Lv 100: Combat +10% melee damage, Mining +20% mining speed"
   ].join("\n") },
   { title: "🔍 Player checks", description: [
     "`/shardcheck <player>` Throne Shards · `/flytime check <player>` Bought flight + can they fly",

@@ -32,6 +32,35 @@ const PROFESSIONS = {
   gemology: { name: 'Gemology', icon: '💎', color: 'light_purple' },
   farming:  { name: 'Farming',  icon: '🌾', color: 'green' },
   foraging: { name: 'Foraging', icon: '🌲', color: 'dark_green' },
+  combat:   { name: 'Combat',   icon: '⚔', color: 'red' },   // levelled by killing mobs, not by nodes
+}
+// Combat XP for a kill: grows with the mob's max health (Tensura mobs have big health bars), capped per kill and per minute
+const COMBAT_XP = (maxHp) => Math.max(2, Math.min(150, Math.round(Math.sqrt(maxHp) * 2)))
+const COMBAT_XP_PER_MINUTE = 400
+// Small automatic bonuses from profession levels (percent at level 100, grows evenly from level 1)
+const PROF_PERKS = {
+  combat: { attr: 'minecraft:generic.attack_damage', max: 0.10, label: 'melee damage' },
+  mining: { attr: 'minecraft:player.block_break_speed', max: 0.20, label: 'mining speed' },
+}
+
+// Shared helper (also used by the Stats menu in npc_menus.js): sets one attribute bonus on a player, replacing any
+// older value with the same id. amount 0 removes it. op: 'add' | 'mult' (x(1+amount) of the total, after other mods).
+var otSetAttrBonus = (p, attrId, bonusId, amount, op) => {
+  try {
+    var RL = Java.loadClass('net.minecraft.resources.ResourceLocation')
+    var holder = Java.loadClass('net.minecraft.core.registries.BuiltInRegistries').ATTRIBUTE.getHolder(RL.parse(attrId)).orElse(null)
+    if (holder == null) return false
+    var inst = p.getAttribute(holder)
+    if (inst == null) return false
+    var id = RL.parse(bonusId)
+    inst.removeModifier(id)
+    if (amount != 0) {
+      var AM = Java.loadClass('net.minecraft.world.entity.ai.attributes.AttributeModifier')
+      var Op = Java.loadClass('net.minecraft.world.entity.ai.attributes.AttributeModifier$Operation')
+      inst.addPermanentModifier(new AM(id, amount, op == 'add' ? Op.ADD_VALUE : Op.ADD_MULTIPLIED_TOTAL))
+    }
+    return true
+  } catch (e) { console.warn('[professions] attribute ' + attrId + ': ' + e); return false }
 }
 
 // Shared with leveling.js / anticheat.js: true when this block is a node (they skip it).
@@ -149,6 +178,36 @@ var otIsNodeBlock = (block) => {
     if (changed) save(s)
   })
 
+  // ---- profession perks (re-applied on join, respawn and level up)
+  const applyPerks = (p) => {
+    Object.keys(PROF_PERKS).forEach(id => {
+      var k = PROF_PERKS[id], lvl = profLvl(p, id)
+      otSetAttrBonus(p, k.attr, 'overthrone:prof_' + id, k.max * (lvl - 1) / (PROF_MAX_LEVEL - 1), 'mult')
+    })
+  }
+  PlayerEvents.loggedIn(event => { var p = event.player; p.server.scheduleInTicks(40, () => { try { applyPerks(p) } catch (e) { } }) })
+  PlayerEvents.respawned(event => { var p = event.player; p.server.scheduleInTicks(5, () => { try { applyPerks(p) } catch (e) { } }) })
+
+  // ---- Combat profession: killing mobs (not players), with a per-minute cap against mob farms
+  const combatWin = {}
+  EntityEvents.death(event => {
+    try {
+      var e = event.entity, src = event.source, p = null
+      try { p = src.getPlayer() } catch (x) { p = null }
+      if (p == null || e.isPlayer() || p.isCreative()) return
+      var maxHp = Number(e.getMaxHealth()) || 0
+      if (maxHp <= 0) return
+      var now = Date.now(), w = combatWin[p.username]
+      if (!w || now - w.start > 60000) { w = { start: now, n: 0 }; combatWin[p.username] = w }
+      var xp = Math.min(COMBAT_XP(maxHp), COMBAT_XP_PER_MINUTE - w.n)
+      if (xp <= 0) return
+      w.n += xp
+      var before = profLvl(p, 'combat'), r = addProfXp(p, 'combat', xp)
+      if (r.lvl > before) applyPerks(p)
+      p.server.scheduleInTicks(2, () => run(p.server, `title ${p.username} actionbar ${JSON.stringify({ text: '⚔ +' + xp + ' Combat XP (' + r.xp + '/' + PROF_NEED(r.lvl) + ', Lv ' + r.lvl + ')', color: 'red' })}`))
+    } catch (x) { }
+  })
+
   // ---- gathering
   BlockEvents.broken(event => {
     var p = event.player
@@ -175,7 +234,8 @@ var otIsNodeBlock = (block) => {
       run(s, `execute in ${n.dim} run setblock ${n.x} ${n.y} ${n.z} ${depletedState(n)}`)
       setHoloText(s, key, true, PROF_RESPAWN_SECONDS)
     })
-    var r = addProfXp(p, n.prof, n.xp)
+    var lvBefore = profLvl(p, n.prof), r = addProfXp(p, n.prof, n.xp)
+    if (r.lvl > lvBefore) { try { applyPerks(p) } catch (e) { } }
     var lvXp = Math.floor(n.xp * PROF_LEVEL_XP_SHARE)
     if (lvXp > 0) {
       try { if (typeof addXp === 'function') addXp(p, lvXp); else run(s, `level xp give ${p.username} ${lvXp}`) } catch (e) { }
@@ -219,6 +279,7 @@ var otIsNodeBlock = (block) => {
           if (!PROFESSIONS[id]) { say(ctx.source, P + '§cUnknown profession. Use: ' + Object.keys(PROFESSIONS).join(', ')); return 0 }
           var lvl = Math.max(1, Math.min(PROF_MAX_LEVEL, Arguments.INTEGER.getResult(ctx, 'level')))
           setProf(p, id, lvl, 0)
+          applyPerks(p)
           say(ctx.source, P + '§aSet ' + p.username + "'s " + PROFESSIONS[id].name + ' to level ' + lvl + '.')
           return 1
         }))))))
@@ -228,6 +289,7 @@ var otIsNodeBlock = (block) => {
       load(t.p.server)
       var id = String(StringArg.getString(ctx, 'profession')).toLowerCase()
       if (!PROFESSIONS[id]) { say(ctx.source, P + '§cUnknown profession. Use: ' + Object.keys(PROFESSIONS).join(', ')); return 0 }
+      if (id == 'combat') { say(ctx.source, P + '§cCombat is levelled by killing mobs, not by nodes.'); return 0 }
       if (otNodeCache[t.key]) { say(ctx.source, P + '§cThat block is already a node. §7/node remove first.'); return 0 }
       var state = String(BlockStateParser.serialize(t.b.blockState))
       if (state == 'minecraft:air') { say(ctx.source, P + '§cThat is air.'); return 0 }
