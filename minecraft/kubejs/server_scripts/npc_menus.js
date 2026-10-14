@@ -964,6 +964,13 @@
       gui.slot(2, 1, sl => { sl.item = icon(s, 'minecraft:gold_ingot', '&6&lLevel 100', ['Announced to the whole server.'], lvl >= 100) })
       gui.slot(4, 1, sl => { sl.item = icon(s, 'minecraft:end_portal_frame', '&4&lLevel 300', ['Breaks the Seal: unlocks the realms', '&eAeonia&7 and &4Netherfall&7.', 'Mobs there give &a2x XP&7.'], lvl >= 300) })
       gui.slot(6, 1, sl => { sl.item = icon(s, 'minecraft:nether_star', '&6&lLevel 1000 & 5000', ['Announced to the whole server.', 'Level 5000 is the max level.'], lvl >= 1000) })
+      gui.slot(2, 3, sl => {
+        sl.item = icon(s, 'minecraft:book', '&e&lHow Stats Work', ['You get &e1 stat point every level&7.', 'Spend them in &dYOUR STATS&7 on damage,', 'health, armor, crits, dodge, lifesteal,', 'speed and mining speed.', '', 'Every stat has a &cmax&7, so pick a build!', 'Unused points stay saved for future stats.', '', 'Reset: &d500 Throne Shards&7 or &a$2,000,000', 'Command: &e/stats'], false)
+      })
+      gui.slot(6, 3, sl => {
+        sl.item = icon(s, 'minecraft:iron_pickaxe', '&6&lProfessions', ['Mining, Gemology, Farming, Foraging', 'and &cCombat&7 (from killing mobs).', 'Hit &6nodes&7 (blocks with floating text)', '&f3 times&7 to gather them for XP.', '', '&e&lCLICK TO VIEW YOUR PROFESSIONS'], false)
+        sl.leftClicked = e => after(p, () => professionMenu(p))
+      })
       gui.slot(4, 3, sl => {
         var free = pointsOf(p) - spentOf(statsOf(p))
         sl.item = icon(s, 'minecraft:enchanted_book', '&d&lYOUR STATS', ['Spend stat points on damage,', 'health, crits, dodge and more.', '', 'Free points: &e' + free, '', '&e&lCLICK TO OPEN'], free > 0)
