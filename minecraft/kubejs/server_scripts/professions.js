@@ -164,7 +164,7 @@ var otIsNodeBlock = (block) => {
       p.tell(P + '§cYou need ' + pr.icon + ' ' + pr.name + ' level §f' + n.lvl + '§c to gather this. §7(You are level ' + profLvl(p, n.prof) + ')')
       event.cancel(); return
     }
-    event.cancel()   // no drops, the block stays until we swap it below
+    // NOTE: event.cancel() ends this function straight away in KubeJS, so it is called LAST (below)
     down[key] = Date.now() + PROF_RESPAWN_SECONDS * 1000
     save(s)
     s.scheduleInTicks(1, () => {
@@ -179,6 +179,7 @@ var otIsNodeBlock = (block) => {
     run(s, `execute at ${p.username} run playsound minecraft:entity.experience_orb.pickup player ${p.username} ~ ~ ~ 0.6 1.4`)
     s.scheduleInTicks(1, () => run(s, `title ${p.username} actionbar ${JSON.stringify({
       text: pr.icon + ' +' + n.xp + ' ' + pr.name + ' XP (' + r.xp + '/' + PROF_NEED(r.lvl) + ', Lv ' + r.lvl + ')' + (lvXp > 0 ? '  +' + lvXp + ' XP' : ''), color: 'yellow' })}`))
+    event.cancel()   // no drops: the block stays and is swapped to its gathered look next tick (above)
   })
 
   // ---- commands
