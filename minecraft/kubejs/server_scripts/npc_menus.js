@@ -941,8 +941,9 @@
     var p = null
     try { p = event.parseResults.getContext().getSource().getPlayer() } catch (e) { p = null }
     if (!p) return    // console keeps the normal list
-    event.cancel()
+    // open the menu first: event.cancel() ends this function straight away, nothing after it runs
     p.server.scheduleInTicks(1, () => openMenu(p, 'kits'))
+    event.cancel()
   })
 
   // ======================================================================= Level Guide
