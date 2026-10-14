@@ -68,7 +68,7 @@
     e.addTag('ot_spawn'); e.addTag(tagOf(id))
     if (sp.kind == 'boss') e.addTag('ot_boss')
     try { e.setPersistenceRequired() } catch (x) { }
-    sp.uuid = String(e.getStringUUID()); sp.down = 0
+    sp.uuid = String(String(e.getUUID())); sp.down = 0
     delete missing[id]
   }
   const spawnNow = (s, id) => {
@@ -130,7 +130,7 @@
       var e = event.entity
       if (!e.getTags().contains('ot_spawn')) return
       var s = e.level.server; load(s)
-      var u = String(e.getStringUUID()), id = null
+      var u = String(String(e.getUUID())), id = null
       Object.keys(spawns).forEach(k => { if (spawns[k].uuid == u) id = k })
       if (id == null) return
       var sp = spawns[id]

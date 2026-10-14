@@ -24,7 +24,7 @@
   const applyHp = (e, t) => {
     try {
       if (!t.hp || !e.isLiving() || e.persistentData.getBoolean(DONE)) return
-      e.level.server.runCommandSilent('attribute ' + e.getStringUUID() + ' minecraft:generic.max_health base set ' + t.hp)
+      e.level.server.runCommandSilent('attribute ' + String(e.getUUID()) + ' minecraft:generic.max_health base set ' + t.hp)
       e.setHealth(t.hp)
       e.persistentData.putBoolean(DONE, true)
     } catch (x) { }
