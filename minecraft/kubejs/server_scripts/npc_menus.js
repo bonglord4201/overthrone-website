@@ -1517,6 +1517,17 @@
         return 1
       })))))
 
+    // staff: read-only, shows an online player's Tensura race (same lookup the race fix uses)
+    event.register(Commands.literal('racecheck').requires(src => src.hasPermission(2))
+      .then(Commands.argument('player', Arguments.PLAYER.create(event)).executes(ctx => {
+        var p = Arguments.PLAYER.getResult(ctx, 'player'), race = null
+        try {
+          var inst = Java.loadClass('io.github.manasmods.manascore.race.api.RaceAPI').getRaceFrom(p).getRace()
+          race = inst.isPresent() ? String(inst.get().getRaceId()) : 'none (no race chosen)'
+        } catch (e) { race = 'could not read (' + e + ')' }
+        say(ctx.source, '§b§lRace §7» §f' + p.username + '§7: §b' + race)
+        return 1
+      })))
     // staff: read-only check of an online player's Throne Shards (same number their scoreboard shows)
     event.register(Commands.literal('shardcheck').requires(src => src.hasPermission(2))
       .then(Commands.argument('player', Arguments.PLAYER.create(event)).executes(ctx => {
