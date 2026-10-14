@@ -685,7 +685,7 @@
             },
             {
               "title": "⚖️ Mob tweaks",
-              "description": "`mob_tweaks.js` sets a mob's health and caps how hard it hits. Now: **Barghest** + any **werewolf** 40 HP, max 5 damage per hit (fire still works)\n`/mobtweaks` Lists the tweaks + matching mobs within 64 blocks\nCheck a mob's health: `/data get entity @e[type=tensura:barghest,limit=1,sort=nearest] Health`\nAdd a mob: copy the line `{ match: 'barghest', hp: 40, damage: 5 },` in the file, change the name and numbers, then `/reload`"
+              "description": "`mob_tweaks.js` sets a mob's health and caps how hard it hits. Now: **Barghest** + any **direwolf** 40 HP, max 5 damage per hit (fire still works)\n`/mobtweaks` Lists the tweaks + matching mobs within 64 blocks\nCheck a mob's health: `/data get entity @e[type=tensura:barghest,limit=1,sort=nearest] Health`\nAdd a mob: copy the line `{ match: 'barghest', hp: 40, damage: 5 },` in the file, change the name and numbers, then `/reload`"
             },
             {
               "title": "🛡️ Hub protection & claims",

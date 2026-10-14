@@ -10,7 +10,7 @@
   const uidOf = (e) => { try { return String(e.getStringUuid()) } catch (x) { try { return String(e.getUuid()) } catch (y) { return String(e.uuid) } } }   // KubeJS renames getUUID
   const TWEAKS = [
     { match: 'barghest', hp: 40, damage: 5 },
-    { match: 'werewolf', hp: 40, damage: 5 },   // any mob with "werewolf" in its id
+    { match: 'direwolf', hp: 40, damage: 5 },   // tensura:direwolf (any mob with "direwolf" in its id)
   ]
   const DONE = 'ot_mobtweak'
 
