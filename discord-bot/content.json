@@ -627,9 +627,29 @@
               "description": "Professions: `mining` `gemology` `farming` `foraging` (levels 1-100). Nodes give profession XP + half as normal level XP, **drop nothing**, and respawn after 1 minute with a countdown\n**Look at the block** (within 6 blocks), then:\n`/node create <profession> <level> <xp> [name]` Make it a node, e.g. `/node create mining 25 100 Diamond` (crops: use FULLY grown ones)\n`/node remove` Back to a normal block (deletes its text) · `/node info` What node it is + respawn time\nAnywhere:\n`/node list` Nodes within 64 blocks with coordinates · `/node respawnall` Respawn every gathered node now\n`/node holo` Re-place missing floating texts near you\nCan't see a node to remove it? `/node list` → go there → `/node respawnall` → look at it → `/node remove`\n`/professions <player>` Someone's levels · `/profession set <player> <profession> <level>` Set a level\nPlayers: `/professions` (levels in chat) · `/professionmenu` (menu) · NPC: `/npcmenu spawn professions`\nGathering needs survival and the profession level of the node. Creative can't gather. Put nodes where players can break blocks (not claimed/protected)"
             },
             {
+              "title": "⛏️ Node presets: Mining",
+              "description": "Look at the ore, then paste (level · XP):\n`/node create mining 1 10 Coal` Coal Ore (Lv 1 · 10 XP)\n`/node create mining 3 15 Copper` Copper Ore (Lv 3 · 15 XP)\n`/node create mining 5 25 Iron` Iron Ore (Lv 5 · 25 XP)\n`/node create mining 10 40 Gold` Gold Ore (Lv 10 · 40 XP)\n`/node create mining 12 45 Redstone` Redstone Ore (Lv 12 · 45 XP)\n`/node create mining 15 55 Lapis` Lapis Ore (Lv 15 · 55 XP)\n`/node create mining 25 100 Diamond` Diamond Ore (Lv 25 · 100 XP)\n`/node create mining 30 120 Emerald` Emerald Ore (Lv 30 · 120 XP)\n`/node create mining 40 180 Ancient Debris` Ancient Debris (Lv 40 · 180 XP)"
+            },
+            {
+              "title": "💎 Node presets: Gemology",
+              "description": "Look at the gem block, then paste:\n`/node create gemology 1 15 Amethyst` Amethyst Cluster / Budding Amethyst (Lv 1 · 15 XP)\n`/node create gemology 5 25 Quartz` Nether Quartz Ore (Lv 5 · 25 XP)\n`/node create gemology 20 90 Diamond` Diamond Ore (Lv 20 · 90 XP)\n`/node create gemology 25 110 Emerald` Emerald Ore (Lv 25 · 110 XP)\n`/node create gemology <level> <xp> <name>` Modded gem ores work too: same command with your own level/XP/name"
+            },
+            {
+              "title": "🌾 Node presets: Farming",
+              "description": "Look at a **fully grown** crop on farmland, then paste:\n`/node create farming 1 10 Wheat` Wheat (Lv 1 · 10 XP)\n`/node create farming 3 12 Carrot` Carrots (Lv 3 · 12 XP)\n`/node create farming 5 15 Potato` Potatoes (Lv 5 · 15 XP)\n`/node create farming 8 20 Beetroot` Beetroots (Lv 8 · 20 XP)\n`/node create farming 12 30 Pumpkin` Pumpkin (Lv 12 · 30 XP)\n`/node create farming 15 35 Melon` Melon (Lv 15 · 35 XP)\n`/node create farming 25 60 Nether Wart` Nether Wart, fully grown (Lv 25 · 60 XP)"
+            },
+            {
+              "title": "🌲 Node presets: Foraging",
+              "description": "Look at the log, then paste:\n`/node create foraging 1 10 Oak` Oak Log (Lv 1 · 10 XP)\n`/node create foraging 3 12 Birch` Birch Log (Lv 3 · 12 XP)\n`/node create foraging 5 15 Spruce` Spruce Log (Lv 5 · 15 XP)\n`/node create foraging 10 25 Jungle` Jungle Log (Lv 10 · 25 XP)\n`/node create foraging 15 35 Dark Oak` Dark Oak Log (Lv 15 · 35 XP)\n`/node create foraging 20 45 Cherry` Cherry Log (Lv 20 · 45 XP)"
+            },
+            {
               "title": "🔍 Player checks",
               "description": "`/shardcheck <player>` Throne Shards · `/flytime check <player>` Bought flight + can they fly\n`/racecheck <player>` Tensura race · `/kitmenu <player>` Their kits + cooldowns (view only)\n`/fly <player>` Turn off leftover flight (race flight, e.g. Dragonoid, is normal and comes back)"
-            },
+            }
+          ]
+        },
+        {
+          "embeds": [
             {
               "title": "🧬 Tensura",
               "description": "`/tensura edit forceevo <player> demonLord` Make someone a Demon Lord\n`/tensura edit race <player> tensura:god_slime true true` Set a race"
