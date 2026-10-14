@@ -76,7 +76,9 @@
       if (!hasRace(p)) return
       var first = waitingForRace[name] == 'first'
       delete waitingForRace[name]
-      later(p, 40, () => sendToHub(p, !first))
+      // Some races (Daemon, Angel, Phantom, Elemental...) start in their own world. Tensura moves them there after
+      // they pick, so only bring players to the hub if they're still at the overworld spawn.
+      later(p, 60, () => { if (atOverworldSpawn(p)) sendToHub(p, !first) })
     })
   })
   PlayerEvents.loggedOut(event => { delete waitingForRace[event.player.username] })
