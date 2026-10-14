@@ -275,9 +275,9 @@ channels.push({ key: "staffcommands", messages: pack([
     "Tebex: purchase `giverank {username} <rank>` · refund/chargeback `takerank {username}` (+ ban on chargeback)"
   ].join("\n") },
   { title: "🧍 Menu NPCs", description: [
-    "`/npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links>` New glowing NPC with hologram where you stand",
+    "`/npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions>` New glowing NPC with hologram where you stand",
     "`/npcmenu spawncmd <title> <command>` NPC that runs a command, e.g. `/npcmenu spawncmd Hunters warp hunters`",
-    "`/npcmenu attach <cosmetics|crates|throneshop|kits|levels|links>` Look at an NPC: it opens that menu",
+    "`/npcmenu attach <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions>` Look at an NPC: it opens that menu",
     "`/npcmenu attachcmd <command>` Look at an NPC: it runs that command · `/npcmenu detach` back to normal",
     "`/npcmenu grab` then `/npcmenu put` Move an NPC + its hologram to where you stand",
     "`/npcmenu hologram <text>` New hologram text (`|` = new line, `&` colours) · `/npcmenu remove` Delete NPC",
@@ -314,6 +314,24 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/afkzone info` · `/afkzone give <player> <n>` Give AFK Shards (testing)",
     "1 AFK Shard every 30 min in the room, 6 shards = 1 AFK Key (AFK Crate: `/crate create afk`, fill with `/crate edit afk`)",
     "Players: `/afkshard` · `/warp afk` (make it with your warp command while standing in the room)"
+  ].join("\n") },
+  { title: "⛏️ Professions & Nodes", description: [
+    "Professions: `mining` `gemology` `farming` `foraging` (levels 1-100). Nodes give profession XP + half as normal level XP, **drop nothing**, and respawn after 1 minute with a countdown",
+    "**Look at the block** (within 6 blocks), then:",
+    "`/node create <profession> <level> <xp> [name]` Make it a node, e.g. `/node create mining 25 100 Diamond` (crops: use FULLY grown ones)",
+    "`/node remove` Back to a normal block (deletes its text) · `/node info` What node it is + respawn time",
+    "Anywhere:",
+    "`/node list` Nodes within 64 blocks with coordinates · `/node respawnall` Respawn every gathered node now",
+    "`/node holo` Re-place missing floating texts near you",
+    "Can't see a node to remove it? `/node list` → go there → `/node respawnall` → look at it → `/node remove`",
+    "`/professions <player>` Someone's levels · `/profession set <player> <profession> <level>` Set a level",
+    "Players: `/professions` (levels in chat) · `/professionmenu` (menu) · NPC: `/npcmenu spawn professions`",
+    "Gathering needs survival and the profession level of the node. Creative can't gather. Put nodes where players can break blocks (not claimed/protected)"
+  ].join("\n") },
+  { title: "🔍 Player checks", description: [
+    "`/shardcheck <player>` Throne Shards · `/flytime check <player>` Bought flight + can they fly",
+    "`/racecheck <player>` Tensura race · `/kitmenu <player>` Their kits + cooldowns (view only)",
+    "`/fly <player>` Turn off leftover flight (race flight, e.g. Dragonoid, is normal and comes back)"
   ].join("\n") },
   { title: "🧬 Tensura", description: [
     "`/tensura edit forceevo <player> demonLord` Make someone a Demon Lord",

@@ -2,10 +2,10 @@
 // plus "command NPCs" that run a command for the player (e.g. /warp hunters, /ah).
 //
 // Staff (op):
-//   /npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links|claims|smp>       new NPC where you stand, glowing, with a hologram above it
+//   /npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions>       new NPC where you stand, glowing, with a hologram above it
 //   /npcmenu spawncmd <title> <command...>         new NPC that runs <command> for the player who clicks it
 //                                                  e.g. /npcmenu spawncmd Hunters warp hunters
-//   /npcmenu attach <cosmetics|crates|throneshop|kits|levels|links|claims|smp>       give the NPC you are LOOKING AT this menu (keeps its skin/spot)
+//   /npcmenu attach <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions>       give the NPC you are LOOKING AT this menu (keeps its skin/spot)
 //   /npcmenu attachcmd <command...>                the NPC you are looking at runs this command when clicked
 //   /npcmenu detach                                the NPC you are looking at goes back to normal
 //   /npcmenu styleall                              ALL your other NPCs within 64 blocks get the same glow + big title +
@@ -968,6 +968,39 @@
     })
   }
 
+  // ======================================================================= Professions (professions.js)
+  const PROF_MENU = [
+    ['mining', '&7&l⛏ Mining', 'minecraft:iron_pickaxe', 'Gather ore nodes: coal, iron, gold, diamond...'],
+    ['gemology', '&d&l💎 Gemology', 'minecraft:amethyst_shard', 'Gather gem nodes: amethyst, quartz, emerald...'],
+    ['farming', '&a&l🌾 Farming', 'minecraft:wheat', 'Gather crop nodes: wheat, carrots, melons...'],
+    ['foraging', '&2&l🌲 Foraging', 'minecraft:oak_log', 'Gather tree nodes: oak, birch, spruce...'],
+  ]
+  const profNeed = (lvl) => typeof PROF_NEED === 'function' ? PROF_NEED(lvl) : Math.floor(100 * Math.pow(lvl, 1.4))
+  const professionMenu = (p) => {
+    var s = p.server, total = 0
+    p.openChestGUI(Text.of('Professions'), 5, gui => {
+      gui.playerSlots = true
+      fill(gui, s, 5)
+      PROF_MENU.forEach((pr, i) => {
+        var lvl = Math.max(1, p.persistentData.getInt('ot_prof_' + pr[0] + '_lvl') || 1), xp = p.persistentData.getInt('ot_prof_' + pr[0] + '_xp') || 0
+        var need = profNeed(lvl), max = lvl >= 100, pct = max ? 100 : Math.floor(xp * 100 / need), bar = ''
+        total += lvl
+        for (var b = 0; b < 20; b++) bar += (b < pct / 5 ? '&a' : '&8') + '|'
+        gui.slot(1 + i * 2, 1, sl => {
+          sl.item = icon(s, pr[2], pr[1] + ' &f&lLv ' + lvl, [bar + ' &f' + pct + '%', '&7XP: &f' + (max ? 'MAX' : fmt(xp) + ' &7/ &f' + fmt(need)), '', pr[3], '', '&8Max level 100'], lvl > 1)
+        })
+      })
+      gui.slot(4, 0, sl => { sl.item = icon(s, 'minecraft:nether_star', '&6&lYour Professions', ['Total level: &e' + total, '', 'Gather nodes to level up!'], true) })
+      gui.slot(1, 3, sl => { sl.item = icon(s, 'minecraft:book', '&e&lHow It Works', ['Look for blocks with &6floating text&7:', 'they are &6nodes&7.', 'Break one to gather it and', 'earn &eprofession XP&7.'], false) })
+      gui.slot(2, 3, sl => { sl.item = icon(s, 'minecraft:experience_bottle', '&a&lBonus Level XP', ['Every node also gives', '&anormal level XP&7 for your', '&f/level&7 too.'], false) })
+      gui.slot(3, 3, sl => { sl.item = icon(s, 'minecraft:iron_bars', '&c&lNode Levels', ['Each node shows a level.', 'Your profession must be at', 'least that level to gather it.'], false) })
+      gui.slot(5, 3, sl => { sl.item = icon(s, 'minecraft:clock', '&b&lRespawning', ['A gathered node shows a', '&ccountdown&7 and comes back', 'after &f1 minute&7 in the same spot.'], false) })
+      gui.slot(6, 3, sl => { sl.item = icon(s, 'minecraft:chest', '&6&lNo Item Drops', ['Nodes give &eXP only&7, no items.', 'Normal blocks everywhere else', 'still drop as usual.'], false) })
+      gui.slot(7, 3, sl => { sl.item = icon(s, 'minecraft:writable_book', '&d&lCommands', ['&e/professions &7- your levels in chat', '&e/professionmenu &7- open this menu', '&e/level &7- your main level'], false) })
+      gui.slot(8, 4, sl => { sl.item = icon(s, 'minecraft:barrier', '&c&lClose', []); sl.leftClicked = e => { try { p.closeMenu() } catch (x) { } } })
+    })
+  }
+
   // ======================================================================= Links
   const LINKS = [
     ['minecraft:light_blue_dye', '&9&lDiscord', 'https://discord.gg/overthronesmp'],
@@ -1115,7 +1148,7 @@
     })
   }
 
-  const MENUS = { cosmetics: p => cosmeticsMain(p), crates: crateMenu, throneshop: shopMain, kits: kitMenu, levels: levelGuide, links: linksMenu, claims: claimsMenu, smp: smpMenu }
+  const MENUS = { cosmetics: p => cosmeticsMain(p), crates: crateMenu, throneshop: shopMain, kits: kitMenu, levels: levelGuide, links: linksMenu, claims: claimsMenu, smp: smpMenu, professions: professionMenu }
   const TITLES = {
     cosmetics: ['&d&lCOSMETICS', '&fRIGHT-CLICK TO VIEW'],
     crates: ['&e&lCRATES', '&fRIGHT-CLICK TO VIEW'],
@@ -1125,8 +1158,9 @@
     links: ['&b&lSERVER LINKS', '&fRIGHT-CLICK TO VIEW'],
     claims: ['&6&lLAND CLAIMS', '&fRIGHT-CLICK TO VIEW'],
     smp: ['&a&lTHE SMP WORLD', '&fRIGHT-CLICK TO VIEW'],
+    professions: ['&6&lPROFESSIONS', '&fRIGHT-CLICK TO VIEW'],
   }
-  const GLOW = { cosmetics: 'light_purple', crates: 'yellow', throneshop: 'light_purple', kits: 'gold', levels: 'green', links: 'aqua', claims: 'gold', smp: 'green', cmd: 'yellow' }
+  const GLOW = { cosmetics: 'light_purple', crates: 'yellow', throneshop: 'light_purple', kits: 'gold', levels: 'green', links: 'aqua', claims: 'gold', smp: 'green', professions: 'gold', cmd: 'yellow' }
   const openMenu = (p, type) => {
     if (p.openChestGUI === undefined) { p.tell('§cMenus need KubeJS chest GUIs.'); return }
     try { MENUS[type](p) } catch (e) { console.error('[npc_menus] ' + type + ': ' + e); if (p.hasPermissions(2)) p.tell('§c[npc_menus] ' + e) }
@@ -1229,7 +1263,7 @@
     if (id == null) { id = 'ot_mid_' + Date.now().toString(36); e.addTag(id) }
     return id
   }
-  const OPEN_CMD = { cosmetics: 'cosmetics', crates: 'cratemenu', throneshop: 'throneshop', kits: 'kitmenu', levels: 'levelguide', links: 'links', claims: 'claimmenu', smp: 'smpmenu' }
+  const OPEN_CMD = { cosmetics: 'cosmetics', crates: 'cratemenu', throneshop: 'throneshop', kits: 'kitmenu', levels: 'levelguide', links: 'links', claims: 'claimmenu', smp: 'smpmenu', professions: 'professionmenu' }
   // Easy NPC's own "on click: run command" (the same thing the setup's click_command NPCs use)
   const setClickAction = (server, e, command) => {
     var c = '/' + String(command).replace(/^\//, '').replace(/\\/g, '\\\\').replace(/"/g, '\\"')
@@ -1367,7 +1401,7 @@
     say(ctx.source, '§a[npcmenu] Removed ' + n + ' floating texts within ' + radius + ' blocks. §7Now /npcmenu fixall and /npcmenu styleall put the right ones back.')
     return 1
   }
-  const NPC_NAMES = { cosmetics: ['Cosmetics', '#FF55FF'], crates: ['Crates', '#FFFF55'], throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'], claims: ['Land Claims', '#FFAA00'], smp: ['SMP World', '#55FF55'] }
+  const NPC_NAMES = { cosmetics: ['Cosmetics', '#FF55FF'], crates: ['Crates', '#FFFF55'], throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'], claims: ['Land Claims', '#FFAA00'], smp: ['SMP World', '#55FF55'], professions: ['Profession Master', '#FFAA00'] }
 
   ServerEvents.commandRegistry(event => {
     const { commands: Commands, arguments: Arguments } = event
@@ -1379,7 +1413,7 @@
     event.register(Commands.literal('npcmenu').requires(src => src.hasPermission(2))
       .then(Commands.literal('spawn').then(typeArg().executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, t = typeOf(ctx)
-        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels, links, claims or smp'); return 0 }
+        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels, links, claims, smp or professions'); return 0 }
         var e = spawnNpc(p, NPC_NAMES[t][0], NPC_NAMES[t][1])
         if (e == null) { say(ctx.source, '§cThe NPC did not spawn (check the server log).'); return 0 }
         makeMenuNpc(p.server, e, t, null)
@@ -1396,7 +1430,7 @@
       })))))
       .then(Commands.literal('attach').then(typeArg().executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, t = typeOf(ctx), e = looked(p)
-        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels, links, claims or smp'); return 0 }
+        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels, links, claims, smp or professions'); return 0 }
         if (e == null) { say(ctx.source, '§cLook straight at an NPC (within 8 blocks).'); return 0 }
         makeMenuNpc(p.server, e, t, null)
         say(ctx.source, '§a[npcmenu] This NPC now opens the ' + t + ' menu.')
@@ -1637,6 +1671,7 @@
         return 1
       })))
     event.register(Commands.literal('levelguide').executes(ctx => { openMenu(ctx.source.playerOrException, 'levels'); return 1 }))
+    event.register(Commands.literal('professionmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'professions'); return 1 }))
     event.register(Commands.literal('claimmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'claims'); return 1 }))
     event.register(Commands.literal('smpmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'smp'); return 1 }))
   })
