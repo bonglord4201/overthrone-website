@@ -433,7 +433,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "Bosses set with `/setboss` count as bosses for Caverns cash + trackers"
   ].join("\n") },
   { title: "⚖️ Mob tweaks", description: [
-    "`mob_tweaks.js` sets a mob's health and caps how hard it hits. Now: **Barghest** 40 HP, max 5 damage per hit (fire still works)",
+    "`mob_tweaks.js` sets a mob's health and caps how hard it hits. Now: **Barghest** + any **werewolf** 40 HP, max 5 damage per hit (fire still works)",
     "`/mobtweaks` Lists the tweaks + matching mobs within 64 blocks",
     "Check a mob's health: `/data get entity @e[type=tensura:barghest,limit=1,sort=nearest] Health`",
     "Add a mob: copy the line `{ match: 'barghest', hp: 40, damage: 5 },` in the file, change the name and numbers, then `/reload`"
@@ -443,7 +443,8 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/ftbchunks info` Who owns the chunk you're in · `/ftbchunks admin claim_as hub#0d6da155 <radius in blocks>` Claim more for the hub team (use Tab on the team name)",
     "`/ftbchunks admin bypass_protection` Toggle your bypass (on = you can build/use skills in claims). Test as a player with it OFF",
     "`/gamerule skillGriefing true` Keep this ON (it's server-wide: false stops skills everywhere)",
-    "`/safeexplosions` Explosions blocked in hub/RPG? · `/damagezones` Is this world a no-damage safe zone?"
+    "`/safeexplosions` Explosions blocked in hub/RPG? · `/damagezones` Is this world a no-damage safe zone?",
+    "New players: no damage while picking a race + first 15 min of play (below level 5). `/newbieshield <player> <minutes>` give/extend it (0 = end it)"
   ].join("\n") },
   { title: "🧬 Tensura", description: [
     "`/tensura edit forceevo <player> demonLord` Make someone a Demon Lord",
