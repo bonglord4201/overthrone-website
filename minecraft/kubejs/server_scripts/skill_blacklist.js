@@ -26,21 +26,40 @@
     storage.getLearnedSkills().forEach(inst => { try { if (isBanned(inst.getSkillId())) found.push(inst) } catch (x) { } })
     return { storage: storage, found: found }
   }
+  // tries every way ManasCore offers to forget a skill, then checks it's really gone
+  var lastError = ''
+  const forget = (storage, inst) => {
+    var rl = inst.getSkillId(), errs = []
+    var gone = () => { try { return !storage.getSkill(rl).isPresent() } catch (x) { return false } }
+    var tries = [
+      () => storage.forgetSkill(rl),
+      () => storage.forgetSkill(rl, null),
+      () => storage.forgetSkill(inst),
+      () => { storage.getLearnedSkills().remove(inst); try { storage.markDirty() } catch (y) { } },
+    ]
+    for (var i = 0; i < tries.length; i++) {
+      try { tries[i]() } catch (x) { errs.push('#' + (i + 1) + ' ' + x) }
+      if (gone()) { try { storage.markDirty() } catch (y) { } return true }
+    }
+    lastError = errs.length ? errs.join(' | ') : 'the skill system refused to remove it'
+    return false
+  }
   const strip = (p, quiet) => {
-    if (SkillAPI == null) return []
-    var removed = []
+    if (SkillAPI == null) return { removed: [], failed: [] }
+    var removed = [], failed = []
     try {
       var r = bannedOf(p)
       r.found.forEach(inst => {
         var id = String(inst.getSkillId())
-        try { r.storage.forgetSkill(inst); removed.push(id) } catch (x) { console.warn('[skill_blacklist] could not remove ' + id + ' from ' + p.username + ': ' + x) }
+        if (forget(r.storage, inst)) removed.push(id)
+        else { failed.push(id); console.warn('[skill_blacklist] could not remove ' + id + ' from ' + p.username + ': ' + lastError) }
       })
-    } catch (x) { console.warn('[skill_blacklist] ' + p.username + ': ' + x) }
+    } catch (x) { lastError = String(x); console.warn('[skill_blacklist] ' + p.username + ': ' + x) }
     if (removed.length) {
       console.info('[skill_blacklist] removed from ' + p.username + ': ' + removed.join(', '))
       if (!quiet) p.tell('§c§lSKILLS §8» §7These skills are banned on OVERTHRONE and were removed: §f' + removed.join(', '))
     }
-    return removed
+    return { removed: removed, failed: failed }
   }
 
   PlayerEvents.loggedIn(event => { var p = event.player; p.server.scheduleInTicks(100, () => strip(p, false)) })
@@ -70,9 +89,14 @@
       })))
       .then(Commands.literal('scan').executes(ctx => {
         if (SkillAPI == null) { say(ctx.source, P + status); return 0 }
-        var total = 0
-        ctx.source.server.players.forEach(p => { var r = strip(p, false); total += r.length; if (r.length) say(ctx.source, P + '§f' + p.username + '§7: removed §c' + r.join(', ')) })
-        say(ctx.source, P + '§aScan done: ' + total + ' banned skill(s) removed from online players.')
+        var total = 0, bad = 0
+        ctx.source.server.players.forEach(p => {
+          var r = strip(p, false)
+          total += r.removed.length; bad += r.failed.length
+          if (r.removed.length) say(ctx.source, P + '§f' + p.username + '§7: removed §c' + r.removed.join(', '))
+          if (r.failed.length) say(ctx.source, P + '§f' + p.username + '§c: could NOT remove ' + r.failed.join(', ') + ' §8(' + lastError + ')')
+        })
+        say(ctx.source, P + '§aScan done: ' + total + ' banned skill(s) removed' + (bad ? ', §c' + bad + ' failed' : '') + '§a.')
         return 1
       })))
   })
