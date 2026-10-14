@@ -47,23 +47,16 @@ const PROF_PERKS = {
 // Shared helper (also used by the Stats menu in npc_menus.js): sets one attribute bonus on a player, replacing any
 // older value with the same id. amount 0 removes it. op: 'add' | 'mult' (x(1+amount) of the total, after other mods).
 var otSetAttrBonus = (p, attrId, bonusId, amount, op) => {
+  // Uses the vanilla /attribute command (reliable on every version). Modifiers added this way are saved with the player.
   try {
-    var RL = Java.loadClass('net.minecraft.resources.ResourceLocation')
-    // 1.21.1: registry holders are looked up by ResourceKey (looking up by name alone does not exist yet)
-    var reg = Java.loadClass('net.minecraft.core.registries.BuiltInRegistries').ATTRIBUTE
-    var rkey = Java.loadClass('net.minecraft.resources.ResourceKey').create(Java.loadClass('net.minecraft.core.registries.Registries').ATTRIBUTE, RL.parse(attrId))
-    var holder = reg.getHolder(rkey).orElse(null)
-    if (holder == null) return false
-    var inst = p.getAttribute(holder)
-    if (inst == null) return false
-    var id = RL.parse(bonusId)
-    inst.removeModifier(id)
-    if (amount != 0) {
-      var AM = Java.loadClass('net.minecraft.world.entity.ai.attributes.AttributeModifier')
-      var Op = Java.loadClass('net.minecraft.world.entity.ai.attributes.AttributeModifier$Operation')
-      inst.addPermanentModifier(new AM(id, amount, op == 'add' ? Op.ADD_VALUE : Op.ADD_MULTIPLIED_TOTAL))
-    }
-    return true
+    var s = p.server, n = p.username
+    s.runCommandSilent(`attribute ${n} ${attrId} modifier remove ${bonusId}`)
+    if (amount != 0) s.runCommandSilent(`attribute ${n} ${attrId} modifier add ${bonusId} ${Number(amount).toFixed(5)} ${op == 'add' ? 'add_value' : 'add_multiplied_total'}`)
+    // report whether this attribute exists at all (for /stats debug)
+    try {
+      var RL = Java.loadClass('net.minecraft.resources.ResourceLocation')
+      return !!Java.loadClass('net.minecraft.core.registries.BuiltInRegistries').ATTRIBUTE.containsKey(RL.parse(attrId))
+    } catch (e) { return true }
   } catch (e) { console.warn('[professions] attribute ' + attrId + ': ' + e); return false }
 }
 
