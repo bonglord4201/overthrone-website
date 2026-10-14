@@ -4,8 +4,8 @@
 // What it checks:
 //   1. X-ray behaviour: finds far too many diamonds / emeralds / ancient debris compared to the stone it digs.
 //      -> staff alert + log (no auto-ban: luck and vein-mining tools can trigger it, staff should look first)
-//   2. Kill-aura / auto-clicker: more than MAX_CPS hits per second, or hitting from further than MAX_REACH blocks.
-//      -> staff alert; if it keeps happening: strike
+//   2. Kill-aura / auto-clicker: more than MAX_CPS hits per second -> staff alert; if it keeps happening: strike.
+//      Hitting from further than the player's reach stat + REACH_MARGIN -> staff alert only (see REACH_STRIKES).
 //   3. Duped / hacked items: a stack bigger than the item's max (e.g. 127 diamonds in one slot) in a player's inventory.
 //      -> the extra items are removed + strike
 //   Strikes: 1st = warning in chat, 2nd = kick with the reason, 3rd = ban with the reason.
@@ -23,7 +23,9 @@
 (function () {
   // ---------------------------------------------------------------- settings
   const MAX_CPS = 17            // hits per second, counted once per server tick (20 max); humans stay well under this
-  const MAX_REACH = 8.0         // blocks between attacker and target (vanilla is ~3, mods' spears/polearms up to ~6)
+  const MAX_REACH = 8.0         // lowest reach limit, in blocks from the eyes to the edge of the target (vanilla is 3)
+  const REACH_MARGIN = 4.0      // allowed on top of the player's own reach stat (mod weapons/skills raise that stat)
+  const REACH_STRIKES = false   // false = far hits only alert staff (mod skills can hit far); true = they count towards strikes
   const XRAY_MIN_ORES = 12      // valuable ores in the window before the ratio is judged
   const XRAY_RATIO = 0.05       // valuable ores per stone block mined (legit strip mining is around 0.005)
   const XRAY_WINDOW_MIN = 30    // minutes the mining counts cover
@@ -90,18 +92,34 @@
 
   // ---------------------------------------------------------------- 2. kill-aura / auto-clicker
   const hits = {}
+  const farAlerted = {}
   const onAttack = (p, target) => {
     if (p == null || target == null || p.level.isClientSide()) return
     var now = Date.now(), h = hits[p.username], tick = p.server.tickCount
     if (!h || now - h.start > 1000) { h = { start: now, n: 0, tick: -1 }; hits[p.username] = h }
     // sweeping / area weapons hit many mobs in the same tick: that counts as one click
     if (h.tick != tick) { h.n++; h.tick = tick }
+    // measured like Minecraft does: from the player's eyes to the nearest edge of the target's hitbox,
+    // so big mobs and bosses don't look further away than they are
     var dist = 0
-    try { dist = Math.sqrt(p.distanceToSqr(target)) } catch (e) { dist = 0 }
-    var reason = null
+    try { dist = Math.sqrt(target.getBoundingBox().distanceToSqr(p.getEyePosition())) }
+    catch (e) { try { dist = Math.sqrt(p.distanceToSqr(target)) } catch (x) { dist = 0 } }
+    // the player's own reach stat (raised by modded weapons, Better Combat, skills...) plus a margin for lag
+    var range = 3
+    try { range = Number(p.entityInteractionRange()) } catch (e) { range = 3 }
+    var limit = Math.max(MAX_REACH, range + REACH_MARGIN)
+    var reason = null, farOnly = false
     if (h.n > MAX_CPS) reason = 'attacking ' + h.n + ' times per second'
-    else if (dist > MAX_REACH) reason = 'hitting from ' + dist.toFixed(1) + ' blocks away'
+    else if (dist > limit) { reason = 'hitting from ' + dist.toFixed(1) + ' blocks away (limit ' + limit.toFixed(1) + ')'; farOnly = true }
     if (reason == null) return
+    if (farOnly && !REACH_STRIKES) {
+      // at most one far-hit alert per player per minute, so a long fight doesn't spam staff chat
+      if (now - (farAlerted[p.username] || 0) > 60000) {
+        farAlerted[p.username] = now
+        log(p.server, p.username + ' far hit (alert only, no strike): ' + reason)
+      }
+      return
+    }
     var c = p.persistentData.getInt('ot_ac_combat') + 1
     p.persistentData.putInt('ot_ac_combat', c)
     log(p.server, p.username + ' combat flag #' + c + ': ' + reason)
