@@ -1517,6 +1517,14 @@
         return 1
       })))))
 
+    // staff: read-only check of an online player's Throne Shards (same number their scoreboard shows)
+    event.register(Commands.literal('shardcheck').requires(src => src.hasPermission(2))
+      .then(Commands.argument('player', Arguments.PLAYER.create(event)).executes(ctx => {
+        var p = Arguments.PLAYER.getResult(ctx, 'player'), b = shardsOf(p)
+        say(ctx.source, b.ok ? '§d§lThrone Shards §7» §f' + p.username + '§7 has §d' + fmt(b.value) + (b.exact ? '' : ' (rounded)') + '§7 shards.'
+          : '§c[shardcheck] Could not read ' + p.username + "'s shards (" + b.raw + ').')
+        return 1
+      })))
     event.register(Commands.literal('throneshop').executes(ctx => { openMenu(ctx.source.playerOrException, 'throneshop'); return 1 })
       .then(Commands.literal('debug').requires(src => src.hasPermission(2)).executes(ctx => {
         var p = ctx.source.playerOrException, b = shardsOf(p)
