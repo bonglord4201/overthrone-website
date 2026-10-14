@@ -13,6 +13,7 @@
 //              /crate edit <crate>     opens the editor. Click an item in YOUR inventory to add it as a reward.
 //                                      On a reward: left-click = more common, right-click = rarer,
 //                                      shift-left-click = announce to server on/off, shift-right-click = remove.
+//              /crate reward claimblocks <crate> <weight> <amount>   adds a claim block reward (Flan)
 //              /crate reward cmd <crate> <weight> <command>   adds a command reward (money, level XP, shards...);
 //                                      hold the item you want as its icon (rename it in an anvil to set the name). {p} = player.
 //              /crate reward list <crate>     /crate reward reset <crate>   (back to the defaults in this file)
@@ -64,6 +65,9 @@
         { item: 'minecraft:enchanted_golden_apple', count: 6, weight: 4, rare: true },
         { cmd: SHARDS_CMD + ' 30', icon: 'minecraft:amethyst_shard', name: '30x Throne Shards', weight: 4, shards: true },
         { cmd: SHARDS_CMD + ' 60', icon: 'minecraft:amethyst_shard', name: '60x Throne Shards', weight: 1, rare: true, shards: true },
+        { cmd: 'flan giveClaimBlocks {p} 100', icon: 'minecraft:grass_block', name: '100 Claim Blocks', weight: 15 },
+        { cmd: 'flan giveClaimBlocks {p} 250', icon: 'minecraft:grass_block', name: '250 Claim Blocks', weight: 6 },
+        { cmd: 'flan giveClaimBlocks {p} 1000', icon: 'minecraft:grass_block', name: '1,000 Claim Blocks', weight: 1, rare: true },
       ],
     },
     // "redeem" crates (like OG's armor/weapon crates): open the menu, pick an item, pay its key cost.
@@ -102,8 +106,39 @@
       keyHint: 'Earn keys in game', particles: true, rewards: [],
     },
     afk: {
-      name: 'AFK CRATE', keyName: 'AFK Key', color: 'aqua', dust: [0.3, 0.9, 1.0],
-      keyHint: 'Earn keys in the AFK room: /warp afk', particles: true, rewards: [],
+      name: 'AFK CRATE', keyName: 'AFK Key', color: 'red', dust: [1.0, 0.15, 0.2], spores: [[1.0, 0.15, 0.2], [0.8, 0.0, 0.05], [1.0, 0.45, 0.35], [1.0, 0.75, 0.7]],
+      keyHint: 'Earn keys in the AFK room: /warp afk', particles: true,
+      // Same rewards and odds as OG Network's AFK crate, switched to OVERTHRONE stuff (Petals -> Throne Shards,
+      // Oni/Blossom/Emperor kits -> Ronin/Valkyrie/Monarch kits). Weights 20/10/6/4/1 = OG's 8.97/4.49/2.69/1.79/0.44%.
+      // Kit rewards run "kit <name> <player>" from the console: the player gets the kit's items ONCE and does NOT get
+      // the rank. (Console kits skip kit_cooldown.js, so winning a kit doesn't start the rank-kit cooldown.)
+      rewards: [
+        { item: 'minecraft:diamond', count: 32, weight: 20 },
+        { item: 'minecraft:golden_apple', count: 10, weight: 20 },
+        { item: 'minecraft:experience_bottle', count: 64, weight: 20 },
+        { cmd: 'eco give {p} 5000', icon: 'minecraft:emerald', name: '$5,000', weight: 20 },
+        { cmd: SHARDS_CMD + ' 10', icon: 'minecraft:amethyst_shard', name: '10x Throne Shards', weight: 20, shards: true },
+        { cmd: 'level xp give {p} 1500', icon: 'minecraft:nether_star', name: '1,500 Level XP', weight: 20 },
+        { cmd: 'eco give {p} 10000', icon: 'minecraft:emerald', name: '$10,000', weight: 10 },
+        { cmd: 'kit ronin {p}', icon: 'minecraft:iron_helmet', name: '1x Ronin Kit', weight: 10 },
+        { item: 'minecraft:netherite_ingot', count: 16, weight: 10 },
+        { cmd: 'crate key give {p} legendary 1', icon: 'minecraft:tripwire_hook', name: '1x Legendary Key', weight: 10 },
+        { cmd: 'flan giveClaimBlocks {p} 100', icon: 'minecraft:grass_block', name: '100 Claim Blocks', weight: 6 },
+        { cmd: 'kit valkyrie {p}', icon: 'minecraft:diamond_helmet', name: '1x Valkyrie Kit', weight: 6 },
+        { cmd: 'eco give {p} 50000', icon: 'minecraft:emerald_block', name: '$50,000', weight: 6 },
+        { cmd: 'crate key give {p} mythic 1', icon: 'minecraft:tripwire_hook', name: '1x Mythic Key', weight: 6 },
+        { cmd: SHARDS_CMD + ' 50', icon: 'minecraft:amethyst_shard', name: '50x Throne Shards', weight: 6, shards: true },
+        { item: 'minecraft:enchanted_golden_apple', count: 8, weight: 6 },
+        { cmd: 'flan giveClaimBlocks {p} 500', icon: 'minecraft:grass_block', name: '500 Claim Blocks', weight: 4 },
+        { cmd: 'kit monarch {p}', icon: 'minecraft:netherite_helmet', name: '1x Monarch Kit', weight: 4, rare: true },
+        { cmd: SHARDS_CMD + ' 100', icon: 'minecraft:amethyst_shard', name: '100x Throne Shards', weight: 4, rare: true, shards: true },
+        { cmd: 'eco give {p} 100000', icon: 'minecraft:emerald_block', name: '$100,000', weight: 4, rare: true },
+        { item: 'minecraft:enchanted_golden_apple', count: 32, weight: 4, rare: true },
+        { item: 'minecraft:villager_spawn_egg', count: 1, weight: 4 },
+        { cmd: 'flan giveClaimBlocks {p} 1000', icon: 'minecraft:grass_block', name: '1,000 Claim Blocks', weight: 1, rare: true },
+        { cmd: SHARDS_CMD + ' 200', icon: 'minecraft:amethyst_shard', name: '200x Throne Shards', weight: 1, rare: true, shards: true },
+        { cmd: 'eco give {p} 1000000', icon: 'minecraft:emerald_block', name: '$1,000,000', weight: 1, rare: true },
+      ],
     },
     cosmetic: {
       name: 'COSMETIC CRATE', keyName: 'Cosmetic Key', color: 'white', dust: [0.9, 0.9, 1.0],
@@ -213,6 +248,10 @@
   const loadEdited = (server) => {
     if (edited) return edited
     try { edited = JSON.parse(String(server.persistentData.getString(REWARD_STORE)) || '{}') } catch (e) { edited = {} }
+    // claim block rewards show a dirt block (older saved ones used a golden shovel or dirt)
+    Object.keys(edited).forEach(k => (edited[k] || []).forEach(r => {
+      if (r.cmd && String(r.cmd).indexOf('flan giveClaimBlocks') == 0 && (r.icon == 'minecraft:golden_shovel' || r.icon == 'minecraft:dirt')) r.icon = 'minecraft:grass_block'
+    }))
     return edited
   }
   const saveEdited = (server) => server.persistentData.putString(REWARD_STORE, JSON.stringify(edited))
@@ -325,6 +364,17 @@
     for (let i = 0; i < list.length; i++) { r -= list[i].weight; if (r <= 0) return list[i] }
     return list[list.length - 1]
   }
+  // Kit rewards ("kit <name> {p}"): NeoEssentials only gives a kit to players who have its permission, so the winner
+  // is put in a tiny helper rank (kit_<name>, only that kit's permission, see ranks.snbt) for the moment the kit is
+  // given, then taken out again. They get the kit's items once and never the real rank.
+  const KIT_REWARD = /^kit (ronin|valkyrie|monarch|godborn|overlord) \{p\}$/
+  const runRewardCmd = (server, cmd, n) => {
+    var m = String(cmd).match(KIT_REWARD)
+    if (!m) { run(server, cmd.split('{p}').join(n)); return }
+    var helperRank = 'kit_' + m[1]
+    try { run(server, `ftbranks add ${n} ${helperRank}`); run(server, `kit ${m[1]} ${n}`) }
+    finally { run(server, `ftbranks remove ${n} ${helperRank}`) }
+  }
   const openCrate = (p, id) => {
     if (isRedeem(id)) { preview(p, id); return }
     const c = CRATES[id], server = p.server, n = p.username, at = load(server)[id]
@@ -339,7 +389,7 @@
     if (!list.length) { p.tell('§cThis crate has no rewards yet.'); return }
     takeKeys(p, id, 1)
     const r = roll(list), what = label(server, r)
-    if (r.cmd) run(server, r.cmd.split('{p}').join(n))
+    if (r.cmd) runRewardCmd(server, r.cmd, n)
     else p.give(stackOf(server, r).copy())
     run(server, `title ${n} times 5 40 10`)
     run(server, `title ${n} subtitle ${JSON.stringify({ text: what, color: r.rare ? 'gold' : 'white' })}`)
@@ -385,15 +435,42 @@
     })
   }
   const rowsFor = (n) => Math.max(3, Math.min(6, Math.ceil(n / 9) + 1))
+  // OG-style menu: rewards in the middle (7 wide, 3 rows = 21 per page), worst to best, with a red/black glass border,
+  // a Close button, an Available Keys button and Previous/Next Page arrows on the bottom row.
+  const INNER = 7, INNER_ROWS = 3, PER_PAGE = INNER * INNER_ROWS
+  const glass = (server, x, y) => {
+    var st = Item.of((x + y) % 2 == 0 ? 'minecraft:red_stained_glass_pane' : 'minecraft:black_stained_glass_pane')
+    try { st.set(DataComponents.HIDE_TOOLTIP, Java.loadClass('net.minecraft.util.Unit').INSTANCE) } catch (e) { }
+    return st
+  }
+  const button = (id, name, lore) => {
+    var st = Item.of(id)
+    try {
+      var lines = new ArrayList()
+      lore.forEach(x => lines.add(line(x)))
+      st.set(DataComponents.LORE, new ItemLore(lines))
+      st.set(DataComponents.CUSTOM_NAME, line(name))
+    } catch (e) { }
+    return st
+  }
+  // worst to best: random crates most common first, redeem crates cheapest first (only the display order changes)
+  const displayOrder = (id, list) => list.map((r, i) => ({ r: r, i: i }))
+    .sort((a, b) => isRedeem(id) ? (a.r.cost - b.r.cost) || (a.i - b.i) : (b.r.weight - a.r.weight) || (a.i - b.i))
+    .map(o => o.r)
   // Read-only: KubeJS chest GUI items can't be taken.
-  const preview = (p, id) => {
+  const preview = (p, id, page) => {
     if (p.openChestGUI === undefined) { previewChat(p, id); return }
     try {
-      var list = rewardsOf(p.server, id).slice(0, 45)
+      var all = rewardsOf(p.server, id)
+      var list = displayOrder(id, all)
       if (!list.length) p.tell('§7This crate has no rewards yet.' + (p.hasPermissions(2) ? ' §8Staff: /crate edit ' + id : ''))
-      p.openChestGUI(Text.of(CRATES[id].name + ' Rewards'), rowsFor(list.length), gui => {
+      var pages = Math.max(1, Math.ceil(list.length / PER_PAGE))
+      page = Math.max(0, Math.min(pages - 1, page || 0))
+      var shownList = list.slice(page * PER_PAGE, (page + 1) * PER_PAGE)
+      var title = CRATES[id].name + ' Rewards' + (pages > 1 ? ' (' + (page + 1) + '/' + pages + ')' : '')
+      p.openChestGUI(Text.of(title), 6, gui => {
         gui.playerSlots = true
-        list.forEach((r, i) => gui.slot(i % 9, Math.floor(i / 9), slot => {
+        var setReward = (slot, r) => {
           if (isRedeem(id)) {
             var have = keys(p, id), ok = have >= r.cost
             slot.item = shown(p.server, r, [`§fRequired Keys: §e${r.cost}`, `§7You have: ${ok ? '§a' : '§c'}${have}`,
@@ -401,13 +478,42 @@
             // KubeJS takes your items out while its menu is open and puts them back after it closes, so close the
             // menu, wait for the items to come back, then redeem and reopen.
             slot.leftClicked = e => {
-              pendingRedeem[p.username] = { p: p, id: id, r: r, closedTicks: 0 }
+              pendingRedeem[p.username] = { p: p, id: id, r: r, page: page, closedTicks: 0 }
               try { p.closeMenu() } catch (x) { }   // KubeJS's name for closing the open menu
             }
           } else {
-            slot.item = shown(p.server, r, [`§eChance: ${pctOf(list, r)}%`].concat(r.rare ? ['§6§lRARE'] : []))
+            slot.item = shown(p.server, r, [`§eChance: ${pctOf(all, r)}%`].concat(r.rare ? ['§6§lRARE'] : []))
           }
-        }))
+        }
+        for (var y = 0; y < 6; y++) for (var x = 0; x < 9; x++) {
+          (function (xx, yy) {
+            var inside = xx >= 1 && xx <= INNER && yy >= 1 && yy <= INNER_ROWS
+            var i = inside ? (yy - 1) * INNER + (xx - 1) : -1
+            gui.slot(xx, yy, slot => {
+              if (i >= 0 && i < shownList.length) setReward(slot, shownList[i])
+              else slot.item = glass(p.server, xx, yy)
+            })
+          })(x, y)
+        }
+        gui.slot(4, 5, slot => {
+          slot.item = button('minecraft:barrier', '§c§lClose Menu', ['§7Click here to close this menu.', '', '§6§lLEFT-CLICK: §eCLOSE MENU'])
+          slot.leftClicked = e => { try { p.closeMenu() } catch (x) { } }
+        })
+        var have = keys(p, id)
+        gui.slot(6, 5, slot => {
+          slot.item = button('minecraft:tripwire_hook', '§a§lAvailable Keys', ['§7All the keys you can use on this crate.', '',
+            '§fKeys: ' + (have > 0 ? '§a' + have + ' ' + (CRATES[id].keyName || 'Key') + (have == 1 ? '' : 's') : '§cYou have no keys for this crate.')])
+        })
+        // page arrows: close this menu, wait for KubeJS to give the player's items back, then open the other page
+        // (same safe way as redeeming, see pendingRedeem below)
+        if (page > 0) gui.slot(0, 5, slot => {
+          slot.item = button('minecraft:arrow', '§e§lPrevious Page', ['§7Page ' + page + ' of ' + pages])
+          slot.leftClicked = e => { pendingRedeem[p.username] = { p: p, id: id, page: page - 1, closedTicks: 0 }; try { p.closeMenu() } catch (x) { } }
+        })
+        if (page < pages - 1) gui.slot(8, 5, slot => {
+          slot.item = button('minecraft:arrow', '§e§lNext Page', ['§7Page ' + (page + 2) + ' of ' + pages])
+          slot.leftClicked = e => { pendingRedeem[p.username] = { p: p, id: id, page: page + 1, closedTicks: 0 }; try { p.closeMenu() } catch (x) { } }
+        })
       })
     } catch (e) {
       console.warn('[OVERTHRONE crates] preview menu failed, using chat: ' + e)
@@ -427,7 +533,7 @@
       if (inKubeMenu(job.p)) { job.closedTicks = 0; continue }
       if (++job.closedTicks < 2) continue
       delete pendingRedeem[names[i]]
-      try { redeem(job.p, job.id, job.r); preview(job.p, job.id) } catch (e) { console.error('[OVERTHRONE crates] redeem failed: ' + e) }
+      try { if (job.r) redeem(job.p, job.id, job.r); preview(job.p, job.id, job.page || 0) } catch (e) { console.error('[OVERTHRONE crates] redeem failed: ' + e) }
     }
   })
 
@@ -662,6 +768,16 @@
           loadEdited(ctx.source.server)[id] = defaults(id); saveEdited(ctx.source.server)
           reply(ctx, `§eRewards for ${id} reset to the defaults.`); return 1
         })))
+        .then(Commands.literal('claimblocks').then(crateArg().then(Commands.argument('weight', Arguments.INTEGER.create(event))
+          .then(Commands.argument('amount', Arguments.INTEGER.create(event)).executes(ctx => {
+            const id = crateOf(ctx)
+            if (!known(ctx, id)) return 0
+            const n = Math.max(1, Arguments.INTEGER.getResult(ctx, 'amount'))
+            const r = { cmd: 'flan giveClaimBlocks {p} ' + n, weight: Math.max(1, Arguments.INTEGER.getResult(ctx, 'weight')), rare: false,
+              icon: 'minecraft:grass_block', name: String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' Claim Blocks' }
+            rewardsOf(ctx.source.server, id).push(r); saveEdited(ctx.source.server)
+            reply(ctx, `§aAdded "${r.name}" to ${id} (weight ${r.weight}).`); return 1
+          })))))
         .then(Commands.literal('cmd').then(crateArg().then(Commands.argument('weight', Arguments.INTEGER.create(event))
           .then(Commands.argument('command', StringArg.greedyString()).executes(ctx => {
             const p = ctx.source.playerOrException, id = crateOf(ctx)

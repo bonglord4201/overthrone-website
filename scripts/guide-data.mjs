@@ -9,7 +9,7 @@
 // Inline formatting: **bold** and [text](/link). Keep it plain: these strings are
 // escaped for the page and reused as forum post text.
 
-export const GUIDE_UPDATED = "2026-10-10";
+export const GUIDE_UPDATED = "2026-10-15";
 
 export const GUIDE_INTRO =
   "Everything you need to play OVERTHRONE SMP: installing the modpack, the keybinds that matter, quests, coins, warps, bosses and fixes for common problems.";
@@ -200,6 +200,60 @@ export const SECTIONS = [
     ]
   },
   {
+    id: "professions",
+    title: "Professions & Gathering",
+    icon: "compass",
+    intro: "Level up five professions by gathering resource nodes and fighting. Every profession goes from level 1 to 100.",
+    blocks: [
+      { cards: [
+        { t: "Mining", k: "Ore nodes", d: "Coal, copper, iron, gold, redstone, lapis, diamond, emerald and ancient debris. Higher levels unlock the rarer ores. **Perk:** up to +20% mining speed at level 100." },
+        { t: "Gemology", k: "Gem nodes", d: "Amethyst, quartz and precious gems." },
+        { t: "Farming", k: "Crop nodes", d: "Wheat, carrots, potatoes, beetroot, pumpkins, melons and nether wart." },
+        { t: "Foraging", k: "Tree nodes", d: "Oak, birch, spruce, jungle, dark oak and cherry." },
+        { t: "Combat", k: "Mob kills", d: "Every mob you kill gives Combat XP. Stronger mobs give more. **Perk:** up to +10% melee damage at level 100." }
+      ] },
+      { steps: [
+        { t: "Find a node", d: "Nodes are blocks with **floating text** above them. The text shows the node's profession, its level and the XP it gives." },
+        { t: "Hit it 3 times", d: "Hit the node **3 times** to gather it. A bar above your hotbar fills up with each hit." },
+        { t: "Earn XP", d: "You get **profession XP** plus some **normal level XP**. Nodes don't drop items: they're for levelling, not for farming resources." },
+        { t: "Wait for the respawn", d: "A gathered node shows a **countdown** and comes back in the same spot after **1 minute**." }
+      ] },
+      { list: [
+        "**Node levels:** your profession must be at least the node's level to gather it. Start with level 1 nodes and work up.",
+        "**Combat XP has a per-minute limit**, so mob farms can't max it out. Fighting a variety of mobs and bosses is the way to level.",
+        "**See your progress:** talk to the **Profession Master** NPC, open the **Professions** button in the Level Guide NPC, or type **/professions**."
+      ] },
+      { callout: { kind: "tip", text: "Normal blocks everywhere else still mine and drop items like usual. Only blocks with floating text are nodes." } }
+    ]
+  },
+  {
+    id: "stats",
+    title: "Stats & Builds",
+    icon: "shield",
+    intro: "Every level you gain gives you a stat point. Spend them to build your character the way you want to play.",
+    blocks: [
+      { p: "Open the **Level Guide** NPC and click **YOUR STATS**, or type **/stats**. Left-click a stat to add 1 point, shift-left-click to add 5." },
+      { table: { head: ["Stat", "Each point", "Max bonus"], rows: [
+        ["Strength", "+1% melee damage", "+25%"],
+        ["Vitality", "+1% max health", "+25%"],
+        ["Defense", "+1% armor", "+20%"],
+        ["Attack Speed", "+1% attack speed", "+15%"],
+        ["Crit Chance", "+0.5% crit chance", "+10%"],
+        ["Crit Damage", "+2% crit damage", "+50%"],
+        ["Dodge Chance", "+0.5% chance to dodge a hit", "+5%"],
+        ["Lifesteal", "+0.5% of damage dealt healed", "+5%"],
+        ["Speed", "+0.5% movement speed", "+5%"],
+        ["Mining Speed", "+2% mining speed", "+30%"]
+      ] } },
+      { list: [
+        "**Pick a build.** Every stat has a max, so you can't put everything into one stat. Tank, glass cannon, crit build or lifesteal bruiser: it's up to you.",
+        "**Leftover points are saved.** Points you can't spend yet stay in your pool for stats added in future updates.",
+        "**Stats stack with your race and skills.** They're percentages on top of what Tensura, Solo Leveling and your gear already give you.",
+        "**Want a different build?** Reset all your points in the Stats menu for **500 Throne Shards** or **$2,000,000**."
+      ] }
+    ]
+  },
+  {
     id: "quests",
     title: "Quests",
     icon: "scroll",
@@ -253,6 +307,24 @@ export const SECTIONS = [
     ]
   },
   {
+    id: "crates",
+    title: "Crates, Keys & Kits",
+    icon: "coin",
+    intro: "Crates in the hub (/warp crates) give random rewards for keys. Left-click a crate to see everything inside and the chance of each reward.",
+    blocks: [
+      { cards: [
+        { t: "Voting Crate", k: "Vote Keys", d: "Vote for the server every day on the [Vote page](/vote) to get Vote Keys. Rewards include diamonds, money, golden apples, Throne Shards and **claim blocks**." },
+        { t: "AFK Crate", k: "AFK Keys", d: "Stand in the AFK room (**/warp afk**) to earn AFK Shards. Every 6 shards (about 3 hours) become an AFK Key. Rewards include diamonds, money, Throne Shards, claim blocks, a **Legendary Key** and **Ronin, Valkyrie or Monarch kits**." },
+        { t: "Kits", k: "/kits", d: "Type **/kits** to open the Kit Selector: the free **Starter kit** and your rank kits, with their cooldown timers." }
+      ] },
+      { list: [
+        "**Crate menus** show rewards from most common to rarest across pages. Use the arrows at the bottom to see the rarest ones.",
+        "**Kits won from a crate** give you that kit's items once. They don't give you the rank.",
+        "**Rare rewards are announced** to the whole server when someone wins them."
+      ] }
+    ]
+  },
+  {
     id: "worlds",
     title: "Worlds & Warps",
     icon: "globe",
@@ -270,11 +342,15 @@ export const SECTIONS = [
         { t: "/warp afk", d: "AFK area" },
         { t: "/rpg", d: "RPG world" },
         { t: "/warp arcade", d: "Arcade & Trade Hall" },
-        { t: "/warp arcanum", d: "The Arcanum: enchanting & runes" }
+        { t: "/warp arcanum", d: "The Arcanum: enchanting & runes" },
+        { t: "/smp", d: "The SMP world (raiding allowed)" },
+        { t: "/wild", d: "A random spot in the overworld" }
       ] },
       { list: [
         "**The RPG world is protected.** You can't break or place blocks, and buckets, flint and steel, fire charges and explosions are blocked. It's a city to visit, not to build in.",
         "**Back to the hub:** walk through the portal in the RPG world to return to the hub.",
+        "**The SMP world (/smp)** has **no land claims and raiding is allowed**: anything goes. Build there at your own risk, or claim land in the other worlds to keep your base safe.",
+        "**Safe zones:** you can't take damage in the hub or the RPG world. Everywhere else, mobs and players can hurt you.",
         "**Travel further:** activate Waystones as you find them to teleport between them. Use Nature's Compass to find a biome.",
         "**Maps:** Xaero's Minimap and World Map (**M**) show where you are and your waypoints."
       ] }
@@ -323,6 +399,7 @@ export const SECTIONS = [
         { q: "My FPS is low", a: "Turn shaders off with **O** (pick \"None\"), lower Render Distance to 8–12 and Simulation Distance to 6–8 in Video Settings. Sodium's extra options are under Video Settings too." },
         { q: "My keys do two things at once", a: "Follow the [key conflict fixes](/guide#key-conflicts)." },
         { q: "Nobody can hear me in voice chat", a: "Press **V**, open the settings and pick the right microphone. Make sure you aren't muted (**M**) and that voice chat isn't turned off (**N**)." },
+        { q: "I get kicked with \"Failed to decode packet clientbound/minecraft:custom_payload\"", a: "This is a known bug in the Solo Leveling mod. **Fully close Minecraft and your launcher**, open them again and rejoin. If it keeps happening after 2-3 tries, tell staff on Discord." },
         { q: "I found a bug or exploit", a: "Report it privately in a Discord ticket. Don't abuse it; using bugs for an advantage is against [rule 1.2](/rules#global-bans)." }
       ] }
     ]
@@ -402,4 +479,22 @@ export const CATEGORY_WELCOMES = [
   { category: "announcements", title: "Official Trailer & the New Player Guide", body: "The official OVERTHRONE SMP trailer is out! Watch it on the [home page](/#trailer): sky cities, Epic Fight combat, bosses and the RPG world.\n\nWe've also added a full **[Player Guide](/guide)**: installing the modpack, every important keybind (and how to fix the keys that clash), quests, coins, warps, bosses and fixes for common problems." },
   { category: "server-updates", title: "Update: The Hunter's Ledger, the Arcade & the RPG World", body: "A big content update for OVERTHRONE.\n\n## The Hunter's Ledger\n- **1,012 new quests** across ten Ledgers, from Homestead to Legends of the Realm.\n- Rewards are Lightman's Currency coins, about **1,500 Netherite** for finishing everything, plus enchanted gear every 10th entry.\n- The strongest modded weapons, armour and spellbooks are saved for the late Ledgers.\n\n## The RPG World\n- A protected city: blocks can't be broken or placed, and explosions don't damage it.\n- **Questmaster Orin** opens the quest book.\n- **The Arcade & Trade Hall** (/warp arcade): gacha machines for weapons, armour, enchants, runes and misc, vending machines, the exchange counter and the Community Chest.\n- **The Arcanum** (/warp arcanum): enchanting and runes.\n\n[How quests work](/guide#quests) · [Coins & the Arcade](/guide#economy)" },
   { category: "changelog", title: "Changelog: October 2026", body: "## Gameplay\n- Added the Hunter's Ledger: 1,012 coin quests in ten chapters, alongside the 100-quest Quest Board.\n- Added the RPG world: Quest Board, Arcade & Trade Hall, the Arcanum and the Community Chest.\n- The RPG world is now build-protected and has a world border.\n- Added Questmaster Orin, who opens the quest book.\n\n## Website\n- New [Player Guide](/guide) with verified keybinds and key conflict fixes.\n- Official trailer on the home page.\n- New guide posts across the forums, and the RPG world added to the Realms." }
+];
+
+// ---------------------------------------------------------------- Season 1 · Update 1.3 (migration 0009)
+// New forum category for the new systems, the guide posts for the new Player Guide sections,
+// and the update posts in Announcements, Server Updates and Changelog.
+export const UPDATE13_CATEGORY = { section: "OVERTHRONE Gameplay", name: "Professions & Stats", slug: "professions-stats", description: "Professions, gathering nodes, stat points and builds.", icon: "spark", sort_order: 26 };
+export const UPDATE13_GUIDE_POSTS = [
+  { category: "professions-stats", title: "Professions & Gathering Guide", pinned: true, sections: ["professions"] },
+  { category: "professions-stats", title: "Stats & Builds Guide", pinned: true, sections: ["stats"] },
+  { category: "economy", title: "Crates, Keys & Kits", pinned: true, sections: ["crates"] }
+];
+export const UPDATE13_POSTS = [
+  { category: "announcements", pinned: true, title: "Season 1 · Update 1.3 is LIVE: Professions, Stats & More",
+    body: "**Season 1 has begun!** Update 1.3 is the biggest update to OVERTHRONE yet. Every level you earn now makes you stronger, and there's a whole new way to progress.\n\n- **Stats:** get a stat point every level and build your character: damage, health, crits, dodge, lifesteal and more.\n- **Professions:** level up Mining, Gemology, Farming, Foraging and Combat.\n- **Gathering nodes:** hit glowing resource nodes to earn XP. They respawn every minute.\n- **The AFK Crate:** kits, Legendary Keys, Throne Shards and more just for being in the AFK room.\n- **The SMP world:** no claims, raiding allowed. Anything goes.\n- **Lots of fixes:** smoother performance and plenty of bugs squashed.\n\nYou already have a stat point for every level you've reached, so open the **Level Guide** NPC and click **YOUR STATS** to spend them!\n\n[Read the full patch notes](/forums?c=server-updates) · [Professions guide](/guide#professions) · [Stats guide](/guide#stats)" },
+  { category: "server-updates", pinned: true, title: "Update 1.3 · Season 1: Professions & Stats",
+    body: "## ⚔ Stats & Builds\nEvery level now gives you **1 stat point**. Spend them in the **Level Guide** NPC → **YOUR STATS** (or **/stats**).\n- **Strength** up to +25% melee damage\n- **Vitality** up to +25% max health\n- **Defense** up to +20% armor\n- **Attack Speed** up to +15%\n- **Crit Chance** up to +10% and **Crit Damage** up to +50%\n- **Dodge Chance** up to +5% and **Lifesteal** up to +5%\n- **Speed** up to +5% and **Mining Speed** up to +30%\n\nEvery stat has a max, so pick a build. Points you can't use yet are saved for stats coming in future updates. You can reset your stats for **500 Throne Shards** or **$2,000,000**.\n\n## ⛏ Professions\nFive professions, each from level 1 to 100:\n- **Mining**: ore nodes. Perk: up to +20% mining speed.\n- **Gemology**: gem and crystal nodes.\n- **Farming**: crop nodes.\n- **Foraging**: tree nodes.\n- **Combat**: killing mobs. Perk: up to +10% melee damage.\n\nVisit the new **Profession Master** NPC or type **/professions** to see your levels.\n\n## 💎 Gathering Nodes\n- Look for blocks with **floating text**: they're nodes.\n- **Hit a node 3 times** to gather it for profession XP and bonus level XP.\n- Nodes don't drop items. A **countdown** shows when they'll be back, and they respawn after **1 minute**.\n- Higher-level nodes need a higher profession level.\n\n## 🎁 Crates & Kits\n- **New AFK Crate:** earn AFK Keys in the AFK room (**/warp afk**). Win diamonds, money, Throne Shards, claim blocks, a **Legendary Key** or a **Ronin, Valkyrie or Monarch kit**.\n- Kits won from crates give you the kit's items once. They don't give you the rank.\n- **Redesigned crate menus:** rewards are sorted from most common to rarest, with pages for the rarest rewards.\n- **The Voting Crate now has claim blocks.**\n- **/kits** now opens the Kit Selector menu, with the free Starter kit and your rank kits with their cooldowns.\n\n## 🌍 Worlds\n- **The SMP world (/smp):** no land claims and raiding is allowed. Anything goes.\n- **/wild** now takes you to a random spot in the overworld.\n- **Safe zones:** you can't take damage in the hub or the RPG world. Everywhere else, you can.\n\n[Professions guide](/guide#professions) · [Stats guide](/guide#stats) · [Crates & kits](/guide#crates)" },
+  { category: "changelog", pinned: false, title: "Changelog: Update 1.3 (Season 1)",
+    body: "## Added\n- Stat points: 1 per level, spent on 10 stats with a max each (Level Guide NPC → YOUR STATS, or /stats).\n- Stat reset for 500 Throne Shards or $2,000,000.\n- Professions: Mining, Gemology, Farming, Foraging and Combat (levels 1-100), with Mining and Combat perks.\n- Gathering nodes: hit 3 times to gather, respawn after 1 minute with a countdown, no item drops.\n- The Profession Master NPC, and a Professions button in the Level Guide.\n- The AFK Crate with OG-style rewards, including Ronin, Valkyrie and Monarch kits and the Legendary Key.\n- Claim blocks in the Voting Crate.\n- The SMP world (/smp): no claims, raiding allowed.\n- The Kit Selector menu (/kits) with the Starter kit.\n- New Player Guide sections: Professions & Gathering, Stats & Builds, and Crates, Keys & Kits.\n\n## Changed\n- Crate menus redesigned: rewards sorted from most common to rarest, with pages.\n- /wild now goes to the overworld.\n- New players go to the hub once they've picked their race.\n- The server is now backed up every night.\n\n## Fixed\n- Players sometimes couldn't take damage anywhere. Now only the hub and the RPG world are safe zones.\n- Big lag spikes: server performance is much smoother.\n- The race selection screen could close on your first join.\n- Kits won from crates weren't given to players without that rank.\n- The anti-cheat wrongly flagged long-reach weapons and big mobs.\n- A fix is in place for races resetting after a server restart. If yours resets, open a ticket on Discord.\n\n## Known issues\n- Getting kicked with \"Failed to decode packet clientbound/minecraft:custom_payload\"? It's a Solo Leveling mod bug. Fully close Minecraft and your launcher, then rejoin." }
 ];

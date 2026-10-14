@@ -2,10 +2,10 @@
 // plus "command NPCs" that run a command for the player (e.g. /warp hunters, /ah).
 //
 // Staff (op):
-//   /npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links>       new NPC where you stand, glowing, with a hologram above it
+//   /npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions>       new NPC where you stand, glowing, with a hologram above it
 //   /npcmenu spawncmd <title> <command...>         new NPC that runs <command> for the player who clicks it
 //                                                  e.g. /npcmenu spawncmd Hunters warp hunters
-//   /npcmenu attach <cosmetics|crates|throneshop|kits|levels|links>       give the NPC you are LOOKING AT this menu (keeps its skin/spot)
+//   /npcmenu attach <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions>       give the NPC you are LOOKING AT this menu (keeps its skin/spot)
 //   /npcmenu attachcmd <command...>                the NPC you are looking at runs this command when clicked
 //   /npcmenu detach                                the NPC you are looking at goes back to normal
 //   /npcmenu styleall                              ALL your other NPCs within 64 blocks get the same glow + big title +
@@ -219,7 +219,17 @@
           { icon: 'minecraft:feather', name: '&f&lFlight Time', detail: '6 hours', price: 500, give: { type: 'fly', seconds: 21600 } },
         ],
       },
-      { slot: [3, 3], icon: 'minecraft:golden_shovel', name: '&a&lCLAIM BLOCKS', kind: 'VIRTUAL ITEM', desc: ['Claim blocks help protect your', 'builds and homes from other', 'players.'], soon: true },
+      {
+        slot: [3, 3], icon: 'minecraft:grass_block', name: '&a&lCLAIM BLOCKS', kind: 'VIRTUAL ITEM',
+        desc: ['Claim blocks let you protect', 'more land. Claim with a &6golden', '&6shovel&f: right-click two opposite', 'corners of your base.'],
+        layout: 'spaced',
+        children: [
+          { icon: 'minecraft:grass_block', name: '&a&lClaim Blocks', detail: '500 blocks', price: 100, give: { type: 'claim', n: 500 } },
+          { icon: 'minecraft:grass_block', name: '&a&lClaim Blocks', detail: '1,000 blocks', price: 180, give: { type: 'claim', n: 1000 } },
+          { icon: 'minecraft:grass_block', name: '&a&lClaim Blocks', detail: '2,500 blocks', price: 400, give: { type: 'claim', n: 2500 } },
+          { icon: 'minecraft:grass_block', name: '&a&lClaim Blocks', detail: '5,000 blocks', price: 750, give: { type: 'claim', n: 5000 } },
+        ],
+      },
       { slot: [5, 3], icon: 'minecraft:black_shulker_box', name: '&b&lAUTOSELL CHESTS', kind: 'ITEM', desc: ['Sell the contents of a chest to', 'the server shop automatically.'], soon: true },
       { slot: [7, 3], icon: 'minecraft:ender_chest', name: '&d&lLOOTBOXES', kind: 'ITEM', desc: ['Lootboxes contain exclusive tags,', 'runes, spawners and more.'], soon: true },
     ],
@@ -406,6 +416,9 @@
     } else if (g.type == 'fly') {
       contents([it.detail + ' of Flight Time'])
       use(['Turn it on/off with &e/flytime&7, then', 'double-jump to fly. Time only counts', 'down while you are flying.', 'Time left: &e/flytime left'])
+    } else if (g.type == 'claim') {
+      contents([it.detail.replace(' blocks', '') + ' Claim Blocks'])
+      use(['Claim land with a &6golden shovel&7:', '&fright-click&7 one corner, then the', 'opposite corner. 1 block of area = 1', 'claim block. No shovel? &e/claimtool', 'Check your blocks: &e/flan list'])
     } else if (g.type == 'rank') {
       contents(['Permanent ' + strip(it.name).replace(' Rank', '') + ' rank', 'Every rank below it is included'])
       use(['Hover the &fbook&7 and &fsign&7 under this', 'rank to see its perks and commands.', 'You get it straight away after buying.'])
@@ -509,6 +522,7 @@
     else if (g.type == 'tag') { addOwned(p, 'tag:' + g.id); p.tell('§7Equip it with §e/tags§7.') }
     else if (g.type == 'namecolor') { addOwned(p, 'nc:' + g.id); p.tell('§7Equip it with §e/namecolor§7.') }
     else if (g.type == 'fly') { addFly(p, g.seconds) }
+    else if (g.type == 'claim') { run(s, `flan giveClaimBlocks ${p.username} ${g.n}`); p.tell('§7Claim with a §6golden shovel§7. Your claim blocks: §e/flan list') }
     else if (g.type == 'cos') {
       addOwned(p, g.kind + ':' + g.id)
       run(s, `tellraw ${p.username} ${JSON.stringify(['', { text: 'Equip it: ', color: 'gray' }, { text: '[CLICK HERE]', color: 'light_purple', bold: true, clickEvent: { action: 'run_command', value: KINDS[g.kind].cmd }, hoverEvent: { action: 'show_text', contents: 'Opens ' + KINDS[g.kind].cmd } }, { text: ' or type ' + KINDS[g.kind].cmd + ' / /cosmetics', color: 'gray' }])}`)
@@ -660,7 +674,9 @@
   const COLOR_NAME = { 0: 'black', 1: 'dark_blue', 2: 'dark_green', 3: 'dark_aqua', 4: 'dark_red', 5: 'dark_purple', 6: 'gold', 7: 'gray',
     8: 'dark_gray', 9: 'blue', a: 'green', b: 'aqua', c: 'red', d: 'light_purple', e: 'yellow', f: 'white' }
   const tagState = {}     // username -> { key, status entity, statusText }
-  const teamOf = (p) => 'otn_' + String(p.getStringUUID()).replace(/-/g, '').substring(0, 12)
+  // KubeJS names it getStringUuid(); keep the other spellings as fallbacks
+  const uidOf = (e) => { try { return String(e.getStringUuid()) } catch (x) { try { return String(e.getStringUUID()) } catch (y) { return String(e.uuid) } } }
+  const teamOf = (p) => 'otn_' + uidOf(p).replace(/-/g, '').substring(0, 12)
   const nameColor = (p) => {
     var g = equipped(p, 'glow'); if (g) return g.team
     var nc = equipped(p, 'nc'); if (nc) return COLOR_NAME[nc.code.charAt(1)] || 'white'
@@ -717,10 +733,10 @@
         var c = equipped(p, 'status')
         if (c == null || p.isSpectator() || p.isInvisible()) { if (st.e) killPlate(p); return }
         var e = st.e
-        if (e == null || !e.isAlive() || e.getVehicle() == null || e.getVehicle().getStringUUID() != p.getStringUUID()) { spawnStatus(p, statusJson(c, phase)); return }
+        if (e == null || !e.isAlive() || e.getVehicle() == null || uidOf(e.getVehicle()) != uidOf(p)) { spawnStatus(p, statusJson(c, phase)); return }
         if (s.tickCount % (ANIM_TICKS * 2) == 0) {
           var json = statusJson(c, phase)
-          if (json != st.json) { st.json = json; s.runCommandSilent(`data merge entity ${e.getStringUUID()} {text:'${json.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'}`) }
+          if (json != st.json) { st.json = json; s.runCommandSilent(`data merge entity ${uidOf(e)} {text:'${json.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'}`) }
         }
       } catch (x) { console.warn('[npc_menus] name tag: ' + x) }
     })
@@ -872,23 +888,36 @@
 
   // ======================================================================= Kit Selector
   const KIT_MS = KIT_COOLDOWN_HOURS * 3600 * 1000
-  const kitMenu = (p) => {
-    var s = p.server, ids = ranksOf(p), op = p.hasPermissions(2), now = Date.now()
-    p.openChestGUI(Text.of('Kits'), 3, gui => {
+  // target: staff can open another player's menu to see exactly what that player sees (their ranks and timers),
+  // view only: clicks do nothing then. /kitmenu <player>
+  const kitMenu = (p, target) => {
+    var who = target || p, viewing = who !== p
+    var s = p.server, ids = ranksOf(who), op = who.hasPermissions(2), now = Date.now()
+    p.openChestGUI(Text.of(viewing ? 'Kits: ' + who.username : 'Kits'), 3, gui => {
       gui.playerSlots = true
       fill(gui, s, 3)
+      // free starter kit for everyone (NeoEssentials handles its own 1 day cooldown)
+      gui.slot(1, 1, sl => {
+        sl.item = icon(s, 'minecraft:candle', '&f&lStarter', ['&a&lAVAILABLE', '', '&f&lKIT INFORMATION:', '&8 • &7Free for everyone', '&8 • &7Cooldown: &f1d', '', viewing ? '&8View only' : '&e&lCLICK TO CLAIM'], true)
+        sl.leftClicked = e => {
+          if (viewing) return
+          after(p, () => { try { p.runCommandSilent('kit starter') } catch (x) { p.tell('§c§lKits §7» Use §f/kit starter') } })
+        }
+      })
       RANK_ORDER.forEach((kit, i) => {
         var info = RANK_INFO[kit]
         var has = op || ids.indexOf(kit) >= 0
-        var last = Number(String(p.persistentData.getString('ot_kitcd_' + kit)) || 0)
+        var last = Number(String(who.persistentData.getString('ot_kitcd_' + kit)) || 0)
         var left = op ? 0 : (last ? KIT_MS - (now - last) : 0)
         var status = !has ? '&c&lNO PERMISSIONS' : left > 0 ? '&c&lON COOLDOWN' : '&a&lAVAILABLE'
         var lore = [status, '', '&f&lKIT INFORMATION:', '&8 • &7Cooldown: &f5d', '&8 • &7Remaining: &f' + (has && left > 0 ? dur(left) : 'None')]
         lore.push('')
-        lore.push(!has ? '&7Unlock with the &f' + info.name + '&7 rank: &eoverthronesmp.tebex.store' : left > 0 ? '&7Come back when the timer runs out.' : '&e&lCLICK TO CLAIM')
-        gui.slot(2 + i, 1, sl => {
+        if (viewing) lore.push('&8View only' + (op ? ' (staff never get a cooldown)' : ''))
+        else lore.push(!has ? '&7Unlock with the &f' + info.name + '&7 rank: &eoverthronesmp.tebex.store' : left > 0 ? '&7Come back when the timer runs out.' : '&e&lCLICK TO CLAIM')
+        gui.slot(3 + i, 1, sl => {
           sl.item = icon(s, has ? info.candle : 'minecraft:gray_candle', info.c + '&l' + info.name, lore, has && left <= 0)
           sl.leftClicked = e => {
+            if (viewing) return
             if (!has) { p.tell('§c§lKits §7» You need the §f' + info.name + '§7 rank for this kit. §eoverthronesmp.tebex.store'); return }
             if (left > 0) { p.tell('§c§lKits §7» You can claim this kit again in §e' + dur(left) + '§7.'); return }
             after(p, () => claimKit(p, kit))
@@ -903,6 +932,19 @@
     // kit_cooldown.js normally records the claim; record it here too if it didn't (ops never get a cooldown)
     if (!p.hasPermissions(2) && String(p.persistentData.getString(key) || '') == before) p.persistentData.putString(key, String(Date.now()))
   }
+
+  ServerEvents.command(event => {
+    var parts = String(event.input || '').trim().replace(/^\//, '').split(/\s+/)
+    if (parts.length != 1) return
+    var c = parts[0].toLowerCase()
+    if (c != 'kits' && c != 'neoessentials:kits') return
+    var p = null
+    try { p = event.parseResults.getContext().getSource().getPlayer() } catch (e) { p = null }
+    if (!p) return    // console keeps the normal list
+    // open the menu first: event.cancel() ends this function straight away, nothing after it runs
+    p.server.scheduleInTicks(1, () => openMenu(p, 'kits'))
+    event.cancel()
+  })
 
   // ======================================================================= Level Guide
   const levelGuide = (p) => {
@@ -922,7 +964,162 @@
       gui.slot(2, 1, sl => { sl.item = icon(s, 'minecraft:gold_ingot', '&6&lLevel 100', ['Announced to the whole server.'], lvl >= 100) })
       gui.slot(4, 1, sl => { sl.item = icon(s, 'minecraft:end_portal_frame', '&4&lLevel 300', ['Breaks the Seal: unlocks the realms', '&eAeonia&7 and &4Netherfall&7.', 'Mobs there give &a2x XP&7.'], lvl >= 300) })
       gui.slot(6, 1, sl => { sl.item = icon(s, 'minecraft:nether_star', '&6&lLevel 1000 & 5000', ['Announced to the whole server.', 'Level 5000 is the max level.'], lvl >= 1000) })
+      gui.slot(2, 3, sl => {
+        sl.item = icon(s, 'minecraft:book', '&e&lHow Stats Work', ['You get &e1 stat point every level&7.', 'Spend them in &dYOUR STATS&7 on damage,', 'health, armor, crits, dodge, lifesteal,', 'speed and mining speed.', '', 'Every stat has a &cmax&7, so pick a build!', 'Unused points stay saved for future stats.', '', 'Reset: &d500 Throne Shards&7 or &a$2,000,000', 'Command: &e/stats'], false)
+      })
+      gui.slot(6, 3, sl => {
+        sl.item = icon(s, 'minecraft:iron_pickaxe', '&6&lProfessions', ['Mining, Gemology, Farming, Foraging', 'and &cCombat&7 (from killing mobs).', 'Hit &6nodes&7 (blocks with floating text)', '&f3 times&7 to gather them for XP.', '', '&e&lCLICK TO VIEW YOUR PROFESSIONS'], false)
+        sl.leftClicked = e => after(p, () => professionMenu(p))
+      })
+      gui.slot(4, 3, sl => {
+        var free = pointsOf(p) - spentOf(statsOf(p))
+        sl.item = icon(s, 'minecraft:enchanted_book', '&d&lYOUR STATS', ['Spend stat points on damage,', 'health, crits, dodge and more.', '', 'Free points: &e' + free, '', '&e&lCLICK TO OPEN'], free > 0)
+        sl.leftClicked = e => after(p, () => statsMenu(p))
+      })
       gui.slot(8, 3, sl => { sl.item = icon(s, 'minecraft:barrier', '&c&lClose', []); sl.leftClicked = e => { try { p.closeMenu() } catch (x) { } } })
+    })
+  }
+
+  // ======================================================================= Stats (1 point per level, spent here)
+  // Every stat is a percent bonus with a hard cap, so leftover points are simply saved for stats added later.
+  // Bonuses are applied with otSetAttrBonus (professions.js) as attribute modifiers "overthrone:stat_<id>".
+  const STATS = [
+    { id: 'str', name: '&c&l⚔ Strength', icon: 'minecraft:iron_sword', attr: 'minecraft:generic.attack_damage', per: 0.01, max: 25, op: 'mult', what: 'melee damage' },
+    { id: 'vit', name: '&4&l❤ Vitality', icon: 'minecraft:golden_apple', attr: 'minecraft:generic.max_health', per: 0.01, max: 25, op: 'mult', what: 'max health' },
+    { id: 'def', name: '&7&l🛡 Defense', icon: 'minecraft:iron_chestplate', attr: 'minecraft:generic.armor', per: 0.01, max: 20, op: 'mult', what: 'armor' },
+    { id: 'aspd', name: '&e&l🗡 Attack Speed', icon: 'minecraft:golden_sword', attr: 'minecraft:generic.attack_speed', per: 0.01, max: 15, op: 'mult', what: 'attack speed' },
+    { id: 'crit', name: '&6&l🎯 Crit Chance', icon: 'minecraft:spectral_arrow', attr: 'apothic_attributes:crit_chance', per: 0.005, max: 20, op: 'add', what: 'crit chance' },
+    { id: 'critdmg', name: '&6&l💥 Crit Damage', icon: 'minecraft:tnt', attr: 'apothic_attributes:crit_damage', per: 0.02, max: 25, op: 'add', what: 'crit damage' },
+    { id: 'dodge', name: '&b&l💨 Dodge Chance', icon: 'minecraft:feather', attr: 'apothic_attributes:dodge_chance', per: 0.005, max: 10, op: 'add', what: 'dodge chance' },
+    { id: 'steal', name: '&4&l🩸 Lifesteal', icon: 'minecraft:fermented_spider_eye', attr: 'apothic_attributes:life_steal', per: 0.005, max: 10, op: 'add', what: 'lifesteal' },
+    { id: 'spd', name: '&f&l👟 Speed', icon: 'minecraft:leather_boots', attr: 'minecraft:generic.movement_speed', per: 0.005, max: 10, op: 'mult', what: 'movement speed' },
+    { id: 'mine', name: '&8&l⛏ Mining Speed', icon: 'minecraft:diamond_pickaxe', attr: 'minecraft:player.block_break_speed', per: 0.02, max: 15, op: 'mult', what: 'mining speed' },
+  ]
+  const RESET_SHARDS = 500, RESET_MONEY = 2000000
+  const TAKE_MONEY = 'eco take {p} {n}'
+  const statsOf = (p) => { try { return JSON.parse(String(p.persistentData.getString('ot_stats')) || '{}') } catch (e) { return {} } }
+  const spentOf = (st) => Object.keys(st).reduce((a, k) => a + (st[k] || 0), 0)
+  const pointsOf = (p) => Math.max(1, p.persistentData.getInt('ot_level') || 1)   // 1 point per level
+  const applyStats = (p) => {
+    var st = statsOf(p)
+    STATS.forEach(d => { if (typeof otSetAttrBonus == 'function') otSetAttrBonus(p, d.attr, 'overthrone:stat_' + d.id, (st[d.id] || 0) * d.per, d.op) })
+  }
+  PlayerEvents.loggedIn(event => { var p = event.player; p.server.scheduleInTicks(40, () => { try { applyStats(p) } catch (e) { } }) })
+  PlayerEvents.respawned(event => { var p = event.player; p.server.scheduleInTicks(5, () => { try { applyStats(p) } catch (e) { } }) })
+  const pctTxt = (n) => (Math.round(n * 1000) / 10) + '%'
+
+  // money balance, read like the shards (from the scoreboard's money placeholder; staff can set it: /stats moneyplaceholder)
+  const moneyPlaceholder = (server) => {
+    var manual = String(store(server).getString('ot_money_placeholder') || '')
+    if (manual) return manual
+    try {
+      var cfg = typeof ssReadJson == 'function' ? ssReadJson('config/serversetup/scoreboard.json', null) : null
+      var lines = cfg == null ? [] : (cfg.lines || [])
+      for (var i = 0; i < lines.length; i++) {
+        var l = String(lines[i])
+        if (/money|balance|\$/i.test(l) && !/shard/i.test(l)) { var m = l.match(/%[^%\s]+%/) || l.match(/\{[^}\s]+\}/); if (m) return m[0] }
+      }
+    } catch (e) { }
+    return ''
+  }
+  const moneyOf = (p) => {
+    var ph = moneyPlaceholder(p.server)
+    if (!ph || Placeholders == null) return { ok: false, raw: ph ? '(no placeholder mod)' : '(no placeholder found)' }
+    var raw = ''
+    try { raw = String(Placeholders.setPlaceholders(p, ph)) } catch (e) { return { ok: false, raw: String(e) } }
+    var clean = raw.replace(/§./g, '').replace(/&[0-9a-fk-or]/gi, '').replace(/[,\s$]/g, '')
+    var m = clean.match(/^(-?\d+(?:\.\d+)?)([kKmMbB]?)$/)
+    if (!m || raw == ph) return { ok: false, raw: raw }
+    var mult = { '': 1, k: 1e3, m: 1e6, b: 1e9 }[m[2].toLowerCase()]
+    return { ok: true, value: Number(m[1]) * mult, exact: m[2] == '', raw: raw }
+  }
+  // takes a payment and checks it really went through (like the Throne Shop does)
+  const pay = (p, kind) => {
+    var s = p.server, price = kind == 'shards' ? RESET_SHARDS : RESET_MONEY, read = kind == 'shards' ? shardsOf : moneyOf
+    var label = kind == 'shards' ? fmt(price) + ' Throne Shards' : '$' + fmt(price)
+    var before = read(p)
+    if (!before.ok) { p.tell('§c§lStats §7» Could not read your ' + (kind == 'shards' ? 'shards' : 'money') + '. Please tell staff.'); console.warn('[stats] cannot read ' + kind + ' for ' + p.username + ': ' + before.raw); return false }
+    if (before.value < price) { p.tell('§c§lStats §7» A reset costs §f' + label + '§7. You do not have enough.'); return false }
+    run(s, (kind == 'shards' ? TAKE_SHARDS : TAKE_MONEY).replace('{p}', p.username).replace('{n}', String(price)))
+    var after = read(p)
+    var paid = after.ok && (before.exact && after.exact ? Math.round(before.value - after.value) == price : after.value < before.value)
+    if (!paid) { p.tell('§c§lStats §7» Payment failed, nothing was taken. Please tell staff.'); console.warn('[stats] ' + kind + ' take failed for ' + p.username + ' (' + before.raw + ' -> ' + after.raw + ')'); return false }
+    return true
+  }
+  const statsMenu = (p) => {
+    var s = p.server, st = statsOf(p), total = pointsOf(p), free = total - spentOf(st)
+    p.openChestGUI(Text.of('Your Stats'), 6, gui => {
+      gui.playerSlots = true
+      fill(gui, s, 6)
+      gui.slot(4, 0, sl => { sl.item = icon(s, 'minecraft:nether_star', '&6&lStat Points: &e&l' + free, ['You get &e1 point every level&7.', 'Total earned: &f' + fmt(total) + ' &7- spent: &f' + spentOf(st), '', 'Every stat has a &cmax&7. Points you', 'can\'t use yet stay saved for', 'stats added in the future.'], free > 0) })
+      STATS.forEach((d, i) => {
+        var have = st[d.id] || 0, maxed = have >= d.max, x = [0, 2, 4, 6, 8][i % 5], y = i < 5 ? 2 : 3
+        gui.slot(x, y, sl => {
+          var bar = ''
+          for (var b = 0; b < d.max; b++) bar += (b < have ? '&a' : '&8') + '|'
+          sl.item = icon(s, d.icon, d.name + ' &7(' + have + '/' + d.max + ')', [bar, '&7Bonus: &a+' + pctTxt(have * d.per) + ' &7' + d.what, '&7Each point: &f+' + pctTxt(d.per) + ' &7- max &f+' + pctTxt(d.max * d.per), '',
+            maxed ? '&a&lMAXED' : free <= 0 ? '&cNo free points (level up!)' : '&eLeft-click&7: +1 point', maxed || free <= 0 ? '' : '&eShift-left-click&7: +5 points'], have > 0)
+          var spend = (add) => {
+            after(p, () => {
+              var cur = statsOf(p), left = pointsOf(p) - spentOf(cur), n = Math.min(add, left, d.max - (cur[d.id] || 0))
+              if (n <= 0) { p.tell(left <= 0 ? '§c§lStats §7» You have no free points. Level up to get more!' : '§c§lStats §7» That stat is already maxed.'); statsMenu(p); return }
+              cur[d.id] = (cur[d.id] || 0) + n
+              p.persistentData.putString('ot_stats', JSON.stringify(cur))
+              applyStats(p)
+              run(s, `execute at ${p.username} run playsound minecraft:entity.player.levelup player ${p.username} ~ ~ ~ 0.6 1.6`)
+              p.tell('§a§lStats §7» +' + n + ' ' + strip(d.name) + ' §7(now +' + pctTxt(cur[d.id] * d.per) + ' ' + d.what + ')')
+              statsMenu(p)
+            })
+          }
+          sl.leftClicked = e => spend(1)
+          sl.shiftLeftClicked = e => spend(5)
+        })
+      })
+      var resetLore = (cost) => ['Takes back &fall&7 your spent points', 'so you can build again.', '', '&7Cost: ' + cost, '', '&eClick to reset']
+      gui.slot(2, 5, sl => {
+        sl.item = icon(s, 'minecraft:amethyst_shard', '&d&lReset Stats (Shards)', resetLore('&d' + fmt(RESET_SHARDS) + ' Throne Shards'), false)
+        sl.leftClicked = e => after(p, () => { if (spentOf(statsOf(p)) == 0) { p.tell('§7§lStats §7» You have no points spent.'); return } if (pay(p, 'shards')) { p.persistentData.putString('ot_stats', '{}'); applyStats(p); p.tell('§a§lStats §7» Your stats were reset. All points are free again.'); statsMenu(p) } })
+      })
+      gui.slot(6, 5, sl => {
+        sl.item = icon(s, 'minecraft:emerald', '&a&lReset Stats (Money)', resetLore('&a$' + fmt(RESET_MONEY)), false)
+        sl.leftClicked = e => after(p, () => { if (spentOf(statsOf(p)) == 0) { p.tell('§7§lStats §7» You have no points spent.'); return } if (pay(p, 'money')) { p.persistentData.putString('ot_stats', '{}'); applyStats(p); p.tell('§a§lStats §7» Your stats were reset. All points are free again.'); statsMenu(p) } })
+      })
+      gui.slot(0, 5, sl => { sl.item = icon(s, 'minecraft:arrow', '&e&lBack', ['Back to the Level Guide']); sl.leftClicked = e => after(p, () => levelGuide(p)) })
+      gui.slot(8, 5, sl => { sl.item = icon(s, 'minecraft:barrier', '&c&lClose', []); sl.leftClicked = e => { try { p.closeMenu() } catch (x) { } } })
+    })
+  }
+
+  // ======================================================================= Professions (professions.js)
+  const PROF_MENU = [
+    ['mining', '&7&l⛏ Mining', 'minecraft:iron_pickaxe', 'Gather ore nodes: coal, iron, gold, diamond...'],
+    ['gemology', '&d&l💎 Gemology', 'minecraft:amethyst_shard', 'Gather gem nodes: amethyst, quartz, emerald...'],
+    ['farming', '&a&l🌾 Farming', 'minecraft:wheat', 'Gather crop nodes: wheat, carrots, melons...'],
+    ['foraging', '&2&l🌲 Foraging', 'minecraft:oak_log', 'Gather tree nodes: oak, birch, spruce...'],
+    ['combat', '&c&l⚔ Combat', 'minecraft:iron_sword', 'Kill mobs! Stronger mobs give more.', '&7Perk: up to &a+10% melee damage'],
+  ]
+  const profNeed = (lvl) => typeof PROF_NEED === 'function' ? PROF_NEED(lvl) : Math.floor(100 * Math.pow(lvl, 1.4))
+  const professionMenu = (p) => {
+    var s = p.server, total = 0
+    p.openChestGUI(Text.of('Professions'), 5, gui => {
+      gui.playerSlots = true
+      fill(gui, s, 5)
+      PROF_MENU.forEach((pr, i) => {
+        var lvl = Math.max(1, p.persistentData.getInt('ot_prof_' + pr[0] + '_lvl') || 1), xp = p.persistentData.getInt('ot_prof_' + pr[0] + '_xp') || 0
+        var need = profNeed(lvl), max = lvl >= 100, pct = max ? 100 : Math.floor(xp * 100 / need), bar = ''
+        total += lvl
+        for (var b = 0; b < 20; b++) bar += (b < pct / 5 ? '&a' : '&8') + '|'
+        gui.slot([0, 2, 4, 6, 8][i], 1, sl => {
+          sl.item = icon(s, pr[2], pr[1] + ' &f&lLv ' + lvl, [bar + ' &f' + pct + '%', '&7XP: &f' + (max ? 'MAX' : fmt(xp) + ' &7/ &f' + fmt(need)), '', pr[3]].concat(pr[4] ? [pr[4]] : (pr[0] == 'mining' ? ['&7Perk: up to &a+20% mining speed'] : [])).concat(['', '&8Max level 100']), lvl > 1)
+        })
+      })
+      gui.slot(4, 0, sl => { sl.item = icon(s, 'minecraft:nether_star', '&6&lYour Professions', ['Total level: &e' + total, '', 'Gather nodes to level up!'], true) })
+      gui.slot(1, 3, sl => { sl.item = icon(s, 'minecraft:book', '&e&lHow It Works', ['Look for blocks with &6floating text&7:', 'they are &6nodes&7.', 'Break one to gather it and', 'earn &eprofession XP&7.'], false) })
+      gui.slot(2, 3, sl => { sl.item = icon(s, 'minecraft:experience_bottle', '&a&lBonus Level XP', ['Every node also gives', '&anormal level XP&7 for your', '&f/level&7 too.'], false) })
+      gui.slot(3, 3, sl => { sl.item = icon(s, 'minecraft:iron_bars', '&c&lNode Levels', ['Each node shows a level.', 'Your profession must be at', 'least that level to gather it.'], false) })
+      gui.slot(5, 3, sl => { sl.item = icon(s, 'minecraft:clock', '&b&lRespawning', ['A gathered node shows a', '&ccountdown&7 and comes back', 'after &f1 minute&7 in the same spot.'], false) })
+      gui.slot(6, 3, sl => { sl.item = icon(s, 'minecraft:chest', '&6&lNo Item Drops', ['Nodes give &eXP only&7, no items.', 'Normal blocks everywhere else', 'still drop as usual.'], false) })
+      gui.slot(7, 3, sl => { sl.item = icon(s, 'minecraft:writable_book', '&d&lCommands', ['&e/professions &7- your levels in chat', '&e/professionmenu &7- open this menu', '&e/level &7- your main level'], false) })
+      gui.slot(8, 4, sl => { sl.item = icon(s, 'minecraft:barrier', '&c&lClose', []); sl.leftClicked = e => { try { p.closeMenu() } catch (x) { } } })
     })
   }
 
@@ -944,6 +1141,75 @@
         sl.leftClicked = e => after(p, () => run(s, `tellraw ${p.username} ${JSON.stringify(['', { text: ' ➤ ', color: 'dark_gray' },
           { text: l[2], color: 'aqua', underlined: true, clickEvent: { action: 'open_url', value: l[2] }, hoverEvent: { action: 'show_text', contents: 'Click to open' } }])}`))
       }))
+    })
+  }
+
+  // ======================================================================= Land claims (Flan, golden shovel)
+  const claimsMenu = (p) => {
+    var s = p.server
+    p.openChestGUI(Text.of('Land Claims'), 3, gui => {
+      gui.playerSlots = true
+      fill(gui, s, 3)
+      gui.slot(1, 1, sl => {
+        sl.item = icon(s, 'minecraft:written_book', '&6&lHOW TO CLAIM', [
+          '&f1. Hold a &6golden shovel&f.', '&f2. &eRight-click&f one corner of your base.', '&f3. &eRight-click&f the opposite corner.',
+          '&fDone! Nobody else can build, break', '&for open chests inside your claim.', '',
+          '&71 block of area = 1 claim block.', '&7Claims go from the ground up, so', '&7corner to corner is all you need.'], true)
+        sl.leftClicked = e => after(p, () => run(s, `execute as ${p.username} run claiminfo`))
+      })
+      gui.slot(3, 1, sl => {
+        sl.item = icon(s, 'minecraft:golden_shovel', '&a&lGET YOUR CLAIM TOOL', ['&fA free golden shovel to claim', '&fyour land with.', '', '&e&lCLICK TO GET IT'], true)
+        sl.leftClicked = e => after(p, () => run(s, `execute as ${p.username} run claimtool`))
+      })
+      gui.slot(5, 1, sl => {
+        sl.item = icon(s, 'minecraft:stick', '&b&lSEE CLAIMS', ['&fHold a &bstick&f and right-click a', '&fblock to see who owns that land', '&fand where its edges are.'], false)
+      })
+      gui.slot(7, 1, sl => {
+        sl.item = icon(s, 'minecraft:emerald', '&e&lYOUR CLAIM BLOCKS', ['&fSee how many claim blocks you have', '&fand where your claims are.', '', '&fGet more: playing time, &d/throneshop&f,', '&fvote crates and the store.', '', '&e&lCLICK TO CHECK'], true)
+        sl.leftClicked = e => after(p, () => run(s, `execute as ${p.username} run flan list`))
+      })
+      gui.slot(3, 2, sl => {
+        sl.item = icon(s, 'minecraft:player_head', '&d&lTRUST FRIENDS', ['&fStand in your claim and type', '&e/flan menu&f to let friends build', '&for open chests, and change settings.'], false)
+      })
+      gui.slot(5, 2, sl => {
+        sl.item = icon(s, 'minecraft:barrier', '&c&lWHERE CAN I CLAIM?', ['&fIn the &aWild&f and &aSurvival&f worlds.', '&fNot in the hub, the RPG World,', '&fthe Resource World or the &cSMP&f.', '', '&7Remove a claim: stand in it and', '&7type &e/flan delete'], false)
+      })
+    })
+  }
+
+  // ======================================================================= SMP world
+  const smpMenu = (p) => {
+    var s = p.server
+    p.openChestGUI(Text.of('The SMP World'), 3, gui => {
+      gui.playerSlots = true
+      fill(gui, s, 3)
+      gui.slot(1, 1, sl => {
+        sl.item = icon(s, 'minecraft:written_book', '&a&lWHAT IS THE SMP?', [
+          '&fSMP = &aSurvival Multiplayer&f.', '&fOne big shared survival world for', '&fthe whole server: build a base, farm,',
+          '&ftrade, raid and make friends (or rivals).', '', '&7Everything you build stays,', '&7it never resets.'], false)
+      })
+      gui.slot(3, 1, sl => {
+        sl.item = icon(s, 'minecraft:oak_sapling', '&2&lSETTLE DOWN', [
+          '&fFind your own land with &e/rtp&f,', '&fthen build your home, farms', '&fand storage. Team up with friends', '&for start a town together.', '', '&7Tip: build far out and hide', '&7your base well.'], false)
+      })
+      gui.slot(5, 1, sl => {
+        sl.item = icon(s, 'minecraft:tnt', '&c&lNO CLAIMS - RAIDING ON', [
+          '&fLand claims &cdo not work&f in the SMP.', '&fAny base can be raided: players can', '&fbreak in, grief and steal your loot.', '',
+          '&7Protect yourself: hide your base,', '&7lock it behind traps and walls,', '&7and keep valuables in your ender chest.', '',
+          '&7Want a safe base? Build in the &aWild', '&7or &aSurvival&7 and claim it there.'], false)
+      })
+      gui.slot(7, 1, sl => {
+        sl.item = icon(s, 'minecraft:bell', '&e&lANYTHING GOES', [
+          '&fRaiding, griefing and stealing are', '&fpart of the game here. Make allies,', '&fmake enemies, trade or take.', '',
+          '&cStill banned: hacks, cheats, x-ray', '&cand exploits. &e/rules'], false)
+      })
+      gui.slot(3, 2, sl => {
+        sl.item = icon(s, 'minecraft:ender_pearl', '&a&lTRAVEL TO THE SMP', ['&fTakes you to the SMP spawn.', '&fType &e/smp&f any time to come back.', '', '&a&lCLICK TO GO'], true)
+        sl.leftClicked = e => after(p, () => run(s, `execute as ${p.username} run smp`))
+      })
+      gui.slot(5, 2, sl => {
+        sl.item = icon(s, 'minecraft:compass', '&b&lFIND LAND', ['&fIn the SMP world, type &e/rtp&f to', '&fjump to a random spot and', '&fexplore for the perfect base.'], false)
+      })
     })
   }
 
@@ -1004,7 +1270,7 @@
     })
   }
 
-  const MENUS = { cosmetics: p => cosmeticsMain(p), crates: crateMenu, throneshop: shopMain, kits: kitMenu, levels: levelGuide, links: linksMenu }
+  const MENUS = { cosmetics: p => cosmeticsMain(p), crates: crateMenu, throneshop: shopMain, kits: kitMenu, levels: levelGuide, links: linksMenu, claims: claimsMenu, smp: smpMenu, professions: professionMenu }
   const TITLES = {
     cosmetics: ['&d&lCOSMETICS', '&fRIGHT-CLICK TO VIEW'],
     crates: ['&e&lCRATES', '&fRIGHT-CLICK TO VIEW'],
@@ -1012,8 +1278,11 @@
     kits: ['&6&lKITS', '&fRIGHT-CLICK TO VIEW'],
     levels: ['&a&lLEVEL GUIDE', '&fRIGHT-CLICK TO VIEW'],
     links: ['&b&lSERVER LINKS', '&fRIGHT-CLICK TO VIEW'],
+    claims: ['&6&lLAND CLAIMS', '&fRIGHT-CLICK TO VIEW'],
+    smp: ['&a&lTHE SMP WORLD', '&fRIGHT-CLICK TO VIEW'],
+    professions: ['&6&lPROFESSIONS', '&fRIGHT-CLICK TO VIEW'],
   }
-  const GLOW = { cosmetics: 'light_purple', crates: 'yellow', throneshop: 'light_purple', kits: 'gold', levels: 'green', links: 'aqua', cmd: 'yellow' }
+  const GLOW = { cosmetics: 'light_purple', crates: 'yellow', throneshop: 'light_purple', kits: 'gold', levels: 'green', links: 'aqua', claims: 'gold', smp: 'green', professions: 'gold', cmd: 'yellow' }
   const openMenu = (p, type) => {
     if (p.openChestGUI === undefined) { p.tell('§cMenus need KubeJS chest GUIs.'); return }
     try { MENUS[type](p) } catch (e) { console.error('[npc_menus] ' + type + ': ' + e); if (p.hasPermissions(2)) p.tell('§c[npc_menus] ' + e) }
@@ -1070,7 +1339,7 @@
     var hit = p.rayTrace(8, false), e = hit == null ? null : hit.entity
     return e == null || String(e.type).indexOf('easy_npc') < 0 ? null : e
   }
-  const uuidOf = (e) => { try { return String(e.getStringUUID()) } catch (x) { return String(e.uuid) } }
+  const uuidOf = (e) => { try { return String(e.getStringUuid()) } catch (x) { try { return String(e.getStringUUID()) } catch (y) { return String(e.uuid) } } }
   const holoJson = (lines) => JSON.stringify(lines.map((l, i) => {
     var c = compParts(l)
     if (i) c.unshift({ text: '\n' })
@@ -1116,7 +1385,7 @@
     if (id == null) { id = 'ot_mid_' + Date.now().toString(36); e.addTag(id) }
     return id
   }
-  const OPEN_CMD = { cosmetics: 'cosmetics', crates: 'cratemenu', throneshop: 'throneshop', kits: 'kitmenu', levels: 'levelguide', links: 'links' }
+  const OPEN_CMD = { cosmetics: 'cosmetics', crates: 'cratemenu', throneshop: 'throneshop', kits: 'kitmenu', levels: 'levelguide', links: 'links', claims: 'claimmenu', smp: 'smpmenu', professions: 'professionmenu' }
   // Easy NPC's own "on click: run command" (the same thing the setup's click_command NPCs use)
   const setClickAction = (server, e, command) => {
     var c = '/' + String(command).replace(/^\//, '').replace(/\\/g, '\\\\').replace(/"/g, '\\"')
@@ -1254,7 +1523,7 @@
     say(ctx.source, '§a[npcmenu] Removed ' + n + ' floating texts within ' + radius + ' blocks. §7Now /npcmenu fixall and /npcmenu styleall put the right ones back.')
     return 1
   }
-  const NPC_NAMES = { cosmetics: ['Cosmetics', '#FF55FF'], crates: ['Crates', '#FFFF55'], throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'] }
+  const NPC_NAMES = { cosmetics: ['Cosmetics', '#FF55FF'], crates: ['Crates', '#FFFF55'], throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'], claims: ['Land Claims', '#FFAA00'], smp: ['SMP World', '#55FF55'], professions: ['Profession Master', '#FFAA00'] }
 
   ServerEvents.commandRegistry(event => {
     const { commands: Commands, arguments: Arguments } = event
@@ -1266,7 +1535,7 @@
     event.register(Commands.literal('npcmenu').requires(src => src.hasPermission(2))
       .then(Commands.literal('spawn').then(typeArg().executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, t = typeOf(ctx)
-        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels or links'); return 0 }
+        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels, links, claims, smp or professions'); return 0 }
         var e = spawnNpc(p, NPC_NAMES[t][0], NPC_NAMES[t][1])
         if (e == null) { say(ctx.source, '§cThe NPC did not spawn (check the server log).'); return 0 }
         makeMenuNpc(p.server, e, t, null)
@@ -1283,7 +1552,7 @@
       })))))
       .then(Commands.literal('attach').then(typeArg().executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, t = typeOf(ctx), e = looked(p)
-        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels or links'); return 0 }
+        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels, links, claims, smp or professions'); return 0 }
         if (e == null) { say(ctx.source, '§cLook straight at an NPC (within 8 blocks).'); return 0 }
         makeMenuNpc(p.server, e, t, null)
         say(ctx.source, '§a[npcmenu] This NPC now opens the ' + t + ' menu.')
@@ -1404,6 +1673,25 @@
         return 1
       })))))
 
+    // staff: read-only, shows an online player's Tensura race (same lookup the race fix uses)
+    event.register(Commands.literal('racecheck').requires(src => src.hasPermission(2))
+      .then(Commands.argument('player', Arguments.PLAYER.create(event)).executes(ctx => {
+        var p = Arguments.PLAYER.getResult(ctx, 'player'), race = null
+        try {
+          var inst = Java.loadClass('io.github.manasmods.manascore.race.api.RaceAPI').getRaceFrom(p).getRace()
+          race = inst.isPresent() ? String(inst.get().getRaceId()) : 'none (no race chosen)'
+        } catch (e) { race = 'could not read (' + e + ')' }
+        say(ctx.source, '§b§lRace §7» §f' + p.username + '§7: §b' + race)
+        return 1
+      })))
+    // staff: read-only check of an online player's Throne Shards (same number their scoreboard shows)
+    event.register(Commands.literal('shardcheck').requires(src => src.hasPermission(2))
+      .then(Commands.argument('player', Arguments.PLAYER.create(event)).executes(ctx => {
+        var p = Arguments.PLAYER.getResult(ctx, 'player'), b = shardsOf(p)
+        say(ctx.source, b.ok ? '§d§lThrone Shards §7» §f' + p.username + '§7 has §d' + fmt(b.value) + (b.exact ? '' : ' (rounded)') + '§7 shards.'
+          : '§c[shardcheck] Could not read ' + p.username + "'s shards (" + b.raw + ').')
+        return 1
+      })))
     event.register(Commands.literal('throneshop').executes(ctx => { openMenu(ctx.source.playerOrException, 'throneshop'); return 1 })
       .then(Commands.literal('debug').requires(src => src.hasPermission(2)).executes(ctx => {
         var p = ctx.source.playerOrException, b = shardsOf(p)
@@ -1473,6 +1761,16 @@
         p.tell('§b✈ Flight time left: §f' + dur(flyLeft(p) * 1000) + (p.persistentData.getBoolean('ot_fly_on') ? ' §a(ON)' : ' §7(OFF)'))
         return 1
       }))
+      // staff: read-only, shows a player's bought flight time and whether they are flying right now
+      .then(Commands.literal('check').requires(src => src.hasPermission(2)).then(Commands.argument('player', Arguments.PLAYER.create(event)).executes(ctx => {
+        var p = Arguments.PLAYER.getResult(ctx, 'player'), flying = false, mayfly = false, gm = '?'
+        try { flying = p.getAbilities().flying; mayfly = p.getAbilities().mayfly } catch (e) { }
+        try { gm = String(p.gameMode.getGameModeForPlayer().getName()) } catch (e) { }
+        ctx.source.sendSystemMessage(Text.of('§b[flytime] §f' + p.username + '§7: bought flight left §f' + dur(flyLeft(p) * 1000) +
+          ' §7(shop flight ' + (p.persistentData.getBoolean('ot_fly_on') ? '§aON' : '§cOFF') + '§7) - can fly now: ' + (mayfly ? '§aYES' : '§cNO') +
+          '§7, flying now: ' + (flying ? '§aYES' : '§cNO') + ' §7- gamemode: §f' + gm))
+        return 1
+      })))
       .then(Commands.literal('give').requires(src => src.hasPermission(2)).then(Commands.argument('player', Arguments.PLAYER.create(event))
         .then(Commands.argument('minutes', Arguments.INTEGER.create(event)).executes(ctx => {
           var p = Arguments.PLAYER.getResult(ctx, 'player'), m = Arguments.INTEGER.getResult(ctx, 'minutes')
@@ -1487,7 +1785,43 @@
         return 1
       }))))
     event.register(Commands.literal('cratemenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'crates'); return 1 }))
-    event.register(Commands.literal('kitmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'kits'); return 1 }))
+    event.register(Commands.literal('kitmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'kits'); return 1 })
+      // staff: see another player's kits and cooldowns the way they see them
+      .then(Commands.argument('player', Arguments.PLAYER.create(event)).requires(src => src.hasPermission(2)).executes(ctx => {
+        var me = ctx.source.playerOrException, who = Arguments.PLAYER.getResult(ctx, 'player')
+        try { kitMenu(me, who) } catch (e) { me.tell('§c[npc_menus] ' + e) }
+        return 1
+      })))
     event.register(Commands.literal('levelguide').executes(ctx => { openMenu(ctx.source.playerOrException, 'levels'); return 1 }))
+    event.register(Commands.literal('stats').executes(ctx => { var p = ctx.source.playerOrException; try { statsMenu(p) } catch (e) { p.tell('§c[stats] ' + e) } return 1 })
+      .then(Commands.literal('check').requires(src => src.hasPermission(2)).then(Commands.argument('player', Arguments.PLAYER.create(event)).executes(ctx => {
+        var p = Arguments.PLAYER.getResult(ctx, 'player'), st = statsOf(p)
+        say(ctx.source, '§6[stats] §f' + p.username + '§7: points §e' + (pointsOf(p) - spentOf(st)) + ' free§7 / ' + pointsOf(p) + ' total')
+        STATS.forEach(d => { if (st[d.id]) say(ctx.source, '§7 - ' + strip(d.name) + ': §f' + st[d.id] + '/' + d.max + ' §a(+' + pctTxt(st[d.id] * d.per) + ')') })
+        return 1
+      })))
+      .then(Commands.literal('reset').requires(src => src.hasPermission(2)).then(Commands.argument('player', Arguments.PLAYER.create(event)).executes(ctx => {
+        var p = Arguments.PLAYER.getResult(ctx, 'player')
+        p.persistentData.putString('ot_stats', '{}'); applyStats(p)
+        say(ctx.source, '§a[stats] Reset ' + p.username + "'s stats for free.")
+        p.tell('§a§lStats §7» Staff reset your stats. All your points are free again.')
+        return 1
+      })))
+      .then(Commands.literal('debug').requires(src => src.hasPermission(2)).executes(ctx => {
+        var p = ctx.source.playerOrException, sh = shardsOf(p), mo = moneyOf(p)
+        say(ctx.source, '§7[stats] shards placeholder §f' + (balancePlaceholder(p.server) || '(none)') + ' §7-> §f' + sh.raw + (sh.ok ? ' §a(ok)' : ' §c(cannot read)'))
+        say(ctx.source, '§7[stats] money placeholder §f' + (moneyPlaceholder(p.server) || '(none)') + ' §7-> §f' + mo.raw + (mo.ok ? ' §a(ok)' : ' §c(cannot read)'))
+        STATS.forEach(d => { var ok = typeof otSetAttrBonus == 'function' && otSetAttrBonus(p, d.attr, 'overthrone:stat_' + d.id, (statsOf(p)[d.id] || 0) * d.per, d.op); if (!ok) say(ctx.source, '§c[stats] ' + strip(d.name) + ': attribute ' + d.attr + ' not found') })
+        return 1
+      }))
+      .then(Commands.literal('moneyplaceholder').requires(src => src.hasPermission(2)).then(Commands.argument('text', StringArg.greedyString()).executes(ctx => {
+        var t = String(StringArg.getString(ctx, 'text'))
+        ctx.source.server.persistentData.putString('ot_money_placeholder', t == 'auto' ? '' : t)
+        say(ctx.source, '§a[stats] Money placeholder set to §f' + (t == 'auto' ? '(auto)' : t))
+        return 1
+      }))))
+    event.register(Commands.literal('professionmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'professions'); return 1 }))
+    event.register(Commands.literal('claimmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'claims'); return 1 }))
+    event.register(Commands.literal('smpmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'smp'); return 1 }))
   })
 })()

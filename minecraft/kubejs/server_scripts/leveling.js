@@ -185,6 +185,8 @@ const ORE_XP = {
 BlockEvents.broken(event => {
   const p = event.player
   if (!p || p.isCreative()) return
+  // professions.js nodes give their own XP: no ore XP from them
+  if (typeof otIsNodeBlock === 'function' && otIsNodeBlock(event.block)) return
   const id = String(event.block.id)
   let xp = ORE_XP[id]
   if (xp === undefined && (id.endsWith('_ore') || event.block.hasTag('c:ores'))) xp = 3   // modded ores
@@ -238,7 +240,7 @@ ServerEvents.loaded(event => {
   event.server.players.forEach(p => syncScores(p))
 })
 
-const bar = (pct) => {
+const lvlProgressBar = (pct) => {
   let s = '§6'
   for (let i = 0; i < 20; i++) s += (i === Math.round(pct / 5) ? '§8' : '') + '|'
   return s
@@ -247,7 +249,7 @@ const describe = (p) => {
   const lvl = getLvl(p), xp = getXp(p)
   if (lvl >= MAX_LEVEL) return `§6✦ ${p.username}: §lLevel ${lvl} (MAX)`
   const pct = Math.floor(xp * 100 / need(lvl))
-  return `§6✦ ${p.username}: §eLevel §6§l${lvl}§r  ${bar(pct)} §7${xp} / ${need(lvl)} XP (${pct}%)`
+  return `§6✦ ${p.username}: §eLevel §6§l${lvl}§r  ${lvlProgressBar(pct)} §7${xp} / ${need(lvl)} XP (${pct}%)`
 }
 
 ServerEvents.commandRegistry(event => {

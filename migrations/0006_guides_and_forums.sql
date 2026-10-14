@@ -170,6 +170,9 @@ Follow the [key conflict fixes](/guide#key-conflicts).
 **Nobody can hear me in voice chat**
 Press **V**, open the settings and pick the right microphone. Make sure you aren''t muted (**M**) and that voice chat isn''t turned off (**N**).
 
+**I get kicked with "Failed to decode packet clientbound/minecraft:custom_payload"**
+This is a known bug in the Solo Leveling mod. **Fully close Minecraft and your launcher**, open them again and rejoin. If it keeps happening after 2-3 tries, tell staff on Discord.
+
 **I found a bug or exploit**
 Report it privately in a Discord ticket. Don''t abuse it; using bugs for an advantage is against [rule 1.2](/rules#global-bans).
 
@@ -287,9 +290,13 @@ Use warps to get around fast. The warp boards in the hub list every destination.
 - **/rpg**: RPG world
 - **/warp arcade**: Arcade & Trade Hall
 - **/warp arcanum**: The Arcanum: enchanting & runes
+- **/smp**: The SMP world (raiding allowed)
+- **/wild**: A random spot in the overworld
 
 - **The RPG world is protected.** You can''t break or place blocks, and buckets, flint and steel, fire charges and explosions are blocked. It''s a city to visit, not to build in.
 - **Back to the hub:** walk through the portal in the RPG world to return to the hub.
+- **The SMP world (/smp)** has **no land claims and raiding is allowed**: anything goes. Build there at your own risk, or claim land in the other worlds to keep your base safe.
+- **Safe zones:** you can''t take damage in the hub or the RPG world. Everywhere else, mobs and players can hurt you.
 - **Travel further:** activate Waystones as you find them to teleport between them. Use Nature''s Compass to find a biome.
 - **Maps:** Xaero''s Minimap and World Map (**M**) show where you are and your waypoints.
 

@@ -172,7 +172,7 @@
             },
             {
               "title": "🛠️ Known Issues & Fixes",
-              "description": "**🔸 My armour is invisible in Epic Fight battle mode**\nThis is a known incompatibility between Epic Fight and some modded armour, including Tensura armour. Your armour still protects you; it just isn't drawn in battle mode. Press **R** to switch to mining mode to see it again.\n\n**🔸 My camera glitches in third person**\nThis happens when two lock-on systems run together: Epic Fight's lock-on (**G**) and Better Lock On. Use only one. Unbind the one you don't want in Options → Controls → Key Binds.\n\n**🔸 The game crashes or freezes while loading**\nUsually not enough memory. Give the pack **6–8 GB** of RAM in your launcher, then restart. Close other heavy programs.\n\n**🔸 My FPS is low**\nTurn shaders off with **O** (pick \"None\"), lower Render Distance to 8–12 and Simulation Distance to 6–8 in Video Settings. Sodium's extra options are under Video Settings too.\n\n**🔸 My keys do two things at once**\nFollow the [key conflict fixes](https://overthronesmp.net/guide#key-conflicts).\n\n**🔸 Nobody can hear me in voice chat**\nPress **V**, open the settings and pick the right microphone. Make sure you aren't muted (**M**) and that voice chat isn't turned off (**N**).\n\n**🔸 I found a bug or exploit**\nReport it privately in a Discord ticket. Don't abuse it; using bugs for an advantage is against [rule 1.2](https://overthronesmp.net/rules#global-bans)."
+              "description": "**🔸 My armour is invisible in Epic Fight battle mode**\nThis is a known incompatibility between Epic Fight and some modded armour, including Tensura armour. Your armour still protects you; it just isn't drawn in battle mode. Press **R** to switch to mining mode to see it again.\n\n**🔸 My camera glitches in third person**\nThis happens when two lock-on systems run together: Epic Fight's lock-on (**G**) and Better Lock On. Use only one. Unbind the one you don't want in Options → Controls → Key Binds.\n\n**🔸 The game crashes or freezes while loading**\nUsually not enough memory. Give the pack **6–8 GB** of RAM in your launcher, then restart. Close other heavy programs.\n\n**🔸 My FPS is low**\nTurn shaders off with **O** (pick \"None\"), lower Render Distance to 8–12 and Simulation Distance to 6–8 in Video Settings. Sodium's extra options are under Video Settings too.\n\n**🔸 My keys do two things at once**\nFollow the [key conflict fixes](https://overthronesmp.net/guide#key-conflicts).\n\n**🔸 Nobody can hear me in voice chat**\nPress **V**, open the settings and pick the right microphone. Make sure you aren't muted (**M**) and that voice chat isn't turned off (**N**).\n\n**🔸 I get kicked with \"Failed to decode packet clientbound/minecraft:custom_payload\"**\nThis is a known bug in the Solo Leveling mod. **Fully close Minecraft and your launcher**, open them again and rejoin. If it keeps happening after 2-3 tries, tell staff on Discord.\n\n**🔸 I found a bug or exploit**\nReport it privately in a Discord ticket. Don't abuse it; using bugs for an advantage is against [rule 1.2](https://overthronesmp.net/rules#global-bans)."
             }
           ],
           "buttons": [
@@ -197,7 +197,7 @@
           "embeds": [
             {
               "title": "⌨️ Useful Commands",
-              "description": "**🧭 Warps** (in-game)\n`/warp hub` OVERTHRONE hub\n`/warp survival` Survival world\n`/warp realms` Realm portals\n`/warp market` Market\n`/warp tavern` Tavern\n`/warp classes` Classes\n`/warp hunters` Hunters\n`/warp crates` Crates\n`/warp afk` AFK area\n`/rpg` RPG world\n`/warp arcade` Arcade & Trade Hall\n`/warp arcanum` The Arcanum: enchanting & runes"
+              "description": "**🧭 Warps** (in-game)\n`/warp hub` OVERTHRONE hub\n`/warp survival` Survival world\n`/warp realms` Realm portals\n`/warp market` Market\n`/warp tavern` Tavern\n`/warp classes` Classes\n`/warp hunters` Hunters\n`/warp crates` Crates\n`/warp afk` AFK area\n`/rpg` RPG world\n`/warp arcade` Arcade & Trade Hall\n`/warp arcanum` The Arcanum: enchanting & runes\n`/smp` The SMP world (raiding allowed)\n`/wild` A random spot in the overworld"
             },
             {
               "title": "🤖 Discord Commands",
@@ -600,7 +600,7 @@
             },
             {
               "title": "🧍 Menu NPCs",
-              "description": "`/npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links>` New glowing NPC with hologram where you stand\n`/npcmenu spawncmd <title> <command>` NPC that runs a command, e.g. `/npcmenu spawncmd Hunters warp hunters`\n`/npcmenu attach <cosmetics|crates|throneshop|kits|levels|links>` Look at an NPC: it opens that menu\n`/npcmenu attachcmd <command>` Look at an NPC: it runs that command · `/npcmenu detach` back to normal\n`/npcmenu grab` then `/npcmenu put` Move an NPC + its hologram to where you stand\n`/npcmenu hologram <text>` New hologram text (`|` = new line, `&` colours) · `/npcmenu remove` Delete NPC\n`/npcmenu styleall` Every other NPC within 64 blocks gets the same glow + big title + RIGHT-CLICK TO VIEW (clicking them is unchanged)\n`/npcmenu style [title]` Same for the NPC you look at · `/npcmenu unstyle` Undo\n`/npcmenu glow off` / `/npcmenu glow on` Glow off/on for the NPC you look at (stays that way)\n`/npcmenu clearholo [radius]` Delete all floating text near you (not crates), then `/npcmenu fixall` + `/npcmenu styleall`\n`/npcmenu fixall` Hide NPC name tags + redo all holograms nearby · `/npcmenu debug` Click debug on/off\nEasy NPC wand / mover / sneak-click still work on menu NPCs (skins etc.)"
+              "description": "`/npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions>` New glowing NPC with hologram where you stand\n`/npcmenu spawncmd <title> <command>` NPC that runs a command, e.g. `/npcmenu spawncmd Hunters warp hunters`\n`/npcmenu attach <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions>` Look at an NPC: it opens that menu\n`/npcmenu attachcmd <command>` Look at an NPC: it runs that command · `/npcmenu detach` back to normal\n`/npcmenu grab` then `/npcmenu put` Move an NPC + its hologram to where you stand\n`/npcmenu hologram <text>` New hologram text (`|` = new line, `&` colours) · `/npcmenu remove` Delete NPC\n`/npcmenu styleall` Every other NPC within 64 blocks gets the same glow + big title + RIGHT-CLICK TO VIEW (clicking them is unchanged)\n`/npcmenu style [title]` Same for the NPC you look at · `/npcmenu unstyle` Undo\n`/npcmenu glow off` / `/npcmenu glow on` Glow off/on for the NPC you look at (stays that way)\n`/npcmenu clearholo [radius]` Delete all floating text near you (not crates), then `/npcmenu fixall` + `/npcmenu styleall`\n`/npcmenu fixall` Hide NPC name tags + redo all holograms nearby · `/npcmenu debug` Click debug on/off\nEasy NPC wand / mover / sneak-click still work on menu NPCs (skins etc.)"
             }
           ]
         },
@@ -621,6 +621,38 @@
             {
               "title": "💤 AFK Room",
               "description": "`/afkzone pos1` + `/afkzone pos2` Stand in opposite corners of the room to set it\n`/afkzone board [height]` Info board where you stand · `/afkzone board flip` · `/afkzone board remove`\n`/afkzone info` · `/afkzone give <player> <n>` Give AFK Shards (testing)\n1 AFK Shard every 30 min in the room, 6 shards = 1 AFK Key (AFK Crate: `/crate create afk`, fill with `/crate edit afk`)\nPlayers: `/afkshard` · `/warp afk` (make it with your warp command while standing in the room)"
+            },
+            {
+              "title": "⛏️ Professions & Nodes",
+              "description": "Professions: `mining` `gemology` `farming` `foraging` + `combat` from mob kills (levels 1-100). Nodes give profession XP + half as normal level XP, **drop nothing**, and respawn after 1 minute with a countdown\n**Look at the block** (within 6 blocks), then:\n`/node create <profession> <level> <xp> [name]` Make it a node, e.g. `/node create mining 25 100 Diamond` (crops: use FULLY grown ones)\n`/node remove` Back to a normal block (deletes its text) · `/node info` What node it is + respawn time\nAnywhere:\n`/node list` Nodes within 64 blocks with coordinates · `/node respawnall` Respawn every gathered node now\n`/node holo` Re-place missing floating texts near you\nCan't see a node to remove it? `/node list` → go there → `/node respawnall` → look at it → `/node remove`\n`/professions <player>` Someone's levels · `/profession set <player> <profession> <level>` Set a level\nPlayers: `/professions` (levels in chat) · `/professionmenu` (menu) · NPC: `/npcmenu spawn professions`\nGathering needs survival and the profession level of the node. Creative can't gather. Put nodes where players can break blocks (not claimed/protected)"
+            },
+            {
+              "title": "⛏️ Node presets: Mining",
+              "description": "Look at the ore, then paste (level · XP):\n`/node create mining 1 10 Coal` Coal Ore (Lv 1 · 10 XP)\n`/node create mining 3 15 Copper` Copper Ore (Lv 3 · 15 XP)\n`/node create mining 5 25 Iron` Iron Ore (Lv 5 · 25 XP)\n`/node create mining 10 40 Gold` Gold Ore (Lv 10 · 40 XP)\n`/node create mining 12 45 Redstone` Redstone Ore (Lv 12 · 45 XP)\n`/node create mining 15 55 Lapis` Lapis Ore (Lv 15 · 55 XP)\n`/node create mining 25 100 Diamond` Diamond Ore (Lv 25 · 100 XP)\n`/node create mining 30 120 Emerald` Emerald Ore (Lv 30 · 120 XP)\n`/node create mining 40 180 Ancient Debris` Ancient Debris (Lv 40 · 180 XP)"
+            },
+            {
+              "title": "💎 Node presets: Gemology",
+              "description": "Look at the gem block, then paste:\n`/node create gemology 1 15 Amethyst` Amethyst Cluster / Budding Amethyst (Lv 1 · 15 XP)\n`/node create gemology 5 25 Quartz` Nether Quartz Ore (Lv 5 · 25 XP)\n`/node create gemology 20 90 Diamond` Diamond Ore (Lv 20 · 90 XP)\n`/node create gemology 25 110 Emerald` Emerald Ore (Lv 25 · 110 XP)\n`/node create gemology <level> <xp> <name>` Modded gem ores work too: same command with your own level/XP/name"
+            },
+            {
+              "title": "🌾 Node presets: Farming",
+              "description": "Look at a **fully grown** crop on farmland, then paste:\n`/node create farming 1 10 Wheat` Wheat (Lv 1 · 10 XP)\n`/node create farming 3 12 Carrot` Carrots (Lv 3 · 12 XP)\n`/node create farming 5 15 Potato` Potatoes (Lv 5 · 15 XP)\n`/node create farming 8 20 Beetroot` Beetroots (Lv 8 · 20 XP)\n`/node create farming 12 30 Pumpkin` Pumpkin (Lv 12 · 30 XP)\n`/node create farming 15 35 Melon` Melon (Lv 15 · 35 XP)\n`/node create farming 25 60 Nether Wart` Nether Wart, fully grown (Lv 25 · 60 XP)"
+            },
+            {
+              "title": "🌲 Node presets: Foraging",
+              "description": "Look at the log, then paste:\n`/node create foraging 1 10 Oak` Oak Log (Lv 1 · 10 XP)\n`/node create foraging 3 12 Birch` Birch Log (Lv 3 · 12 XP)\n`/node create foraging 5 15 Spruce` Spruce Log (Lv 5 · 15 XP)\n`/node create foraging 10 25 Jungle` Jungle Log (Lv 10 · 25 XP)\n`/node create foraging 15 35 Dark Oak` Dark Oak Log (Lv 15 · 35 XP)\n`/node create foraging 20 45 Cherry` Cherry Log (Lv 20 · 45 XP)"
+            }
+          ]
+        },
+        {
+          "embeds": [
+            {
+              "title": "📊 Stats & Combat",
+              "description": "Players get **1 stat point per level** and spend them in the Level Guide NPC → **YOUR STATS** (or `/stats`)\nStats (each has a max): Strength +25% dmg · Vitality +25% HP · Defense +20% armor · Attack Speed +15% · Crit Chance +10% · Crit Damage +50% · Dodge +5% · Lifesteal +5% · Speed +5% · Mining Speed +30%\nReset: 500 Throne Shards or $2,000,000 (in the menu)\n`/stats check <player>` Their points + stats · `/stats reset <player>` Free reset\n`/stats debug` Checks shards/money can be read + every stat works · `/stats moneyplaceholder <text|auto>` Set the money placeholder by hand\n**Combat** profession: killing mobs gives Combat XP (max 400/min). Perks at Lv 100: Combat +10% melee damage, Mining +20% mining speed"
+            },
+            {
+              "title": "🔍 Player checks",
+              "description": "`/shardcheck <player>` Throne Shards · `/flytime check <player>` Bought flight + can they fly\n`/racecheck <player>` Tensura race · `/kitmenu <player>` Their kits + cooldowns (view only)\n`/fly <player>` Turn off leftover flight (race flight, e.g. Dragonoid, is normal and comes back)"
             },
             {
               "title": "🧬 Tensura",

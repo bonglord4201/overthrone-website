@@ -275,9 +275,9 @@ channels.push({ key: "staffcommands", messages: pack([
     "Tebex: purchase `giverank {username} <rank>` · refund/chargeback `takerank {username}` (+ ban on chargeback)"
   ].join("\n") },
   { title: "🧍 Menu NPCs", description: [
-    "`/npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links>` New glowing NPC with hologram where you stand",
+    "`/npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions>` New glowing NPC with hologram where you stand",
     "`/npcmenu spawncmd <title> <command>` NPC that runs a command, e.g. `/npcmenu spawncmd Hunters warp hunters`",
-    "`/npcmenu attach <cosmetics|crates|throneshop|kits|levels|links>` Look at an NPC: it opens that menu",
+    "`/npcmenu attach <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions>` Look at an NPC: it opens that menu",
     "`/npcmenu attachcmd <command>` Look at an NPC: it runs that command · `/npcmenu detach` back to normal",
     "`/npcmenu grab` then `/npcmenu put` Move an NPC + its hologram to where you stand",
     "`/npcmenu hologram <text>` New hologram text (`|` = new line, `&` colours) · `/npcmenu remove` Delete NPC",
@@ -314,6 +314,71 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/afkzone info` · `/afkzone give <player> <n>` Give AFK Shards (testing)",
     "1 AFK Shard every 30 min in the room, 6 shards = 1 AFK Key (AFK Crate: `/crate create afk`, fill with `/crate edit afk`)",
     "Players: `/afkshard` · `/warp afk` (make it with your warp command while standing in the room)"
+  ].join("\n") },
+  { title: "⛏️ Professions & Nodes", description: [
+    "Professions: `mining` `gemology` `farming` `foraging` + `combat` from mob kills (levels 1-100). Nodes give profession XP + half as normal level XP, **drop nothing**, and respawn after 1 minute with a countdown",
+    "**Look at the block** (within 6 blocks), then:",
+    "`/node create <profession> <level> <xp> [name]` Make it a node, e.g. `/node create mining 25 100 Diamond` (crops: use FULLY grown ones)",
+    "`/node remove` Back to a normal block (deletes its text) · `/node info` What node it is + respawn time",
+    "Anywhere:",
+    "`/node list` Nodes within 64 blocks with coordinates · `/node respawnall` Respawn every gathered node now",
+    "`/node holo` Re-place missing floating texts near you",
+    "Can't see a node to remove it? `/node list` → go there → `/node respawnall` → look at it → `/node remove`",
+    "`/professions <player>` Someone's levels · `/profession set <player> <profession> <level>` Set a level",
+    "Players: `/professions` (levels in chat) · `/professionmenu` (menu) · NPC: `/npcmenu spawn professions`",
+    "Gathering needs survival and the profession level of the node. Creative can't gather. Put nodes where players can break blocks (not claimed/protected)"
+  ].join("\n") },
+  { title: "⛏️ Node presets: Mining", description: [
+    "Look at the ore, then paste (level · XP):",
+    "`/node create mining 1 10 Coal` Coal Ore (Lv 1 · 10 XP)",
+    "`/node create mining 3 15 Copper` Copper Ore (Lv 3 · 15 XP)",
+    "`/node create mining 5 25 Iron` Iron Ore (Lv 5 · 25 XP)",
+    "`/node create mining 10 40 Gold` Gold Ore (Lv 10 · 40 XP)",
+    "`/node create mining 12 45 Redstone` Redstone Ore (Lv 12 · 45 XP)",
+    "`/node create mining 15 55 Lapis` Lapis Ore (Lv 15 · 55 XP)",
+    "`/node create mining 25 100 Diamond` Diamond Ore (Lv 25 · 100 XP)",
+    "`/node create mining 30 120 Emerald` Emerald Ore (Lv 30 · 120 XP)",
+    "`/node create mining 40 180 Ancient Debris` Ancient Debris (Lv 40 · 180 XP)"
+  ].join("\n") },
+  { title: "💎 Node presets: Gemology", description: [
+    "Look at the gem block, then paste:",
+    "`/node create gemology 1 15 Amethyst` Amethyst Cluster / Budding Amethyst (Lv 1 · 15 XP)",
+    "`/node create gemology 5 25 Quartz` Nether Quartz Ore (Lv 5 · 25 XP)",
+    "`/node create gemology 20 90 Diamond` Diamond Ore (Lv 20 · 90 XP)",
+    "`/node create gemology 25 110 Emerald` Emerald Ore (Lv 25 · 110 XP)",
+    "`/node create gemology <level> <xp> <name>` Modded gem ores work too: same command with your own level/XP/name"
+  ].join("\n") },
+  { title: "🌾 Node presets: Farming", description: [
+    "Look at a **fully grown** crop on farmland, then paste:",
+    "`/node create farming 1 10 Wheat` Wheat (Lv 1 · 10 XP)",
+    "`/node create farming 3 12 Carrot` Carrots (Lv 3 · 12 XP)",
+    "`/node create farming 5 15 Potato` Potatoes (Lv 5 · 15 XP)",
+    "`/node create farming 8 20 Beetroot` Beetroots (Lv 8 · 20 XP)",
+    "`/node create farming 12 30 Pumpkin` Pumpkin (Lv 12 · 30 XP)",
+    "`/node create farming 15 35 Melon` Melon (Lv 15 · 35 XP)",
+    "`/node create farming 25 60 Nether Wart` Nether Wart, fully grown (Lv 25 · 60 XP)"
+  ].join("\n") },
+  { title: "🌲 Node presets: Foraging", description: [
+    "Look at the log, then paste:",
+    "`/node create foraging 1 10 Oak` Oak Log (Lv 1 · 10 XP)",
+    "`/node create foraging 3 12 Birch` Birch Log (Lv 3 · 12 XP)",
+    "`/node create foraging 5 15 Spruce` Spruce Log (Lv 5 · 15 XP)",
+    "`/node create foraging 10 25 Jungle` Jungle Log (Lv 10 · 25 XP)",
+    "`/node create foraging 15 35 Dark Oak` Dark Oak Log (Lv 15 · 35 XP)",
+    "`/node create foraging 20 45 Cherry` Cherry Log (Lv 20 · 45 XP)"
+  ].join("\n") },
+  { title: "📊 Stats & Combat", description: [
+    "Players get **1 stat point per level** and spend them in the Level Guide NPC → **YOUR STATS** (or `/stats`)",
+    "Stats (each has a max): Strength +25% dmg · Vitality +25% HP · Defense +20% armor · Attack Speed +15% · Crit Chance +10% · Crit Damage +50% · Dodge +5% · Lifesteal +5% · Speed +5% · Mining Speed +30%",
+    "Reset: 500 Throne Shards or $2,000,000 (in the menu)",
+    "`/stats check <player>` Their points + stats · `/stats reset <player>` Free reset",
+    "`/stats debug` Checks shards/money can be read + every stat works · `/stats moneyplaceholder <text|auto>` Set the money placeholder by hand",
+    "**Combat** profession: killing mobs gives Combat XP (max 400/min). Perks at Lv 100: Combat +10% melee damage, Mining +20% mining speed"
+  ].join("\n") },
+  { title: "🔍 Player checks", description: [
+    "`/shardcheck <player>` Throne Shards · `/flytime check <player>` Bought flight + can they fly",
+    "`/racecheck <player>` Tensura race · `/kitmenu <player>` Their kits + cooldowns (view only)",
+    "`/fly <player>` Turn off leftover flight (race flight, e.g. Dragonoid, is normal and comes back)"
   ].join("\n") },
   { title: "🧬 Tensura", description: [
     "`/tensura edit forceevo <player> demonLord` Make someone a Demon Lord",

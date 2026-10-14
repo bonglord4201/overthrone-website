@@ -286,7 +286,7 @@
     }
     if (def == null) { say(src, '§c[npcfix] Use: /npcfix look crates|ranks|info|hunters (run /npcfix apply first for ranks/info)'); return 0 }
     var id
-    try { id = String(e.getStringUUID()) } catch (x) { id = String(e.uuid) }
+    try { id = String(e.getStringUuid()) } catch (x) { try { id = String(e.getStringUUID()) } catch (y) { id = String(e.uuid) } }
     var first = ''
     try { var sp = def.dialog.pages[def.dialog.start || Object.keys(def.dialog.pages)[0]]; first = String(sp.lines[0]) + ' | ' + String(sp.lines[1]) } catch (x) { }
     say(src, '§7[npcfix] Text being put on the NPC starts with: §f' + first)

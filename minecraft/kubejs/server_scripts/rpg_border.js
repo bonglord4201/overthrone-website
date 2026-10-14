@@ -12,7 +12,9 @@ const RPG_BORDER = {
 function applyRpgBorder(server) {
   let done = false
   server.getAllLevels().forEach(level => {
-    if (String(level.dimension().location()) !== RPG_BORDER.world) return
+    var key = level.dimension
+    if (typeof key === 'function') key = level.dimension()
+    if (String(key && key.location ? key.location() : key).indexOf(RPG_BORDER.world) < 0) return
     const border = level.getWorldBorder()
     border.setCenter(RPG_BORDER.centerX, RPG_BORDER.centerZ)
     border.setSize(RPG_BORDER.size)
@@ -24,7 +26,7 @@ function applyRpgBorder(server) {
 }
 
 ServerEvents.loaded(event => {
-  applyRpgBorder(event.server)
+  try { applyRpgBorder(event.server) } catch (e) { console.error('rpg_border: ' + e) }
 })
 
 ServerEvents.commandRegistry(event => {
@@ -32,10 +34,13 @@ ServerEvents.commandRegistry(event => {
   event.register(Commands.literal('rpgborder')
     .requires(src => src.hasPermission(2))
     .executes(ctx => {
-      const ok = applyRpgBorder(ctx.source.server)
-      ctx.source.sendSystemMessage(ok
-        ? Text.green('RPG border set: ' + RPG_BORDER.size + ' blocks wide, centred on ' + RPG_BORDER.centerX + ', ' + RPG_BORDER.centerZ)
-        : Text.red('Could not find the world ' + RPG_BORDER.world))
+      var msg
+      try {
+        msg = applyRpgBorder(ctx.source.server)
+          ? '§aRPG border set: ' + RPG_BORDER.size + ' blocks wide, centred on ' + RPG_BORDER.centerX + ', ' + RPG_BORDER.centerZ
+          : '§cCould not find the world ' + RPG_BORDER.world
+      } catch (e) { msg = '§crpgborder error: §f' + e }
+      ctx.source.sendSystemMessage(Text.of(msg))
       return 1
     }))
 })
