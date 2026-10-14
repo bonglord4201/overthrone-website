@@ -185,6 +185,8 @@ const ORE_XP = {
 BlockEvents.broken(event => {
   const p = event.player
   if (!p || p.isCreative()) return
+  // professions.js nodes give their own XP: no ore XP from them
+  if (typeof otIsNodeBlock === 'function' && otIsNodeBlock(event.block)) return
   const id = String(event.block.id)
   let xp = ORE_XP[id]
   if (xp === undefined && (id.endsWith('_ore') || event.block.hasTag('c:ores'))) xp = 3   // modded ores

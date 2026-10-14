@@ -77,6 +77,8 @@
   BlockEvents.broken(event => {
     var p = event.player
     if (p == null) return
+    // professions.js gathering nodes are mined on purpose again and again: never count them as X-ray
+    if (typeof otIsNodeBlock === 'function' && otIsNodeBlock(event.block)) return
     var id = String(event.block.id)
     var m = mineOf(p.username)
     if (STONE.test(id)) m.stone++
