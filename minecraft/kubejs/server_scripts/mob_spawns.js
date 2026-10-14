@@ -182,7 +182,15 @@
       var p = ctx.source.playerOrException, s = p.server, e = target(p)
       load(s)
       if (e == null) { say(ctx.source, '§cLook at the mob (or stand right next to it). Place it with its spawn egg first.'); return 0 }
-      if (e.getTags().contains('ot_spawn')) { say(ctx.source, '§cThat mob already has a spawn. Use /mobspawn remove first.'); return 0 }
+      if (e.getTags().contains('ot_spawn')) {
+        var u = String(e.getUUID()), owned = false
+        Object.keys(spawns).forEach(k => { if (spawns[k].uuid == u) owned = true })
+        if (owned) { say(ctx.source, '§cThat mob already has a spawn. Use /mobspawn remove first.'); return 0 }
+        // left over from a failed attempt: tagged but not saved as a spawn, so clean it up and carry on
+        ;['ot_spawn', 'ot_boss'].forEach(t => e.removeTag(t))
+        var old = []; e.getTags().forEach(t => { if (String(t).indexOf('ot_sp_') == 0) old.push(String(t)) })
+        old.forEach(t => e.removeTag(t))
+      }
       var type = typeOf(e)
       if (!type) { say(ctx.source, '§cThat entity can\'t be respawned.'); return 0 }
       var id = String(Date.now().toString(36)) + Math.floor(Math.random() * 1000)
