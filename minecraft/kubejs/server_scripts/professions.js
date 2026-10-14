@@ -102,7 +102,8 @@ var otIsNodeBlock = (block) => {
       { text: '\n' + pr.icon + ' ' + pr.name + ' Lv ' + n.lvl, color: pr.color },
       isDown ? { text: '\nGathered - respawning soon', color: 'red' } : { text: '\n+' + n.xp + ' ' + pr.name + ' XP', color: 'yellow' },
     ]
-    return JSON.stringify([''].concat(lines)).replace(/'/g, "\\'")
+    // escaped for a single-quoted SNBT string: backslashes first (the line breaks are \n), then quotes
+    return JSON.stringify([''].concat(lines)).replace(/\\/g, '\\\\').replace(/'/g, "\\'")
   }
   const holoY = (n) => /\[.*age=/.test(n.state) ? 1.1 : 1.5
   const placeHolo = (s, key, isDown) => {
