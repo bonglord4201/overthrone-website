@@ -95,12 +95,12 @@ var otIsNodeBlock = (block) => {
 
   // ---- floating text above a node
   const nodeName = (n) => n.name || n.state.replace(/\[.*$/, '').replace(/^.*:/, '').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
-  const holoText = (n, isDown) => {
+  const holoText = (n, isDown, secsLeft) => {
     var pr = PROFESSIONS[n.prof]
     var lines = [
       { text: nodeName(n) + ' Node', color: 'gold', bold: true },
       { text: '\n' + pr.icon + ' ' + pr.name + ' Lv ' + n.lvl, color: pr.color },
-      isDown ? { text: '\nGathered - respawning soon', color: 'red' } : { text: '\n+' + n.xp + ' ' + pr.name + ' XP', color: 'yellow' },
+      isDown ? { text: '\nRespawns in ' + (secsLeft == null ? '...' : secsLeft + 's'), color: 'red' } : { text: '\n+' + n.xp + ' ' + pr.name + ' XP', color: 'yellow' },
     ]
     // escaped for a single-quoted SNBT string: backslashes first (the line breaks are \n), then quotes
     return JSON.stringify([''].concat(lines)).replace(/\\/g, '\\\\').replace(/'/g, "\\'")
@@ -114,9 +114,9 @@ var otIsNodeBlock = (block) => {
       `{Tags:["ot_node","${tag}"],billboard:"center",shadow:1b,background:0,line_width:300,` +
       `transformation:[0.7f,0f,0f,0f,0f,0.7f,0f,0f,0f,0f,0.7f,0f,0f,0f,0f,1f],text:'${holoText(n, isDown)}'}`)
   }
-  const setHoloText = (s, key, isDown) => {
+  const setHoloText = (s, key, isDown, secsLeft) => {
     var n = otNodeCache[key]; if (!n) return
-    run(s, `execute in ${n.dim} run data merge entity @e[type=minecraft:text_display,tag=${tagOf(key)},limit=1] {text:'${holoText(n, isDown)}'}`)
+    run(s, `execute in ${n.dim} run data merge entity @e[type=minecraft:text_display,tag=${tagOf(key)},limit=1] {text:'${holoText(n, isDown, secsLeft)}'}`)
   }
 
   // ---- gathered look and respawn
@@ -141,7 +141,11 @@ var otIsNodeBlock = (block) => {
     var s = event.server
     if (s.tickCount % 20 != 0 || down == null) return
     var now = Date.now(), changed = false
-    Object.keys(down).forEach(k => { if (down[k] <= now) { respawn(s, k); changed = true } })
+    // respawn the ready ones, and count the others down on their floating text (once a second)
+    Object.keys(down).forEach(k => {
+      if (down[k] <= now) { respawn(s, k); changed = true }
+      else setHoloText(s, k, true, Math.ceil((down[k] - now) / 1000))
+    })
     if (changed) save(s)
   })
 
@@ -169,7 +173,7 @@ var otIsNodeBlock = (block) => {
     save(s)
     s.scheduleInTicks(1, () => {
       run(s, `execute in ${n.dim} run setblock ${n.x} ${n.y} ${n.z} ${depletedState(n)}`)
-      setHoloText(s, key, true)
+      setHoloText(s, key, true, PROF_RESPAWN_SECONDS)
     })
     var r = addProfXp(p, n.prof, n.xp)
     var lvXp = Math.floor(n.xp * PROF_LEVEL_XP_SHARE)
@@ -288,7 +292,7 @@ var otIsNodeBlock = (block) => {
         var s = ctx.source.server
         load(s)
         run(s, 'kill @e[type=minecraft:text_display,tag=ot_node]')
-        Object.keys(otNodeCache).forEach(k => placeHolo(s, k, !!down[k]))
+        Object.keys(otNodeCache).forEach(k => placeHolo(s, k, !!down[k]))  // gathered ones get their countdown within a second
         say(ctx.source, P + '§aFloating texts re-placed (nodes in unloaded areas get theirs when you run this near them).')
         return 1
       })))
