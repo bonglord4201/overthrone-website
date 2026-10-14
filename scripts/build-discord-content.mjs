@@ -426,7 +426,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "Settings (cash min/max, per-minute cap, how much mobs/nodes pay) are at the top of `caverns.js`"
   ].join("\n") },
   { title: "👹 Mob & boss spawns", description: [
-    "Place the mob with its spawn egg, **look at it**, then: `/setmob [minutes]` or `/setboss [minutes]` (default 60 min)",
+    "Place the mob with its spawn egg, **look at it**, then: `/mobspawn boss [minutes]` or `/mobspawn mob [minutes]` (default 60 min, e.g. `/mobspawn boss 1` to test). Same as `/setboss` / `/setmob`",
     "It never despawns, gets pulled back if it wanders 32+ blocks, and respawns at the same spot after it's killed. Floating text shows its **real name** + a respawn countdown. Boss kills are announced",
     "`/mobspawn list` Spawns in this world · `/mobspawn info` Nearest spawn details + puts its text back · `/mobspawn respawnall` Respawn every killed one now · `/mobspawn holo` Put floating texts back",
     "Bosses stay within 8 blocks of their spot (mobs 24). While a boss is dead, players within 48 blocks see a red bar counting down to its return",
@@ -450,7 +450,7 @@ channels.push({ key: "staffcommands", messages: pack([
   { title: "🚫 Banned skills", description: [
     "Banned: Predator, Gluttony, Creator, Fusionist, Infinity Prison, Cultivator, Pride, Jinchuriki, Crasher, Coalescence, Victorious Harbinger",
     "They're out of the reincarnation rolls (`config/tensura/reincarnation_config.toml`) and `skill_blacklist.js` removes them from anyone who has one (on login + every 30 s)",
-    "`/skillban check <player>` What banned skills they have · `/skillban scan` Remove from everyone online now",
+    "`/skillban check <player>` What banned skills they have · `/skillban scan` Remove from everyone online now (red line = it couldn't remove one, with the reason)",
     "`/skillban list` · `/skillban status` (remover ACTIVE?) · Edit the `BANNED` list at the top of the file to change it"
   ].join("\n") },
   { title: "🧬 Tensura", description: [
