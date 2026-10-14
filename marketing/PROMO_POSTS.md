@@ -102,3 +102,35 @@ We're a growing modded anime MMORPG server (NeoForge 1.21.1) looking for:
 - **In-game admins**: help players and keep things fair
 
 Be active, be friendly and know (or want to learn) modded MC. Open a ticket in our Discord to apply: https://discord.gg/overthronesmp
+
+---
+
+## 5. Open beta: testers + recruiting (post in other Discords)
+
+⚔️ **OVERTHRONE SMP | NOW OPEN: TESTERS WANTED** ⚔️
+*Don't reach the throne. Overthrow it.*
+
+We've just opened and we're looking for **testers** to play, break things and help shape the server before the full launch. Early players get in on the ground floor!
+
+**What is it?** A modded dark-fantasy MMORPG (NeoForge 1.21.1):
+🔸 **Tensura**: pick a race, learn skills and magic, evolve
+🔸 **Solo Leveling**: Hunter ranks, gates, Job Change, Monarch powers
+🔸 **Epic Fight** combat, bosses and dungeons
+🔸 1,100+ quests, an RPG city, crates, kits and a player economy
+🔸 A raidable **SMP world** (no claims, anything goes) + safe claim worlds
+🔸 Events, giveaways and voice chat
+
+📢 **We're also looking for:**
+🧱 Builders
+🎥 Content creators (YouTube / TikTok / Twitch)
+🛠️ Developers (mods, KubeJS, plugins)
+🛡️ Discord staff and in-game moderators
+🎨 Artists and designers
+
+Apply or ask about any role in our Discord!
+
+🎮 **IP:** `play.overthronesmp.net` (NeoForge 1.21.1, modpack required)
+📦 **Modpack + install guide:** https://overthronesmp.net/guide
+🌐 **Website:** https://overthronesmp.net
+💬 **Discord:** https://discord.gg/overthronesmp
+🛒 **Store:** https://overthronesmp.tebex.store
