@@ -1,7 +1,7 @@
-// OVERTHRONE - banned skills, for players:
-//   - they can't be learned (evolving, stealing, books, commands... the skill system refuses them)
-//   - they can't be used (activate / toggle / release are blocked), in case someone still has one
-//   - anyone who still has one loses it: when they log in and every 30 seconds while online
+// OVERTHRONE - banned skills: anyone who has one loses it, when they log in and every 30 seconds while online
+// (so a skill gained by evolving, stealing, a book or a command is removed within 30 s).
+// NOTE: this only READS and REMOVES skills. It must never hook into the skill system's own events
+// (UNLOCK_SKILL etc.): a KubeJS listener there crashed the server (Architectury got a null result).
 // Uses ManasCore's skill API (the system Tensura and Mysticism skills are built on).
 // Skills are matched by name, whichever mod they come from (e.g. "predator" = tensura:predator).
 //
@@ -9,7 +9,7 @@
 //   /skillban list               the banned skills
 //   /skillban check <player>     which banned skills a player has right now (doesn't remove)
 //   /skillban scan               remove banned skills from everyone online now
-//   /skillban status             whether the remover and the learn/use block are running
+//   /skillban status             whether the remover is running
 
 (function () {
   const BANNED = ['predator', 'gluttony', 'creator', 'fusionist', 'infinity_prison', 'cultivator', 'pride',
@@ -43,61 +43,6 @@
     return removed
   }
 
-  // ---- block learning and using banned skills (players only; mobs keep theirs)
-  // Hooks ManasCore's own skill checks: learning (UNLOCK_SKILL) and using (ACTIVATE / TOGGLE / RELEASE).
-  // Registered once when the server starts. If anything here is missing, the 30-second remover below still works.
-  var hookStatus = '§7not started yet §8(restart the server)'
-  const hookSkillEvents = () => {
-    try {
-      var EV = Java.loadClass('io.github.manasmods.manascore.skill.api.SkillEvents')
-      var ER = Java.loadClass('dev.architectury.event.EventResult')
-      var isPlayer = (o) => { try { return o != null && o.isPlayer() } catch (x) { return false } }
-      var idOfInst = (inst) => { try { return inst ? String(inst.getSkillId()) : '' } catch (x) { return '' } }
-      var idOfChange = (ch) => { try { return idOfInst(ch.get()) } catch (x) { return '' } }
-      var warned = {}
-      var warn = (o, id) => {
-        try {
-          var k = String(o.username) + id, now = Date.now()
-          if (warned[k] && now - warned[k] < 5000) return
-          warned[k] = now
-          o.tell('§c§lSKILLS §8» §f' + id + '§7 is banned on OVERTHRONE.')
-        } catch (x) { }
-      }
-      var done = []
-      var UnlockI = Java.loadClass('io.github.manasmods.manascore.skill.api.SkillEvents$UnlockSkillEvent')
-      EV.UNLOCK_SKILL.register(new UnlockI(function (inst, owner, msg) {
-        try { var id = idOfInst(inst); if (isPlayer(owner) && isBanned(id)) { warn(owner, id); return ER.interruptFalse() } } catch (x) { }
-        return ER.pass()
-      }))
-      done.push('learn')
-      var useBlock = (ch, owner) => {
-        try { var id = idOfChange(ch); if (isPlayer(owner) && isBanned(id)) { warn(owner, id); return ER.interruptFalse() } } catch (x) { }
-        return ER.pass()
-      }
-      try {
-        var ActI = Java.loadClass('io.github.manasmods.manascore.skill.api.SkillEvents$SkillActivationEvent')
-        EV.ACTIVATE_SKILL.register(new ActI(function (ch, owner, key, mode) { return useBlock(ch, owner) }))
-        done.push('activate')
-      } catch (x) { console.warn('[skill_blacklist] activate hook: ' + x) }
-      try {
-        var TogI = Java.loadClass('io.github.manasmods.manascore.skill.api.SkillEvents$SkillToggleEvent')
-        EV.TOGGLE_SKILL.register(new TogI(function (ch, owner) { return useBlock(ch, owner) }))
-        done.push('toggle')
-      } catch (x) { console.warn('[skill_blacklist] toggle hook: ' + x) }
-      try {
-        var RelI = Java.loadClass('io.github.manasmods.manascore.skill.api.SkillEvents$SkillReleaseEvent')
-        EV.RELEASE_SKILL.register(new RelI(function (ch, owner, key, mode, held) { return useBlock(ch, owner) }))
-        done.push('release')
-      } catch (x) { console.warn('[skill_blacklist] release hook: ' + x) }
-      hookStatus = '§aACTIVE §8(' + done.join(', ') + ')'
-      console.info('[skill_blacklist] blocking banned skills: ' + done.join(', '))
-    } catch (e) {
-      hookStatus = '§cNOT ACTIVE §8(' + e + ')'
-      console.warn('[skill_blacklist] could not hook skill events: ' + e)
-    }
-  }
-  ServerEvents.loaded(event => { if (SkillAPI != null) hookSkillEvents() })
-
   PlayerEvents.loggedIn(event => { var p = event.player; p.server.scheduleInTicks(100, () => strip(p, false)) })
   ServerEvents.tick(event => {
     var s = event.server
@@ -113,7 +58,6 @@
       .then(Commands.literal('list').executes(ctx => { say(ctx.source, P + '§7Banned: §f' + BANNED.join(', ')); return 1 }))
       .then(Commands.literal('status').executes(ctx => {
         say(ctx.source, P + '§7Remover (login + every 30 s): ' + status)
-        say(ctx.source, P + '§7Block learning/using: ' + hookStatus)
         return 1
       }))
       .then(Commands.literal('check').then(Commands.argument('player', Arguments.PLAYER.create(event)).executes(ctx => {

@@ -451,7 +451,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "Banned: Predator, Gluttony, Creator, Fusionist, Infinity Prison, Cultivator, Pride, Jinchuriki, Crasher, Coalescence, Victorious Harbinger",
     "They're out of the reincarnation rolls (`config/tensura/reincarnation_config.toml`) and `skill_blacklist.js` removes them from anyone who has one (on login + every 30 s)",
     "`/skillban check <player>` What banned skills they have · `/skillban scan` Remove from everyone online now",
-    "Players also can't learn or use them (blocked at the source). `/skillban list` · `/skillban status` (remover + learn/use block both ACTIVE?) · Edit the `BANNED` list at the top of the file to change it"
+    "`/skillban list` · `/skillban status` (remover ACTIVE?) · Edit the `BANNED` list at the top of the file to change it"
   ].join("\n") },
   { title: "🧬 Tensura", description: [
     "`/tensura edit forceevo <player> demonLord` Make someone a Demon Lord",
