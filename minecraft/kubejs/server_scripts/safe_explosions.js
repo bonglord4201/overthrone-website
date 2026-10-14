@@ -29,30 +29,30 @@
   const hookSkillGrief = () => {
     var status
     try {
-      const Events = Java.loadClass('io.github.manasmods.tensura.event.TensuraSkillEvents')
-      const EventResult = Java.loadClass('dev.architectury.event.EventResult')
-      const ev = Events.SKILL_GRIEF_PRE
-      const ifaces = ev.invoker().getClass().getInterfaces()
-      if (ifaces.length !== 1) throw 'unexpected listener type'
-      const Listener = Java.loadClass(ifaces[0].getName())
-      const warned = {}
-      ev.register(new Listener(function (instance, level, owner, x, y, z) {
+      var otTsEvents = Java.loadClass('io.github.manasmods.tensura.event.TensuraSkillEvents')
+      var otEvResult = Java.loadClass('dev.architectury.event.EventResult')
+      var otGriefEv = otTsEvents.SKILL_GRIEF_PRE
+      var otIfaces = otGriefEv.invoker().getClass().getInterfaces()
+      if (otIfaces.length !== 1) throw 'unexpected listener type'
+      var OtGriefListener = Java.loadClass(otIfaces[0].getName())
+      var otWarned = {}
+      otGriefEv.register(new OtGriefListener(function (instance, level, owner, x, y, z) {
         try {
           var lvl = level || (owner ? owner.level() : null)
           var d = lvl ? dimOf(lvl) : ''
-          if (SAFE_WORLDS.indexOf(d) < 0) return EventResult.pass()
+          if (SAFE_WORLDS.indexOf(d) < 0) return otEvResult.pass()
           try {
             if (owner && owner.isPlayer && owner.isPlayer()) {
               var now = Date.now(), u = String(owner.getUUID())
-              if (!warned[u] || now - warned[u] > 3000) {
-                warned[u] = now
+              if (!otWarned[u] || now - otWarned[u] > 3000) {
+                otWarned[u] = now
                 owner.tell('§6§lSAFE ZONE §8» §7Skills can\'t break blocks in this world.')
               }
             }
           } catch (e) { }
-          return EventResult.interruptFalse()
+          return otEvResult.interruptFalse()
         } catch (e) {
-          return EventResult.pass()
+          return otEvResult.pass()
         }
       }))
       status = '§aACTIVE'
