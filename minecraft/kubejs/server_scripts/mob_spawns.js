@@ -15,6 +15,7 @@
 //   (same: /mobspawn mob [minutes] and /mobspawn boss [minutes])
 //   near a spawn:
 //   /mobspawn remove         stop tracking the nearest spawn (within 10 blocks). Its mob is left alive.
+//   /mobspawn remove kill    same, and kills its mob too
 //   /mobspawn time <minutes> change the nearest spawn's respawn time
 //   anywhere:
 //   /mobspawn list           every spawn in this world with its state
@@ -227,6 +228,23 @@
       say(ctx.source, P + '§a' + (kind == 'boss' ? 'Boss' : 'Mob') + ' spawn set: §f' + type + ' §7respawns §f' + mins + ' min§7 after it dies. §8Its name now floats above it.')
       return 1
     }
+    // stop tracking the nearest spawn; withMob = also kill its mob (if alive)
+    const removeSpawn = (ctx, withMob) => {
+      var p = ctx.source.playerOrException, s = p.server, id = nearest(p, 10)
+      if (id == null) { say(ctx.source, '§cNo spawn within 10 blocks. §7Stand near the spot where its name floats (/mobspawn list shows where).'); return 0 }
+      var sp = spawns[id]
+      run(s, `execute in ${sp.dim} run kill @e[type=minecraft:text_display,tag=${tagOf(id)}]`)
+      if (sp.uuid) {
+        try {
+          var e = p.level.getEntity(UUID.fromString(sp.uuid))
+          if (e) { e.removeTag('ot_spawn'); e.removeTag(tagOf(id)); e.removeTag('ot_boss'); if (withMob) e.kill() }
+        } catch (x) { }
+      }
+      hideBar(s, id)
+      delete spawns[id]; save(s)
+      say(ctx.source, P + '§aRemoved the §f' + sp.type + '§a spawn' + (withMob ? ' and its mob.' : '. §7Its mob (if alive) is left where it is: §f/mobspawn remove kill§7 also removes the mob.'))
+      return 1
+    }
     const minsArg = () => Commands.argument('minutes', Arguments.INTEGER.create(event))
     ;['mob', 'boss'].forEach(kind => {
       event.register(Commands.literal('set' + kind).requires(src => src.hasPermission(2))
@@ -237,17 +255,8 @@
       // same as /setmob and /setboss (in case another mod already uses those names)
       .then(Commands.literal('mob').executes(ctx => make(ctx, 'mob', DEFAULT_MINUTES)).then(minsArg().executes(ctx => make(ctx, 'mob', Math.max(1, Arguments.INTEGER.getResult(ctx, 'minutes'))))))
       .then(Commands.literal('boss').executes(ctx => make(ctx, 'boss', DEFAULT_MINUTES)).then(minsArg().executes(ctx => make(ctx, 'boss', Math.max(1, Arguments.INTEGER.getResult(ctx, 'minutes'))))))
-      .then(Commands.literal('remove').executes(ctx => {
-        var p = ctx.source.playerOrException, s = p.server, id = nearest(p, 10)
-        if (id == null) { say(ctx.source, '§cNo spawn within 10 blocks.'); return 0 }
-        var sp = spawns[id]
-        run(s, `execute in ${sp.dim} run kill @e[type=minecraft:text_display,tag=${tagOf(id)}]`)
-        if (sp.uuid) { try { var e = p.level.getEntity(UUID.fromString(sp.uuid)); if (e) { e.removeTag('ot_spawn'); e.removeTag(tagOf(id)); e.removeTag('ot_boss') } } catch (x) { } }
-        hideBar(s, id)
-        delete spawns[id]; save(s)
-        say(ctx.source, P + '§aRemoved the §f' + sp.type + '§a spawn. §7Its mob (if alive) is left where it is.')
-        return 1
-      }))
+      .then(Commands.literal('remove').executes(ctx => removeSpawn(ctx, false))
+        .then(Commands.literal('kill').executes(ctx => removeSpawn(ctx, true))))
       .then(Commands.literal('time').then(minsArg().executes(ctx => {
         var p = ctx.source.playerOrException, id = nearest(p, 10), m = Math.max(1, Arguments.INTEGER.getResult(ctx, 'minutes'))
         if (id == null) { say(ctx.source, '§cNo spawn within 10 blocks.'); return 0 }
