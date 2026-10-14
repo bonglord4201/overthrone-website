@@ -1,5 +1,5 @@
 // OVERTHRONE - professions and gathering nodes (RPG-style).
-// Staff turn chosen blocks (ores, gems, crops, logs...) into NODES. Players gather a node by hitting it once (works in claims). A node shows its profession, level and XP
+// Staff turn chosen blocks (ores, gems, crops, logs...) into NODES. Players gather a node by hitting it PROF_HITS_NEEDED times (works in claims). A node shows its profession, level and XP
 // on floating text. Gathering it gives profession XP (and some normal level XP), drops NOTHING, and the node
 // respawns in the same spot after RESPAWN_SECONDS. Normal blocks everywhere else work exactly like before.
 // leveling.js and anticheat.js skip node blocks (they call otIsNode), so nodes give no ore XP and no X-ray flags.
@@ -24,6 +24,7 @@
 
 // ---------------------------------------------------------------- settings
 const PROF_RESPAWN_SECONDS = 60
+const PROF_HITS_NEEDED = 3           // hits on a node to gather it (hits more than 5 s apart start over)
 const PROF_LEVEL_XP_SHARE = 0.5      // normal level XP given = node XP x this (0 = none)
 const PROF_MAX_LEVEL = 100
 const PROF_NEED = (lvl) => Math.floor(100 * Math.pow(lvl, 1.4))   // profession XP needed for the next level
@@ -212,14 +213,14 @@ var otIsNodeBlock = (block) => {
   // Players gather a node by HITTING it once (left-click). The block is never really broken, so it also works inside
   // protected areas like the hub claim. Breaking it normally (where allowed) gathers it the same way.
   // Returns true when the click/break was on a node (the caller then cancels the normal action).
-  const lastHit = {}
+  const lastHit = {}, hitProgress = {}
   const tryGather = (p, b, fromClick) => {
     var s = p.server
     load(s)
     var dim = dimOf(b.level), key = keyOf(dim, b.x, b.y, b.z), n = otNodeCache[key]
     if (!n) return false
-    // holding left-click fires many clicks: handle one per half second per player, quietly ignore the rest
-    var now = Date.now(), quiet = fromClick && lastHit[p.username] && now - lastHit[p.username] < 500
+    // holding left-click fires many clicks: count one per 0.25 s per player, quietly ignore the rest
+    var now = Date.now(), quiet = fromClick && lastHit[p.username] && now - lastHit[p.username] < 250
     if (fromClick) lastHit[p.username] = now
     if (down[key]) {
       // a player block put in the empty spot can still be broken normally (it is replaced when the node respawns)
@@ -233,6 +234,22 @@ var otIsNodeBlock = (block) => {
     if (profLvl(p, n.prof) < n.lvl) {
       p.tell(P + '§cYou need ' + pr.icon + ' ' + pr.name + ' level §f' + n.lvl + '§c to gather this. §7(You are level ' + profLvl(p, n.prof) + ')')
       return true
+    }
+    // hitting: PROF_HITS_NEEDED hits gather it (breaking it, where allowed, gathers it straight away)
+    if (fromClick && PROF_HITS_NEEDED > 1) {
+      var h = hitProgress[p.username]
+      if (!h || h.key != key || now - h.at > 5000) h = { key: key, n: 0 }
+      h.n++; h.at = now
+      hitProgress[p.username] = h
+      if (h.n < PROF_HITS_NEEDED) {
+        var bar = ''
+        for (var i = 0; i < PROF_HITS_NEEDED; i++) bar += i < h.n ? '■' : '□'
+        run(s, `title ${p.username} actionbar ${JSON.stringify({ text: pr.icon + ' Gathering ' + nodeName(n) + '... ' + bar, color: 'yellow' })}`)
+        run(s, `execute at ${p.username} run playsound minecraft:block.amethyst_block.hit player ${p.username} ~ ~ ~ 0.8 ${(0.8 + h.n * 0.2).toFixed(1)}`)
+        run(s, `execute in ${n.dim} run particle minecraft:crit ${n.x + 0.5} ${n.y + 0.5} ${n.z + 0.5} 0.25 0.25 0.25 0.1 6`)
+        return true
+      }
+      delete hitProgress[p.username]
     }
     down[key] = now + PROF_RESPAWN_SECONDS * 1000
     save(s)
