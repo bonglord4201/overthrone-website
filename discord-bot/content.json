@@ -681,7 +681,7 @@
             },
             {
               "title": "👹 Mob & boss spawns",
-              "description": "Place the mob with its spawn egg, **look at it**, then: `/setmob [minutes]` or `/setboss [minutes]` (default 60 min)\nIt never despawns, gets pulled back if it wanders 32+ blocks, and respawns at the same spot after it's killed. Floating text shows its **real name** + a respawn countdown. Boss kills are announced\n`/mobspawn list` Spawns in this world · `/mobspawn respawnall` Respawn every killed one now · `/mobspawn holo` Put floating texts back\nNear a spawn: `/mobspawn time <minutes>` Change its timer · `/mobspawn remove` Stop tracking it (the mob stays alive)\nBosses set with `/setboss` count as bosses for Caverns cash + trackers"
+              "description": "Place the mob with its spawn egg, **look at it**, then: `/setmob [minutes]` or `/setboss [minutes]` (default 60 min)\nIt never despawns, gets pulled back if it wanders 32+ blocks, and respawns at the same spot after it's killed. Floating text shows its **real name** + a respawn countdown. Boss kills are announced\n`/mobspawn list` Spawns in this world · `/mobspawn info` Nearest spawn details + puts its text back · `/mobspawn respawnall` Respawn every killed one now · `/mobspawn holo` Put floating texts back\nBosses stay within 8 blocks of their spot (mobs 24). While a boss is dead, players within 48 blocks see a red bar counting down to its return\nNear a spawn: `/mobspawn time <minutes>` Change its timer · `/mobspawn remove` Stop tracking it (the mob stays alive)\nBosses set with `/setboss` count as bosses for Caverns cash + trackers"
             },
             {
               "title": "⚖️ Mob tweaks",

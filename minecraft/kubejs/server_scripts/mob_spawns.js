@@ -1,6 +1,7 @@
 // OVERTHRONE - fixed mob & boss spawns (made for the Caverns, works in any world).
 // Place a mob with its spawn egg, look at it and type /setmob or /setboss. From then on:
-//   - it never despawns and is pulled back if it wanders too far from its spot
+//   - it never despawns and is pulled back if it wanders too far from its spot (bosses: 8 blocks, mobs: 24)
+//   - while a boss is dead, players nearby see a red bar counting down to its return
 //   - when it's killed, a floating timer above its spot counts down and the same mob type respawns there
 //     (default after 60 minutes)
 //   - the floating text always shows the mob's REAL name (straight from the game/mod), styled: gold for mobs,
@@ -18,12 +19,15 @@
 //   /mobspawn list           every spawn in this world with its state
 //   /mobspawn respawnall     respawn every killed mob now
 //   /mobspawn holo           put back missing floating texts
+//   /mobspawn info           details of the nearest spawn (within 16 blocks) + puts its text back
 
 (function () {
   const uidOf = (e) => { try { return String(e.getStringUuid()) } catch (x) { try { return String(e.getUuid()) } catch (y) { return String(e.uuid) } } }   // KubeJS renames getUUID
   const STORE = 'ot_spawns'
   const DEFAULT_MINUTES = 60
-  const LEASH = 32            // blocks a mob may wander from its spot before it's pulled back
+  const LEASH = 24            // blocks a mob may wander from its spot before it's pulled back
+  const BOSS_LEASH = 8        // bosses stay close to their spot
+  const BAR_RANGE = 48        // players this close to a dead boss's spot see its respawn timer bar
   const UUID = Java.loadClass('java.util.UUID')
   var spawns = null
   const missing = {}
@@ -63,6 +67,20 @@
     run(s, `execute in ${sp.dim} run data merge entity @e[type=minecraft:text_display,tag=${tagOf(id)},limit=1] {text:'${holoText(sp, secsLeft)}'}`)
   }
 
+  // ---- boss respawn timer bar (only while the boss is dead; the boss itself usually has its own health bar)
+  const barId = (id) => 'overthrone:sp_' + String(id).toLowerCase().replace(/[^a-z0-9_]/g, '')
+  const showBar = (s, id, secsLeft) => {
+    var sp = spawns[id]; if (!sp || sp.kind != 'boss') return
+    var b = barId(id), name = JSON.stringify(['', { text: '☠ ', color: 'dark_red' }, { translate: sp.key, color: 'red', bold: true },
+      { text: ' returns in ' + mmss(secsLeft), color: 'yellow' }])
+    if (!sp.bar) { run(s, `bossbar add ${b} ${name}`); run(s, `bossbar set ${b} color red`); run(s, `bossbar set ${b} style notched_10`); sp.bar = true }
+    run(s, `bossbar set ${b} name ${name}`)
+    run(s, `bossbar set ${b} max ${Math.max(1, sp.mins * 60)}`)
+    run(s, `bossbar set ${b} value ${Math.max(0, Math.min(sp.mins * 60, sp.mins * 60 - secsLeft))}`)
+    run(s, `execute in ${sp.dim} positioned ${sp.x} ${sp.y} ${sp.z} run bossbar set ${b} players @a[distance=..${BAR_RANGE}]`)
+  }
+  const hideBar = (s, id) => { var sp = spawns[id]; run(s, `bossbar remove ${barId(id)}`); if (sp) delete sp.bar }
+
   // ---- tracking a live mob
   const adopt = (s, id, e) => {
     var sp = spawns[id]
@@ -89,6 +107,8 @@
     if (found == null) return false
     adopt(s, id, found)
     setHolo(s, id, null)
+    hideBar(s, id)
+    if (sp.kind == 'boss') run(s, 'tellraw @a ' + JSON.stringify(['', { text: '☠ ', color: 'dark_red' }, { translate: sp.key, color: 'red', bold: true }, { text: ' has returned to the Caverns!', color: 'gold' }]))
     save(s)
     return true
   }
@@ -106,7 +126,7 @@
       try {
         if (sp.down) {
           if (now >= sp.down) spawnNow(s, id)
-          else setHolo(s, id, Math.ceil((sp.down - now) / 1000))
+          else { var left = Math.ceil((sp.down - now) / 1000); setHolo(s, id, left); showBar(s, id, left) }
           return
         }
         if (!five || !sp.uuid) return
@@ -120,7 +140,8 @@
         }
         missing[id] = 0
         var dx = e.getX() - sp.x, dz = e.getZ() - sp.z, dy = e.getY() - sp.y
-        if (dx * dx + dy * dy + dz * dz > LEASH * LEASH) { try { e.teleportTo(sp.x, sp.y, sp.z) } catch (y) { run(s, `execute in ${sp.dim} run tp ${uidOf(e)} ${sp.x} ${sp.y} ${sp.z}`) } }
+        var leash = sp.kind == 'boss' ? BOSS_LEASH : LEASH
+        if (dx * dx + dy * dy + dz * dz > leash * leash) { try { e.teleportTo(sp.x, sp.y, sp.z) } catch (y) { run(s, `execute in ${sp.dim} run tp ${uidOf(e)} ${sp.x} ${sp.y} ${sp.z}`) } }
       } catch (x) { }
     })
   })
@@ -138,6 +159,7 @@
       sp.down = Date.now() + sp.mins * 60000; sp.uuid = null
       save(s)
       setHolo(s, id, sp.mins * 60)
+      showBar(s, id, sp.mins * 60)
       if (sp.kind == 'boss') {
         var killer = null
         try { var p = event.source.getPlayer(); if (p) killer = p.username } catch (x) { }
@@ -201,7 +223,7 @@
       adopt(s, id, e)
       save(s)
       placeHolo(s, id)
-      say(ctx.source, P + '§a' + (kind == 'boss' ? 'Boss' : 'Mob') + ' spawn set: §f' + type + ' §7respawns §f' + mins + ' min§7 after it dies.')
+      say(ctx.source, P + '§a' + (kind == 'boss' ? 'Boss' : 'Mob') + ' spawn set: §f' + type + ' §7respawns §f' + mins + ' min§7 after it dies. §8Its name now floats above it.')
       return 1
     }
     const minsArg = () => Commands.argument('minutes', Arguments.INTEGER.create(event))
@@ -217,6 +239,7 @@
         var sp = spawns[id]
         run(s, `execute in ${sp.dim} run kill @e[type=minecraft:text_display,tag=${tagOf(id)}]`)
         if (sp.uuid) { try { var e = p.level.getEntity(UUID.fromString(sp.uuid)); if (e) { e.removeTag('ot_spawn'); e.removeTag(tagOf(id)); e.removeTag('ot_boss') } } catch (x) { } }
+        hideBar(s, id)
         delete spawns[id]; save(s)
         say(ctx.source, P + '§aRemoved the §f' + sp.type + '§a spawn. §7Its mob (if alive) is left where it is.')
         return 1
@@ -228,6 +251,17 @@
         say(ctx.source, P + '§a' + spawns[id].type + ' now respawns §f' + m + ' min§a after it dies.')
         return 1
       })))
+      .then(Commands.literal('info').executes(ctx => {
+        var p = ctx.source.playerOrException, id = nearest(p, 16)
+        if (id == null) { say(ctx.source, '§cNo spawn within 16 blocks. §7(/mobspawn list shows them all)'); return 0 }
+        var sp = spawns[id], alive = false
+        try { var e = sp.uuid ? p.level.getEntity(UUID.fromString(sp.uuid)) : null; alive = e != null && e.isAlive() } catch (x) { }
+        say(ctx.source, P + '§f' + sp.type + ' §7(' + sp.kind + ', ' + sp.mins + ' min) at §f' + Math.floor(sp.x) + ' ' + Math.floor(sp.y) + ' ' + Math.floor(sp.z))
+        say(ctx.source, '§7Name key: §f' + sp.key + ' §7· tracked mob: ' + (sp.down ? '§cdead, back in ' + mmss(Math.max(0, Math.ceil((sp.down - Date.now()) / 1000))) : alive ? '§afound & alive' : '§enot found yet (unloaded or missing)'))
+        placeHolo(p.server, id)
+        say(ctx.source, '§7Floating text re-placed. §8If you still can\'t see it, look ' + sp.h + ' blocks above the spot.')
+        return 1
+      }))
       .then(Commands.literal('list').executes(ctx => {
         var p = ctx.source.playerOrException, dim = dimOf(p.level), now = Date.now(), n = 0
         Object.keys(load(p.server)).forEach(k => {
