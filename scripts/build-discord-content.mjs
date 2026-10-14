@@ -359,7 +359,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/node remove` Back to a normal block (deletes its text) · `/node info` What node it is + respawn time",
     "Anywhere:",
     "`/node list` Nodes within 64 blocks with coordinates · `/node respawnall` Respawn every gathered node now",
-    "`/node holo` Re-place missing floating texts near you",
+    "`/node holo` Re-place missing floating texts near you · `/node fixall` Fix every node: real block back + fresh floating text (run near nodes in unloaded areas)",
     "Can't see a node to remove it? `/node list` → go there → `/node respawnall` → look at it → `/node remove`",
     "`/professions <player>` Someone's levels · `/profession set <player> <profession> <level>` Set a level",
     "Players: `/professions` (levels in chat) · `/professionmenu` (menu) · NPC: `/npcmenu spawn professions`",
