@@ -888,23 +888,36 @@
 
   // ======================================================================= Kit Selector
   const KIT_MS = KIT_COOLDOWN_HOURS * 3600 * 1000
-  const kitMenu = (p) => {
-    var s = p.server, ids = ranksOf(p), op = p.hasPermissions(2), now = Date.now()
-    p.openChestGUI(Text.of('Kits'), 3, gui => {
+  // target: staff can open another player's menu to see exactly what that player sees (their ranks and timers),
+  // view only: clicks do nothing then. /kitmenu <player>
+  const kitMenu = (p, target) => {
+    var who = target || p, viewing = who !== p
+    var s = p.server, ids = ranksOf(who), op = who.hasPermissions(2), now = Date.now()
+    p.openChestGUI(Text.of(viewing ? 'Kits: ' + who.username : 'Kits'), 3, gui => {
       gui.playerSlots = true
       fill(gui, s, 3)
+      // free starter kit for everyone (NeoEssentials handles its own 1 day cooldown)
+      gui.slot(1, 1, sl => {
+        sl.item = icon(s, 'minecraft:candle', '&f&lStarter', ['&a&lAVAILABLE', '', '&f&lKIT INFORMATION:', '&8 • &7Free for everyone', '&8 • &7Cooldown: &f1d', '', viewing ? '&8View only' : '&e&lCLICK TO CLAIM'], true)
+        sl.leftClicked = e => {
+          if (viewing) return
+          after(p, () => { try { p.runCommandSilent('kit starter') } catch (x) { p.tell('§c§lKits §7» Use §f/kit starter') } })
+        }
+      })
       RANK_ORDER.forEach((kit, i) => {
         var info = RANK_INFO[kit]
         var has = op || ids.indexOf(kit) >= 0
-        var last = Number(String(p.persistentData.getString('ot_kitcd_' + kit)) || 0)
+        var last = Number(String(who.persistentData.getString('ot_kitcd_' + kit)) || 0)
         var left = op ? 0 : (last ? KIT_MS - (now - last) : 0)
         var status = !has ? '&c&lNO PERMISSIONS' : left > 0 ? '&c&lON COOLDOWN' : '&a&lAVAILABLE'
         var lore = [status, '', '&f&lKIT INFORMATION:', '&8 • &7Cooldown: &f5d', '&8 • &7Remaining: &f' + (has && left > 0 ? dur(left) : 'None')]
         lore.push('')
-        lore.push(!has ? '&7Unlock with the &f' + info.name + '&7 rank: &eoverthronesmp.tebex.store' : left > 0 ? '&7Come back when the timer runs out.' : '&e&lCLICK TO CLAIM')
-        gui.slot(2 + i, 1, sl => {
+        if (viewing) lore.push('&8View only' + (op ? ' (staff never get a cooldown)' : ''))
+        else lore.push(!has ? '&7Unlock with the &f' + info.name + '&7 rank: &eoverthronesmp.tebex.store' : left > 0 ? '&7Come back when the timer runs out.' : '&e&lCLICK TO CLAIM')
+        gui.slot(3 + i, 1, sl => {
           sl.item = icon(s, has ? info.candle : 'minecraft:gray_candle', info.c + '&l' + info.name, lore, has && left <= 0)
           sl.leftClicked = e => {
+            if (viewing) return
             if (!has) { p.tell('§c§lKits §7» You need the §f' + info.name + '§7 rank for this kit. §eoverthronesmp.tebex.store'); return }
             if (left > 0) { p.tell('§c§lKits §7» You can claim this kit again in §e' + dur(left) + '§7.'); return }
             after(p, () => claimKit(p, kit))
@@ -919,6 +932,18 @@
     // kit_cooldown.js normally records the claim; record it here too if it didn't (ops never get a cooldown)
     if (!p.hasPermissions(2) && String(p.persistentData.getString(key) || '') == before) p.persistentData.putString(key, String(Date.now()))
   }
+
+  ServerEvents.command(event => {
+    var parts = String(event.input || '').trim().replace(/^\//, '').split(/\s+/)
+    if (parts.length != 1) return
+    var c = parts[0].toLowerCase()
+    if (c != 'kits' && c != 'neoessentials:kits') return
+    var p = null
+    try { p = event.parseResults.getContext().getSource().getPlayer() } catch (e) { p = null }
+    if (!p) return    // console keeps the normal list
+    event.cancel()
+    p.server.scheduleInTicks(1, () => openMenu(p, 'kits'))
+  })
 
   // ======================================================================= Level Guide
   const levelGuide = (p) => {
@@ -1574,7 +1599,13 @@
         return 1
       }))))
     event.register(Commands.literal('cratemenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'crates'); return 1 }))
-    event.register(Commands.literal('kitmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'kits'); return 1 }))
+    event.register(Commands.literal('kitmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'kits'); return 1 })
+      // staff: see another player's kits and cooldowns the way they see them
+      .then(Commands.argument('player', Arguments.PLAYER.create(event)).requires(src => src.hasPermission(2)).executes(ctx => {
+        var me = ctx.source.playerOrException, who = Arguments.PLAYER.getResult(ctx, 'player')
+        try { kitMenu(me, who) } catch (e) { me.tell('§c[npc_menus] ' + e) }
+        return 1
+      })))
     event.register(Commands.literal('levelguide').executes(ctx => { openMenu(ctx.source.playerOrException, 'levels'); return 1 }))
     event.register(Commands.literal('claimmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'claims'); return 1 }))
     event.register(Commands.literal('smpmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'smp'); return 1 }))
