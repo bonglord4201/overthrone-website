@@ -259,6 +259,7 @@ var otIsNodeBlock = (block) => {
     if (lvXp > 0) {
       try { if (typeof addXp === 'function') addXp(p, lvXp); else run(s, `level xp give ${p.username} ${lvXp}`) } catch (e) { }
     }
+    try { if (typeof otOnNodeGathered === 'function') otOnNodeGathered(p, n) } catch (e) { }   // caverns.js: cash + trackers
     run(s, `execute at ${p.username} run playsound minecraft:entity.experience_orb.pickup player ${p.username} ~ ~ ~ 0.6 1.4`)
     run(s, `execute in ${n.dim} run particle minecraft:happy_villager ${n.x + 0.5} ${n.y + 0.6} ${n.z + 0.5} 0.3 0.3 0.3 0 12`)
     s.scheduleInTicks(1, () => run(s, `title ${p.username} actionbar ${JSON.stringify({
