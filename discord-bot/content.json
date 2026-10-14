@@ -692,6 +692,10 @@
               "description": "Hub + RPG world are FTB Chunks claims owned by the `hub` team. **TenSura Compat: FTB** stops skills breaking blocks in claims (`config/tensura/ftb_config`: keep `abilityGrief = false`)\n`/ftbchunks info` Who owns the chunk you're in · `/ftbchunks admin claim_as hub#0d6da155 <radius in blocks>` Claim more for the hub team (use Tab on the team name)\n`/ftbchunks admin bypass_protection` Toggle your bypass (on = you can build/use skills in claims). Test as a player with it OFF\n`/gamerule skillGriefing true` Keep this ON (it's server-wide: false stops skills everywhere)\n`/safeexplosions` Explosions blocked in hub/RPG? · `/damagezones` Is this world a no-damage safe zone?\nNew players: no damage while picking a race + first 15 min of play (below level 5). `/newbieshield <player> <minutes>` give/extend it (0 = end it)"
             },
             {
+              "title": "🚫 Banned skills",
+              "description": "Banned: Predator, Gluttony, Creator, Fusionist, Infinity Prison, Cultivator, Pride, Jinchuriki, Crasher, Coalescence, Victorious Harbinger\nThey're out of the reincarnation rolls (`config/tensura/reincarnation_config.toml`) and `skill_blacklist.js` removes them from anyone who has one (on login + every 30 s)\n`/skillban check <player>` What banned skills they have · `/skillban scan` Remove from everyone online now\n`/skillban list` · `/skillban status` (is the skill system found?) · Edit the `BANNED` list at the top of the file to change it"
+            },
+            {
               "title": "🧬 Tensura",
               "description": "`/tensura edit forceevo <player> demonLord` Make someone a Demon Lord\n`/tensura edit race <player> tensura:god_slime true true` Set a race"
             },

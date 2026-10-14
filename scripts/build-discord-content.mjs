@@ -446,6 +446,12 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/safeexplosions` Explosions blocked in hub/RPG? · `/damagezones` Is this world a no-damage safe zone?",
     "New players: no damage while picking a race + first 15 min of play (below level 5). `/newbieshield <player> <minutes>` give/extend it (0 = end it)"
   ].join("\n") },
+  { title: "🚫 Banned skills", description: [
+    "Banned: Predator, Gluttony, Creator, Fusionist, Infinity Prison, Cultivator, Pride, Jinchuriki, Crasher, Coalescence, Victorious Harbinger",
+    "They're out of the reincarnation rolls (`config/tensura/reincarnation_config.toml`) and `skill_blacklist.js` removes them from anyone who has one (on login + every 30 s)",
+    "`/skillban check <player>` What banned skills they have · `/skillban scan` Remove from everyone online now",
+    "`/skillban list` · `/skillban status` (is the skill system found?) · Edit the `BANNED` list at the top of the file to change it"
+  ].join("\n") },
   { title: "🧬 Tensura", description: [
     "`/tensura edit forceevo <player> demonLord` Make someone a Demon Lord",
     "`/tensura edit race <player> tensura:god_slime true true` Set a race"
