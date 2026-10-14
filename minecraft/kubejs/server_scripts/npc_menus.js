@@ -1123,6 +1123,50 @@
     })
   }
 
+  // ======================================================================= The Caverns (caverns.js)
+  const cavernsMenu = (p) => {
+    var s = p.server
+    var st = typeof otCavernsStats === 'function' ? otCavernsStats(p) : { kills: 0, bosses: 0, nodes: 0, cash: 0, best: 0, time: 0 }
+    var hrs = Math.floor(st.time / 3600), mins = Math.floor(st.time % 3600 / 60)
+    var lvl = Math.max(1, p.persistentData.getInt('ot_level') || 1)
+    p.openChestGUI(Text.of('The Caverns'), 6, gui => {
+      gui.playerSlots = true
+      for (var y = 0; y < 6; y++) for (var x = 0; x < 9; x++) {
+        (function (xx, yy) { gui.slot(xx, yy, sl => { sl.item = pane(s, (yy == 0 || yy == 5 || xx == 0 || xx == 8) ? ((xx + yy) % 2 ? 'minecraft:black_stained_glass_pane' : 'minecraft:red_stained_glass_pane') : 'minecraft:gray_stained_glass_pane') }) })(x, y)
+      }
+      gui.slot(4, 0, sl => { sl.item = icon(s, 'minecraft:deepslate_diamond_ore', '&6&l⛏ THE CAVERNS ⛏', ['A deep mine full of &cmobs&7, &4bosses', '&7and &eevery kind of node&7.', '', '&aNo level needed: everyone can go!', '&7Earn &aCASH&7 for every kill and node.'], true) })
+      // what's inside
+      gui.slot(1, 1, sl => { sl.item = icon(s, 'minecraft:zombie_head', '&c&lMOBS', ['The Caverns are crawling with mobs.', 'Every kill gives &acash&7 and', '&cCombat XP&7.', '', '&7Stronger mobs pay more.'], false) })
+      gui.slot(3, 1, sl => { sl.item = icon(s, 'minecraft:wither_skeleton_skull', '&4&lBOSSES', ['Bosses lurk in the deep.', 'They hit hard, so bring your', 'best gear and some friends.', '', '&aBosses pay the most: up to &a&l$10,000&7!'], true) })
+      gui.slot(5, 1, sl => { sl.item = icon(s, 'minecraft:amethyst_cluster', '&e&lNODES', ['Every node type is down here:', '&7⛏ Mining  &d💎 Gemology', '&a🌾 Farming  &2🌲 Foraging', '', 'Hit a node &f3 times&7 to gather it.', 'It comes back after &f1 minute&7.'], false) })
+      gui.slot(7, 1, sl => { sl.item = icon(s, 'minecraft:emerald', '&a&lCASH REWARDS', ['Every &fkill&7 and every &fnode&7 inside', 'the Caverns pays &a$100 &7to &a$10,000&7.', '', '&7Mobs: more health = more cash', '&7Nodes: higher level = more cash', '', '&8There is a per-minute limit.'], true) })
+      // your trackers
+      gui.slot(4, 2, sl => { sl.item = icon(s, 'minecraft:spyglass', '&b&lYOUR CAVERN TRACKERS', ['Your progress in the Caverns.', 'Everything below counts only', 'what you do &finside&7 the Caverns.'], false) })
+      gui.slot(1, 3, sl => { sl.item = icon(s, 'minecraft:iron_sword', '&c&lMobs Killed', ['&f' + fmt(st.kills)], st.kills > 0) })
+      gui.slot(2, 3, sl => { sl.item = icon(s, 'minecraft:dragon_head', '&4&lBosses Slain', ['&f' + fmt(st.bosses)], st.bosses > 0) })
+      gui.slot(3, 3, sl => { sl.item = icon(s, 'minecraft:iron_pickaxe', '&e&lNodes Gathered', ['&f' + fmt(st.nodes)], st.nodes > 0) })
+      gui.slot(4, 3, sl => { sl.item = icon(s, 'minecraft:gold_block', '&a&lCash Earned', ['&a$' + fmt(st.cash)], st.cash > 0) })
+      gui.slot(5, 3, sl => { sl.item = icon(s, 'minecraft:diamond', '&b&lBest Payout', ['&a$' + fmt(st.best), '&7Your biggest single reward.'], st.best > 0) })
+      gui.slot(6, 3, sl => { sl.item = icon(s, 'minecraft:clock', '&6&lTime Spent', ['&f' + hrs + 'h ' + mins + 'm'], false) })
+      gui.slot(7, 3, sl => { sl.item = icon(s, 'minecraft:experience_bottle', '&a&lYour Level', ['&fLevel ' + lvl, '', '&7Kills and nodes here also give', '&7XP for your &f/level&7.'], false) })
+      // profession levels
+      PROF_MENU.forEach((pr, i) => {
+        var pl = Math.max(1, p.persistentData.getInt('ot_prof_' + pr[0] + '_lvl') || 1), px = p.persistentData.getInt('ot_prof_' + pr[0] + '_xp') || 0
+        var need = profNeed(pl), pct = pl >= 100 ? 100 : Math.floor(px * 100 / need), bar = ''
+        for (var b = 0; b < 20; b++) bar += (b < pct / 5 ? '&a' : '&8') + '|'
+        gui.slot(2 + i, 4, sl => { sl.item = icon(s, pr[2], pr[1] + ' &f&lLv ' + pl, [bar + ' &f' + pct + '%', '&7XP: &f' + (pl >= 100 ? 'MAX' : fmt(px) + ' &7/ &f' + fmt(need))], false) })
+      })
+      // buttons
+      gui.slot(4, 5, sl => {
+        sl.item = icon(s, 'minecraft:ender_pearl', '&a&l➤ GO TO THE CAVERNS', ['Teleports you to the Caverns.', '', '&e&lCLICK TO TELEPORT'], true)
+        sl.leftClicked = e => after(p, () => { asPlayer(p, 'warp caverns'); p.tell('§6§l⛏ CAVERNS §7» Good luck down there! Every kill and node pays cash.') })
+      })
+      gui.slot(2, 5, sl => { sl.item = icon(s, 'minecraft:nether_star', '&6&lProfessions', ['Open your profession levels', 'and how nodes work.']); sl.leftClicked = e => after(p, () => professionMenu(p)) })
+      gui.slot(6, 5, sl => { sl.item = icon(s, 'minecraft:book', '&e&lTips', ['&fLeft-click&7 a node 3 times to gather it.', 'Nodes need your profession to be', 'at least the node\'s level.', 'Bosses: team up and bring gear!', '', '&e/caverns &7- open this menu'], false) })
+      gui.slot(8, 5, sl => { sl.item = icon(s, 'minecraft:barrier', '&c&lClose', []); sl.leftClicked = e => { try { p.closeMenu() } catch (x) { } } })
+    })
+  }
+
   // ======================================================================= Links
   const LINKS = [
     ['minecraft:light_blue_dye', '&9&lDiscord', 'https://discord.gg/overthronesmp'],
@@ -1270,7 +1314,7 @@
     })
   }
 
-  const MENUS = { cosmetics: p => cosmeticsMain(p), crates: crateMenu, throneshop: shopMain, kits: kitMenu, levels: levelGuide, links: linksMenu, claims: claimsMenu, smp: smpMenu, professions: professionMenu }
+  const MENUS = { cosmetics: p => cosmeticsMain(p), crates: crateMenu, throneshop: shopMain, kits: kitMenu, levels: levelGuide, links: linksMenu, claims: claimsMenu, smp: smpMenu, professions: professionMenu, caverns: cavernsMenu }
   const TITLES = {
     cosmetics: ['&d&lCOSMETICS', '&fRIGHT-CLICK TO VIEW'],
     crates: ['&e&lCRATES', '&fRIGHT-CLICK TO VIEW'],
@@ -1281,8 +1325,9 @@
     claims: ['&6&lLAND CLAIMS', '&fRIGHT-CLICK TO VIEW'],
     smp: ['&a&lTHE SMP WORLD', '&fRIGHT-CLICK TO VIEW'],
     professions: ['&6&lPROFESSIONS', '&fRIGHT-CLICK TO VIEW'],
+    caverns: ['&6&l⛏ THE CAVERNS', '&fRIGHT-CLICK TO VIEW'],
   }
-  const GLOW = { cosmetics: 'light_purple', crates: 'yellow', throneshop: 'light_purple', kits: 'gold', levels: 'green', links: 'aqua', claims: 'gold', smp: 'green', professions: 'gold', cmd: 'yellow' }
+  const GLOW = { cosmetics: 'light_purple', crates: 'yellow', throneshop: 'light_purple', kits: 'gold', levels: 'green', links: 'aqua', claims: 'gold', smp: 'green', professions: 'gold', caverns: 'gold', cmd: 'yellow' }
   const openMenu = (p, type) => {
     if (p.openChestGUI === undefined) { p.tell('§cMenus need KubeJS chest GUIs.'); return }
     try { MENUS[type](p) } catch (e) { console.error('[npc_menus] ' + type + ': ' + e); if (p.hasPermissions(2)) p.tell('§c[npc_menus] ' + e) }
@@ -1523,7 +1568,7 @@
     say(ctx.source, '§a[npcmenu] Removed ' + n + ' floating texts within ' + radius + ' blocks. §7Now /npcmenu fixall and /npcmenu styleall put the right ones back.')
     return 1
   }
-  const NPC_NAMES = { cosmetics: ['Cosmetics', '#FF55FF'], crates: ['Crates', '#FFFF55'], throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'], claims: ['Land Claims', '#FFAA00'], smp: ['SMP World', '#55FF55'], professions: ['Profession Master', '#FFAA00'] }
+  const NPC_NAMES = { cosmetics: ['Cosmetics', '#FF55FF'], crates: ['Crates', '#FFFF55'], throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'], claims: ['Land Claims', '#FFAA00'], smp: ['SMP World', '#55FF55'], professions: ['Profession Master', '#FFAA00'], caverns: ['Cavern Guide', '#FFAA00'] }
 
   ServerEvents.commandRegistry(event => {
     const { commands: Commands, arguments: Arguments } = event
@@ -1535,7 +1580,7 @@
     event.register(Commands.literal('npcmenu').requires(src => src.hasPermission(2))
       .then(Commands.literal('spawn').then(typeArg().executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, t = typeOf(ctx)
-        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels, links, claims, smp or professions'); return 0 }
+        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels, links, claims, smp, professions or caverns'); return 0 }
         var e = spawnNpc(p, NPC_NAMES[t][0], NPC_NAMES[t][1])
         if (e == null) { say(ctx.source, '§cThe NPC did not spawn (check the server log).'); return 0 }
         makeMenuNpc(p.server, e, t, null)
@@ -1552,7 +1597,7 @@
       })))))
       .then(Commands.literal('attach').then(typeArg().executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, t = typeOf(ctx), e = looked(p)
-        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels, links, claims, smp or professions'); return 0 }
+        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels, links, claims, smp, professions or caverns'); return 0 }
         if (e == null) { say(ctx.source, '§cLook straight at an NPC (within 8 blocks).'); return 0 }
         makeMenuNpc(p.server, e, t, null)
         say(ctx.source, '§a[npcmenu] This NPC now opens the ' + t + ' menu.')
@@ -1820,6 +1865,7 @@
         say(ctx.source, '§a[stats] Money placeholder set to §f' + (t == 'auto' ? '(auto)' : t))
         return 1
       }))))
+    event.register(Commands.literal('caverns').executes(ctx => { openMenu(ctx.source.playerOrException, 'caverns'); return 1 }))
     event.register(Commands.literal('professionmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'professions'); return 1 }))
     event.register(Commands.literal('claimmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'claims'); return 1 }))
     event.register(Commands.literal('smpmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'smp'); return 1 }))
