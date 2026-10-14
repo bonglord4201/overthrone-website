@@ -49,7 +49,10 @@ const PROF_PERKS = {
 var otSetAttrBonus = (p, attrId, bonusId, amount, op) => {
   try {
     var RL = Java.loadClass('net.minecraft.resources.ResourceLocation')
-    var holder = Java.loadClass('net.minecraft.core.registries.BuiltInRegistries').ATTRIBUTE.getHolder(RL.parse(attrId)).orElse(null)
+    // 1.21.1: registry holders are looked up by ResourceKey (looking up by name alone does not exist yet)
+    var reg = Java.loadClass('net.minecraft.core.registries.BuiltInRegistries').ATTRIBUTE
+    var rkey = Java.loadClass('net.minecraft.resources.ResourceKey').create(Java.loadClass('net.minecraft.core.registries.Registries').ATTRIBUTE, RL.parse(attrId))
+    var holder = reg.getHolder(rkey).orElse(null)
     if (holder == null) return false
     var inst = p.getAttribute(holder)
     if (inst == null) return false
