@@ -1,5 +1,5 @@
 // OVERTHRONE - professions and gathering nodes (RPG-style).
-// Staff turn chosen blocks (ores, gems, crops, logs...) into NODES. A node shows its profession, level and XP
+// Staff turn chosen blocks (ores, gems, crops, logs...) into NODES. Players gather a node by hitting it once (works in claims). A node shows its profession, level and XP
 // on floating text. Gathering it gives profession XP (and some normal level XP), drops NOTHING, and the node
 // respawns in the same spot after RESPAWN_SECONDS. Normal blocks everywhere else work exactly like before.
 // leveling.js and anticheat.js skip node blocks (they call otIsNode), so nodes give no ore XP and no X-ray flags.
@@ -209,26 +209,32 @@ var otIsNodeBlock = (block) => {
   })
 
   // ---- gathering
-  BlockEvents.broken(event => {
-    var p = event.player
-    if (p == null) return
+  // Players gather a node by HITTING it once (left-click). The block is never really broken, so it also works inside
+  // protected areas like the hub claim. Breaking it normally (where allowed) gathers it the same way.
+  // Returns true when the click/break was on a node (the caller then cancels the normal action).
+  const lastHit = {}
+  const tryGather = (p, b, fromClick) => {
     var s = p.server
     load(s)
-    var b = event.block, dim = dimOf(b.level), key = keyOf(dim, b.x, b.y, b.z), n = otNodeCache[key]
-    if (!n) return
+    var dim = dimOf(b.level), key = keyOf(dim, b.x, b.y, b.z), n = otNodeCache[key]
+    if (!n) return false
+    // holding left-click fires many clicks: handle one per half second per player, quietly ignore the rest
+    var now = Date.now(), quiet = fromClick && lastHit[p.username] && now - lastHit[p.username] < 500
+    if (fromClick) lastHit[p.username] = now
     if (down[key]) {
-      // a player block put in the empty spot can be broken normally (it is replaced when the node respawns)
-      if (String(b.id) == depletedState(n).replace(/\[.*$/, '')) { event.cancel() }
-      return
+      // a player block put in the empty spot can still be broken normally (it is replaced when the node respawns)
+      if (String(b.id) != depletedState(n).replace(/\[.*$/, '')) return false
+      if (!quiet && fromClick) p.tell(P + '§7This node respawns in §f' + Math.max(1, Math.ceil((down[key] - now) / 1000)) + 's§7.')
+      return true
     }
-    if (p.isCreative()) { p.tell(P + '§cThis is a node. §7Use §e/node remove§7 to delete it.'); event.cancel(); return }
+    if (quiet) return true
+    if (p.isCreative()) { p.tell(P + '§cThis is a node. §7Use §e/node remove§7 to delete it. §8(Survival to gather)'); return true }
     var pr = PROFESSIONS[n.prof]
     if (profLvl(p, n.prof) < n.lvl) {
       p.tell(P + '§cYou need ' + pr.icon + ' ' + pr.name + ' level §f' + n.lvl + '§c to gather this. §7(You are level ' + profLvl(p, n.prof) + ')')
-      event.cancel(); return
+      return true
     }
-    // NOTE: event.cancel() ends this function straight away in KubeJS, so it is called LAST (below)
-    down[key] = Date.now() + PROF_RESPAWN_SECONDS * 1000
+    down[key] = now + PROF_RESPAWN_SECONDS * 1000
     save(s)
     s.scheduleInTicks(1, () => {
       run(s, `execute in ${n.dim} run setblock ${n.x} ${n.y} ${n.z} ${depletedState(n)}`)
@@ -241,9 +247,21 @@ var otIsNodeBlock = (block) => {
       try { if (typeof addXp === 'function') addXp(p, lvXp); else run(s, `level xp give ${p.username} ${lvXp}`) } catch (e) { }
     }
     run(s, `execute at ${p.username} run playsound minecraft:entity.experience_orb.pickup player ${p.username} ~ ~ ~ 0.6 1.4`)
+    run(s, `execute in ${n.dim} run particle minecraft:happy_villager ${n.x + 0.5} ${n.y + 0.6} ${n.z + 0.5} 0.3 0.3 0.3 0 12`)
     s.scheduleInTicks(1, () => run(s, `title ${p.username} actionbar ${JSON.stringify({
       text: pr.icon + ' +' + n.xp + ' ' + pr.name + ' XP (' + r.xp + '/' + PROF_NEED(r.lvl) + ', Lv ' + r.lvl + ')' + (lvXp > 0 ? '  +' + lvXp + ' XP' : ''), color: 'yellow' })}`))
-    event.cancel()   // no drops: the block stays and is swapped to its gathered look next tick (above)
+    return true
+  }
+  // NOTE: event.cancel() ends the handler straight away in KubeJS, so it always comes LAST
+  BlockEvents.leftClicked(event => {
+    var p = event.player
+    if (p == null) return
+    if (tryGather(p, event.block, true)) event.cancel()
+  })
+  BlockEvents.broken(event => {
+    var p = event.player
+    if (p == null) return
+    if (tryGather(p, event.block, false)) event.cancel()   // no drops: the block is swapped to its gathered look next tick
   })
 
   // ---- commands
