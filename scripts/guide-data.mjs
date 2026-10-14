@@ -227,6 +227,30 @@ export const SECTIONS = [
     ]
   },
   {
+    id: "caverns",
+    title: "The Caverns",
+    icon: "skull",
+    intro: "A deep mine full of mobs, bosses and every kind of gathering node. No level needed, and everything you do down there pays cash.",
+    blocks: [
+      { chips: [
+        { t: "/warp caverns", d: "Go to the Caverns" },
+        { t: "/caverns", d: "Your Caverns menu and trackers" }
+      ] },
+      { cards: [
+        { t: "Mobs", k: "Kill for cash", d: "Every mob you kill in the Caverns pays **cash** and gives **Combat XP**. Stronger mobs pay more." },
+        { t: "Bosses", k: "Up to $10,000", d: "Bosses lurk in the deep. They hit hard, so bring your best gear and some friends. They pay the most." },
+        { t: "Nodes", k: "Every type", d: "Mining, Gemology, Farming and Foraging nodes are all down here. Gathering one pays **cash** plus profession XP." }
+      ] },
+      { list: [
+        "**Cash:** every kill and every node in the Caverns pays **$100 to $10,000**. Stronger mobs and higher-level nodes pay more.",
+        "**There's a per-minute limit** on Caverns cash, so mob farms can't print money.",
+        "**Trackers:** talk to the **Cavern Guide** NPC or type **/caverns** to see your kills, bosses slain, nodes gathered, cash earned, best payout and time spent.",
+        "**No level requirement:** anyone can go. Your profession level still has to be at least a node's level to gather it."
+      ] },
+      { callout: { kind: "tip", text: "Gathering works the same as everywhere else: hit a node **3 times**. It comes back after **1 minute**." } }
+    ]
+  },
+  {
     id: "stats",
     title: "Stats & Builds",
     icon: "shield",
@@ -340,6 +364,7 @@ export const SECTIONS = [
         { t: "/warp hunters", d: "Hunters" },
         { t: "/warp crates", d: "Crates" },
         { t: "/warp afk", d: "AFK area" },
+        { t: "/warp caverns", d: "The Caverns: mobs, bosses & nodes" },
         { t: "/rpg", d: "RPG world" },
         { t: "/warp arcade", d: "Arcade & Trade Hall" },
         { t: "/warp arcanum", d: "The Arcanum: enchanting & runes" },
@@ -497,4 +522,17 @@ export const UPDATE13_POSTS = [
     body: "## ⚔ Stats & Builds\nEvery level now gives you **1 stat point**. Spend them in the **Level Guide** NPC → **YOUR STATS** (or **/stats**).\n- **Strength** up to +25% melee damage\n- **Vitality** up to +25% max health\n- **Defense** up to +20% armor\n- **Attack Speed** up to +15%\n- **Crit Chance** up to +10% and **Crit Damage** up to +50%\n- **Dodge Chance** up to +5% and **Lifesteal** up to +5%\n- **Speed** up to +5% and **Mining Speed** up to +30%\n\nEvery stat has a max, so pick a build. Points you can't use yet are saved for stats coming in future updates. You can reset your stats for **500 Throne Shards** or **$2,000,000**.\n\n## ⛏ Professions\nFive professions, each from level 1 to 100:\n- **Mining**: ore nodes. Perk: up to +20% mining speed.\n- **Gemology**: gem and crystal nodes.\n- **Farming**: crop nodes.\n- **Foraging**: tree nodes.\n- **Combat**: killing mobs. Perk: up to +10% melee damage.\n\nVisit the new **Profession Master** NPC or type **/professions** to see your levels.\n\n## 💎 Gathering Nodes\n- Look for blocks with **floating text**: they're nodes.\n- **Hit a node 3 times** to gather it for profession XP and bonus level XP.\n- Nodes don't drop items. A **countdown** shows when they'll be back, and they respawn after **1 minute**.\n- Higher-level nodes need a higher profession level.\n\n## 🎁 Crates & Kits\n- **New AFK Crate:** earn AFK Keys in the AFK room (**/warp afk**). Win diamonds, money, Throne Shards, claim blocks, a **Legendary Key** or a **Ronin, Valkyrie or Monarch kit**.\n- Kits won from crates give you the kit's items once. They don't give you the rank.\n- **Redesigned crate menus:** rewards are sorted from most common to rarest, with pages for the rarest rewards.\n- **The Voting Crate now has claim blocks.**\n- **/kits** now opens the Kit Selector menu, with the free Starter kit and your rank kits with their cooldowns.\n\n## 🌍 Worlds\n- **The SMP world (/smp):** no land claims and raiding is allowed. Anything goes.\n- **/wild** now takes you to a random spot in the overworld.\n- **Safe zones:** you can't take damage in the hub or the RPG world. Everywhere else, you can.\n\n[Professions guide](/guide#professions) · [Stats guide](/guide#stats) · [Crates & kits](/guide#crates)" },
   { category: "changelog", pinned: false, title: "Changelog: Update 1.3 (Season 1)",
     body: "## Added\n- Stat points: 1 per level, spent on 10 stats with a max each (Level Guide NPC → YOUR STATS, or /stats).\n- Stat reset for 500 Throne Shards or $2,000,000.\n- Professions: Mining, Gemology, Farming, Foraging and Combat (levels 1-100), with Mining and Combat perks.\n- Gathering nodes: hit 3 times to gather, respawn after 1 minute with a countdown, no item drops.\n- The Profession Master NPC, and a Professions button in the Level Guide.\n- The AFK Crate with OG-style rewards, including Ronin, Valkyrie and Monarch kits and the Legendary Key.\n- Claim blocks in the Voting Crate.\n- The SMP world (/smp): no claims, raiding allowed.\n- The Kit Selector menu (/kits) with the Starter kit.\n- New Player Guide sections: Professions & Gathering, Stats & Builds, and Crates, Keys & Kits.\n\n## Changed\n- Crate menus redesigned: rewards sorted from most common to rarest, with pages.\n- /wild now goes to the overworld.\n- New players go to the hub once they've picked their race.\n- The server is now backed up every night.\n\n## Fixed\n- Players sometimes couldn't take damage anywhere. Now only the hub and the RPG world are safe zones.\n- Big lag spikes: server performance is much smoother.\n- The race selection screen could close on your first join.\n- Kits won from crates weren't given to players without that rank.\n- The anti-cheat wrongly flagged long-reach weapons and big mobs.\n- A fix is in place for races resetting after a server restart. If yours resets, open a ticket on Discord.\n\n## Known issues\n- Getting kicked with \"Failed to decode packet clientbound/minecraft:custom_payload\"? It's a Solo Leveling mod bug. Fully close Minecraft and your launcher, then rejoin." }
+];
+
+// Update 1.4: The Caverns.
+export const UPDATE14_GUIDE_POSTS = [
+  { category: "professions-stats", title: "The Caverns Guide", pinned: true, sections: ["caverns"] }
+];
+export const UPDATE14_POSTS = [
+  { category: "announcements", pinned: true, title: "Update 1.4 is LIVE: The Caverns",
+    body: "**The Caverns are open!** A brand-new mine full of mobs, bosses and every kind of gathering node, and everything you do down there pays **cash**.\n\n- **Earn $100 to $10,000** for every mob you kill and every node you gather in the Caverns.\n- **Bosses** pay the most. Bring gear and friends.\n- **Every node type** in one place: Mining, Gemology, Farming and Foraging.\n- **No level needed:** anyone can go.\n- **New Cavern Guide NPC** with your own trackers: kills, bosses, nodes, cash earned and more.\n- **Safer hub:** skills and explosions can't damage the hub or the RPG world any more.\n\nType **/warp caverns** to jump in, or **/caverns** to see your progress.\n\n[Read the full patch notes](/forums?c=server-updates) · [Caverns guide](/guide#caverns)" },
+  { category: "server-updates", pinned: true, title: "Update 1.4: The Caverns",
+    body: "## ⛏ The Caverns\nA deep mine full of **mobs**, **bosses** and **every kind of gathering node**. There's no level requirement, so anyone can go.\n- **/warp caverns** takes you there.\n- Every **mob kill** in the Caverns pays **$100 to $10,000**. Stronger mobs pay more.\n- Every **node** you gather in the Caverns pays **$100 to $10,000**. Higher-level nodes pay more.\n- **Bosses** pay the most, up to **$10,000** a kill.\n- Kills and nodes still give **Combat**, **profession** and **level XP** as normal.\n- There's a per-minute limit on Caverns cash, so farms can't print money.\n\n## 📊 Cavern Guide & Trackers\nTalk to the new **Cavern Guide** NPC or type **/caverns** to open your Caverns menu:\n- What's down there and how the cash works.\n- **Your trackers:** mobs killed, bosses slain, nodes gathered, cash earned, your best payout and time spent in the Caverns.\n- Your profession levels and a **Go to the Caverns** button.\n\n## 🛡 Safer Hub & RPG World\n- Skills can no longer break or change blocks in the **hub** or the **RPG world**.\n- Explosions (TNT, creepers, explosion skills) are blocked in both.\n- Skills work exactly the same everywhere else.\n\n## ⚖ Balance\n- **Barghests** have been toned down: **40 health**, and their hits are capped at **5 damage** (they can still set you on fire).\n\n[Caverns guide](/guide#caverns) · [Professions guide](/guide#professions)" },
+  { category: "changelog", pinned: false, title: "Changelog: Update 1.4 (The Caverns)",
+    body: "## Added\n- The Caverns (/warp caverns): a mine full of mobs, bosses and every node type, with no level requirement.\n- Cash rewards in the Caverns: $100 to $10,000 per mob kill and per node gathered.\n- The Cavern Guide NPC and the /caverns menu, with trackers for kills, bosses, nodes, cash earned, best payout and time spent.\n- A Caverns section in the Player Guide.\n\n## Changed\n- Barghests: 40 health, and each hit is capped at 5 damage.\n- Skills can't break or change blocks in the hub or the RPG world any more.\n- Explosions are blocked in the hub and the RPG world.\n\n## Fixed\n- Tensura skills (like absorb) could damage the hub's builds." }
 ];

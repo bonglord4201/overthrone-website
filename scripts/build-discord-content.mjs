@@ -211,6 +211,43 @@ channels.push({ key: "races", messages: pack([
   { title: "❓ Race FAQ", fields: raceFaq.map((f) => ({ name: f.q, value: d(f.a), inline: false })) }
 ], [btn("Races guide", "/guide#races", "🧬"), btn("Races forum", "/forums?c=races", "💬")]) });
 
+// ---------------------------------------------------------------- changelog (#changelog: everything that's new)
+channels.push({ key: "changelog", messages: pack([
+  { title: "📋 OVERTHRONE: What's New", description: [
+    "Here's everything we've added lately. Full patch notes are on the website: https://overthronesmp.net/forums?c=server-updates",
+    "",
+    "**🆕 Update 1.4: The Caverns**",
+    "🔸 **The Caverns** (`/warp caverns`): a deep mine full of mobs, bosses and every kind of node. No level needed",
+    "🔸 Every mob kill and node gathered in the Caverns pays **$100 to $10,000**. Bosses pay the most",
+    "🔸 New **Cavern Guide** NPC + `/caverns`: track your kills, bosses slain, nodes, cash earned, best payout and time spent",
+    "🔸 Skills and explosions can't damage the **hub** or the **RPG world** any more",
+    "🔸 **Barghests** toned down: 40 health and max 5 damage a hit"
+  ].join("\n") },
+  { title: "⚔️ Season 1 · Update 1.3: Professions & Stats", description: [
+    "🔸 **Stats:** 1 stat point every level. Build your character with Strength, Vitality, Defense, Attack Speed, Crits, Dodge, Lifesteal, Speed and Mining Speed (`/stats`)",
+    "🔸 **Professions:** Mining, Gemology, Farming, Foraging and Combat, levels 1-100 with perks (`/professions`)",
+    "🔸 **Gathering nodes:** hit a glowing node 3 times for XP. It respawns after 1 minute",
+    "🔸 **AFK Crate:** win kits, a Legendary Key, Throne Shards and more just for being in the AFK room (`/warp afk`)",
+    "🔸 **Kit Selector** (`/kits`) with the free Starter kit and your rank kits",
+    "🔸 **Redesigned crate menus**, and claim blocks in the Voting Crate",
+    "🔸 **The SMP world** (`/smp`): no claims, raiding allowed",
+    "🔸 `/wild` takes you to a random spot in the overworld",
+    "🔸 **Safe zones:** no damage in the hub or the RPG world"
+  ].join("\n") },
+  { title: "🛠️ Fixes & Improvements", description: [
+    "🔸 Much smoother server performance: big lag spikes fixed",
+    "🔸 Players sometimes couldn't take damage anywhere: fixed",
+    "🔸 Kits won from crates now always get given",
+    "🔸 The anti-cheat no longer flags long-reach weapons and big mobs",
+    "🔸 The race selection screen no longer closes on your first join",
+    "🔸 The server is now backed up every night",
+    "",
+    "**Kicked with \"Failed to decode packet\"?** It's a Solo Leveling mod bug. Fully close Minecraft and your launcher, then rejoin.",
+    "",
+    "Need help? Open a ticket. Got an idea? Drop it in suggestions!"
+  ].join("\n") }
+]) });
+
 // ---------------------------------------------------------------- staff commands (staff-only channel, /server staffcommands)
 channels.push({ key: "staffcommands", messages: pack([
   { title: "📋 Staff Commands", description: [
@@ -275,9 +312,9 @@ channels.push({ key: "staffcommands", messages: pack([
     "Tebex: purchase `giverank {username} <rank>` · refund/chargeback `takerank {username}` (+ ban on chargeback)"
   ].join("\n") },
   { title: "🧍 Menu NPCs", description: [
-    "`/npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions>` New glowing NPC with hologram where you stand",
+    "`/npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions|caverns>` New glowing NPC with hologram where you stand",
     "`/npcmenu spawncmd <title> <command>` NPC that runs a command, e.g. `/npcmenu spawncmd Hunters warp hunters`",
-    "`/npcmenu attach <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions>` Look at an NPC: it opens that menu",
+    "`/npcmenu attach <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions|caverns>` Look at an NPC: it opens that menu",
     "`/npcmenu attachcmd <command>` Look at an NPC: it runs that command · `/npcmenu detach` back to normal",
     "`/npcmenu grab` then `/npcmenu put` Move an NPC + its hologram to where you stand",
     "`/npcmenu hologram <text>` New hologram text (`|` = new line, `&` colours) · `/npcmenu remove` Delete NPC",
@@ -379,6 +416,27 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/shardcheck <player>` Throne Shards · `/flytime check <player>` Bought flight + can they fly",
     "`/racecheck <player>` Tensura race · `/kitmenu <player>` Their kits + cooldowns (view only)",
     "`/fly <player>` Turn off leftover flight (race flight, e.g. Dragonoid, is normal and comes back)"
+  ].join("\n") },
+  { title: "⛏️ The Caverns", description: [
+    "Every mob kill and every node gathered **inside the Caverns area** pays $100-$10,000 (mobs by max health, nodes by level, ±20%). Max $50,000 per player per minute",
+    "`/cavernadmin pos1` Stand at one corner (floor) · `/cavernadmin pos2` Opposite corner (ceiling), same world",
+    "`/cavernadmin info` Shows the area + whether you're inside it",
+    "`/cavernadmin stats <player>` Their kills, bosses, nodes, cash, best payout, time · `/cavernadmin reset <player>` Clear them",
+    "NPC: `/npcmenu spawn caverns` (Cavern Guide) · Players: `/caverns` menu, `/warp caverns`",
+    "Settings (cash min/max, per-minute cap, how much mobs/nodes pay) are at the top of `caverns.js`"
+  ].join("\n") },
+  { title: "⚖️ Mob tweaks", description: [
+    "`mob_tweaks.js` sets a mob's health and caps how hard it hits. Now: **Barghest** 40 HP, max 5 damage per hit (fire still works)",
+    "`/mobtweaks` Lists the tweaks + matching mobs within 64 blocks",
+    "Check a mob's health: `/data get entity @e[type=tensura:barghest,limit=1,sort=nearest] Health`",
+    "Add a mob: copy the line `{ match: 'barghest', hp: 40, damage: 5 },` in the file, change the name and numbers, then `/reload`"
+  ].join("\n") },
+  { title: "🛡️ Hub protection & claims", description: [
+    "Hub + RPG world are FTB Chunks claims owned by the `hub` team. **TenSura Compat: FTB** stops skills breaking blocks in claims (`config/tensura/ftb_config`: keep `abilityGrief = false`)",
+    "`/ftbchunks info` Who owns the chunk you're in · `/ftbchunks admin claim_as hub#0d6da155 <radius in blocks>` Claim more for the hub team (use Tab on the team name)",
+    "`/ftbchunks admin bypass_protection` Toggle your bypass (on = you can build/use skills in claims). Test as a player with it OFF",
+    "`/gamerule skillGriefing true` Keep this ON (it's server-wide: false stops skills everywhere)",
+    "`/safeexplosions` Explosions blocked in hub/RPG? · `/damagezones` Is this world a no-damage safe zone?"
   ].join("\n") },
   { title: "🧬 Tensura", description: [
     "`/tensura edit forceevo <player> demonLord` Make someone a Demon Lord",

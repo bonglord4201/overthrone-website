@@ -197,7 +197,7 @@
           "embeds": [
             {
               "title": "⌨️ Useful Commands",
-              "description": "**🧭 Warps** (in-game)\n`/warp hub` OVERTHRONE hub\n`/warp survival` Survival world\n`/warp realms` Realm portals\n`/warp market` Market\n`/warp tavern` Tavern\n`/warp classes` Classes\n`/warp hunters` Hunters\n`/warp crates` Crates\n`/warp afk` AFK area\n`/rpg` RPG world\n`/warp arcade` Arcade & Trade Hall\n`/warp arcanum` The Arcanum: enchanting & runes\n`/smp` The SMP world (raiding allowed)\n`/wild` A random spot in the overworld"
+              "description": "**🧭 Warps** (in-game)\n`/warp hub` OVERTHRONE hub\n`/warp survival` Survival world\n`/warp realms` Realm portals\n`/warp market` Market\n`/warp tavern` Tavern\n`/warp classes` Classes\n`/warp hunters` Hunters\n`/warp crates` Crates\n`/warp afk` AFK area\n`/warp caverns` The Caverns: mobs, bosses & nodes\n`/rpg` RPG world\n`/warp arcade` Arcade & Trade Hall\n`/warp arcanum` The Arcanum: enchanting & runes\n`/smp` The SMP world (raiding allowed)\n`/wild` A random spot in the overworld"
             },
             {
               "title": "🤖 Discord Commands",
@@ -558,6 +558,27 @@
       ]
     },
     {
+      "key": "changelog",
+      "messages": [
+        {
+          "embeds": [
+            {
+              "title": "📋 OVERTHRONE: What's New",
+              "description": "Here's everything we've added lately. Full patch notes are on the website: https://overthronesmp.net/forums?c=server-updates\n\n**🆕 Update 1.4: The Caverns**\n🔸 **The Caverns** (`/warp caverns`): a deep mine full of mobs, bosses and every kind of node. No level needed\n🔸 Every mob kill and node gathered in the Caverns pays **$100 to $10,000**. Bosses pay the most\n🔸 New **Cavern Guide** NPC + `/caverns`: track your kills, bosses slain, nodes, cash earned, best payout and time spent\n🔸 Skills and explosions can't damage the **hub** or the **RPG world** any more\n🔸 **Barghests** toned down: 40 health and max 5 damage a hit"
+            },
+            {
+              "title": "⚔️ Season 1 · Update 1.3: Professions & Stats",
+              "description": "🔸 **Stats:** 1 stat point every level. Build your character with Strength, Vitality, Defense, Attack Speed, Crits, Dodge, Lifesteal, Speed and Mining Speed (`/stats`)\n🔸 **Professions:** Mining, Gemology, Farming, Foraging and Combat, levels 1-100 with perks (`/professions`)\n🔸 **Gathering nodes:** hit a glowing node 3 times for XP. It respawns after 1 minute\n🔸 **AFK Crate:** win kits, a Legendary Key, Throne Shards and more just for being in the AFK room (`/warp afk`)\n🔸 **Kit Selector** (`/kits`) with the free Starter kit and your rank kits\n🔸 **Redesigned crate menus**, and claim blocks in the Voting Crate\n🔸 **The SMP world** (`/smp`): no claims, raiding allowed\n🔸 `/wild` takes you to a random spot in the overworld\n🔸 **Safe zones:** no damage in the hub or the RPG world"
+            },
+            {
+              "title": "🛠️ Fixes & Improvements",
+              "description": "🔸 Much smoother server performance: big lag spikes fixed\n🔸 Players sometimes couldn't take damage anywhere: fixed\n🔸 Kits won from crates now always get given\n🔸 The anti-cheat no longer flags long-reach weapons and big mobs\n🔸 The race selection screen no longer closes on your first join\n🔸 The server is now backed up every night\n\n**Kicked with \"Failed to decode packet\"?** It's a Solo Leveling mod bug. Fully close Minecraft and your launcher, then rejoin.\n\nNeed help? Open a ticket. Got an idea? Drop it in suggestions!"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "key": "staffcommands",
       "messages": [
         {
@@ -600,7 +621,7 @@
             },
             {
               "title": "🧍 Menu NPCs",
-              "description": "`/npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions>` New glowing NPC with hologram where you stand\n`/npcmenu spawncmd <title> <command>` NPC that runs a command, e.g. `/npcmenu spawncmd Hunters warp hunters`\n`/npcmenu attach <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions>` Look at an NPC: it opens that menu\n`/npcmenu attachcmd <command>` Look at an NPC: it runs that command · `/npcmenu detach` back to normal\n`/npcmenu grab` then `/npcmenu put` Move an NPC + its hologram to where you stand\n`/npcmenu hologram <text>` New hologram text (`|` = new line, `&` colours) · `/npcmenu remove` Delete NPC\n`/npcmenu styleall` Every other NPC within 64 blocks gets the same glow + big title + RIGHT-CLICK TO VIEW (clicking them is unchanged)\n`/npcmenu style [title]` Same for the NPC you look at · `/npcmenu unstyle` Undo\n`/npcmenu glow off` / `/npcmenu glow on` Glow off/on for the NPC you look at (stays that way)\n`/npcmenu clearholo [radius]` Delete all floating text near you (not crates), then `/npcmenu fixall` + `/npcmenu styleall`\n`/npcmenu fixall` Hide NPC name tags + redo all holograms nearby · `/npcmenu debug` Click debug on/off\nEasy NPC wand / mover / sneak-click still work on menu NPCs (skins etc.)"
+              "description": "`/npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions|caverns>` New glowing NPC with hologram where you stand\n`/npcmenu spawncmd <title> <command>` NPC that runs a command, e.g. `/npcmenu spawncmd Hunters warp hunters`\n`/npcmenu attach <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions|caverns>` Look at an NPC: it opens that menu\n`/npcmenu attachcmd <command>` Look at an NPC: it runs that command · `/npcmenu detach` back to normal\n`/npcmenu grab` then `/npcmenu put` Move an NPC + its hologram to where you stand\n`/npcmenu hologram <text>` New hologram text (`|` = new line, `&` colours) · `/npcmenu remove` Delete NPC\n`/npcmenu styleall` Every other NPC within 64 blocks gets the same glow + big title + RIGHT-CLICK TO VIEW (clicking them is unchanged)\n`/npcmenu style [title]` Same for the NPC you look at · `/npcmenu unstyle` Undo\n`/npcmenu glow off` / `/npcmenu glow on` Glow off/on for the NPC you look at (stays that way)\n`/npcmenu clearholo [radius]` Delete all floating text near you (not crates), then `/npcmenu fixall` + `/npcmenu styleall`\n`/npcmenu fixall` Hide NPC name tags + redo all holograms nearby · `/npcmenu debug` Click debug on/off\nEasy NPC wand / mover / sneak-click still work on menu NPCs (skins etc.)"
             }
           ]
         },
@@ -653,6 +674,18 @@
             {
               "title": "🔍 Player checks",
               "description": "`/shardcheck <player>` Throne Shards · `/flytime check <player>` Bought flight + can they fly\n`/racecheck <player>` Tensura race · `/kitmenu <player>` Their kits + cooldowns (view only)\n`/fly <player>` Turn off leftover flight (race flight, e.g. Dragonoid, is normal and comes back)"
+            },
+            {
+              "title": "⛏️ The Caverns",
+              "description": "Every mob kill and every node gathered **inside the Caverns area** pays $100-$10,000 (mobs by max health, nodes by level, ±20%). Max $50,000 per player per minute\n`/cavernadmin pos1` Stand at one corner (floor) · `/cavernadmin pos2` Opposite corner (ceiling), same world\n`/cavernadmin info` Shows the area + whether you're inside it\n`/cavernadmin stats <player>` Their kills, bosses, nodes, cash, best payout, time · `/cavernadmin reset <player>` Clear them\nNPC: `/npcmenu spawn caverns` (Cavern Guide) · Players: `/caverns` menu, `/warp caverns`\nSettings (cash min/max, per-minute cap, how much mobs/nodes pay) are at the top of `caverns.js`"
+            },
+            {
+              "title": "⚖️ Mob tweaks",
+              "description": "`mob_tweaks.js` sets a mob's health and caps how hard it hits. Now: **Barghest** 40 HP, max 5 damage per hit (fire still works)\n`/mobtweaks` Lists the tweaks + matching mobs within 64 blocks\nCheck a mob's health: `/data get entity @e[type=tensura:barghest,limit=1,sort=nearest] Health`\nAdd a mob: copy the line `{ match: 'barghest', hp: 40, damage: 5 },` in the file, change the name and numbers, then `/reload`"
+            },
+            {
+              "title": "🛡️ Hub protection & claims",
+              "description": "Hub + RPG world are FTB Chunks claims owned by the `hub` team. **TenSura Compat: FTB** stops skills breaking blocks in claims (`config/tensura/ftb_config`: keep `abilityGrief = false`)\n`/ftbchunks info` Who owns the chunk you're in · `/ftbchunks admin claim_as hub#0d6da155 <radius in blocks>` Claim more for the hub team (use Tab on the team name)\n`/ftbchunks admin bypass_protection` Toggle your bypass (on = you can build/use skills in claims). Test as a player with it OFF\n`/gamerule skillGriefing true` Keep this ON (it's server-wide: false stops skills everywhere)\n`/safeexplosions` Explosions blocked in hub/RPG? · `/damagezones` Is this world a no-damage safe zone?"
             },
             {
               "title": "🧬 Tensura",
