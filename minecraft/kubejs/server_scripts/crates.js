@@ -364,6 +364,17 @@
     for (let i = 0; i < list.length; i++) { r -= list[i].weight; if (r <= 0) return list[i] }
     return list[list.length - 1]
   }
+  // Kit rewards ("kit <name> {p}"): NeoEssentials only gives a kit to players who have its permission, so the winner
+  // is put in a tiny helper rank (kit_<name>, only that kit's permission, see ranks.snbt) for the moment the kit is
+  // given, then taken out again. They get the kit's items once and never the real rank.
+  const KIT_REWARD = /^kit (ronin|valkyrie|monarch|godborn|overlord) \{p\}$/
+  const runRewardCmd = (server, cmd, n) => {
+    var m = String(cmd).match(KIT_REWARD)
+    if (!m) { run(server, cmd.split('{p}').join(n)); return }
+    var helperRank = 'kit_' + m[1]
+    try { run(server, `ftbranks add ${n} ${helperRank}`); run(server, `kit ${m[1]} ${n}`) }
+    finally { run(server, `ftbranks remove ${n} ${helperRank}`) }
+  }
   const openCrate = (p, id) => {
     if (isRedeem(id)) { preview(p, id); return }
     const c = CRATES[id], server = p.server, n = p.username, at = load(server)[id]
@@ -378,7 +389,7 @@
     if (!list.length) { p.tell('§cThis crate has no rewards yet.'); return }
     takeKeys(p, id, 1)
     const r = roll(list), what = label(server, r)
-    if (r.cmd) run(server, r.cmd.split('{p}').join(n))
+    if (r.cmd) runRewardCmd(server, r.cmd, n)
     else p.give(stackOf(server, r).copy())
     run(server, `title ${n} times 5 40 10`)
     run(server, `title ${n} subtitle ${JSON.stringify({ text: what, color: r.rare ? 'gold' : 'white' })}`)
