@@ -433,7 +433,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "Bosses set with `/setboss` count as bosses for Caverns cash + trackers"
   ].join("\n") },
   { title: "⚖️ Mob tweaks", description: [
-    "`mob_tweaks.js` sets a mob's health and caps how hard it hits. Now: **Barghest** + any **direwolf** 40 HP, max 5 damage per hit (fire still works)",
+    "`mob_tweaks.js` sets a mob's health and caps how hard it hits. Now: **Barghest** + 40 HP, **Direwolf** 5 HP, both max 5 damage per hit (fire still works)",
     "`/mobtweaks` Lists the tweaks + matching mobs within 64 blocks",
     "Check a mob's health: `/data get entity @e[type=tensura:barghest,limit=1,sort=nearest] Health`",
     "Add a mob: copy the line `{ match: 'barghest', hp: 40, damage: 5 },` in the file, change the name and numbers, then `/reload`"

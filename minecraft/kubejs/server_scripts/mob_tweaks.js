@@ -1,6 +1,6 @@
 // OVERTHRONE - mob tweaks: set a mob's health and cap how hard it hits.
 // Matches mobs by their id (e.g. "somemod:barghest"), so it works whichever mod adds them.
-//   hp      max health (only set once per mob, so a hurt mob doesn't heal when its chunk reloads)
+//   hp      max health (set once per mob, so a hurt mob doesn't heal when its chunk reloads; set again if you change it)
 //   damage  the most one hit can do to anything (melee, projectiles, abilities). Fire from being set
 //           on fire is not the mob's hit, so burning still works as normal.
 //
@@ -10,7 +10,7 @@
   const uidOf = (e) => { try { return String(e.getStringUuid()) } catch (x) { try { return String(e.getUuid()) } catch (y) { return String(e.uuid) } } }   // KubeJS renames getUUID
   const TWEAKS = [
     { match: 'barghest', hp: 40, damage: 5 },
-    { match: 'direwolf', hp: 40, damage: 5 },   // tensura:direwolf (any mob with "direwolf" in its id)
+    { match: 'direwolf', hp: 5, damage: 5 },   // tensura:direwolf (any mob with "direwolf" in its id)
   ]
   const DONE = 'ot_mobtweak'
 
@@ -25,10 +25,11 @@
 
   const applyHp = (e, t) => {
     try {
-      if (!t.hp || !e.isLiving() || e.persistentData.getBoolean(DONE)) return
+      // remembers the HP it set, so changing a number below also updates mobs that were already tweaked
+      if (!t.hp || !e.isLiving() || e.persistentData.getInt(DONE + '_hp') == t.hp) return
       e.level.server.runCommandSilent('attribute ' + uidOf(e) + ' minecraft:generic.max_health base set ' + t.hp)
       e.setHealth(t.hp)
-      e.persistentData.putBoolean(DONE, true)
+      e.persistentData.putInt(DONE + '_hp', t.hp)
     } catch (x) { }
   }
 
