@@ -1594,6 +1594,15 @@
         p.tell('§b✈ Flight time left: §f' + dur(flyLeft(p) * 1000) + (p.persistentData.getBoolean('ot_fly_on') ? ' §a(ON)' : ' §7(OFF)'))
         return 1
       }))
+      // staff: read-only, shows a player's bought flight time and whether they are flying right now
+      .then(Commands.literal('check').requires(src => src.hasPermission(2)).then(Commands.argument('player', Arguments.PLAYER.create(event)).executes(ctx => {
+        var p = Arguments.PLAYER.getResult(ctx, 'player'), flying = false, mayfly = false
+        try { flying = p.getAbilities().flying; mayfly = p.getAbilities().mayfly } catch (e) { }
+        ctx.source.sendSystemMessage(Text.of('§b[flytime] §f' + p.username + '§7: bought flight left §f' + dur(flyLeft(p) * 1000) +
+          ' §7(shop flight ' + (p.persistentData.getBoolean('ot_fly_on') ? '§aON' : '§cOFF') + '§7) - can fly now: ' + (mayfly ? '§aYES' : '§cNO') +
+          '§7, flying now: ' + (flying ? '§aYES' : '§cNO') + ' §7- gamemode: §f' + String(p.gameMode.getGameModeForPlayer().getName())))
+        return 1
+      })))
       .then(Commands.literal('give').requires(src => src.hasPermission(2)).then(Commands.argument('player', Arguments.PLAYER.create(event))
         .then(Commands.argument('minutes', Arguments.INTEGER.create(event)).executes(ctx => {
           var p = Arguments.PLAYER.getResult(ctx, 'player'), m = Arguments.INTEGER.getResult(ctx, 'minutes')
