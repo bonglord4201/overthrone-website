@@ -106,7 +106,7 @@
       keyHint: 'Earn keys in game', particles: true, rewards: [],
     },
     afk: {
-      name: 'AFK CRATE', keyName: 'AFK Key', color: 'aqua', dust: [0.3, 0.9, 1.0],
+      name: 'AFK CRATE', keyName: 'AFK Key', color: 'red', dust: [1.0, 0.15, 0.2], spores: [[1.0, 0.15, 0.2], [0.8, 0.0, 0.05], [1.0, 0.45, 0.35], [1.0, 0.75, 0.7]],
       keyHint: 'Earn keys in the AFK room: /warp afk', particles: true,
       // Same rewards and odds as OG Network's AFK crate, switched to OVERTHRONE stuff (Petals -> Throne Shards,
       // Oni/Blossom/Emperor kits -> Ronin/Valkyrie/Monarch kits). Weights 20/10/6/4/1 = OG's 8.97/4.49/2.69/1.79/0.44%.
