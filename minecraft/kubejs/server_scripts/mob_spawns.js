@@ -12,6 +12,7 @@
 //   look at the mob (or stand next to it), then:
 //   /setmob [minutes]        make it a mob spawn (default 60 minutes)
 //   /setboss [minutes]       make it a boss spawn (default 60 minutes)
+//   (same: /mobspawn mob [minutes] and /mobspawn boss [minutes])
 //   near a spawn:
 //   /mobspawn remove         stop tracking the nearest spawn (within 10 blocks). Its mob is left alive.
 //   /mobspawn time <minutes> change the nearest spawn's respawn time
@@ -233,6 +234,9 @@
         .then(minsArg().executes(ctx => make(ctx, kind, Math.max(1, Arguments.INTEGER.getResult(ctx, 'minutes'))))))
     })
     event.register(Commands.literal('mobspawn').requires(src => src.hasPermission(2))
+      // same as /setmob and /setboss (in case another mod already uses those names)
+      .then(Commands.literal('mob').executes(ctx => make(ctx, 'mob', DEFAULT_MINUTES)).then(minsArg().executes(ctx => make(ctx, 'mob', Math.max(1, Arguments.INTEGER.getResult(ctx, 'minutes'))))))
+      .then(Commands.literal('boss').executes(ctx => make(ctx, 'boss', DEFAULT_MINUTES)).then(minsArg().executes(ctx => make(ctx, 'boss', Math.max(1, Arguments.INTEGER.getResult(ctx, 'minutes'))))))
       .then(Commands.literal('remove').executes(ctx => {
         var p = ctx.source.playerOrException, s = p.server, id = nearest(p, 10)
         if (id == null) { say(ctx.source, '§cNo spawn within 10 blocks.'); return 0 }
