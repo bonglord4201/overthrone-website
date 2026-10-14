@@ -32,9 +32,29 @@
       var otTsEvents = Java.loadClass('io.github.manasmods.tensura.event.TensuraSkillEvents')
       var otEvResult = Java.loadClass('dev.architectury.event.EventResult')
       var otGriefEv = otTsEvents.SKILL_GRIEF_PRE
-      var otIfaces = otGriefEv.invoker().getClass().getInterfaces()
-      if (otIfaces.length !== 1) throw 'unexpected listener type'
-      var OtGriefListener = Java.loadClass(otIfaces[0].getName())
+      var otInvoker = otGriefEv.invoker()
+      // Find the listener type (Tensura's interface for this check). KubeJS hides getClass(), so go through Class.
+      var otIfaceName = null, otTried = []
+      var OtClass = Java.loadClass('java.lang.Class')
+      try {
+        var otNested = OtClass.forName('io.github.manasmods.tensura.event.TensuraSkillEvents').getDeclaredClasses()
+        for (var i = 0; i < otNested.length; i++) {
+          otTried.push(String(otNested[i].getName()))
+          if (otNested[i].isInterface() && otNested[i].isInstance(otInvoker)) otIfaceName = String(otNested[i].getName())
+        }
+      } catch (e1) { otTried.push('nested: ' + e1) }
+      if (!otIfaceName) {
+        try {
+          var otGen = OtClass.forName('io.github.manasmods.tensura.event.TensuraSkillEvents').getField('SKILL_GRIEF_PRE').getGenericType()
+          otIfaceName = String(otGen.getActualTypeArguments()[0].getTypeName())
+        } catch (e2) { otTried.push('field: ' + e2) }
+      }
+      if (!otIfaceName) {
+        var otMembers = []
+        try { for (var k in otInvoker) otMembers.push(k) } catch (e3) { }
+        throw 'listener type not found. tried: ' + otTried.join(', ') + ' | members: ' + otMembers.join(',')
+      }
+      var OtGriefListener = Java.loadClass(otIfaceName)
       var otWarned = {}
       otGriefEv.register(new OtGriefListener(function (instance, level, owner, x, y, z) {
         try {
@@ -55,7 +75,7 @@
           return otEvResult.pass()
         }
       }))
-      status = '§aACTIVE'
+      status = '§aACTIVE §8(' + otIfaceName + ')'
       console.info('[safe_explosions] Tensura skill grief protection active for ' + SAFE_WORLDS.join(', '))
     } catch (e) {
       status = '§cNOT ACTIVE §8(' + e + ')'
