@@ -7,6 +7,7 @@
 // Staff (op):  /mobtweaks   lists the tweaks and the ids of matching mobs near you
 
 (function () {
+  const uidOf = (e) => { try { return String(e.getStringUuid()) } catch (x) { try { return String(e.getUuid()) } catch (y) { return String(e.uuid) } } }   // KubeJS renames getUUID
   const TWEAKS = [
     { match: 'barghest', hp: 40, damage: 5 },
   ]
@@ -24,7 +25,7 @@
   const applyHp = (e, t) => {
     try {
       if (!t.hp || !e.isLiving() || e.persistentData.getBoolean(DONE)) return
-      e.level.server.runCommandSilent('attribute ' + String(e.getUUID()) + ' minecraft:generic.max_health base set ' + t.hp)
+      e.level.server.runCommandSilent('attribute ' + uidOf(e) + ' minecraft:generic.max_health base set ' + t.hp)
       e.setHealth(t.hp)
       e.persistentData.putBoolean(DONE, true)
     } catch (x) { }

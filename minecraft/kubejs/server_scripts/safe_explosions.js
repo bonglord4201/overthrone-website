@@ -63,7 +63,7 @@
           if (SAFE_WORLDS.indexOf(d) < 0) return otEvResult.pass()
           try {
             if (owner && owner.isPlayer && owner.isPlayer()) {
-              var now = Date.now(), u = String(owner.getUUID())
+              var now = Date.now(), u = String(owner.getStringUuid ? owner.getStringUuid() : owner.uuid)
               if (!otWarned[u] || now - otWarned[u] > 3000) {
                 otWarned[u] = now
                 owner.tell('§6§lSAFE ZONE §8» §7Skills can\'t break blocks in this world.')

@@ -20,6 +20,7 @@
 //   /mobspawn holo           put back missing floating texts
 
 (function () {
+  const uidOf = (e) => { try { return String(e.getStringUuid()) } catch (x) { try { return String(e.getUuid()) } catch (y) { return String(e.uuid) } } }   // KubeJS renames getUUID
   const STORE = 'ot_spawns'
   const DEFAULT_MINUTES = 60
   const LEASH = 32            // blocks a mob may wander from its spot before it's pulled back
@@ -68,7 +69,7 @@
     e.addTag('ot_spawn'); e.addTag(tagOf(id))
     if (sp.kind == 'boss') e.addTag('ot_boss')
     try { e.setPersistenceRequired() } catch (x) { }
-    sp.uuid = String(String(e.getUUID())); sp.down = 0
+    sp.uuid = uidOf(e); sp.down = 0
     delete missing[id]
   }
   const spawnNow = (s, id) => {
@@ -119,7 +120,7 @@
         }
         missing[id] = 0
         var dx = e.getX() - sp.x, dz = e.getZ() - sp.z, dy = e.getY() - sp.y
-        if (dx * dx + dy * dy + dz * dz > LEASH * LEASH) e.teleportTo(sp.x, sp.y, sp.z)
+        if (dx * dx + dy * dy + dz * dz > LEASH * LEASH) { try { e.teleportTo(sp.x, sp.y, sp.z) } catch (y) { run(s, `execute in ${sp.dim} run tp ${uidOf(e)} ${sp.x} ${sp.y} ${sp.z}`) } }
       } catch (x) { }
     })
   })
@@ -130,7 +131,7 @@
       var e = event.entity
       if (!e.getTags().contains('ot_spawn')) return
       var s = e.level.server; load(s)
-      var u = String(String(e.getUUID())), id = null
+      var u = uidOf(e), id = null
       Object.keys(spawns).forEach(k => { if (spawns[k].uuid == u) id = k })
       if (id == null) return
       var sp = spawns[id]
@@ -183,7 +184,7 @@
       load(s)
       if (e == null) { say(ctx.source, '§cLook at the mob (or stand right next to it). Place it with its spawn egg first.'); return 0 }
       if (e.getTags().contains('ot_spawn')) {
-        var u = String(e.getUUID()), owned = false
+        var u = uidOf(e), owned = false
         Object.keys(spawns).forEach(k => { if (spawns[k].uuid == u) owned = true })
         if (owned) { say(ctx.source, '§cThat mob already has a spawn. Use /mobspawn remove first.'); return 0 }
         // left over from a failed attempt: tagged but not saved as a spawn, so clean it up and carry on
