@@ -99,7 +99,7 @@ var otCavernsPay = (p, base, why) => {
       if (!otInCaverns(e.level, e.x, e.y, e.z)) return
       var maxHp = Number(e.getMaxHealth()) || 0
       if (maxHp <= 0) return
-      var boss = maxHp >= CAV_BOSS_HP, d = p.persistentData
+      var boss = maxHp >= CAV_BOSS_HP || e.getTags().contains('ot_boss'), d = p.persistentData   // ot_boss: set with /setboss (mob_spawns.js)
       d.putLong(CAV_K.kills, (Number(d.getLong(CAV_K.kills)) || 0) + 1)
       if (boss) d.putLong(CAV_K.bosses, (Number(d.getLong(CAV_K.bosses)) || 0) + 1)
       otCavernsPay(p, CAV_MOB_CASH(maxHp), boss ? 'boss' : 'mob')

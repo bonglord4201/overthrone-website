@@ -425,6 +425,13 @@ channels.push({ key: "staffcommands", messages: pack([
     "NPC: `/npcmenu spawn caverns` (Cavern Guide) · Players: `/caverns` menu, `/warp caverns`",
     "Settings (cash min/max, per-minute cap, how much mobs/nodes pay) are at the top of `caverns.js`"
   ].join("\n") },
+  { title: "👹 Mob & boss spawns", description: [
+    "Place the mob with its spawn egg, **look at it**, then: `/setmob [minutes]` or `/setboss [minutes]` (default 60 min)",
+    "It never despawns, gets pulled back if it wanders 32+ blocks, and respawns at the same spot after it's killed. Floating text shows its **real name** + a respawn countdown. Boss kills are announced",
+    "`/mobspawn list` Spawns in this world · `/mobspawn respawnall` Respawn every killed one now · `/mobspawn holo` Put floating texts back",
+    "Near a spawn: `/mobspawn time <minutes>` Change its timer · `/mobspawn remove` Stop tracking it (the mob stays alive)",
+    "Bosses set with `/setboss` count as bosses for Caverns cash + trackers"
+  ].join("\n") },
   { title: "⚖️ Mob tweaks", description: [
     "`mob_tweaks.js` sets a mob's health and caps how hard it hits. Now: **Barghest** 40 HP, max 5 damage per hit (fire still works)",
     "`/mobtweaks` Lists the tweaks + matching mobs within 64 blocks",
