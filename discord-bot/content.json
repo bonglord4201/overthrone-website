@@ -693,7 +693,7 @@
             },
             {
               "title": "🚫 Banned skills",
-              "description": "Banned: Predator, Gluttony, Creator, Fusionist, Infinity Prison, Cultivator, Pride, Jinchuriki, Crasher, Coalescence, Victorious Harbinger\nThey're out of the reincarnation rolls (`config/tensura/reincarnation_config.toml`) and `skill_blacklist.js` removes them from anyone who has one (on login + every 30 s)\n`/skillban check <player>` What banned skills they have · `/skillban scan` Remove from everyone online now\n`/skillban list` · `/skillban status` (is the skill system found?) · Edit the `BANNED` list at the top of the file to change it"
+              "description": "Banned: Predator, Gluttony, Creator, Fusionist, Infinity Prison, Cultivator, Pride, Jinchuriki, Crasher, Coalescence, Victorious Harbinger\nThey're out of the reincarnation rolls (`config/tensura/reincarnation_config.toml`) and `skill_blacklist.js` removes them from anyone who has one (on login + every 30 s)\n`/skillban check <player>` What banned skills they have · `/skillban scan` Remove from everyone online now\nPlayers also can't learn or use them (blocked at the source). `/skillban list` · `/skillban status` (remover + learn/use block both ACTIVE?) · Edit the `BANNED` list at the top of the file to change it"
             },
             {
               "title": "🧬 Tensura",
