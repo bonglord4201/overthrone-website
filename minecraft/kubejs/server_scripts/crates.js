@@ -424,15 +424,40 @@
     })
   }
   const rowsFor = (n) => Math.max(3, Math.min(6, Math.ceil(n / 9) + 1))
+  // OG-style menu: rewards in the middle (7 wide, up to 4 rows), worst to best, with a red/black glass border,
+  // a Close button and an Available Keys button on the bottom row. More than 28 rewards uses the plain layout.
+  const INNER = 7, INNER_ROWS = 4
+  const glass = (server, x, y) => {
+    var st = Item.of((x + y) % 2 == 0 ? 'minecraft:red_stained_glass_pane' : 'minecraft:black_stained_glass_pane')
+    try { st.set(DataComponents.HIDE_TOOLTIP, Java.loadClass('net.minecraft.util.Unit').INSTANCE) } catch (e) { }
+    return st
+  }
+  const button = (id, name, lore) => {
+    var st = Item.of(id)
+    try {
+      var lines = new ArrayList()
+      lore.forEach(x => lines.add(line(x)))
+      st.set(DataComponents.LORE, new ItemLore(lines))
+      st.set(DataComponents.CUSTOM_NAME, line(name))
+    } catch (e) { }
+    return st
+  }
+  // worst to best: random crates most common first, redeem crates cheapest first (only the display order changes)
+  const displayOrder = (id, list) => list.map((r, i) => ({ r: r, i: i }))
+    .sort((a, b) => isRedeem(id) ? (a.r.cost - b.r.cost) || (a.i - b.i) : (b.r.weight - a.r.weight) || (a.i - b.i))
+    .map(o => o.r)
   // Read-only: KubeJS chest GUI items can't be taken.
   const preview = (p, id) => {
     if (p.openChestGUI === undefined) { previewChat(p, id); return }
     try {
-      var list = rewardsOf(p.server, id).slice(0, 45)
+      var all = rewardsOf(p.server, id)
+      var list = displayOrder(id, all).slice(0, 45)
       if (!list.length) p.tell('§7This crate has no rewards yet.' + (p.hasPermissions(2) ? ' §8Staff: /crate edit ' + id : ''))
-      p.openChestGUI(Text.of(CRATES[id].name + ' Rewards'), rowsFor(list.length), gui => {
+      var framed = list.length <= INNER * INNER_ROWS
+      var rows = framed ? 6 : rowsFor(list.length)
+      p.openChestGUI(Text.of(CRATES[id].name + ' Rewards'), rows, gui => {
         gui.playerSlots = true
-        list.forEach((r, i) => gui.slot(i % 9, Math.floor(i / 9), slot => {
+        var setReward = (slot, r) => {
           if (isRedeem(id)) {
             var have = keys(p, id), ok = have >= r.cost
             slot.item = shown(p.server, r, [`§fRequired Keys: §e${r.cost}`, `§7You have: ${ok ? '§a' : '§c'}${have}`,
@@ -444,9 +469,29 @@
               try { p.closeMenu() } catch (x) { }   // KubeJS's name for closing the open menu
             }
           } else {
-            slot.item = shown(p.server, r, [`§eChance: ${pctOf(list, r)}%`].concat(r.rare ? ['§6§lRARE'] : []))
+            slot.item = shown(p.server, r, [`§eChance: ${pctOf(all, r)}%`].concat(r.rare ? ['§6§lRARE'] : []))
           }
-        }))
+        }
+        if (!framed) { list.forEach((r, i) => gui.slot(i % 9, Math.floor(i / 9), slot => setReward(slot, r))); return }
+        for (var y = 0; y < 6; y++) for (var x = 0; x < 9; x++) {
+          (function (xx, yy) {
+            var inside = xx >= 1 && xx <= INNER && yy >= 1 && yy <= INNER_ROWS
+            var i = inside ? (yy - 1) * INNER + (xx - 1) : -1
+            gui.slot(xx, yy, slot => {
+              if (i >= 0 && i < list.length) setReward(slot, list[i])
+              else slot.item = glass(p.server, xx, yy)
+            })
+          })(x, y)
+        }
+        gui.slot(4, 5, slot => {
+          slot.item = button('minecraft:barrier', '§c§lClose Menu', ['§7Click here to close this menu.', '', '§6§lLEFT-CLICK: §eCLOSE MENU'])
+          slot.leftClicked = e => { try { p.closeMenu() } catch (x) { } }
+        })
+        var have = keys(p, id)
+        gui.slot(6, 5, slot => {
+          slot.item = button('minecraft:tripwire_hook', '§a§lAvailable Keys', ['§7All the keys you can use on this crate.', '',
+            '§fKeys: ' + (have > 0 ? '§a' + have + ' ' + (CRATES[id].keyName || 'Key') + (have == 1 ? '' : 's') : '§cYou have no keys for this crate.')])
+        })
       })
     } catch (e) {
       console.warn('[OVERTHRONE crates] preview menu failed, using chat: ' + e)
