@@ -172,6 +172,13 @@
       return id
     }
     const make = (ctx, kind, mins) => {
+      try { return makeSpawn(ctx, kind, mins) } catch (x) {
+        say(ctx.source, '§c[spawns] Error: ' + x + ' §7(send this to your dev)')
+        console.error('[mob_spawns] /set' + kind + ': ' + x + (x && x.stack ? '\n' + x.stack : ''))
+        return 0
+      }
+    }
+    const makeSpawn = (ctx, kind, mins) => {
       var p = ctx.source.playerOrException, s = p.server, e = target(p)
       load(s)
       if (e == null) { say(ctx.source, '§cLook at the mob (or stand right next to it). Place it with its spawn egg first.'); return 0 }
@@ -179,7 +186,7 @@
       var type = typeOf(e)
       if (!type) { say(ctx.source, '§cThat entity can\'t be respawned.'); return 0 }
       var id = String(Date.now().toString(36)) + Math.floor(Math.random() * 1000)
-      spawns[id] = { type: type, key: String(e.getType().getDescriptionId()), kind: kind, mins: mins, dim: dimOf(e.level),
+      spawns[id] = { type: type, key: 'entity.' + type.replace(':', '.'),   // the game's own name key (what EntityType#getDescriptionId gives) kind: kind, mins: mins, dim: dimOf(e.level),
         x: Number(Number(e.getX()).toFixed(2)), y: Number(Number(e.getY()).toFixed(2)), z: Number(Number(e.getZ()).toFixed(2)),
         h: Number((Number(e.getBbHeight()) + 0.6).toFixed(2)), uuid: null, down: 0 }
       adopt(s, id, e)
