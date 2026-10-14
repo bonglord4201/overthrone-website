@@ -24,11 +24,9 @@
   })
 
   // ---- Tensura skill griefing ----
-  // The listener stays registered for the whole server run (KubeJS reloads don't remove it), so it reads the
-  // current world list from global and only hooks once.
-  global.otSafeWorlds = SAFE_WORLDS
+  // Hooked once when the server starts (ServerEvents.loaded doesn't run again on /reload, so it never doubles up).
+  var hookStatus = '§7unknown after /reload §8(restart to check)'
   const hookSkillGrief = () => {
-    if (global.otSkillGriefHook) return global.otSkillGriefHook
     var status
     try {
       const Events = Java.loadClass('io.github.manasmods.tensura.event.TensuraSkillEvents')
@@ -42,7 +40,7 @@
         try {
           var lvl = level || (owner ? owner.level() : null)
           var d = lvl ? dimOf(lvl) : ''
-          if ((global.otSafeWorlds || []).indexOf(d) < 0) return EventResult.pass()
+          if (SAFE_WORLDS.indexOf(d) < 0) return EventResult.pass()
           try {
             if (owner && owner.isPlayer && owner.isPlayer()) {
               var now = Date.now(), u = String(owner.getUUID())
@@ -63,8 +61,7 @@
       status = '§cNOT ACTIVE §8(' + e + ')'
       console.warn('[safe_explosions] Tensura skill grief protection could not start: ' + e)
     }
-    global.otSkillGriefHook = status
-    return status
+    hookStatus = status
   }
 
   ServerEvents.loaded(event => { hookSkillGrief() })
@@ -74,7 +71,7 @@
     event.register(Commands.literal('safeexplosions').requires(src => src.hasPermission(2)).executes(ctx => {
       var p = ctx.source.playerOrException, d = dimOf(p.level), safe = SAFE_WORLDS.indexOf(d) >= 0
       p.tell('§6§lEXPLOSIONS §8» §7World: §f' + d + ' §7- ' + (safe ? '§aBLOCKED (safe world)' : '§cALLOWED'))
-      p.tell('§6§lSKILL GRIEF §8» §7Protection: ' + hookSkillGrief() + ' §7- here: ' + (safe ? '§aBLOCKED' : '§cALLOWED'))
+      p.tell('§6§lSKILL GRIEF §8» §7Protection: ' + hookStatus + ' §7- here: ' + (safe ? '§aBLOCKED' : '§cALLOWED'))
       return 1
     }))
   })
