@@ -223,6 +223,7 @@ channels.push({ key: "changelog", messages: pack([
     "🔸 Bosses no longer have Nullification or Regeneration, so every boss can be beaten",
     "🔸 **New players are protected:** no damage while picking your race, and for your first 15 min below level 5",
     "🔸 **Banned skills** (removed automatically): Predator, Gluttony, Creator, Fusionist, Infinity Prison, Cultivator, Pride, Jinchuriki, Crasher, Coalescence, Victorious Harbinger",
+    "🔸 **Crate keys in the Caverns:** every kill has a 0.5% chance to drop a Legendary, Mythic or Cosmetic Key. Bosses: **5%**!",
     "🔸 **Direwolves** toned down: 5 health and max 2 damage a hit",
     "🔸 Nodes show **Hit 3x to gather** and a progress bar",
     "🔸 Fixed: Daemon/Angel races pulled to the hub, Seris not giving the race scroll, skills breaking blocks in the hub",
@@ -436,6 +437,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/cavernadmin board [height]` Put a \"Doing no damage? 7 armour layers, end-game content\" warning board where you stand (default 2 up, place one per boss)",
     "`/cavernadmin board flip` Turn boards within 8 blocks round · `/cavernadmin board remove` Remove boards within 8 blocks · `/cavernadmin board removeall` Remove them all",
     "NPC: `/npcmenu spawn caverns` (Cavern Guide) · Players: `/caverns` menu, `/warp caverns`",
+    "Crate keys: every Caverns kill has a **0.5%** chance (set bosses **5%**) to give the killer a random Legendary, Mythic or Cosmetic Key (announced in chat)",
     "Settings (cash min/max, per-minute cap, how much mobs/nodes pay) are at the top of `caverns.js`"
   ].join("\n") },
   { title: "👹 Mob & boss spawns", description: [

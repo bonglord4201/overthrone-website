@@ -16,6 +16,9 @@
 //   /cavernadmin board flip       turn the board(s) within 8 blocks of you round, if one shows backwards
 //   /cavernadmin board remove     remove the board(s) within 8 blocks of you
 //   /cavernadmin board removeall  remove every Caverns board
+//
+// Crate keys: every mob killed in the Caverns has a 0.5% chance (set bosses: 5%) to give the killer a random
+// Legendary, Mythic or Cosmetic Key (/crate key give). Change CAV_KEY_* below.
 
 // ---------------------------------------------------------------- settings
 const CAV_CASH_MIN = 100
@@ -25,6 +28,10 @@ const CAV_GIVE_MONEY = 'eco give {p} {n}'  // same economy as the stat resets (e
 const CAV_BOSS_HP = 150                    // mobs with at least this much max health count as bosses (same as /level)
 const CAV_MOB_CASH = (maxHp) => maxHp * 10 // before the random +-20% and the min/max
 const CAV_NODE_CASH = (lvl) => lvl * 100
+// crate key drops for kills inside the Caverns (given straight to the killer, one random key from the list)
+const CAV_KEY_CHANCE_MOB = 0.005           // 0.5% for any mob
+const CAV_KEY_CHANCE_BOSS = 0.05           // 5% for a boss placed with /setboss (/mobspawn boss)
+const CAV_KEY_CRATES = [['legendary', 'Legendary Key', 'gold'], ['mythic', 'Mythic Key', 'light_purple'], ['cosmetic', 'Cosmetic Key', 'white']]
 
 // player trackers (persistentData)
 const CAV_K = { kills: 'ot_cav_kills', bosses: 'ot_cav_bosses', nodes: 'ot_cav_nodes', cash: 'ot_cav_cash', best: 'ot_cav_best', time: 'ot_cav_time' }
@@ -108,6 +115,16 @@ var otCavernsPay = (p, base, why) => {
       d.putLong(CAV_K.kills, (Number(d.getLong(CAV_K.kills)) || 0) + 1)
       if (boss) d.putLong(CAV_K.bosses, (Number(d.getLong(CAV_K.bosses)) || 0) + 1)
       otCavernsPay(p, CAV_MOB_CASH(maxHp), boss ? 'boss' : 'mob')
+      // crate key drop: 5% for a /setboss boss, 0.5% for everything else
+      var setBoss = e.getTags().contains('ot_boss')
+      if (Math.random() < (setBoss ? CAV_KEY_CHANCE_BOSS : CAV_KEY_CHANCE_MOB)) {
+        var k = CAV_KEY_CRATES[Math.floor(Math.random() * CAV_KEY_CRATES.length)], s = p.server
+        s.runCommandSilent('crate key give ' + p.username + ' ' + k[0] + ' 1')
+        s.runCommandSilent('tellraw @a ' + JSON.stringify(['', { text: '⛏ ', color: 'gold' }, { text: p.username, color: 'yellow' },
+          { text: ' found a ', color: 'gray' }, { text: k[1], color: k[2], bold: true }, { text: ' in the Caverns!', color: 'gray' }]))
+        s.runCommandSilent(`execute at ${p.username} run playsound minecraft:entity.player.levelup player ${p.username} ~ ~ ~ 1 1.6`)
+        console.info('[caverns] key drop: ' + p.username + ' got a ' + k[0] + ' key')
+      }
     } catch (x) { console.warn('[caverns] kill: ' + x) }
   })
 
