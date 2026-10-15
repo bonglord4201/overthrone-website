@@ -224,6 +224,7 @@ channels.push({ key: "changelog", messages: pack([
     "🔸 **New players are protected:** no damage while picking your race, and for your first 15 min below level 5",
     "🔸 **Banned skills** (removed automatically): Predator, Gluttony, Creator, Fusionist, Infinity Prison, Cultivator, Pride, Jinchuriki, Crasher, Coalescence, Victorious Harbinger",
     "🔸 **Crate keys in the Caverns:** every kill has a 0.5% chance to drop a Legendary, Mythic or Cosmetic Key. Bosses: **5%**!",
+    "🔸 **Keep your items:** you no longer lose your inventory when you die, except in the **SMP world** (`/smp`)",
     "🔸 **Direwolves** toned down: 5 health and max 2 damage a hit",
     "🔸 Nodes show **Hit 3x to gather** and a progress bar",
     "🔸 Fixed: Daemon/Angel races pulled to the hub, Seris not giving the race scroll, skills breaking blocks in the hub",
@@ -469,6 +470,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/gamerule skillGriefing true` Keep this ON (it's server-wide: false stops skills everywhere)",
     "`/safeexplosions` Explosions blocked in hub/RPG? · `/damagezones` Is this world a no-damage safe zone?",
     "`/whyhurt` Toggle: chat tells you exactly what hurts you (damage type, mob, amount) — for finding mystery damage",
+    "`/keepinv` Players keep their items on death everywhere except the SMP world (/smp). Shows your world and whether items drop there",
     "`/mobinfighting` RPG world: wild mobs can't hurt each other (stops the Solo Leveling crash when a mob kills a mob). Shows how many hits it blocked",
     "New players: no damage while picking a race + first 15 min of play (below level 5). `/newbieshield <player> <minutes>` give/extend it (0 = end it)"
   ].join("\n") },
