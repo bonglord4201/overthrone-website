@@ -287,6 +287,7 @@ Use warps to get around fast. The warp boards in the hub list every destination.
 - **/warp hunters**: Hunters
 - **/warp crates**: Crates
 - **/warp afk**: AFK area
+- **/warp caverns**: The Caverns: mobs, bosses & nodes
 - **/rpg**: RPG world
 - **/warp arcade**: Arcade & Trade Hall
 - **/warp arcanum**: The Arcanum: enchanting & runes
