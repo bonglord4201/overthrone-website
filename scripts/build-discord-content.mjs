@@ -467,6 +467,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/gamerule skillGriefing true` Keep this ON (it's server-wide: false stops skills everywhere)",
     "`/safeexplosions` Explosions blocked in hub/RPG? · `/damagezones` Is this world a no-damage safe zone?",
     "`/whyhurt` Toggle: chat tells you exactly what hurts you (damage type, mob, amount) — for finding mystery damage",
+    "`/mobinfighting` RPG world: wild mobs can't hurt each other (stops the Solo Leveling crash when a mob kills a mob). Shows how many hits it blocked",
     "New players: no damage while picking a race + first 15 min of play (below level 5). `/newbieshield <player> <minutes>` give/extend it (0 = end it)"
   ].join("\n") },
   { title: "🚫 Banned skills", description: [
