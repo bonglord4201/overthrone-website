@@ -73,11 +73,14 @@
     return near
   }
   // the spawn's live mob: by UUID, else by its spawn tag
+  // only the real mob counts: a living entity of the spawn's type (the floating name text is never it)
+  const isMobOf = (x, sp) => { try { return x != null && x.isLiving() && typeOf(x) == sp.type } catch (y) { return false } }
   const findMob = (level, id) => {
     var sp = spawns[id], e = null
     try { if (sp.uuid) e = level.getEntity(UUID.fromString(sp.uuid)) } catch (x) { }
+    if (!isMobOf(e, sp)) e = null
     if (e == null) {
-      try { level.getAllEntities().forEach(x => { try { if (e == null && x.getTags().contains(tagOf(id))) e = x } catch (y) { } }) } catch (x) { }
+      try { level.getAllEntities().forEach(x => { try { if (e == null && isMobOf(x, sp) && x.getTags().contains(tagOf(id))) e = x } catch (y) { } }) } catch (x) { }
       if (e != null) sp.uuid = uidOf(e)
     }
     return e
@@ -304,7 +307,7 @@
       if (!e.getTags().contains('ot_spawn')) return
       var s = e.level.server; load(s)
       var u = uidOf(e), id = null
-      Object.keys(spawns).forEach(k => { if (spawns[k].uuid == u || e.getTags().contains(tagOf(k))) id = k })
+      Object.keys(spawns).forEach(k => { if (isMobOf(e, spawns[k]) && (spawns[k].uuid == u || e.getTags().contains(tagOf(k)))) id = k })
       if (id == null) return
       var sp = spawns[id]
       var g = sp.group ? groups[sp.group] : null
