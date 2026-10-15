@@ -422,6 +422,8 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/cavernadmin pos1` Stand at one corner (floor) · `/cavernadmin pos2` Opposite corner (ceiling), same world",
     "`/cavernadmin info` Shows the area + whether you're inside it",
     "`/cavernadmin stats <player>` Their kills, bosses, nodes, cash, best payout, time · `/cavernadmin reset <player>` Clear them",
+    "`/cavernadmin board [height]` Put a \"Doing no damage? 7 armour layers, end-game content\" warning board where you stand (default 2 up, place one per boss)",
+    "`/cavernadmin board flip` Turn boards within 8 blocks round · `/cavernadmin board remove` Remove boards within 8 blocks · `/cavernadmin board removeall` Remove them all",
     "NPC: `/npcmenu spawn caverns` (Cavern Guide) · Players: `/caverns` menu, `/warp caverns`",
     "Settings (cash min/max, per-minute cap, how much mobs/nodes pay) are at the top of `caverns.js`"
   ].join("\n") },

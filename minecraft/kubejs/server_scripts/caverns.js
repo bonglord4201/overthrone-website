@@ -11,6 +11,11 @@
 //   /cavernadmin info          show the area and whether you are inside it
 //   /cavernadmin stats <player>   a player's Caverns trackers
 //   /cavernadmin reset <player>   reset a player's Caverns trackers
+//   /cavernadmin board [height]   "Doing no damage?" warning board where you stand, facing you (default 2 blocks up).
+//                                 You can place several (one per boss). Edit the text in CAV_BOARD below.
+//   /cavernadmin board flip       turn the board(s) within 8 blocks of you round, if one shows backwards
+//   /cavernadmin board remove     remove the board(s) within 8 blocks of you
+//   /cavernadmin board removeall  remove every Caverns board
 
 // ---------------------------------------------------------------- settings
 const CAV_CASH_MIN = 100
@@ -116,9 +121,37 @@ var otCavernsPay = (p, base, why) => {
     })
   })
 
+  // ---- warning board for the boss area (floating text, same way as the AFK zone board)
+  const CAV_BOARD = [
+    { text: '⚠ END-GAME BOSSES ⚠\n', color: '#FF4D4D', bold: true },
+    { text: '━━━━━━━━━━━━━━\n', color: '#8B1E1E' },
+    { text: 'Doing ', color: '#FFD27F' }, { text: 'NO DAMAGE', color: '#FF4D4D', bold: true }, { text: '?\n\n', color: '#FFD27F' },
+    { text: 'These bosses have up to ', color: '#E0E0E0' }, { text: '7 LAYERS', color: '#FFB347', bold: true },
+    { text: '\nof armour you must break before\nyour hits start to hurt them.\n\n', color: '#E0E0E0' },
+    { text: 'Make sure you are ', color: '#E0E0E0' }, { text: 'WELL GEARED', color: '#8BD448', bold: true }, { text: '!\n', color: '#E0E0E0' },
+    { text: 'This is ', color: '#E0E0E0' }, { text: 'END-GAME CONTENT', color: '#FF4D4D', bold: true }, { text: '.\n', color: '#E0E0E0' },
+    { text: '━━━━━━━━━━━━━━\n', color: '#8B1E1E' },
+    { text: 'Team up for a better chance!', color: '#AAAAAA', italic: true },
+  ]
+  const CAV_BOARD_TAG = 'ot_cav_board'
+
   ServerEvents.commandRegistry(event => {
     const { commands: Commands, arguments: Arguments } = event
     const say = (src, m) => src.sendSystemMessage(Text.of(m))
+    const f = (n) => Number(n).toFixed(2)
+    const board = (ctx, h) => {
+      var p = ctx.source.playerOrException
+      var json = JSON.stringify([''].concat(CAV_BOARD)).replace(/\\/g, '\\\\').replace(/'/g, "\\'")
+      p.server.runCommandSilent(`execute in ${p.level.dimension} run summon minecraft:text_display ${f(p.x)} ${f(p.y + h)} ${f(p.z)} ` +
+        `{Tags:["${CAV_BOARD_TAG}"],Rotation:[${f(p.yaw)}f,0f],billboard:"fixed",alignment:"center",shadow:1b,line_width:400,background:-1325400064,` +
+        `brightness:{sky:15,block:15},transformation:[1.4f,0f,0f,0f,0f,1.4f,0f,0f,0f,0f,1.4f,0f,0f,0f,0f,1f],text:'${json}'}`)
+      say(ctx.source, '§a[caverns] Warning board placed ' + h + ' blocks above you. §7(/cavernadmin board flip if it shows backwards, /cavernadmin board remove to take it down)')
+      return 1
+    }
+    const nearBoards = (ctx, what) => {
+      var p = ctx.source.playerOrException
+      p.server.runCommandSilent(`execute as ${p.username} at @s run execute as @e[type=minecraft:text_display,tag=${CAV_BOARD_TAG},distance=..8] at @s run ${what}`)
+    }
     const setPos = (ctx, which) => {
       var p = ctx.source.playerOrException, s = p.server
       var a = otCavernsLoad(s) || {}, dim = otCavernsDim(p.level)
@@ -153,6 +186,11 @@ var otCavernsPay = (p, base, why) => {
         Object.keys(CAV_K).forEach(k => t.persistentData.remove(CAV_K[k]))
         say(ctx.source, '§a[caverns] Reset ' + t.username + "'s Caverns trackers.")
         return 1
-      }))))
+      })))
+      .then(Commands.literal('board').executes(ctx => board(ctx, 2))
+        .then(Commands.literal('flip').executes(ctx => { nearBoards(ctx, 'tp @s ~ ~ ~ ~180 0'); say(ctx.source, '§a[caverns] Board(s) within 8 blocks turned round.'); return 1 }))
+        .then(Commands.literal('remove').executes(ctx => { nearBoards(ctx, 'kill @s'); say(ctx.source, '§e[caverns] Board(s) within 8 blocks removed.'); return 1 }))
+        .then(Commands.literal('removeall').executes(ctx => { ctx.source.server.runCommandSilent(`kill @e[type=minecraft:text_display,tag=${CAV_BOARD_TAG}]`); say(ctx.source, '§e[caverns] All Caverns boards removed (in loaded areas).'); return 1 }))
+        .then(Commands.argument('height', Arguments.INTEGER.create(event)).executes(ctx => board(ctx, Arguments.INTEGER.getResult(ctx, 'height'))))))
   })
 })()
