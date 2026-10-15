@@ -1,6 +1,6 @@
 // OVERTHRONE - fixed mob & boss spawns (made for the Caverns, works in any world).
 // Place a mob with its spawn egg, look at it and type /setmob or /setboss. From then on:
-//   - it never despawns and is pulled back if it wanders too far from its spot (mobs: 5 blocks)
+//   - it never despawns and is pulled back if it wanders too far from its spot (mobs: 28 blocks)
 //   - bosses are frozen on their spot (can't walk/fly away, still attack)
 //   - while a boss is dead, players nearby see a red bar counting down to its return
 //   - when it's killed, a floating timer above its spot counts down and the same mob type respawns there
@@ -42,7 +42,7 @@
   const uidOf = (e) => { try { return String(e.getStringUuid()) } catch (x) { try { return String(e.getUuid()) } catch (y) { return String(e.uuid) } } }   // KubeJS renames getUUID
   const STORE = 'ot_spawns'
   const DEFAULT_MINUTES = 60
-  const LEASH = 5             // blocks a mob may wander from its spot (any direction) before it's pulled back
+  const LEASH = 28            // blocks a mob may wander from its spot (any direction) before it's pulled back
   const FREEZE_BOSSES = true  // bosses can't walk or fly away: they stay on their spot and fight from there
   const BOSS_LEASH = 3        // a boss pushed further than this from its spot is put back
   const BAR_RANGE = 48        // players this close to a dead boss's spot see its respawn timer bar
