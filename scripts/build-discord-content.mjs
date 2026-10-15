@@ -466,6 +466,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/ftbchunks admin bypass_protection` Toggle your bypass (on = you can build/use skills in claims). Test as a player with it OFF",
     "`/gamerule skillGriefing true` Keep this ON (it's server-wide: false stops skills everywhere)",
     "`/safeexplosions` Explosions blocked in hub/RPG? · `/damagezones` Is this world a no-damage safe zone?",
+    "`/whyhurt` Toggle: chat tells you exactly what hurts you (damage type, mob, amount) — for finding mystery damage",
     "New players: no damage while picking a race + first 15 min of play (below level 5). `/newbieshield <player> <minutes>` give/extend it (0 = end it)"
   ].join("\n") },
   { title: "🚫 Banned skills", description: [
