@@ -25,6 +25,9 @@
 //   /mobspawn holo           put back missing floating texts
 //   /mobspawn clearall       remove EVERY spawn (mobs stay alive)
 //   /mobspawn info           details of the nearest spawn (within 16 blocks) + puts its text back
+//   /mobspawn skills         the Tensura/Mysticism skills of the mob you look at (red = removed from spawned mobs)
+// Spawned bosses/mobs lose skills whose id contains a word in STRIP_SKILLS (nullification, regeneration), so they
+// can't become unkillable. Checked when they spawn and every 5 seconds.
 //
 // Boss rotations (several bosses taking turns on one spot):
 //   set each boss with /mobspawn boss first (eggs placed close together), then stand among them:
@@ -45,6 +48,11 @@
   const BAR_RANGE = 48        // players this close to a dead boss's spot see its respawn timer bar
   const SHOW_ALIVE_BAR = false // true = bosses also show a health bar while alive (off: many bosses would clog the screen)
   const ROTATION_MINUTES = 30 // default wait between bosses in a rotation
+  // Tensura/Mysticism skills taken off spawned bosses & mobs so they can be killed: anything whose id contains one of
+  // these words (e.g. physical_attack_nullification, self_regeneration). Set to [] to leave their skills alone.
+  const STRIP_SKILLS = ['nullification', 'regeneration']
+  var SkillAPI = null
+  try { SkillAPI = Java.loadClass('io.github.manasmods.manascore.skill.api.SkillAPI') } catch (x) { }
   const GSTORE = 'ot_spawn_groups'
   var groups = null
   const UUID = Java.loadClass('java.util.UUID')
@@ -75,6 +83,18 @@
   // the spawn's live mob: by UUID, else by its spawn tag
   // only the real mob counts: a living entity of the spawn's type (the floating name text is never it)
   const isMobOf = (x, sp) => { try { return x != null && x.isLiving() && typeOf(x) == sp.type } catch (y) { return false } }
+  // removes the "unkillable" skills from a spawned mob (only reads + forgets skills, never hooks the skill system)
+  const skillIds = (e) => { var ids = []; try { SkillAPI.getSkillsFrom(e).getLearnedSkills().forEach(i => { try { ids.push(String(i.getSkillId())) } catch (x) { } }) } catch (x) { } return ids }
+  const nerfSkills = (e) => {
+    if (SkillAPI == null || !STRIP_SKILLS.length) return []
+    var gone = []
+    try {
+      var st = SkillAPI.getSkillsFrom(e), list = []
+      st.getLearnedSkills().forEach(i => { try { var id = String(i.getSkillId()); if (STRIP_SKILLS.some(w => id.indexOf(w) >= 0)) list.push(i) } catch (x) { } })
+      list.forEach(i => { try { st.forgetSkill(i.getSkillId()); gone.push(String(i.getSkillId())) } catch (x) { try { st.forgetSkill(i); gone.push(String(i.getSkillId())) } catch (y) { } } })
+    } catch (x) { }
+    return gone
+  }
   const findMob = (level, id) => {
     var sp = spawns[id], e = null
     try { if (sp.uuid) e = level.getEntity(UUID.fromString(sp.uuid)) } catch (x) { }
@@ -221,6 +241,7 @@
     var sp = spawns[id]
     e.addTag('ot_spawn'); e.addTag(tagOf(id))
     if (sp.kind == 'boss') { e.addTag('ot_boss'); if (FREEZE_BOSSES) freeze(s, e) }
+    try { nerfSkills(e) } catch (x) { }
     try { e.setPersistenceRequired() } catch (x) { }
     sp.uuid = uidOf(e); sp.down = 0
     delete missing[id]
@@ -289,6 +310,7 @@
           return
         }
         missing[id] = 0
+        if (five) { try { nerfSkills(e) } catch (x) { } }
         if (sp.kind == 'boss') {
           if (SHOW_ALIVE_BAR) { try { aliveBar(s, id, e) } catch (x) { logOnce('bar ' + id, 'boss bar: ' + x) } }
           if (FREEZE_BOSSES) { try { freeze(s, e) } catch (x) { logOnce('frz ' + id, 'freeze: ' + x) } }
@@ -537,6 +559,17 @@
         }
         save(s)
         say(ctx.source, P + '§aMoved ' + (ids.length > 1 ? 'all §f' + ids.length + '§a bosses of the rotation' : 'the §f' + sp.type + '§a spawn') + ' to where you stand.')
+        return 1
+      }))
+      .then(Commands.literal('skills').executes(ctx => {
+        // shows the Tensura/Mysticism skills of the mob you look at, and which ones get removed
+        var p = ctx.source.playerOrException, e = target(p)
+        if (e == null) { say(ctx.source, '§cLook at a mob (within 8 blocks).'); return 0 }
+        if (SkillAPI == null) { say(ctx.source, '§cThe skill system was not found.'); return 0 }
+        var ids = skillIds(e)
+        say(ctx.source, P + '§f' + typeOf(e) + ' §7health §c' + Number(e.getHealth()).toFixed(0) + '/' + Number(e.getMaxHealth()).toFixed(0) + ' §7· ' + ids.length + ' skill(s):')
+        say(ctx.source, ids.length ? ids.map(id => (STRIP_SKILLS.some(w => id.indexOf(w) >= 0) ? '§c' : '§7') + id).join('§8, ') : '§7(none)')
+        say(ctx.source, '§8Red = removed from spawned bosses/mobs (words: ' + STRIP_SKILLS.join(', ') + ')')
         return 1
       }))
       .then(Commands.literal('list').executes(ctx => {

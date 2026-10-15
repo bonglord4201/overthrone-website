@@ -431,7 +431,8 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/mobspawn list` Spawns in this world · `/mobspawn info` Nearest spawn details + puts its text back · `/mobspawn respawnall` Respawn every killed one now · `/mobspawn holo` Put floating texts back · `/mobspawn clearall` Remove EVERY spawn (mobs stay alive)",
     "Bosses are **frozen** on their spot (can't walk/fly away, still attack); while dead, players within 48 blocks see a red bar counting down to their return. Mobs stay within 5 blocks of their spot (pulled back if further)",
     "Look at its mob or stand within 16 blocks of its spot: `/mobspawn time <minutes>` Change its timer · `/mobspawn move` Move its spot (and the mob) to where you stand (a rotation moves all its bosses) · `/mobspawn remove` Stop tracking it (the mob stays alive) · `/mobspawn remove kill` Remove it + kill the mob",
-    "Bosses set with `/setboss` count as bosses for Caverns cash + trackers"
+    "Bosses set with `/setboss` count as bosses for Caverns cash + trackers",
+    "Spawned bosses/mobs lose **Nullification** + **Regeneration** skills (so they can be killed). `/mobspawn skills` Look at a mob: its skills (red = removed). Change the words in `STRIP_SKILLS` at the top of `mob_spawns.js`"
   ].join("\n") },
   { title: "🔁 Boss rotations", description: [
     "Several bosses take turns on one spot. One boss is out at a time; when it dies its name goes away, **Random Boss arrives in 29:59** counts down (floating text + red bar + chat), then the next boss appears. Every boss comes once per cycle in a random order",
