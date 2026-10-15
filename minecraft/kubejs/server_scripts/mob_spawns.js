@@ -69,6 +69,8 @@
   }
   const typeOf = (e) => { try { var s = e.getEncodeId(); return s ? String(s) : '' } catch (x) { return '' } }
   const tagOf = (id) => 'ot_sp_' + id
+  const logged = {}
+  const logOnce = (key, msg) => { var now = Date.now(); if (logged[key] && now - logged[key] < 60000) return; logged[key] = now; console.warn('[mob_spawns] ' + msg) }
   const two = (n) => (n < 10 ? '0' : '') + n
   const mmss = (sec) => { var m = Math.floor(sec / 60), r = sec % 60; return (m >= 60 ? Math.floor(m / 60) + ':' + two(m % 60) : m) + ':' + two(r) }
 
@@ -148,6 +150,8 @@
     var sp = spawns[id]; if (!sp) return false
     var level = levelOf(s, sp.dim)
     if (level == null || !loaded(level, sp.x, sp.z)) return false   // try again once someone is nearby
+    var still = findMob(level, id)
+    if (still != null && still.isAlive()) { adopt(s, id, still); hideBar(s, id); setHolo(s, id, null); save(s); return true }
     // summon without NBT, so the mob gets its normal gear/stats like from a spawn egg
     run(s, `execute in ${sp.dim} run summon ${sp.type} ${sp.x} ${sp.y} ${sp.z}`)
     var found = null
@@ -193,11 +197,14 @@
           return
         }
         missing[id] = 0
-        if (sp.kind == 'boss') { aliveBar(s, id, e); if (FREEZE_BOSSES) freeze(s, e) }
+        if (sp.kind == 'boss') {
+          try { aliveBar(s, id, e) } catch (x) { logOnce('bar ' + id, 'boss bar: ' + x) }
+          if (FREEZE_BOSSES) { try { freeze(s, e) } catch (x) { logOnce('frz ' + id, 'freeze: ' + x) } }
+        }
         var dx = e.getX() - sp.x, dz = e.getZ() - sp.z, dy = e.getY() - sp.y
         var leash = sp.kind == 'boss' ? (FREEZE_BOSSES ? BOSS_LEASH : 8) : LEASH
         if (dx * dx + dy * dy + dz * dz > leash * leash) { try { e.teleportTo(sp.x, sp.y, sp.z) } catch (y) { run(s, `execute in ${sp.dim} run tp ${uidOf(e)} ${sp.x} ${sp.y} ${sp.z}`) } }
-      } catch (x) { }
+      } catch (x) { logOnce('tick ' + id, 'tick ' + sp.type + ': ' + x) }
     })
   })
 
@@ -349,6 +356,10 @@
         try { var e = sp.uuid ? p.level.getEntity(UUID.fromString(sp.uuid)) : null; alive = e != null && e.isAlive() } catch (x) { }
         say(ctx.source, P + '§f' + sp.type + ' §7(' + sp.kind + ', ' + sp.mins + ' min) at §f' + Math.floor(sp.x) + ' ' + Math.floor(sp.y) + ' ' + Math.floor(sp.z))
         say(ctx.source, '§7Name key: §f' + sp.key + ' §7· tracked mob: ' + (sp.down ? '§cdead, back in ' + mmss(Math.max(0, Math.ceil((sp.down - Date.now()) / 1000))) : alive ? '§afound & alive' : '§enot found yet (unloaded or missing)'))
+        var lv = levelOf(p.server, sp.dim), fm = null
+        try { fm = lv ? findMob(lv, id) : null } catch (x) { say(ctx.source, '§cfindMob error: ' + x) }
+        say(ctx.source, '§8debug: world ' + (lv ? 'ok' : 'NOT FOUND') + ' · loaded ' + (lv ? loaded(lv, sp.x, sp.z) : '-') + ' · uuid ' + sp.uuid + ' · by uuid/tag: ' + (fm ? 'found' : 'none') + ' · bar ' + !!sp.bar)
+        if (fm && sp.kind == 'boss') { try { aliveBar(p.server, id, fm); say(ctx.source, '§8debug: boss bar refreshed') } catch (x) { say(ctx.source, '§cboss bar error: ' + x) } }
         placeHolo(p.server, id)
         say(ctx.source, '§7Floating text re-placed. §8If you still can\'t see it, look ' + sp.h + ' blocks above the spot.')
         return 1
