@@ -429,9 +429,16 @@ channels.push({ key: "staffcommands", messages: pack([
     "Place the mob with its spawn egg, **look at it**, then: `/mobspawn boss [minutes]` or `/mobspawn mob [minutes]` (default 60 min, e.g. `/mobspawn boss 1` to test). Same as `/setboss` / `/setmob`",
     "It never despawns, gets pulled back if it wanders 32+ blocks, and respawns at the same spot after it's killed. Floating text shows its **real name** + a respawn countdown. Boss kills are announced",
     "`/mobspawn list` Spawns in this world · `/mobspawn info` Nearest spawn details + puts its text back · `/mobspawn respawnall` Respawn every killed one now · `/mobspawn holo` Put floating texts back · `/mobspawn clearall` Remove EVERY spawn (mobs stay alive)",
-    "Bosses are **frozen** on their spot (can't walk/fly away, still attack) + show a red health bar to players within 48 blocks; while dead the bar counts down to their return. Mobs stay within 5 blocks of their spot (pulled back if further)",
+    "Bosses are **frozen** on their spot (can't walk/fly away, still attack); while dead, players within 48 blocks see a red bar counting down to their return. Mobs stay within 5 blocks of their spot (pulled back if further)",
     "Look at its mob or stand within 16 blocks of its spot: `/mobspawn time <minutes>` Change its timer · `/mobspawn remove` Stop tracking it (the mob stays alive) · `/mobspawn remove kill` Remove it + kill the mob",
     "Bosses set with `/setboss` count as bosses for Caverns cash + trackers"
+  ].join("\n") },
+  { title: "🔁 Boss rotations", description: [
+    "Several bosses take turns on one spot. One boss is out at a time; when it dies its name goes away, **Random Boss arrives in 29:59** counts down (floating text + red bar + chat), then the next boss appears. Every boss comes once per cycle in a random order",
+    "1. Place each boss with its egg close together and set each one: look at it → `/mobspawn boss`",
+    "2. Stand among them → `/mobspawn rotation` (30 min between bosses) or `/mobspawn rotation 45` for your own time",
+    "`/mobspawn rotation next` Skip the wait (next boss appears now) · `/mobspawn rotation off` Back to normal separate bosses",
+    "Add a boss later: place + `/mobspawn boss` it near the others, then run `/mobspawn rotation` again · `/mobspawn list` shows rotations (⟳)"
   ].join("\n") },
   { title: "⚖️ Mob tweaks", description: [
     "`mob_tweaks.js` sets a mob's health and caps how hard it hits. Now: **Barghest** + 40 HP, **Direwolf** 5 HP + max 2 damage per hit (Barghest max 5) (fire still works)",
