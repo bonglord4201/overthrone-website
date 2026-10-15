@@ -429,7 +429,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "Place the mob with its spawn egg, **look at it**, then: `/mobspawn boss [minutes]` or `/mobspawn mob [minutes]` (default 60 min, e.g. `/mobspawn boss 1` to test). Same as `/setboss` / `/setmob`",
     "It never despawns, gets pulled back if it wanders 32+ blocks, and respawns at the same spot after it's killed. Floating text shows its **real name** + a respawn countdown. Boss kills are announced",
     "`/mobspawn list` Spawns in this world · `/mobspawn info` Nearest spawn details + puts its text back · `/mobspawn respawnall` Respawn every killed one now · `/mobspawn holo` Put floating texts back · `/mobspawn clearall` Remove EVERY spawn (mobs stay alive)",
-    "Bosses are **frozen** on their spot (can't walk/fly away, still attack) + show a red health bar to players within 48 blocks; while dead the bar counts down to their return. Mobs stay within 24 blocks",
+    "Bosses are **frozen** on their spot (can't walk/fly away, still attack) + show a red health bar to players within 48 blocks; while dead the bar counts down to their return. Mobs stay within 5 blocks of their spot (pulled back if further)",
     "Look at its mob or stand within 16 blocks of its spot: `/mobspawn time <minutes>` Change its timer · `/mobspawn remove` Stop tracking it (the mob stays alive) · `/mobspawn remove kill` Remove it + kill the mob",
     "Bosses set with `/setboss` count as bosses for Caverns cash + trackers"
   ].join("\n") },

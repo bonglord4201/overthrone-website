@@ -1,6 +1,6 @@
 // OVERTHRONE - fixed mob & boss spawns (made for the Caverns, works in any world).
 // Place a mob with its spawn egg, look at it and type /setmob or /setboss. From then on:
-//   - it never despawns and is pulled back if it wanders too far from its spot (mobs: 24 blocks)
+//   - it never despawns and is pulled back if it wanders too far from its spot (mobs: 5 blocks)
 //   - bosses are frozen on their spot (can't walk/fly away, still attack) and show a red health bar to players nearby
 //   - while a boss is dead, players nearby see a red bar counting down to its return
 //   - when it's killed, a floating timer above its spot counts down and the same mob type respawns there
@@ -29,7 +29,7 @@
   const uidOf = (e) => { try { return String(e.getStringUuid()) } catch (x) { try { return String(e.getUuid()) } catch (y) { return String(e.uuid) } } }   // KubeJS renames getUUID
   const STORE = 'ot_spawns'
   const DEFAULT_MINUTES = 60
-  const LEASH = 24            // blocks a mob may wander from its spot before it's pulled back
+  const LEASH = 5             // blocks a mob may wander from its spot (any direction) before it's pulled back
   const FREEZE_BOSSES = true  // bosses can't walk or fly away: they stay on their spot and fight from there
   const BOSS_LEASH = 3        // a boss pushed further than this from its spot is put back
   const BAR_RANGE = 48        // players this close to a dead boss's spot see its respawn timer bar
@@ -183,13 +183,13 @@
           else { var left = Math.ceil((sp.down - now) / 1000); setHolo(s, id, left); showBar(s, id, left) }
           return
         }
-        if (!sp.uuid || (sp.kind != 'boss' && !five)) return
+        if (!sp.uuid) return   // every spawn is checked once a second
         var level = levelOf(s, sp.dim)
         if (level == null || !loaded(level, sp.x, sp.z)) return
         var e = findMob(level, id)
         if (e == null || !e.isAlive()) {
           missing[id] = (missing[id] || 0) + 1
-          if (missing[id] >= (sp.kind == 'boss' ? 15 : 3)) { sp.down = now; sp.uuid = null; delete missing[id]; save(s) }   // vanished without dying: bring it back
+          if (missing[id] >= 15) { sp.down = now; sp.uuid = null; delete missing[id]; save(s) }   // vanished without dying: bring it back
           return
         }
         missing[id] = 0
