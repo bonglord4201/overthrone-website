@@ -22,6 +22,7 @@
 //   /mobspawn list           every spawn in this world with its state
 //   /mobspawn respawnall     respawn every killed mob now
 //   /mobspawn holo           put back missing floating texts
+//   /mobspawn clearall       remove EVERY spawn (mobs stay alive)
 //   /mobspawn info           details of the nearest spawn (within 16 blocks) + puts its text back
 
 (function () {
@@ -37,7 +38,15 @@
   const missing = {}
 
   const run = (s, cmd) => s.runCommandSilent(cmd)
-  const load = (s) => { if (spawns == null) { try { spawns = JSON.parse(String(s.persistentData.getString(STORE) || '{}')) } catch (e) { spawns = {} } } return spawns }
+  const load = (s) => {
+    if (spawns == null) {
+      try { spawns = JSON.parse(String(s.persistentData.getString(STORE) || '{}')) } catch (e) { spawns = {} }
+      // spawns saved by an older, broken version have no world/kind/timer: they never worked, so drop them
+      Object.keys(spawns).forEach(k => { var sp = spawns[k]; if (!sp || !sp.dim || !sp.kind || !sp.mins) delete spawns[k] })
+      s.persistentData.putString(STORE, JSON.stringify(spawns))
+    }
+    return spawns
+  }
   const save = (s) => s.persistentData.putString(STORE, JSON.stringify(spawns))
   const dimOf = (level) => { var k = level.dimension; if (typeof k === 'function') k = level.dimension(); return String(k && k.location ? k.location() : k) }
   const levelOf = (s, dim) => { var f = null; s.getAllLevels().forEach(l => { if (f == null && dimOf(l) == dim) f = l }); return f }
@@ -273,7 +282,7 @@
       var type = typeOf(e)
       if (!type) { say(ctx.source, '§cThat entity can\'t be respawned.'); return 0 }
       var id = String(Date.now().toString(36)) + Math.floor(Math.random() * 1000)
-      spawns[id] = { type: type, key: 'entity.' + type.replace(':', '.'),   // the game's own name key (what EntityType#getDescriptionId gives) kind: kind, mins: mins, dim: dimOf(e.level),
+      spawns[id] = { type: type, key: 'entity.' + type.replace(':', '.'), kind: kind, mins: mins, dim: dimOf(e.level),   // key = the game's own name key
         x: Number(Number(e.getX()).toFixed(2)), y: Number(Number(e.getY()).toFixed(2)), z: Number(Number(e.getZ()).toFixed(2)),
         h: Number((Number(e.getBbHeight()) + 0.6).toFixed(2)), uuid: null, down: 0 }
       adopt(s, id, e)
@@ -353,6 +362,17 @@
             ' §7(' + sp.mins + ' min) ' + (sp.down ? '§cdead, back in ' + mmss(Math.max(0, Math.ceil((sp.down - now) / 1000))) : '§aalive') + (sp.dim != dim ? ' §8(' + sp.dim + ')' : ''))
         })
         if (!n) say(ctx.source, '§7No spawns saved yet. §8(your world: ' + dim + ')')
+        return 1
+      }))
+      .then(Commands.literal('clearall').executes(ctx => {
+        // removes EVERY spawn (mobs are left alive), their floating texts, bars and marks
+        var s = ctx.source.server, n = 0
+        load(s)
+        Object.keys(spawns).forEach(k => { try { hideBar(s, k) } catch (x) { } n++ })
+        spawns = {}; save(s)
+        run(s, 'kill @e[type=minecraft:text_display,tag=ot_spawnholo]')
+        s.getAllLevels().forEach(l => { try { l.getAllEntities().forEach(e => { try { var t = e.getTags(); if (t.contains('ot_spawn')) { var rm = []; t.forEach(x => { if (String(x).indexOf('ot_sp') == 0 || String(x) == 'ot_boss') rm.push(String(x)) }); rm.forEach(x => e.removeTag(x)) } } catch (y) { } }) } catch (y) { } })
+        say(ctx.source, P + '§aCleared ' + n + ' spawn(s). §7Their mobs are still alive: kill them or set them again.')
         return 1
       }))
       .then(Commands.literal('respawnall').executes(ctx => {
