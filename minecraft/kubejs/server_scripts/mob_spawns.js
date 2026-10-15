@@ -1,6 +1,7 @@
 // OVERTHRONE - fixed mob & boss spawns (made for the Caverns, works in any world).
 // Place a mob with its spawn egg, look at it and type /setmob or /setboss. From then on:
-//   - it never despawns and is pulled back if it wanders too far from its spot (bosses: 8 blocks, mobs: 24)
+//   - it never despawns and is pulled back if it wanders too far from its spot (mobs: 24 blocks)
+//   - bosses are frozen on their spot (can't walk/fly away, still attack) and show a red health bar to players nearby
 //   - while a boss is dead, players nearby see a red bar counting down to its return
 //   - when it's killed, a floating timer above its spot counts down and the same mob type respawns there
 //     (default after 60 minutes)
@@ -13,7 +14,7 @@
 //   /setmob [minutes]        make it a mob spawn (default 60 minutes)
 //   /setboss [minutes]       make it a boss spawn (default 60 minutes)
 //   (same: /mobspawn mob [minutes] and /mobspawn boss [minutes])
-//   near a spawn:
+//   look at its mob, or stand near its spot (within 16 blocks side to side):
 //   /mobspawn remove         stop tracking the nearest spawn (within 10 blocks). Its mob is left alive.
 //   /mobspawn remove kill    same, and kills its mob too
 //   /mobspawn time <minutes> change the nearest spawn's respawn time
@@ -28,7 +29,8 @@
   const STORE = 'ot_spawns'
   const DEFAULT_MINUTES = 60
   const LEASH = 24            // blocks a mob may wander from its spot before it's pulled back
-  const BOSS_LEASH = 8        // bosses stay close to their spot
+  const FREEZE_BOSSES = true  // bosses can't walk or fly away: they stay on their spot and fight from there
+  const BOSS_LEASH = 3        // a boss pushed further than this from its spot is put back
   const BAR_RANGE = 48        // players this close to a dead boss's spot see its respawn timer bar
   const UUID = Java.loadClass('java.util.UUID')
   var spawns = null
@@ -81,13 +83,38 @@
     run(s, `bossbar set ${b} value ${Math.max(0, Math.min(sp.mins * 60, sp.mins * 60 - secsLeft))}`)
     run(s, `execute in ${sp.dim} positioned ${sp.x} ${sp.y} ${sp.z} run bossbar set ${b} players @a[distance=..${BAR_RANGE}]`)
   }
+  // boss health bar while it's alive (players within BAR_RANGE of its spot)
+  const aliveBar = (s, id, e) => {
+    var sp = spawns[id]; if (!sp || sp.kind != 'boss') return
+    var b = barId(id), name = JSON.stringify(['', { text: '☠ ', color: 'dark_red' }, { translate: sp.key, color: 'red', bold: true }, { text: ' ☠', color: 'dark_red' }])
+    if (!sp.bar) { run(s, `bossbar add ${b} ${name}`); run(s, `bossbar set ${b} color red`); run(s, `bossbar set ${b} style notched_10`); sp.bar = true }
+    var max = Math.max(1, Math.ceil(Number(e.getMaxHealth()))), hp = Math.max(0, Math.ceil(Number(e.getHealth())))
+    run(s, `bossbar set ${b} name ${name}`)
+    run(s, `bossbar set ${b} max ${max}`)
+    run(s, `bossbar set ${b} value ${Math.min(max, hp)}`)
+    run(s, `execute in ${sp.dim} positioned ${sp.x} ${sp.y} ${sp.z} run bossbar set ${b} players @a[distance=..${BAR_RANGE}]`)
+  }
+  // freeze: walking and flying speed 0 (it can still turn, attack and use abilities)
+  var Attr = null
+  try { Attr = Java.loadClass('net.minecraft.world.entity.ai.attributes.Attributes') } catch (x) { }
+  const freeze = (s, e) => {
+    var ok = false
+    if (Attr != null) {
+      ;['MOVEMENT_SPEED', 'FLYING_SPEED'].forEach(k => { try { var a = e.getAttribute(Attr[k]); if (a != null) { a.setBaseValue(0); ok = true } } catch (x) { } })
+    }
+    if (!ok) {
+      run(s, `attribute ${uidOf(e)} minecraft:generic.movement_speed base set 0`)
+      run(s, `attribute ${uidOf(e)} minecraft:generic.flying_speed base set 0`)
+    }
+    try { e.setDeltaMovement(0, Math.min(0, Number(e.getDeltaMovement().y())), 0) } catch (x) { }
+  }
   const hideBar = (s, id) => { var sp = spawns[id]; run(s, `bossbar remove ${barId(id)}`); if (sp) delete sp.bar }
 
   // ---- tracking a live mob
   const adopt = (s, id, e) => {
     var sp = spawns[id]
     e.addTag('ot_spawn'); e.addTag(tagOf(id))
-    if (sp.kind == 'boss') e.addTag('ot_boss')
+    if (sp.kind == 'boss') { e.addTag('ot_boss'); if (FREEZE_BOSSES) freeze(s, e) }
     try { e.setPersistenceRequired() } catch (x) { }
     sp.uuid = uidOf(e); sp.down = 0
     delete missing[id]
@@ -131,18 +158,19 @@
           else { var left = Math.ceil((sp.down - now) / 1000); setHolo(s, id, left); showBar(s, id, left) }
           return
         }
-        if (!five || !sp.uuid) return
+        if (!sp.uuid || (sp.kind != 'boss' && !five)) return
         var level = levelOf(s, sp.dim)
         if (level == null || !loaded(level, sp.x, sp.z)) return
         var e = level.getEntity(UUID.fromString(sp.uuid))
         if (e == null || !e.isAlive()) {
           missing[id] = (missing[id] || 0) + 1
-          if (missing[id] >= 3) { sp.down = now; sp.uuid = null; delete missing[id]; save(s) }   // vanished without dying: bring it back
+          if (missing[id] >= (sp.kind == 'boss' ? 15 : 3)) { sp.down = now; sp.uuid = null; delete missing[id]; save(s) }   // vanished without dying: bring it back
           return
         }
         missing[id] = 0
+        if (sp.kind == 'boss') { aliveBar(s, id, e); if (FREEZE_BOSSES) freeze(s, e) }
         var dx = e.getX() - sp.x, dz = e.getZ() - sp.z, dy = e.getY() - sp.y
-        var leash = sp.kind == 'boss' ? BOSS_LEASH : LEASH
+        var leash = sp.kind == 'boss' ? (FREEZE_BOSSES ? BOSS_LEASH : 8) : LEASH
         if (dx * dx + dy * dy + dz * dz > leash * leash) { try { e.teleportTo(sp.x, sp.y, sp.z) } catch (y) { run(s, `execute in ${sp.dim} run tp ${uidOf(e)} ${sp.x} ${sp.y} ${sp.z}`) } }
       } catch (x) { }
     })
@@ -187,11 +215,21 @@
       }
       return e
     }
+    // the spawn you're looking at (its mob), else the nearest spot (side to side only, height ignored: bosses can fly)
     const nearest = (p, max) => {
+      load(p.server)
+      try {
+        var r = p.rayTrace(24)
+        if (r && r.entity) {
+          var u = uidOf(r.entity), hit = null
+          Object.keys(spawns).forEach(k => { if (spawns[k].uuid == u) hit = k })
+          if (hit) return hit
+        }
+      } catch (x) { }
       var best = max * max, id = null, dim = dimOf(p.level)
-      Object.keys(load(p.server)).forEach(k => {
+      Object.keys(spawns).forEach(k => {
         var sp = spawns[k]; if (sp.dim != dim) return
-        var dx = sp.x - p.getX(), dy = sp.y - p.getY(), dz = sp.z - p.getZ(), d = dx * dx + dy * dy + dz * dz
+        var dx = sp.x - p.getX(), dz = sp.z - p.getZ(), d = dx * dx + dz * dz
         if (d < best) { best = d; id = k }
       })
       return id
@@ -230,8 +268,8 @@
     }
     // stop tracking the nearest spawn; withMob = also kill its mob (if alive)
     const removeSpawn = (ctx, withMob) => {
-      var p = ctx.source.playerOrException, s = p.server, id = nearest(p, 10)
-      if (id == null) { say(ctx.source, '§cNo spawn within 10 blocks. §7Stand near the spot where its name floats (/mobspawn list shows where).'); return 0 }
+      var p = ctx.source.playerOrException, s = p.server, id = nearest(p, 16)
+      if (id == null) { say(ctx.source, '§cNo spawn within 16 blocks. §7Stand near the spot where its name floats (/mobspawn list shows where).'); return 0 }
       var sp = spawns[id]
       run(s, `execute in ${sp.dim} run kill @e[type=minecraft:text_display,tag=${tagOf(id)}]`)
       if (sp.uuid) {
@@ -258,8 +296,8 @@
       .then(Commands.literal('remove').executes(ctx => removeSpawn(ctx, false))
         .then(Commands.literal('kill').executes(ctx => removeSpawn(ctx, true))))
       .then(Commands.literal('time').then(minsArg().executes(ctx => {
-        var p = ctx.source.playerOrException, id = nearest(p, 10), m = Math.max(1, Arguments.INTEGER.getResult(ctx, 'minutes'))
-        if (id == null) { say(ctx.source, '§cNo spawn within 10 blocks.'); return 0 }
+        var p = ctx.source.playerOrException, id = nearest(p, 16), m = Math.max(1, Arguments.INTEGER.getResult(ctx, 'minutes'))
+        if (id == null) { say(ctx.source, '§cNo spawn within 16 blocks.'); return 0 }
         spawns[id].mins = m; save(p.server)
         say(ctx.source, P + '§a' + spawns[id].type + ' now respawns §f' + m + ' min§a after it dies.')
         return 1
