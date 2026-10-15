@@ -430,7 +430,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "It never despawns, gets pulled back if it wanders 32+ blocks, and respawns at the same spot after it's killed. Floating text shows its **real name** + a respawn countdown. Boss kills are announced",
     "`/mobspawn list` Spawns in this world · `/mobspawn info` Nearest spawn details + puts its text back · `/mobspawn respawnall` Respawn every killed one now · `/mobspawn holo` Put floating texts back · `/mobspawn clearall` Remove EVERY spawn (mobs stay alive)",
     "Bosses are **frozen** on their spot (can't walk/fly away, still attack); while dead, players within 48 blocks see a red bar counting down to their return. Mobs stay within 5 blocks of their spot (pulled back if further)",
-    "Look at its mob or stand within 16 blocks of its spot: `/mobspawn time <minutes>` Change its timer · `/mobspawn remove` Stop tracking it (the mob stays alive) · `/mobspawn remove kill` Remove it + kill the mob",
+    "Look at its mob or stand within 16 blocks of its spot: `/mobspawn time <minutes>` Change its timer · `/mobspawn move` Move its spot (and the mob) to where you stand · `/mobspawn remove` Stop tracking it (the mob stays alive) · `/mobspawn remove kill` Remove it + kill the mob",
     "Bosses set with `/setboss` count as bosses for Caverns cash + trackers"
   ].join("\n") },
   { title: "🔁 Boss rotations", description: [

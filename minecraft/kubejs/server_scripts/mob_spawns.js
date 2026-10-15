@@ -18,6 +18,7 @@
 //   /mobspawn remove         stop tracking the nearest spawn (within 10 blocks). Its mob is left alive.
 //   /mobspawn remove kill    same, and kills its mob too
 //   /mobspawn time <minutes> change the nearest spawn's respawn time
+//   /mobspawn move           move the spawn (and its mob) to where you're standing
 //   anywhere:
 //   /mobspawn list           every spawn in this world with its state
 //   /mobspawn respawnall     respawn every killed mob now
@@ -510,6 +511,23 @@
         if (fm && sp.kind == 'boss') { try { aliveBar(p.server, id, fm); say(ctx.source, '§8debug: boss bar refreshed') } catch (x) { say(ctx.source, '§cboss bar error: ' + x) } }
         placeHolo(p.server, id)
         say(ctx.source, '§7Floating text re-placed. §8If you still can\'t see it, look ' + sp.h + ' blocks above the spot.')
+        return 1
+      }))
+      .then(Commands.literal('move').executes(ctx => {
+        // moves the spawn you're looking at (or the nearest one) to where you stand, and brings its mob along
+        var p = ctx.source.playerOrException, s = p.server, id = nearest(p, 16)
+        if (id == null) return whyNone(ctx, p)
+        var sp = spawns[id]
+        sp.x = Number((Math.floor(p.getX()) + 0.5).toFixed(2)); sp.y = Number(Math.floor(p.getY()).toFixed(2)); sp.z = Number((Math.floor(p.getZ()) + 0.5).toFixed(2))
+        try { var e = findMob(p.level, id); if (e != null) { try { e.teleportTo(sp.x, sp.y, sp.z) } catch (y) { run(s, `execute in ${sp.dim} run tp ${uidOf(e)} ${sp.x} ${sp.y} ${sp.z}`) } } } catch (x) { }
+        if (!sp.dormant) placeHolo(s, id)
+        if (sp.group && groups[sp.group]) {   // keep the rotation's "Random Boss" text above its bosses
+          var g = groups[sp.group], cx = 0, cz = 0, top = -1e9, n = 0
+          g.members.forEach(k => { var m = spawns[k]; if (!m) return; cx += m.x; cz += m.z; top = Math.max(top, m.y + (m.h || 2)); n++ })
+          if (n) { gHide(s, sp.group); g.x = Number((cx / n).toFixed(2)); g.z = Number((cz / n).toFixed(2)); g.y = Number((top + 0.5).toFixed(2)) }
+        }
+        save(s)
+        say(ctx.source, P + '§aMoved the §f' + sp.type + '§a spawn to where you stand.')
         return 1
       }))
       .then(Commands.literal('list').executes(ctx => {
