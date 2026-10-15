@@ -1,0 +1,8 @@
+DISCORD ANNOUNCEMENT - Update 1.5
+In Discord type /announce and fill in:
+  channel:  #announcements
+  title:    Update 1.5 is LIVE: Caverns Bosses & More
+  ping:     @everyone
+  message:  copy EVERYTHING on the line below (it's one long line; \n makes the new lines)
+
+**The Caverns just got deadlier!** ⛏ Type **/warp caverns** to jump in. No level needed.\n\n**💰 Get paid for everything**\n🔸 Every mob kill, boss kill and node in the Caverns pays **$100 to $10,000**\n🔸 Bosses pay the most. Kills and nodes still give Combat, profession and level XP\n🔸 Talk to the **Cavern Guide** or type **/caverns** to see your kills, bosses slain, nodes, cash earned and best payout\n\n**☠ Caverns Bosses**\n🔸 Bosses guard their own spots, with their real name floating above them\n🔸 When one is slain, a countdown shows when it's back, and chat tells everyone\n🔸 **Random Boss spots:** a different boss each time. Watch for **☠ Random Boss ☠ Arrives in**\n\n**🛡 Doing no damage? Read this!**\n🔸 Bosses have **up to 7 layers of armour** you must break before your hits hurt them\n🔸 This is **end-game content**. Bring your best gear and team up!\n\n**🆕 Also new**\n🔸 New players can't be hurt while picking a race, or for their first 15 min below level 5\n🔸 Banned skills (removed automatically): Predator, Gluttony, Creator, Fusionist, Infinity Prison, Cultivator, Pride, Jinchuriki, Crasher, Coalescence, Victorious Harbinger\n🔸 Direwolves toned down: 5 health, max 2 damage\n🔸 Nodes show **Hit 3x to gather** with a progress bar\n🔸 Fixed: Daemon/Angel races sent to the hub, Seris not giving the race scroll\n\nFull patch notes: https://overthronesmp.net/forums?c=server-updates

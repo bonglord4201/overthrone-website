@@ -9,15 +9,20 @@ A deep mine full of mobs, bosses and every kind of gathering node. No level need
 - **/caverns**: Your Caverns menu and trackers
 
 - **Mobs** (Kill for cash): Every mob you kill in the Caverns pays **cash** and gives **Combat XP**. Stronger mobs pay more.
-- **Bosses** (Up to $10,000): Bosses lurk in the deep. They hit hard, so bring your best gear and some friends. They pay the most.
+- **Bosses** (Up to $10,000): Bosses lurk in the deep. They have **up to 7 layers of armour** to break before they take damage, so bring your best gear and some friends. They pay the most.
 - **Nodes** (Every type): Mining, Gemology, Farming and Foraging nodes are all down here. Gathering one pays **cash** plus profession XP.
 
 - **Cash:** every kill and every node in the Caverns pays **$100 to $10,000**. Stronger mobs and higher-level nodes pay more.
 - **There''s a per-minute limit** on Caverns cash, so mob farms can''t print money.
 - **Trackers:** talk to the **Cavern Guide** NPC or type **/caverns** to see your kills, bosses slain, nodes gathered, cash earned, best payout and time spent.
 - **No level requirement:** anyone can go. Your profession level still has to be at least a node''s level to gather it.
+- **Boss spots:** each boss has its own spot with its **real name** floating above it. When it''s slain, a countdown shows when it''s back, and chat tells everyone when a boss is slain or returns.
+- **Random Boss spots:** some spots hold a different boss each time. The floating text shows **☠ Random Boss ☠ Arrives in** with a timer. Every boss on that spot shows up once before any repeats, and never the same one twice in a row.
+- **Mobs and bosses stay home:** they''re pulled back to their spot if they wander, so you can''t drag them out of the Caverns.
 
-Gathering works the same as everywhere else: hit a node **3 times**. It comes back after **1 minute**.
+**Doing no damage to a boss?** That''s not a bug. Caverns bosses have up to **7 layers of armour** that must be broken before your hits hurt them. This is **end-game content**: bring your best gear and team up.
+
+Gathering works the same as everywhere else: hit a node **3 times** (the floating text shows your progress). It comes back after **1 minute**.
 
 [Open the full Player Guide](/guide#caverns)', 'OVERTHRONE Staff', 1, 1, strftime('%Y-%m-%dT%H:%M:%SZ', 'now')
 FROM forum_categories

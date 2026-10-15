@@ -13,6 +13,7 @@
 //   /node list                                      all nodes within 64 blocks
 //   /node respawnall                                respawn every gathered node now
 //   /node holo                                      re-place all floating texts (if one went missing)
+//   /node fixall                                    fix every node: block back + fresh floating text
 //   /professions <player>                           someone else's levels
 //   /profession set <player> <profession> <level>   set a level (fixes / testing)
 //
@@ -121,13 +122,23 @@ var otIsNodeBlock = (block) => {
 
   // ---- floating text above a node
   const nodeName = (n) => n.name || n.state.replace(/\[.*$/, '').replace(/^.*:/, '').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
-  const holoText = (n, isDown, secsLeft) => {
+  // the gathering progress bar: green filled blocks, grey empty ones
+  const hitBar = (hits, size) => {
+    var per = Math.max(1, Math.floor(size / PROF_HITS_NEEDED)), done = hits * per, total = per * PROF_HITS_NEEDED
+    var rep = (c, k) => { var r = ''; for (var i = 0; i < k; i++) r += c; return r }
+    return [{ text: rep('█', done), color: 'green' }, { text: rep('█', total - done), color: 'dark_gray' }]
+  }
+  const holoText = (n, isDown, secsLeft, hits) => {
     var pr = PROFESSIONS[n.prof]
     var lines = [
       { text: nodeName(n) + ' Node', color: 'gold', bold: true },
       { text: '\n' + pr.icon + ' ' + pr.name + ' Lv ' + n.lvl, color: pr.color },
       isDown ? { text: '\nRespawns in ' + (secsLeft == null ? '...' : secsLeft + 's'), color: 'red' } : { text: '\n+' + n.xp + ' ' + pr.name + ' XP', color: 'yellow' },
     ]
+    if (!isDown && PROF_HITS_NEEDED > 1) {
+      if (hits > 0) lines = lines.concat([{ text: '\n' }], hitBar(hits, 12), [{ text: ' ' + hits + '/' + PROF_HITS_NEEDED, color: 'white', bold: true }])
+      else lines.push({ text: '\n⚒ Hit ' + PROF_HITS_NEEDED + 'x to gather', color: 'aqua' })
+    }
     // escaped for a single-quoted SNBT string: backslashes first (the line breaks are \n), then quotes
     return JSON.stringify([''].concat(lines)).replace(/\\/g, '\\\\').replace(/'/g, "\\'")
   }
@@ -140,9 +151,9 @@ var otIsNodeBlock = (block) => {
       `{Tags:["ot_node","${tag}"],billboard:"center",shadow:1b,background:0,line_width:300,` +
       `transformation:[0.7f,0f,0f,0f,0f,0.7f,0f,0f,0f,0f,0.7f,0f,0f,0f,0f,1f],text:'${holoText(n, isDown)}'}`)
   }
-  const setHoloText = (s, key, isDown, secsLeft) => {
+  const setHoloText = (s, key, isDown, secsLeft, hits) => {
     var n = otNodeCache[key]; if (!n) return
-    run(s, `execute in ${n.dim} run data merge entity @e[type=minecraft:text_display,tag=${tagOf(key)},limit=1] {text:'${holoText(n, isDown, secsLeft)}'}`)
+    run(s, `execute in ${n.dim} run data merge entity @e[type=minecraft:text_display,tag=${tagOf(key)},limit=1] {text:'${holoText(n, isDown, secsLeft, hits)}'}`)
   }
 
   // ---- gathered look and respawn
@@ -209,7 +220,7 @@ var otIsNodeBlock = (block) => {
   // Players gather a node by HITTING it once (left-click). The block is never really broken, so it also works inside
   // protected areas like the hub claim. Breaking it normally (where allowed) gathers it the same way.
   // Returns true when the click/break was on a node (the caller then cancels the normal action).
-  const lastHit = {}, hitProgress = {}
+  const lastHit = {}, hitProgress = {}, holoHitAt = {}
   const tryGather = (p, b, fromClick) => {
     var s = p.server
     load(s)
@@ -238,9 +249,12 @@ var otIsNodeBlock = (block) => {
       h.n++; h.at = now
       hitProgress[p.username] = h
       if (h.n < PROF_HITS_NEEDED) {
-        var bar = ''
-        for (var i = 0; i < PROF_HITS_NEEDED; i++) bar += i < h.n ? '■' : '□'
-        run(s, `title ${p.username} actionbar ${JSON.stringify({ text: pr.icon + ' Gathering ' + nodeName(n) + '... ' + bar, color: 'yellow' })}`)
+        run(s, `title ${p.username} actionbar ${JSON.stringify([{ text: pr.icon + ' Gathering ' + nodeName(n) + '  ', color: 'yellow' }].concat(hitBar(h.n, 18),
+          [{ text: '  ' + h.n + '/' + PROF_HITS_NEEDED + ' hits', color: 'white', bold: true }, { text: '  keep hitting!', color: 'gray' }]))}`)
+        // the node's floating text shows the bar too; it goes back to normal if nobody keeps hitting
+        setHoloText(s, key, false, null, h.n)
+        holoHitAt[key] = now
+        s.scheduleInTicks(110, () => { if (!down[key] && holoHitAt[key] == now) { delete holoHitAt[key]; setHoloText(s, key, false) } })
         run(s, `execute at ${p.username} run playsound minecraft:block.amethyst_block.hit player ${p.username} ~ ~ ~ 0.8 ${(0.8 + h.n * 0.2).toFixed(1)}`)
         run(s, `execute in ${n.dim} run particle minecraft:crit ${n.x + 0.5} ${n.y + 0.5} ${n.z + 0.5} 0.25 0.25 0.25 0.1 6`)
         return true
@@ -380,6 +394,24 @@ var otIsNodeBlock = (block) => {
         ks.forEach(k => respawn(s, k))
         save(s)
         say(ctx.source, P + '§aRespawned ' + ks.length + ' node(s).')
+        return 1
+      }))
+      .then(Commands.literal('fixall').executes(ctx => {
+        // every node: real block back (unless it's gathered and counting down) + a fresh floating text
+        var s = ctx.source.server, c = 0
+        load(s)
+        run(s, 'kill @e[type=minecraft:text_display,tag=ot_node]')
+        Object.keys(otNodeCache).forEach(k => {
+          var n = otNodeCache[k]
+          try {
+            if (!down[k]) run(s, `execute in ${n.dim} unless block ${n.x} ${n.y} ${n.z} ${n.state} run setblock ${n.x} ${n.y} ${n.z} ${n.state}`)
+            else run(s, `execute in ${n.dim} run setblock ${n.x} ${n.y} ${n.z} ${depletedState(n)}`)
+            placeHolo(s, k, !!down[k])
+            c++
+          } catch (e) { }
+        })
+        Object.keys(hitProgress).forEach(u => delete hitProgress[u])
+        say(ctx.source, P + '§aFixed ' + c + ' node(s): blocks and floating texts put back. §7Nodes in unloaded areas: run it again when you are near them.')
         return 1
       }))
       .then(Commands.literal('holo').executes(ctx => {

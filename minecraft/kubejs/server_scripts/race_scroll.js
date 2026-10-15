@@ -17,11 +17,22 @@ const NPC_RANGE = 8
 
 // Looks for an entity named Seris within NPC_RANGE blocks. Checked directly: on 1.21 a command's
 // result can't be read back from runCommandSilent, so a selector check would always fail.
+// /npcmenu styleall moves an NPC's name into a big floating title and clears its real name tag, keeping the
+// title in persistentData (ot_style_title), so both are checked.
+const isSeris = (e) => {
+  const clean = (t) => String(t || '').replace(/§./g, '').trim().toLowerCase()
+  let name = ''
+  try { name = clean(e.getName().getString()) } catch (x) { }
+  let title = ''
+  try { title = clean(e.persistentData.getString('ot_style_title')) } catch (x) { }
+  const want = NPC_NAME.toLowerCase()
+  return name === want || title === want || name.indexOf('seris') === 0 || title.indexOf('seris') === 0
+}
 const findSeris = (player, range) => {
   const box = player.getBoundingBox().inflate(range)
   const list = player.level.getEntities(player, box)
   for (let i = 0; i < list.size(); i++) {
-    if (String(list.get(i).getName().getString()) === NPC_NAME) return list.get(i)
+    if (isSeris(list.get(i))) return list.get(i)
   }
   return null
 }

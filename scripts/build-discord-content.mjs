@@ -216,7 +216,18 @@ channels.push({ key: "changelog", messages: pack([
   { title: "📋 OVERTHRONE: What's New", description: [
     "Here's everything we've added lately. Full patch notes are on the website: https://overthronesmp.net/forums?c=server-updates",
     "",
-    "**🆕 Update 1.4: The Caverns**",
+    "**🆕 Update 1.5: Caverns Bosses**",
+    "🔸 **Caverns bosses** guard their own spots: real name above them, a respawn countdown, and chat tells everyone when one is slain or returns",
+    "🔸 **Random Boss spots:** a different boss each time (about every 30 min). Watch for **☠ Random Boss ☠ Arrives in**",
+    "🔸 **Doing no damage?** Bosses have **up to 7 layers of armour** to break first. End-game content: gear up and team up",
+    "🔸 Bosses no longer have Nullification or Regeneration, so every boss can be beaten",
+    "🔸 **New players are protected:** no damage while picking your race, and for your first 15 min below level 5",
+    "🔸 **Banned skills** (removed automatically): Predator, Gluttony, Creator, Fusionist, Infinity Prison, Cultivator, Pride, Jinchuriki, Crasher, Coalescence, Victorious Harbinger",
+    "🔸 **Direwolves** toned down: 5 health and max 2 damage a hit",
+    "🔸 Nodes show **Hit 3x to gather** and a progress bar",
+    "🔸 Fixed: Daemon/Angel races pulled to the hub, Seris not giving the race scroll, skills breaking blocks in the hub",
+    "",
+    "**Update 1.4: The Caverns**",
     "🔸 **The Caverns** (`/warp caverns`): a deep mine full of mobs, bosses and every kind of node. No level needed",
     "🔸 Every mob kill and node gathered in the Caverns pays **$100 to $10,000**. Bosses pay the most",
     "🔸 New **Cavern Guide** NPC + `/caverns`: track your kills, bosses slain, nodes, cash earned, best payout and time spent",
@@ -359,7 +370,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/node remove` Back to a normal block (deletes its text) · `/node info` What node it is + respawn time",
     "Anywhere:",
     "`/node list` Nodes within 64 blocks with coordinates · `/node respawnall` Respawn every gathered node now",
-    "`/node holo` Re-place missing floating texts near you",
+    "`/node holo` Re-place missing floating texts near you · `/node fixall` Fix every node: real block back + fresh floating text (run near nodes in unloaded areas)",
     "Can't see a node to remove it? `/node list` → go there → `/node respawnall` → look at it → `/node remove`",
     "`/professions <player>` Someone's levels · `/profession set <player> <profession> <level>` Set a level",
     "Players: `/professions` (levels in chat) · `/professionmenu` (menu) · NPC: `/npcmenu spawn professions`",
@@ -422,11 +433,29 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/cavernadmin pos1` Stand at one corner (floor) · `/cavernadmin pos2` Opposite corner (ceiling), same world",
     "`/cavernadmin info` Shows the area + whether you're inside it",
     "`/cavernadmin stats <player>` Their kills, bosses, nodes, cash, best payout, time · `/cavernadmin reset <player>` Clear them",
+    "`/cavernadmin board [height]` Put a \"Doing no damage? 7 armour layers, end-game content\" warning board where you stand (default 2 up, place one per boss)",
+    "`/cavernadmin board flip` Turn boards within 8 blocks round · `/cavernadmin board remove` Remove boards within 8 blocks · `/cavernadmin board removeall` Remove them all",
     "NPC: `/npcmenu spawn caverns` (Cavern Guide) · Players: `/caverns` menu, `/warp caverns`",
     "Settings (cash min/max, per-minute cap, how much mobs/nodes pay) are at the top of `caverns.js`"
   ].join("\n") },
+  { title: "👹 Mob & boss spawns", description: [
+    "Place the mob with its spawn egg, **look at it**, then: `/mobspawn boss [minutes]` or `/mobspawn mob [minutes]` (default 60 min, e.g. `/mobspawn boss 1` to test). Same as `/setboss` / `/setmob`",
+    "It never despawns, gets pulled back if it wanders 32+ blocks, and respawns at the same spot after it's killed. Floating text shows its **real name** + a respawn countdown. Boss kills are announced",
+    "`/mobspawn list` Spawns in this world · `/mobspawn info` Nearest spawn details + puts its text back · `/mobspawn respawnall` Respawn every killed one now · `/mobspawn holo` Put floating texts back · `/mobspawn clearall` Remove EVERY spawn (mobs stay alive)",
+    "Bosses are **frozen** on their spot (can't walk/fly away, still attack); while dead, players within 48 blocks see a red bar counting down to their return. Mobs stay within 28 blocks of their spot (pulled back if further)",
+    "Look at its mob or stand within 16 blocks of its spot: `/mobspawn time <minutes>` Change its timer · `/mobspawn move` Move its spot (and the mob) to where you stand (a rotation moves all its bosses) · `/mobspawn remove` Stop tracking it (the mob stays alive) · `/mobspawn remove kill` Remove it + kill the mob",
+    "Bosses set with `/setboss` count as bosses for Caverns cash + trackers",
+    "Spawned bosses/mobs lose **Nullification** + **Regeneration** skills (so they can be killed). `/mobspawn skills` Look at a mob: its skills (red = removed). Change the words in `STRIP_SKILLS` at the top of `mob_spawns.js`"
+  ].join("\n") },
+  { title: "🔁 Boss rotations", description: [
+    "Several bosses take turns on one spot. One boss is out at a time; when it dies its name goes away, **Random Boss arrives in 29:59** counts down (floating text + red bar + chat), then the next boss appears. Every boss comes once per cycle in a random order",
+    "1. Place each boss with its egg close together and set each one: look at it → `/mobspawn boss`",
+    "2. Stand among them → `/mobspawn rotation` (30 min between bosses) or `/mobspawn rotation 45` for your own time",
+    "`/mobspawn rotation next` Skip the wait (next boss appears now) · `/mobspawn rotation off` Back to normal separate bosses",
+    "Add a boss later: place + `/mobspawn boss` it near the others, then run `/mobspawn rotation` again · `/mobspawn list` shows rotations (⟳)"
+  ].join("\n") },
   { title: "⚖️ Mob tweaks", description: [
-    "`mob_tweaks.js` sets a mob's health and caps how hard it hits. Now: **Barghest** 40 HP, max 5 damage per hit (fire still works)",
+    "`mob_tweaks.js` sets a mob's health and caps how hard it hits. Now: **Barghest** + 40 HP, **Direwolf** 5 HP + max 2 damage per hit (Barghest max 5) (fire still works)",
     "`/mobtweaks` Lists the tweaks + matching mobs within 64 blocks",
     "Check a mob's health: `/data get entity @e[type=tensura:barghest,limit=1,sort=nearest] Health`",
     "Add a mob: copy the line `{ match: 'barghest', hp: 40, damage: 5 },` in the file, change the name and numbers, then `/reload`"
@@ -436,7 +465,14 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/ftbchunks info` Who owns the chunk you're in · `/ftbchunks admin claim_as hub#0d6da155 <radius in blocks>` Claim more for the hub team (use Tab on the team name)",
     "`/ftbchunks admin bypass_protection` Toggle your bypass (on = you can build/use skills in claims). Test as a player with it OFF",
     "`/gamerule skillGriefing true` Keep this ON (it's server-wide: false stops skills everywhere)",
-    "`/safeexplosions` Explosions blocked in hub/RPG? · `/damagezones` Is this world a no-damage safe zone?"
+    "`/safeexplosions` Explosions blocked in hub/RPG? · `/damagezones` Is this world a no-damage safe zone?",
+    "New players: no damage while picking a race + first 15 min of play (below level 5). `/newbieshield <player> <minutes>` give/extend it (0 = end it)"
+  ].join("\n") },
+  { title: "🚫 Banned skills", description: [
+    "Banned: Predator, Gluttony, Creator, Fusionist, Infinity Prison, Cultivator, Pride, Jinchuriki, Crasher, Coalescence, Victorious Harbinger",
+    "They're out of the reincarnation rolls (`config/tensura/reincarnation_config.toml`) and `skill_blacklist.js` removes them from anyone who has one (on login + every 30 s)",
+    "`/skillban check <player>` What banned skills they have · `/skillban scan` Remove from everyone online now (red line = it couldn't remove one, with the reason)",
+    "`/skillban list` · `/skillban status` (remover ACTIVE?) · Edit the `BANNED` list at the top of the file to change it"
   ].join("\n") },
   { title: "🧬 Tensura", description: [
     "`/tensura edit forceevo <player> demonLord` Make someone a Demon Lord",
