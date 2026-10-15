@@ -41,7 +41,23 @@
   const save = (s) => s.persistentData.putString(STORE, JSON.stringify(spawns))
   const dimOf = (level) => { var k = level.dimension; if (typeof k === 'function') k = level.dimension(); return String(k && k.location ? k.location() : k) }
   const levelOf = (s, dim) => { var f = null; s.getAllLevels().forEach(l => { if (f == null && dimOf(l) == dim) f = l }); return f }
-  const loaded = (level, x, z) => { try { return level.getChunkSource().hasChunk(Math.floor(x) >> 4, Math.floor(z) >> 4) } catch (e) { return false } }
+  // is the spot's area loaded? (chunk check, or a player within 96 blocks, which always keeps it loaded)
+  const loaded = (level, x, z) => {
+    try { if (level.getChunkSource().hasChunk(Math.floor(x) >> 4, Math.floor(z) >> 4)) return true } catch (e) { }
+    var near = false
+    try { level.players().forEach(p => { var dx = p.getX() - x, dz = p.getZ() - z; if (dx * dx + dz * dz < 96 * 96) near = true }) } catch (e) { }
+    return near
+  }
+  // the spawn's live mob: by UUID, else by its spawn tag
+  const findMob = (level, id) => {
+    var sp = spawns[id], e = null
+    try { if (sp.uuid) e = level.getEntity(UUID.fromString(sp.uuid)) } catch (x) { }
+    if (e == null) {
+      try { level.getAllEntities().forEach(x => { try { if (e == null && x.getTags().contains(tagOf(id))) e = x } catch (y) { } }) } catch (x) { }
+      if (e != null) sp.uuid = uidOf(e)
+    }
+    return e
+  }
   const typeOf = (e) => { try { var s = e.getEncodeId(); return s ? String(s) : '' } catch (x) { return '' } }
   const tagOf = (id) => 'ot_sp_' + id
   const two = (n) => (n < 10 ? '0' : '') + n
@@ -161,7 +177,7 @@
         if (!sp.uuid || (sp.kind != 'boss' && !five)) return
         var level = levelOf(s, sp.dim)
         if (level == null || !loaded(level, sp.x, sp.z)) return
-        var e = level.getEntity(UUID.fromString(sp.uuid))
+        var e = findMob(level, id)
         if (e == null || !e.isAlive()) {
           missing[id] = (missing[id] || 0) + 1
           if (missing[id] >= (sp.kind == 'boss' ? 15 : 3)) { sp.down = now; sp.uuid = null; delete missing[id]; save(s) }   // vanished without dying: bring it back
@@ -183,7 +199,7 @@
       if (!e.getTags().contains('ot_spawn')) return
       var s = e.level.server; load(s)
       var u = uidOf(e), id = null
-      Object.keys(spawns).forEach(k => { if (spawns[k].uuid == u) id = k })
+      Object.keys(spawns).forEach(k => { if (spawns[k].uuid == u || e.getTags().contains(tagOf(k))) id = k })
       if (id == null) return
       var sp = spawns[id]
       sp.down = Date.now() + sp.mins * 60000; sp.uuid = null
@@ -267,9 +283,24 @@
       return 1
     }
     // stop tracking the nearest spawn; withMob = also kill its mob (if alive)
+    // when nothing is close enough: say where the spawns actually are
+    const whyNone = (ctx, p) => {
+      var dim = dimOf(p.level), all = Object.keys(load(p.server)), here = 0, best = null, bd = 1e18
+      all.forEach(k => {
+        var sp = spawns[k]
+        if (sp.dim != dim) return
+        here++
+        var dx = sp.x - p.getX(), dz = sp.z - p.getZ(), d = dx * dx + dz * dz
+        if (d < bd) { bd = d; best = sp }
+      })
+      say(ctx.source, '§cNo spawn within 16 blocks. §7Spawns saved: §f' + all.length + ' §7(§f' + here + '§7 in this world: §f' + dim + '§7)')
+      if (best) say(ctx.source, '§7Nearest: §f' + best.type + ' §7at §f' + Math.floor(best.x) + ' ' + Math.floor(best.y) + ' ' + Math.floor(best.z) + ' §7(' + Math.round(Math.sqrt(bd)) + ' blocks away)')
+      else if (all.length) all.forEach(k => say(ctx.source, '§8- ' + spawns[k].type + ' in ' + spawns[k].dim))
+      return 0
+    }
     const removeSpawn = (ctx, withMob) => {
       var p = ctx.source.playerOrException, s = p.server, id = nearest(p, 16)
-      if (id == null) { say(ctx.source, '§cNo spawn within 16 blocks. §7Stand near the spot where its name floats (/mobspawn list shows where).'); return 0 }
+      if (id == null) return whyNone(ctx, p)
       var sp = spawns[id]
       run(s, `execute in ${sp.dim} run kill @e[type=minecraft:text_display,tag=${tagOf(id)}]`)
       if (sp.uuid) {
@@ -297,14 +328,14 @@
         .then(Commands.literal('kill').executes(ctx => removeSpawn(ctx, true))))
       .then(Commands.literal('time').then(minsArg().executes(ctx => {
         var p = ctx.source.playerOrException, id = nearest(p, 16), m = Math.max(1, Arguments.INTEGER.getResult(ctx, 'minutes'))
-        if (id == null) { say(ctx.source, '§cNo spawn within 16 blocks.'); return 0 }
+        if (id == null) return whyNone(ctx, p)
         spawns[id].mins = m; save(p.server)
         say(ctx.source, P + '§a' + spawns[id].type + ' now respawns §f' + m + ' min§a after it dies.')
         return 1
       })))
       .then(Commands.literal('info').executes(ctx => {
         var p = ctx.source.playerOrException, id = nearest(p, 16)
-        if (id == null) { say(ctx.source, '§cNo spawn within 16 blocks. §7(/mobspawn list shows them all)'); return 0 }
+        if (id == null) return whyNone(ctx, p)
         var sp = spawns[id], alive = false
         try { var e = sp.uuid ? p.level.getEntity(UUID.fromString(sp.uuid)) : null; alive = e != null && e.isAlive() } catch (x) { }
         say(ctx.source, P + '§f' + sp.type + ' §7(' + sp.kind + ', ' + sp.mins + ' min) at §f' + Math.floor(sp.x) + ' ' + Math.floor(sp.y) + ' ' + Math.floor(sp.z))
@@ -316,12 +347,12 @@
       .then(Commands.literal('list').executes(ctx => {
         var p = ctx.source.playerOrException, dim = dimOf(p.level), now = Date.now(), n = 0
         Object.keys(load(p.server)).forEach(k => {
-          var sp = spawns[k]; if (sp.dim != dim) return
+          var sp = spawns[k]
           n++
           say(ctx.source, '§7- ' + (sp.kind == 'boss' ? '§c☠ BOSS ' : '§6MOB ') + '§f' + sp.type + ' §8at ' + Math.floor(sp.x) + ' ' + Math.floor(sp.y) + ' ' + Math.floor(sp.z) +
-            ' §7(' + sp.mins + ' min) ' + (sp.down ? '§cdead, back in ' + mmss(Math.max(0, Math.ceil((sp.down - now) / 1000))) : '§aalive'))
+            ' §7(' + sp.mins + ' min) ' + (sp.down ? '§cdead, back in ' + mmss(Math.max(0, Math.ceil((sp.down - now) / 1000))) : '§aalive') + (sp.dim != dim ? ' §8(' + sp.dim + ')' : ''))
         })
-        if (!n) say(ctx.source, '§7No spawns in this world yet.')
+        if (!n) say(ctx.source, '§7No spawns saved yet. §8(your world: ' + dim + ')')
         return 1
       }))
       .then(Commands.literal('respawnall').executes(ctx => {
