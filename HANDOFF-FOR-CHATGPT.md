@@ -1,0 +1,233 @@
+# OVERTHRONE SMP: full handoff (read all of this before changing anything)
+
+Last updated: 2026-10-17. Written by Claude (Claude Code) for whoever works on the project next.
+The owner is **__SK1TZ__**. They are not a coder: explain things simply, step by step, and give **complete
+files** to drag and drop (not snippets). They upload files to the server themselves through the
+MintServers file manager. Nobody can upload for them.
+
+---------------------------------------------------------------------------------------------------
+
+## 0. The owner's rules (follow these exactly)
+
+1. **Never send code that breaks or conflicts with the server.** If unsure, ask them for the file or the log first.
+2. **Do not guess mechanics, APIs, event names, skill IDs or config syntax.** Check or ask.
+3. **Every new staff command must also be added to the Discord staff commands**
+   (`scripts/build-discord-content.mjs` → run `node scripts/build-discord-content.mjs` → creates `discord-bot/content.json`).
+4. Secrets: no passwords or tokens in JavaScript or frontend code. The Discord bot token and RCON password stay in
+   `discord-bot/.env` (never committed). No Tebex secret keys in public code. Never repeat secrets from screenshots.
+5. Don't say something is tested unless it really was. Tell them which files changed, where each one goes, and
+   what to type afterwards (`/reload` or restart).
+6. They want to save credits: batch questions and ask for **everything you need in one message**.
+
+---------------------------------------------------------------------------------------------------
+
+## 1. Server environment
+
+- Minecraft **1.21.1**, **NeoForge 21.1.251**, Java 21, hosted on **MintServers**.
+- **KubeJS 2101.7.2-build.377** (with Rhino). All custom gameplay code is KubeJS server scripts.
+- Big mods: **Tensura: Reincarnated 2.0.1.3**, Tensura: Mysticism, Tensura N.E.B. (Not Enough Bosses),
+  TensuraKumodesu, SlimeThroneExtras, Tensura-Leveling, **ManasCore 4.0.0.2** (skills/races API),
+  **SoloCraft: Reawakening / Solo Leveling (SLR) 1.3.3**, Epic Fight, Iron's Spells, Apotheosis,
+  Cataclysm, Mowzie's Mobs, Aether, **Multiworld** (worlds), **NeoEssentials** (warps, kits, eco, placeholders),
+  **FTB Chunks / FTB Teams / FTB Ranks / FTB Quests**, **Flan** (player land claims), Open Parties and Claims,
+  **TenSura Compat: FTB** and **TenSura Compat: OPAC** (stop skills griefing claimed land), Easy NPC,
+  Lightman's Currency, EconomyCraft, Tebex, Votifier, Sophisticated Backpacks, Curios, Accessories, Waystones,
+  Lootr, LootJS, WorldEdit, Chunky, spark, ModernFix, Lithium, FerriteCore.
+- Server address: `overthronesmp.net`. Website: https://overthronesmp.net. Store: https://overthronesmp.tebex.store.
+  Discord: https://discord.gg/overthronesmp.
+
+### Worlds (Multiworld ids)
+
+| What players call it | Real world id | Notes |
+|---|---|---|
+| Hub | `multiworld:hub` | Safe: no damage, no block breaking, no explosions. Spawn is set by `hub_spawn.js`. |
+| RPG World | `multiworld:rpg` | Safe city (no damage, build-protected, has a world border), **except the Caverns area**, which is a combat zone. |
+| **SMP** (`/smp`) | **`multiworld:wild`** | The world is still called `wild` on purpose: renaming a Multiworld world creates a new empty world. No claims, raiding allowed. **The only world where players lose their items on death.** |
+| Wild (`/wild`) | `minecraft:overworld` | Random teleport into the overworld. |
+| Survival / Resource | `multiworld:survival`, `multiworld:resource` | |
+
+Config for worlds and warps: `config/serversetup/worlds.json` and `config/serversetup/coordinates.json`.
+
+---------------------------------------------------------------------------------------------------
+
+## 2. KubeJS rules on THIS server (learned the hard way)
+
+- **All server scripts share one global scope.** Top-level `const`/`let` names clash between files
+  (e.g. two files with `const Events` = "redeclaration" error). **Wrap every script in `(function () { ... })()`**
+  and give shared helpers unique names (caverns.js deliberately exposes `otCavernsArea`, `otCavernsLoad`,
+  `otInCaverns`, `otCavernsStats`, `otCavernsPay`; professions.js calls `otOnNodeGathered`).
+- `global` is read-only: you can't assign to it.
+- `getClass`, `java.lang.Class` and reflection are **blocked** by KubeJS's class filter.
+- UUIDs: `getStringUUID()` / `getUUID()` don't work. Use `e.getStringUuid()` (fallbacks: `e.getUuid()`, `e.uuid`).
+- `entity.getType()` returns a String in KubeJS. For the real id use `e.getEncodeId()` (e.g. `"tensura:orc"`).
+  The name translation key is `'entity.' + id.replace(':', '.')`.
+- **Never put a `//` comment in the middle of a line that has more code after it.** It swallowed code once
+  ("undefined" spawns).
+- `/reload` re-runs scripts. `ServerEvents.loaded` only fires on a real server start, so state loaded there is
+  empty after `/reload`. Load it lazily (see `otCavernsLoad`).
+- **NEVER add KubeJS listeners to ManasCore/Tensura/Architectury events** (UNLOCK_SKILL, skill learn/use, etc.).
+  It **crashed the server** (Architectury got a null EventResult). Only READ and FORGET skills via
+  `Java.loadClass('io.github.manasmods.manascore.skill.api.SkillAPI').getSkillsFrom(entity)` →
+  `.getLearnedSkills()`, `.getSkill(rl)`, `.forgetSkill(rl)`.
+- The NeoForge damage event works fine:
+  `NativeEvents.onEvent('net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent', e => ...)`
+  (`e.getSource()`, `e.getAmount()`, `e.setAmount()`, `e.setCanceled(true)`).
+- Floating text = vanilla `text_display` entities summoned with `runCommandSilent`. Use `translate` components
+  so mod names show correctly. SNBT escaping:
+  `JSON.stringify(x).replace(/\\/g,'\\\\').replace(/'/g,"\\'")` inside `text:'...'`.
+- Boss bars via commands: `bossbar add/set/remove` + `execute positioned ... players @a[distance=..48]`.
+- **Mobs do not target invulnerable players** (vanilla `canBeSeenAsEnemy`). `damage_zones.js` uses the player's
+  invulnerable flag for safe zones, so in safe zones mobs ignore players. This is why the Caverns are carved out.
+
+---------------------------------------------------------------------------------------------------
+
+## 3. Every KubeJS server script (`kubejs/server_scripts/`) and what it does
+
+Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server_scripts/`.
+
+| File | What it does | Main commands |
+|---|---|---|
+| `afkzone.js` | AFK room: 30-min boss-bar timer, 1 AFK Shard per 30 min, 6 shards = AFK Key. Info board. | `/afkshard`, `/afkzone pos1/pos2/board/test` |
+| `anticheat.js` | Mod-friendly anti-cheat (x-ray ratio alerts etc.; never punishes modded flight/reach). | `/ac ...` |
+| `caverns.js` | **The Caverns**: inside the area set with pos1/pos2, every mob kill and node pays $100–$10,000 (`eco give`), 50k/min cap per player. Trackers. **Crate keys**: each kill 0.5% (bosses placed with /setboss 5%) gives a random Legendary/Mythic/Cosmetic key, announced in chat. Warning boards. | `/cavernadmin pos1/pos2/info/stats/reset/board [height]/board flip/remove/removeall`, players `/caverns` |
+| `claims.js` | Flan claim helper: gives a golden-shovel claim tool and how-to. | `/claimtool`, `/claiminfo` |
+| `clearlag.js` | Clears ground items hourly with countdown. | `/clearlag now/status` |
+| `crate_fx.js` | Particle effects around crates. | `/cratefx ...` |
+| `crates.js` | OG-style crates (vote, armor, weapon, legendary, mythic, event, spawner, afk, cosmetic, rune...). Keys are real items. Rewards are edited in-game. | `/crate create/remove/list/edit/hologram/infoboard`, `/crate key give/take <player> <crate> <n>` |
+| `damage_debug.js` | `/whyhurt`: tells you what damages you (type, attacker, amount). Read-only. | `/whyhurt` |
+| `damage_zones.js` | Safe worlds = hub + RPG world, using the invulnerable flag. **The Caverns area is NOT safe** (combat zone). New player shield: no damage while picking a race, then 15 min while below level 5. | `/damagezones`, `/newbieshield <player> <minutes>` |
+| `dmg_debug.js` | Older damage debugger (hurts you 1 hp and reports where damage is blocked). | `/dmgdebug` |
+| `dump_item_ids.js` | One-time helper that dumps all item ids. | `/dumpitems` |
+| `gate_waves.js` | Solo Leveling gates: keeps 3 gates per hour. | `/gatewave ...` |
+| `holograms.js` | Generic floating text. | `/holo place/...` |
+| `hub_npcs.js` | Hub NPC text + clickable links. | `/links`, `/npcfix apply` |
+| `hub_spawn.js` | Sends new players to the hub. After race pick, only if they're still at the overworld spawn (so Daemon/Angel races that start in their own world aren't pulled back). | `/hubspawn ...` |
+| `keep_inventory.js` | keepInventory on everywhere; **in `multiworld:wild` (SMP) items drop on death** (hotbar, armour, offhand). XP and Curios/Accessories slots are not dropped. | `/keepinv` |
+| `kit_cooldown.js` | Enforces NeoEssentials kit cooldowns. | `/kitcd check/reset` |
+| `leveling.js` | Player levels 1–5000 (XP from quests, mobs, ores, daily login). Mirrored to scoreboard objectives for the HUD. | `/level ...` |
+| `mob_infighting.js` | **Crash guard**: in the RPG world, wild mobs can't damage other mobs (see section 5). | `/mobinfighting` |
+| `mob_spawns.js` | **Fixed mob/boss spawns** (see section 4). | `/setmob`, `/setboss`, `/mobspawn ...` |
+| `mob_tweaks.js` | Per-mob HP and max hit: barghest 40 HP / 5 dmg, direwolf 5 HP / 2 dmg (total max health, accounting for Tensura bonuses, re-checked every 5 s). | `/mobtweaks` |
+| `npc_menus.js` | NPCs that open chest menus (Throne Shop, Kit Selector, Level Guide, Links, Claims, SMP, Professions, Cosmetics, Crates, **Caverns** "Cavern Guide"), command NPCs, name plates. | `/npcmenu spawn <type>`, `/npcmenu spawncmd ...` |
+| `overthrone_quests.js` | Hunter Association quest board (100 quests). | `/quest`, `/quest claim` |
+| `professions.js` | Professions (Mining, Gemology, Farming, Foraging, Combat 1–100) and gathering **nodes**: hit 3x, progress bar on the floating text and actionbar, respawn after 1 min, no item drops. | `/node create/remove/fixall/...`, `/professions` |
+| `race_scroll.js` | NPC Seris gives a Tensura Race Reset Scroll every 12 h. Finds Seris by name OR `persistentData ot_style_title` (styleall clears names). | `/racescroll ...` |
+| `rpg_border.js` | World border for the RPG world. | `/rpgborder` |
+| `rpg_protect.js` | No breaking/placing/buckets/fire in the RPG world except ops or tag `rpg_builder`. | |
+| `safe_explosions.js` | Cancels explosions in hub + RPG world. | `/safeexplosions` |
+| `skill_blacklist.js` | **Banned skills** removed from players on login and every 30 s: predator, gluttony, creator, fusionist, infinity_prison, cultivator, pride, jinchuriki, crasher, coalescence, victorious_harbinger. | `/skillban list/status/check/scan` |
+| `smp.js` | The SMP world (`multiworld:wild`) command and info. | `/smp` |
+| `vote_links.js` | `/vote` clickable links (keep it: the vote menu mod needs /vote to exist). | `/vote` |
+| `welcome.js` | Join message + rotating announcements. | `/announce`, `/announce welcome` |
+| `serversetup/scoreboard.js` | Per-player sidebar using NeoEssentials placeholders from `config/serversetup/scoreboard.json`. Extra lines: hub = "ONLINE", RPG = "Use /wild to leave spawn", **every other world = "Use /hub to return to spawn"**. | `/sidebar`, `/sidebar test/where` |
+
+**The server has more files in `kubejs/server_scripts/serversetup/` that are NOT in this repo**
+(e.g. `worlddamage.js` and its config `config/serversetup/world_damage.json` with
+`protected_worlds: ["multiworld:hub","multiworld:rpg"]`, plus the helpers `ssReadJson`, `ssDimId`,
+`ssLegacyToJson`). Ask the owner to upload any of them before editing anything that touches them.
+
+---------------------------------------------------------------------------------------------------
+
+## 4. The Caverns + mob/boss spawn system (`mob_spawns.js`)
+
+- Staff place a mob with a spawn egg, look at it and run `/setmob` or `/setboss` (aliases: `/mobspawn mob|boss [minutes]`).
+- Saved in server persistentData `ot_spawns` (rotations in `ot_spawn_groups`). Each spawn: dim, x/y/z, type
+  (`getEncodeId`), name key, kind (mob/boss), minutes, uuid, down (death time).
+- The mob is never renamed. A `text_display` above it shows its real name (gold for mobs, red with skulls for
+  bosses), and a respawn countdown when dead. Dead bosses show a red countdown bossbar to players within 48 blocks.
+  `SHOW_ALIVE_BAR = false` (the owner doesn't want bars on living bosses).
+- Mobs are pulled back if they go more than `LEASH = 28` blocks from their spot.
+- **Bosses (changed 2026-10-17):** `FREEZE_BOSSES = false`, so bosses chase players but are put back if they go more
+  than `BOSS_ROAM = 10` blocks. Bosses frozen by the old version keep speed 0 until respawned
+  (`/mobspawn respawnall`). Boss buff only for /setboss bosses: `BOSS_HP_BONUS = 1.0` (+100% max health) and
+  `BOSS_DAMAGE_BONUS = 0.5` (+50% attack damage). Applied once with fixed attribute modifier ids
+  `overthrone:boss_hp` / `overthrone:boss_damage` (tag `ot_buffed`).
+- `STRIP_SKILLS = ['nullification','regeneration']`: those Tensura skills are removed from spawned mobs (on adopt
+  and every 5 s) because they made bosses unkillable.
+- **Boss rotations:** `/mobspawn rotation [minutes]` (default 30) turns all boss spawns within 32 blocks into
+  one rotation. One boss at a time, shuffled cycle, never the same twice in a row. The text shows
+  "☠ Random Boss ☠ Arrives in mm:ss". `/mobspawn rotation next` and `/mobspawn rotation off`.
+- Other commands: `remove`, `remove kill`, `time`, `move` (moves a spot; in a rotation it moves all its bosses),
+  `info` (debug line), `list`, `respawnall`, `holo`, `clearall`, `skills`.
+- Tracking (changed 2026-10-17): a spawn's mob is found by UUID, then by its tag `ot_sp_<id>`, then by taking
+  over an **untagged mob of the same type near the spot** (some mod bosses replace themselves on phase change).
+  "Loaded" now uses `ServerLevel.isPositionEntityTicking(BlockPos)` (falls back to the old chunk/player check),
+  so a boss whose chunk loaded before its entities isn't counted as missing and spawned twice.
+  A mob missing for 15 s while the area is loaded counts as gone and respawns.
+- Bosses in the Caverns really have **up to 7 armour layers** (a mod mechanic) that must be broken before they
+  take damage. That's why "no damage" was reported, not a bug. The warning boards (`/cavernadmin board`) explain it.
+
+---------------------------------------------------------------------------------------------------
+
+## 5. Known mod bugs and their workarounds
+
+- **Solo Leveling (SLR 1.3.3) crash:** `XPGainTShadowProcedure.java:53` NullPointerException ("Ticking entity")
+  when a mob kills another mob (e.g. Tensura Orc kills Goblin in the RPG world). Workaround: `mob_infighting.js`.
+  Don't clear those mobs with `/kill` (it might trigger the same code). A fixed SLR version would be the real fix.
+- **Tensura skill events:** never hook them (crash, see section 2).
+- **Skills griefing the hub/RPG world:** fixed by the **TenSura Compat: FTB** mod (server-side only,
+  `abilityGrief=false`) plus FTB Chunks claims owned by team `hub#0d6da155` over the hub and RPG world.
+  Keep `/gamerule skillGriefing true` (false disables skills everywhere).
+- "Failed to decode packet clientbound/minecraft:custom_payload" kicks = Solo Leveling bug. Fully restart the game.
+- The server host is short on RAM/swap (seen in crash reports). Lag can come from that.
+
+---------------------------------------------------------------------------------------------------
+
+## 6. Tensura config edits
+
+- `minecraft/config-edits/reincarnation_config.toml` = full replacement for `config/tensura/reincarnation_config.toml`,
+  with the banned skills taken out of `startingSkills` and `secondSkills`.
+- **Tensura already gives every player ONE random unique skill when they first pick their race**
+  (`skillNumber = 1`, pool = `startingSkills`). **Don't build a second "random skill on join" system**,
+  or players get two.
+
+---------------------------------------------------------------------------------------------------
+
+## 7. Website (this repo, `bonglord4201/overthrone-website`)
+
+- Cloudflare Worker + static assets (`public/`) + D1 database `overthrone-db`. It deploys from GitHub `main`
+  (`npm run deploy` = `wrangler deploy` + D1 migrations). Admin panel `/admin` (Cloudflare Access).
+- Generated content: `scripts/guide-data.mjs` (Player Guide sections + update posts) → `node scripts/build-pages.mjs`
+  → writes `public/guide.html`, `public/rules.html` and the migrations. Never hand-edit generated files.
+- Update posts so far: 1.3 (`0009`), 1.4 Caverns (`0010`), 1.5 Caverns Bosses (`0011`: announcements,
+  server-updates, changelog posts, and it refreshes "The Caverns Guide" post only if unedited). New updates =
+  new `UPDATEXX_POSTS` in guide-data.mjs + a new numbered migration in build-pages.mjs. Never edit an applied migration.
+- Work branch used by Claude: `claude/trusting-hawking-0enn7u`. PR #16 (Update 1.5) was opened. Merging to `main`
+  deploys the site.
+- Other docs in the repo: `PROJECT-STATUS.md` (website/Tebex status), `tebex-storefront/`, `marketing/`, `notes/`.
+
+## 8. Discord bot (`discord-bot/`)
+
+- Node bot. `content.json` is generated by `node scripts/build-discord-content.mjs` from
+  `scripts/build-discord-content.mjs` (channels: welcome, link, rules, links, faq, commands, mods, quests, bosses,
+  races, changelog, staffcommands).
+- To update Discord: upload the new `content.json` to the bot, then in Discord run `/server content only:<channel>`
+  (e.g. `changelog`) or `/server staffcommands` for the staff channel.
+- Announcements: `/announce channel:#announcements title:... message:... ping:...` (`\n` = new line).
+  Ready text for Update 1.5: `discord-bot/announcement-update-1-5.txt`.
+- Staff command sections already documented: Crates, Caverns (+ board + key drops), Mob & boss spawns, Boss
+  rotations, Mob tweaks, Hub protection & claims, Banned skills, `/whyhurt`, `/mobinfighting`, `/keepinv`.
+
+---------------------------------------------------------------------------------------------------
+
+## 9. Open items (as of 2026-10-17)
+
+1. **Upload and test** the 2026-10-17 changes: `damage_zones.js` (Caverns combat zone works right after `/reload`)
+   and `mob_spawns.js` (bosses chase + buff + duplicate fix). Then run `/mobspawn respawnall`. Test:
+   `/damagezones` = DANGER inside the Caverns, SAFE elsewhere in the RPG world. Mobs and bosses attack in the Caverns.
+2. `worlddamage.js` + `world_damage.json` (server-only, not in the repo) may also cancel damage in the RPG world.
+   If players still can't be hurt in the Caverns, get those files and add the Caverns exception there too
+   (use `otInCaverns(level, x, y, z)` from caverns.js; call `otCavernsLoad(server)` first if `otCavernsArea` is null).
+3. **Playtime on the sidebar looks reset** (it showed hours, then 55m). It comes from a NeoEssentials placeholder in
+   `config/serversetup/scoreboard.json`. Get that file to see which placeholder it uses (session vs total).
+4. "Display entity Not a string" log error and names shown twice: needs `logs/latest.log` from when it happens.
+   It isn't from any of Claude's scripts as far as checked.
+5. The "Supermassive Slime" boss may still be unkillable (unconfirmed).
+
+## 10. Already decided (don't undo)
+
+- Items drop on death only in `multiworld:wild` (SMP). The owner has confirmed this works.
+- Bosses don't show a health bar while alive. Only the dead-boss countdown bar shows.
+- Mobs roam 28 blocks. Bosses 10 blocks.
+- Don't change player classes or class skills.
+- Banned skills list (section 3) is final unless the owner changes it.
