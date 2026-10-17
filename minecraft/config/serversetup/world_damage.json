@@ -1,0 +1,16 @@
+{
+  "_help": [
+    "Worlds where players take NO damage (kubejs/server_scripts/serversetup/worlddamage.js).",
+    "protected_worlds : world ids, as /worlddamage shows them in game (or the F3 screen). Every world that is NOT in",
+    "                   this list (Survival, Wild, Resource, ...) has normal damage.",
+    "                   Worlds on this server: multiworld:hub, multiworld:rpg, multiworld:survival, multiworld:wild,",
+    "                   multiworld:resource, minecraft:overworld.",
+    "allow_void_and_kill : true = falling into the void and /kill still work in protected worlds (nobody falls forever).",
+    "enabled          : false = no world is protected (normal damage everywhere).",
+    "Only players are protected. Mobs and NPCs are not affected by this file.",
+    "After editing: /reload, or /worlddamage reload (staff)."
+  ],
+  "enabled": true,
+  "protected_worlds": ["multiworld:hub", "multiworld:rpg"],
+  "allow_void_and_kill": true
+}
