@@ -15,6 +15,7 @@
 //   - HUB: the title is an animated OVERTHRONE SMP that sweeps black / red, and an
 //     "Online: <players>" line is added above the last line.
 //   - RPG world: a "Use /wild to leave spawn." line is added above the last line.
+//   - Every other world (wild, SMP, nether, end...): a "Use /hub to return to spawn." line.
 //   - {online} and {max_players} can be used in any line of scoreboard.json.
 // ============================================================================
 
@@ -26,6 +27,7 @@ const SB_HUB_WORLDS = ['hub']
 const SB_RPG_WORLDS = ['rpg', 'rpg_world', 'rpgworld', 'rpg_smp']
 const SB_HUB_EXTRA = ['', '&f&lONLINE: &a&l{online}']
 const SB_RPG_EXTRA = ['', '&fUse &6/wild &fto', '&fleave spawn.']
+const SB_OTHER_EXTRA = ['', '&fUse &6/hub &fto', '&freturn to spawn.']   // every other world (wild, SMP, nether, end...)
 const SB_TITLE_EVERY = 3   // ticks between frames of the animated hub title
 
 const SbScoreboard = Java.loadClass('net.minecraft.world.scores.Scoreboard')
@@ -78,7 +80,7 @@ function sbKind(player) {
 // the lines for this player's world: the normal lines, with the extra lines put above the last one
 function sbLinesFor(player) {
   let kind = sbKind(player)
-  let extra = kind == 'hub' ? SB_HUB_EXTRA : kind == 'rpg' ? SB_RPG_EXTRA : []
+  let extra = kind == 'hub' ? SB_HUB_EXTRA : kind == 'rpg' ? SB_RPG_EXTRA : SB_OTHER_EXTRA
   if (extra.length == 0 || sbCfg.lines.length == 0) return sbCfg.lines
   let base = sbCfg.lines
   let out = base.slice(0, base.length - 1).concat(extra).concat([base[base.length - 1]])

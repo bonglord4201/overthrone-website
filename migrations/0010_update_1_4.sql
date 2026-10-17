@@ -18,7 +18,9 @@ A deep mine full of mobs, bosses and every kind of gathering node. No level need
 - **No level requirement:** anyone can go. Your profession level still has to be at least a node''s level to gather it.
 - **Boss spots:** each boss has its own spot with its **real name** floating above it. When it''s slain, a countdown shows when it''s back, and chat tells everyone when a boss is slain or returns.
 - **Random Boss spots:** some spots hold a different boss each time. The floating text shows **☠ Random Boss ☠ Arrives in** with a timer. Every boss on that spot shows up once before any repeats, and never the same one twice in a row.
-- **Mobs and bosses stay home:** they''re pulled back to their spot if they wander, so you can''t drag them out of the Caverns.
+- **Mobs and bosses stay home:** bosses chase you, but only so far: they (and the mobs) are pulled back to their spot if they wander, so you can''t drag them out of the Caverns.
+- **You can get hurt here:** the rest of the RPG world is safe, but the Caverns are a combat zone. Mobs and bosses will hunt you down.
+- **Crate keys:** every kill in the Caverns has a **0.5%** chance to give you a **Legendary, Mythic or Cosmetic Key**. Bosses: **5%**!
 
 **Doing no damage to a boss?** That''s not a bug. Caverns bosses have up to **7 layers of armour** that must be broken before your hits hurt them. This is **end-game content**: bring your best gear and team up.
 

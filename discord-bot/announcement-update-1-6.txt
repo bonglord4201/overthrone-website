@@ -1,0 +1,8 @@
+DISCORD ANNOUNCEMENT - Update 1.6
+In Discord type /announce and fill in:
+  channel:  #announcements
+  title:    Update 1.6 is LIVE: Real Caverns Combat, Crate Keys & Keep Inventory
+  ping:     @everyone
+  message:  copy EVERYTHING on the line below (it's one long line; \n makes the new lines)
+
+**The Caverns are now a real fight!** ⚔️ Type **/warp caverns** to jump in.\n\n**⚔️ Real Caverns Combat**\n🔸 The Caverns are now a **combat zone**: mobs and bosses can hunt you down and hurt you there\n🔸 The **hub** and the **rest of the RPG world** are still safe\n\n**☠️ Tougher Bosses**\n🔸 Caverns bosses now **chase you** and have **more health and damage**\n🔸 They still have **up to 7 layers of armour** to break. Gear up and team up!\n\n**🔑 Crate Keys**\n🔸 Every kill in the Caverns has a **0.5%** chance to give you a **Legendary, Mythic or Cosmetic Key**\n🔸 Caverns **bosses: 5%**!\n\n**🎒 Keep Your Items**\n🔸 You **keep your inventory** when you die, in every world **except the SMP world** (/smp)\n\n**✨ Unique Skills**\n🔸 If your unique skill was **banned**, you now get a **new random unique skill**. Lost yours before? You'll get one next time you log in\n\n**🛠️ Fixes**\n🔸 Fixed a server crash, Caverns mobs not respawning or showing twice, and mobs ignoring players\n🔸 Your sidebar now shows **Use /hub** to get back to spawn\n\nFull patch notes: https://overthronesmp.net/forums?c=server-updates

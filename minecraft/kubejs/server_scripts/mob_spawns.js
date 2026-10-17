@@ -1,7 +1,8 @@
 // OVERTHRONE - fixed mob & boss spawns (made for the Caverns, works in any world).
 // Place a mob with its spawn egg, look at it and type /setmob or /setboss. From then on:
 //   - it never despawns and is pulled back if it wanders too far from its spot (mobs: 28 blocks)
-//   - bosses are frozen on their spot (can't walk/fly away, still attack)
+//   - bosses can move and chase players, but only within BOSS_ROAM blocks of their spot (then they're put back)
+//   - inside the Caverns, bosses get extra health and attack damage (BOSS_HP_BONUS / BOSS_DAMAGE_BONUS, or /mobspawn power)
 //   - while a boss is dead, players nearby see a red bar counting down to its return
 //   - when it's killed, a floating timer above its spot counts down and the same mob type respawns there
 //     (default after 60 minutes)
@@ -37,14 +38,26 @@
 //                                 next boss appears. Each boss comes once per cycle, random order.
 //   /mobspawn rotation next       skip the wait: the next boss appears now
 //   /mobspawn rotation off        back to normal separate boss spawns
+//   /mobspawn power                       show the strength of the rotation near you (or the nearest boss)
+//   /mobspawn power <health%> <damage%>   make them stronger/weaker (Caverns only), e.g. 200 100 = triple health, double damage
+//   /mobspawn power reset                 back to the default (BOSS_HP_BONUS / BOSS_DAMAGE_BONUS)
 
 (function () {
   const uidOf = (e) => { try { return String(e.getStringUuid()) } catch (x) { try { return String(e.getUuid()) } catch (y) { return String(e.uuid) } } }   // KubeJS renames getUUID
   const STORE = 'ot_spawns'
   const DEFAULT_MINUTES = 60
   const LEASH = 28            // blocks a mob may wander from its spot (any direction) before it's pulled back
-  const FREEZE_BOSSES = true  // bosses can't walk or fly away: they stay on their spot and fight from there
-  const BOSS_LEASH = 3        // a boss pushed further than this from its spot is put back
+  // Bosses used to be frozen in place (speed 0): that made them easy, they couldn't chase anyone.
+  // Now they move and chase, but are put back if they go more than BOSS_ROAM blocks from their spot.
+  // (true = the old frozen behaviour. Bosses frozen before this change keep speed 0 until respawned: /mobspawn respawnall)
+  const FREEZE_BOSSES = false
+  const BOSS_LEASH = 3        // frozen bosses only: pushed further than this from the spot = put back
+  const BOSS_ROAM = 10        // moving bosses: how far from their spot they may chase before being put back
+  // Boss strength (only bosses made with /setboss that are INSIDE the Caverns area; nothing else on the server changes).
+  // Percent added on top of the boss's own values: 100 = double, 50 = +50%, 0 = normal, -50 = half.
+  // These are the defaults; change a rotation (or one boss) in game with /mobspawn power <health%> <damage%>.
+  const BOSS_HP_BONUS = 100
+  const BOSS_DAMAGE_BONUS = 50
   const BAR_RANGE = 48        // players this close to a dead boss's spot see its respawn timer bar
   const SHOW_ALIVE_BAR = false // true = bosses also show a health bar while alive (off: many bosses would clog the screen)
   const ROTATION_MINUTES = 30 // default wait between bosses in a rotation
@@ -74,7 +87,12 @@
   const dimOf = (level) => { var k = level.dimension; if (typeof k === 'function') k = level.dimension(); return String(k && k.location ? k.location() : k) }
   const levelOf = (s, dim) => { var f = null; s.getAllLevels().forEach(l => { if (f == null && dimOf(l) == dim) f = l }); return f }
   // is the spot's area loaded? (chunk check, or a player within 96 blocks, which always keeps it loaded)
-  const loaded = (level, x, z) => {
+  var BlockPos = null
+  try { BlockPos = Java.loadClass('net.minecraft.core.BlockPos') } catch (x) { }
+  const loaded = (level, x, z, y) => {
+    // best check: are the entities at this spot loaded and ticking? (a chunk can be loaded before its entities are,
+    // which made a living boss look "missing" and get spawned a second time)
+    if (BlockPos != null) { try { return !!level.isPositionEntityTicking(new BlockPos(Math.floor(x), Math.floor(y == null ? 64 : y), Math.floor(z))) } catch (e) { } }
     try { if (level.getChunkSource().hasChunk(Math.floor(x) >> 4, Math.floor(z) >> 4)) return true } catch (e) { }
     var near = false
     try { level.players().forEach(p => { var dx = p.getX() - x, dz = p.getZ() - z; if (dx * dx + dz * dz < 96 * 96) near = true }) } catch (e) { }
@@ -101,6 +119,16 @@
     if (!isMobOf(e, sp)) e = null
     if (e == null) {
       try { level.getAllEntities().forEach(x => { try { if (e == null && isMobOf(x, sp) && x.getTags().contains(tagOf(id))) e = x } catch (y) { } }) } catch (x) { }
+      // some mod bosses replace themselves with a new entity (phase change): same type, new UUID, no tags.
+      // Take over an untagged living mob of the same type near the spot instead of spawning a second one.
+      if (e == null) {
+        var r = (sp.kind == 'boss' ? BOSS_ROAM : LEASH) + 8
+        try { level.getAllEntities().forEach(x => { try {
+          if (e != null || !isMobOf(x, sp) || !x.isAlive() || x.getTags().contains('ot_spawn')) return
+          var dx = x.getX() - sp.x, dy = x.getY() - sp.y, dz = x.getZ() - sp.z
+          if (dx * dx + dy * dy + dz * dz <= r * r) { e = x; x.addTag('ot_spawn'); x.addTag(tagOf(id)); if (sp.kind == 'boss') x.addTag('ot_boss') }
+        } catch (y) { } }) } catch (x) { }
+      }
       if (e != null) sp.uuid = uidOf(e)
     }
     return e
@@ -173,6 +201,34 @@
     }
     try { e.setDeltaMovement(0, Math.min(0, Number(e.getDeltaMovement().y())), 0) } catch (x) { }
   }
+  // boss strength: extra (or less) max health + attack damage, only inside the Caverns.
+  // Uses fixed modifier ids (overthrone:boss_hp / overthrone:boss_damage), so it never stacks; the applied values are
+  // remembered on the boss (persistentData ot_buff) and changed when /mobspawn power changes them.
+  const inCav = (e) => {
+    try {
+      if (typeof otInCaverns != 'function') return false
+      if (otCavernsArea == null && typeof otCavernsLoad == 'function') otCavernsLoad(e.level.server)
+      return otInCaverns(e.level, e.getX(), e.getY(), e.getZ())
+    } catch (x) { return false }
+  }
+  const powerOf = (sp) => [sp.hpB != null ? sp.hpB : BOSS_HP_BONUS, sp.dmgB != null ? sp.dmgB : BOSS_DAMAGE_BONUS]
+  const buffBoss = (s, e, sp) => {
+    try {
+      var want = inCav(e) ? powerOf(sp) : [0, 0], key = want[0] + ',' + want[1]
+      var cur = String(e.persistentData.getString('ot_buff') || '')
+      if (cur == key || (cur == '' && key == '0,0')) return
+      var u = uidOf(e), before = Number(e.getMaxHealth()), hp = Number(e.getHealth())
+      run(s, `attribute ${u} minecraft:generic.max_health modifier remove overthrone:boss_hp`)
+      run(s, `attribute ${u} minecraft:generic.attack_damage modifier remove overthrone:boss_damage`)
+      if (want[0] != 0) run(s, `attribute ${u} minecraft:generic.max_health modifier add overthrone:boss_hp ${want[0] / 100} add_multiplied_base`)
+      if (want[1] != 0) run(s, `attribute ${u} minecraft:generic.attack_damage modifier add overthrone:boss_damage ${want[1] / 100} add_multiplied_base`)
+      e.persistentData.putString('ot_buff', key)
+      var max = Number(e.getMaxHealth())
+      e.setHealth(cur == '' ? max : Math.max(1, Math.min(max, hp / Math.max(1, before) * max)))   // new boss: full health; changed: same % as before
+    } catch (x) { logOnce('buff', 'boss strength: ' + x) }
+  }
+  // bosses frozen by the old version (movement speed 0) are swapped once for a fresh copy that can move
+  const wasFrozen = (e) => { try { return Attr != null && Number(e.getAttribute(Attr.MOVEMENT_SPEED).getBaseValue()) == 0 } catch (x) { return false } }
   const hideBar = (s, id) => { var sp = spawns[id]; run(s, `bossbar remove ${barId(id)}`); if (sp) delete sp.bar }
 
   // ---- boss rotations: several boss spawns share one spot; only one boss is out at a time.
@@ -240,7 +296,7 @@
   const adopt = (s, id, e) => {
     var sp = spawns[id]
     e.addTag('ot_spawn'); e.addTag(tagOf(id))
-    if (sp.kind == 'boss') { e.addTag('ot_boss'); if (FREEZE_BOSSES) freeze(s, e) }
+    if (sp.kind == 'boss') { e.addTag('ot_boss'); if (FREEZE_BOSSES) freeze(s, e); else sp.unfrozen = true; buffBoss(s, e, sp) }
     try { nerfSkills(e) } catch (x) { }
     try { e.setPersistenceRequired() } catch (x) { }
     sp.uuid = uidOf(e); sp.down = 0
@@ -249,7 +305,7 @@
   const spawnNow = (s, id) => {
     var sp = spawns[id]; if (!sp) return false
     var level = levelOf(s, sp.dim)
-    if (level == null || !loaded(level, sp.x, sp.z)) return false   // try again once someone is nearby
+    if (level == null || !loaded(level, sp.x, sp.z, sp.y)) return false   // try again once someone is nearby
     var still = findMob(level, id)
     if (still != null && still.isAlive()) { adopt(s, id, still); hideBar(s, id); setHolo(s, id, null); save(s); return true }
     // summon without NBT, so the mob gets its normal gear/stats like from a spawn egg
@@ -302,7 +358,7 @@
         }
         if (!sp.uuid) return   // every spawn is checked once a second
         var level = levelOf(s, sp.dim)
-        if (level == null || !loaded(level, sp.x, sp.z)) return
+        if (level == null || !loaded(level, sp.x, sp.z, sp.y)) return
         var e = findMob(level, id)
         if (e == null || !e.isAlive()) {
           missing[id] = (missing[id] || 0) + 1
@@ -314,9 +370,17 @@
         if (sp.kind == 'boss') {
           if (SHOW_ALIVE_BAR) { try { aliveBar(s, id, e) } catch (x) { logOnce('bar ' + id, 'boss bar: ' + x) } }
           if (FREEZE_BOSSES) { try { freeze(s, e) } catch (x) { logOnce('frz ' + id, 'freeze: ' + x) } }
+          if (five) buffBoss(s, e, sp)   // also picks up /mobspawn power changes and leaving/entering the Caverns
+          if (five && !FREEZE_BOSSES && !sp.unfrozen && wasFrozen(e)) {
+            // frozen by the old version: replace it with a fresh copy once (discard = no death, no drops, no kill message)
+            sp.unfrozen = true; sp.uuid = null; sp.down = 1; save(s)
+            try { e.discard() } catch (x) { }
+            return
+          }
+          if (five && !sp.unfrozen) { sp.unfrozen = true; save(s) }
         }
         var dx = e.getX() - sp.x, dz = e.getZ() - sp.z, dy = e.getY() - sp.y
-        var leash = sp.kind == 'boss' ? (FREEZE_BOSSES ? BOSS_LEASH : 8) : LEASH
+        var leash = sp.kind == 'boss' ? (FREEZE_BOSSES ? BOSS_LEASH : BOSS_ROAM) : LEASH
         if (dx * dx + dy * dy + dz * dz > leash * leash) { try { e.teleportTo(sp.x, sp.y, sp.z) } catch (y) { run(s, `execute in ${sp.dim} run tp ${uidOf(e)} ${sp.x} ${sp.y} ${sp.z}`) } }
       } catch (x) { logOnce('tick ' + id, 'tick ' + sp.type + ': ' + x) }
     })
@@ -443,6 +507,13 @@
       else if (all.length) all.forEach(k => say(ctx.source, '§8- ' + spawns[k].type + ' in ' + spawns[k].dim))
       return 0
     }
+    // /mobspawn power targets: every boss of the rotation near you, else the nearest boss spawn
+    const powerTargets = (p) => {
+      var gid = nearestGroup(p)
+      if (gid != null) return groups[gid].members.filter(k => spawns[k])
+      var id = nearest(p, 32)
+      return id && spawns[id] && spawns[id].kind == 'boss' ? [id] : []
+    }
     const nearestGroup = (p) => {
       var best = 32 * 32, gid = null, dim = dimOf(p.level)
       load(p.server)
@@ -532,7 +603,7 @@
         say(ctx.source, '§7Name key: §f' + sp.key + ' §7· tracked mob: ' + (sp.down ? '§cdead, back in ' + mmss(Math.max(0, Math.ceil((sp.down - Date.now()) / 1000))) : alive ? '§afound & alive' : '§enot found yet (unloaded or missing)'))
         var lv = levelOf(p.server, sp.dim), fm = null
         try { fm = lv ? findMob(lv, id) : null } catch (x) { say(ctx.source, '§cfindMob error: ' + x) }
-        say(ctx.source, '§8debug: world ' + (lv ? 'ok' : 'NOT FOUND') + ' · loaded ' + (lv ? loaded(lv, sp.x, sp.z) : '-') + ' · uuid ' + sp.uuid + ' · by uuid/tag: ' + (fm ? 'found' : 'none') + ' · bar ' + !!sp.bar)
+        say(ctx.source, '§8debug: world ' + (lv ? 'ok' : 'NOT FOUND') + ' · loaded ' + (lv ? loaded(lv, sp.x, sp.z, sp.y) : '-') + ' · uuid ' + sp.uuid + ' · by uuid/tag: ' + (fm ? 'found' : 'none') + ' · bar ' + !!sp.bar)
         if (fm && sp.kind == 'boss') { try { aliveBar(p.server, id, fm); say(ctx.source, '§8debug: boss bar refreshed') } catch (x) { say(ctx.source, '§cboss bar error: ' + x) } }
         placeHolo(p.server, id)
         say(ctx.source, '§7Floating text re-placed. §8If you still can\'t see it, look ' + sp.h + ' blocks above the spot.')
@@ -622,6 +693,31 @@
           say(ctx.source, P + '§aThe next boss appears within a second.')
           return 1
         })))
+      // boss strength for the rotation near you (or the nearest boss spawn): /mobspawn power [<health%> <damage%>]
+      .then(Commands.literal('power')
+        .executes(ctx => {
+          var p = ctx.source.playerOrException, ids = powerTargets(p)
+          if (!ids.length) { say(ctx.source, '§cNo boss rotation or boss spawn within 32 blocks.'); return 0 }
+          ids.forEach(k => { var w = powerOf(spawns[k]); say(ctx.source, P + '§f' + spawns[k].type + ' §7health §c' + (w[0] >= 0 ? '+' : '') + w[0] + '% §7damage §c' + (w[1] >= 0 ? '+' : '') + w[1] + '%') })
+          say(ctx.source, '§7Only applies inside the Caverns. Change: §f/mobspawn power <health%> <damage%> §7(100 = double, 0 = normal, -50 = half) or §f/mobspawn power reset')
+          return 1
+        })
+        .then(Commands.literal('reset').executes(ctx => {
+          var p = ctx.source.playerOrException, ids = powerTargets(p)
+          if (!ids.length) { say(ctx.source, '§cNo boss rotation or boss spawn within 32 blocks.'); return 0 }
+          ids.forEach(k => { delete spawns[k].hpB; delete spawns[k].dmgB }); save(p.server)
+          say(ctx.source, P + '§aBack to the default (health +' + BOSS_HP_BONUS + '%, damage +' + BOSS_DAMAGE_BONUS + '%) for ' + ids.length + ' boss(es). §7Live bosses update within 5 seconds.')
+          return 1
+        }))
+        .then(Commands.argument('health', Arguments.INTEGER.create(event)).then(Commands.argument('damage', Arguments.INTEGER.create(event)).executes(ctx => {
+          var p = ctx.source.playerOrException, ids = powerTargets(p)
+          if (!ids.length) { say(ctx.source, '§cNo boss rotation or boss spawn within 32 blocks.'); return 0 }
+          var hp = Math.max(-90, Math.min(1000, Arguments.INTEGER.getResult(ctx, 'health')))
+          var dmg = Math.max(-90, Math.min(1000, Arguments.INTEGER.getResult(ctx, 'damage')))
+          ids.forEach(k => { spawns[k].hpB = hp; spawns[k].dmgB = dmg }); save(p.server)
+          say(ctx.source, P + '§aSet ' + ids.length + ' boss(es) to health ' + (hp >= 0 ? '+' : '') + hp + '%, damage ' + (dmg >= 0 ? '+' : '') + dmg + '%. §7Live bosses update within 5 seconds (keeping their health %).')
+          return 1
+        }))))
       .then(Commands.literal('respawnall').executes(ctx => {
         var s = ctx.source.server, n = 0
         Object.keys(load(s)).forEach(k => { if (spawns[k].down && !spawns[k].dormant) { spawns[k].down = Date.now(); n++ } })
