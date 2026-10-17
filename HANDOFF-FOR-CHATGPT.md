@@ -1,6 +1,6 @@
 # OVERTHRONE SMP: full handoff (read all of this before changing anything)
 
-Last updated: 2026-10-17. Written by Claude (Claude Code) for whoever works on the project next.
+Last updated: 2026-10-17 (second update that day). Written by Claude (Claude Code) for whoever works on the project next.
 The owner is **__SK1TZ__**. They are not a coder: explain things simply, step by step, and give **complete
 files** to drag and drop (not snippets). They upload files to the server themselves through the
 MintServers file manager. Nobody can upload for them.
@@ -18,6 +18,9 @@ MintServers file manager. Nobody can upload for them.
 5. Don't say something is tested unless it really was. Tell them which files changed, where each one goes, and
    what to type afterwards (`/reload` or restart).
 6. They want to save credits: batch questions and ask for **everything you need in one message**.
+7. **Every time you work on the server, finish by sending an updated copy of this handoff file** (update the date,
+   sections 3–6 and 9).
+8. Don't re-send fixes they say they've already done themselves (e.g. the SMP item drops).
 
 ---------------------------------------------------------------------------------------------------
 
@@ -102,7 +105,7 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
 | `holograms.js` | Generic floating text. | `/holo place/...` |
 | `hub_npcs.js` | Hub NPC text + clickable links. | `/links`, `/npcfix apply` |
 | `hub_spawn.js` | Sends new players to the hub. After race pick, only if they're still at the overworld spawn (so Daemon/Angel races that start in their own world aren't pulled back). | `/hubspawn ...` |
-| `keep_inventory.js` | keepInventory on everywhere; **in `multiworld:wild` (SMP) items drop on death** (hotbar, armour, offhand). XP and Curios/Accessories slots are not dropped. | `/keepinv` |
+| `keep_inventory.js` | keepInventory on everywhere; **in `multiworld:wild` (SMP) items drop on death**. **The owner manages this one themselves and it works: don't touch or re-send it.** | `/keepinv` |
 | `kit_cooldown.js` | Enforces NeoEssentials kit cooldowns. | `/kitcd check/reset` |
 | `leveling.js` | Player levels 1–5000 (XP from quests, mobs, ores, daily login). Mirrored to scoreboard objectives for the HUD. | `/level ...` |
 | `mob_infighting.js` | **Crash guard**: in the RPG world, wild mobs can't damage other mobs (see section 5). | `/mobinfighting` |
@@ -115,16 +118,15 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
 | `rpg_border.js` | World border for the RPG world. | `/rpgborder` |
 | `rpg_protect.js` | No breaking/placing/buckets/fire in the RPG world except ops or tag `rpg_builder`. | |
 | `safe_explosions.js` | Cancels explosions in hub + RPG world. | `/safeexplosions` |
-| `skill_blacklist.js` | **Banned skills** removed from players on login and every 30 s: predator, gluttony, creator, fusionist, infinity_prison, cultivator, pride, jinchuriki, crasher, coalescence, victorious_harbinger. | `/skillban list/status/check/scan` |
+| `skill_blacklist.js` | **Banned skills** removed from players on login and every 30 s: predator, gluttony, creator, fusionist, infinity_prison, cultivator, pride, jinchuriki, crasher, coalescence, victorious_harbinger. **Unique replacement (2026-10-17):** if a banned *unique* is removed, the player gets a random allowed unique (the `UNIQUES` list = `startingSkills` from the config) via ManasCore `getSkillsFrom(p).learnSkill(ResourceLocation.parse(id))`. Every player is also checked **once** (flag `ot_unique_checked`, 30 s after they have a race): no unique from the list → given one. | `/skillban list/status/check/scan/unique <p>/giveunique <p>` |
 | `smp.js` | The SMP world (`multiworld:wild`) command and info. | `/smp` |
 | `vote_links.js` | `/vote` clickable links (keep it: the vote menu mod needs /vote to exist). | `/vote` |
 | `welcome.js` | Join message + rotating announcements. | `/announce`, `/announce welcome` |
+| `serversetup/worlddamage.js` | The owner's own protection script (now in the repo with its config `config/serversetup/world_damage.json`): cancels ALL damage to players in `protected_worlds` (hub + rpg) at HIGHEST priority, except void and /kill. **Edited 2026-10-17: players inside the Caverns area are not protected** (`wdInCaverns`). Uses helpers `ssReadJson`, `ssDimId`, `ssMsg` from other serversetup files that are not in the repo. | `/worlddamage`, `/worlddamage reload` |
 | `serversetup/scoreboard.js` | Per-player sidebar using NeoEssentials placeholders from `config/serversetup/scoreboard.json`. Extra lines: hub = "ONLINE", RPG = "Use /wild to leave spawn", **every other world = "Use /hub to return to spawn"**. | `/sidebar`, `/sidebar test/where` |
 
 **The server has more files in `kubejs/server_scripts/serversetup/` that are NOT in this repo**
-(e.g. `worlddamage.js` and its config `config/serversetup/world_damage.json` with
-`protected_worlds: ["multiworld:hub","multiworld:rpg"]`, plus the helpers `ssReadJson`, `ssDimId`,
-`ssLegacyToJson`). Ask the owner to upload any of them before editing anything that touches them.
+(the helpers `ssReadJson`, `ssDimId`, `ssMsg`, `ssLegacyToJson` and others). Ask the owner to upload any of them before editing anything that touches them.
 
 ---------------------------------------------------------------------------------------------------
 
@@ -138,10 +140,14 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   `SHOW_ALIVE_BAR = false` (the owner doesn't want bars on living bosses).
 - Mobs are pulled back if they go more than `LEASH = 28` blocks from their spot.
 - **Bosses (changed 2026-10-17):** `FREEZE_BOSSES = false`, so bosses chase players but are put back if they go more
-  than `BOSS_ROAM = 10` blocks. Bosses frozen by the old version keep speed 0 until respawned
-  (`/mobspawn respawnall`). Boss buff only for /setboss bosses: `BOSS_HP_BONUS = 1.0` (+100% max health) and
-  `BOSS_DAMAGE_BONUS = 0.5` (+50% attack damage). Applied once with fixed attribute modifier ids
-  `overthrone:boss_hp` / `overthrone:boss_damage` (tag `ot_buffed`).
+  than `BOSS_ROAM = 10` blocks. A boss still frozen by the old version (movement speed base 0) is discarded once
+  (no death event) and respawns fresh (`sp.unfrozen` flag, so it happens only once per spawn).
+- **Boss strength, Caverns only:** /setboss bosses standing inside the Caverns area get `BOSS_HP_BONUS = 100` (%) extra
+  max health and `BOSS_DAMAGE_BONUS = 50` (%) extra attack damage (attribute modifiers `overthrone:boss_hp` /
+  `overthrone:boss_damage`, add_multiplied_base, value/100). Outside the Caverns: no change. In game:
+  `/mobspawn power` (show), `/mobspawn power <health%> <damage%>` (-90..1000, for every boss of the rotation near
+  you, or the nearest boss), `/mobspawn power reset`. Stored per spawn (`sp.hpB`, `sp.dmgB`). The applied value is kept on
+  the boss (persistentData `ot_buff`) and updated within 5 s, keeping the boss's health %.
 - `STRIP_SKILLS = ['nullification','regeneration']`: those Tensura skills are removed from spawned mobs (on adopt
   and every 5 s) because they made bosses unkillable.
 - **Boss rotations:** `/mobspawn rotation [minutes]` (default 30) turns all boss spawns within 32 blocks into
@@ -178,8 +184,10 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
 - `minecraft/config-edits/reincarnation_config.toml` = full replacement for `config/tensura/reincarnation_config.toml`,
   with the banned skills taken out of `startingSkills` and `secondSkills`.
 - **Tensura already gives every player ONE random unique skill when they first pick their race**
-  (`skillNumber = 1`, pool = `startingSkills`). **Don't build a second "random skill on join" system**,
-  or players get two.
+  (`skillNumber = 1`, pool = `startingSkills`). **Don't build a second "random skill on join" system.**
+  Problem the owner reported: players whose unique was banned (removed by skill_blacklist.js) ended up with no unique.
+  Fixed in `skill_blacklist.js` (replacement + one-time check, see section 3). If `startingSkills` changes, update `UNIQUES`
+  in skill_blacklist.js to match.
 
 ---------------------------------------------------------------------------------------------------
 
@@ -212,12 +220,12 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
 
 ## 9. Open items (as of 2026-10-17)
 
-1. **Upload and test** the 2026-10-17 changes: `damage_zones.js` (Caverns combat zone works right after `/reload`)
-   and `mob_spawns.js` (bosses chase + buff + duplicate fix). Then run `/mobspawn respawnall`. Test:
-   `/damagezones` = DANGER inside the Caverns, SAFE elsewhere in the RPG world. Mobs and bosses attack in the Caverns.
-2. `worlddamage.js` + `world_damage.json` (server-only, not in the repo) may also cancel damage in the RPG world.
-   If players still can't be hurt in the Caverns, get those files and add the Caverns exception there too
-   (use `otInCaverns(level, x, y, z)` from caverns.js; call `otCavernsLoad(server)` first if `otCavernsArea` is null).
+1. **Upload and test** the 2026-10-17 changes (none tested in game yet): `damage_zones.js`, `serversetup/worlddamage.js`,
+   `mob_spawns.js`, `skill_blacklist.js`. Tests: `/damagezones` and `/worlddamage` inside the Caverns = damage on,
+   elsewhere in the RPG world = protected. Mobs/bosses chase and hit in the Caverns. `/mobspawn power` shows +100%/+50%.
+   `/skillban unique <player>` shows a unique for players who lost theirs.
+2. ManasCore `learnSkill` was checked against ManasCore's GitHub source (1.21.1 branch), not against the exact jar on the
+   server (4.0.0.2). If `/skillban giveunique` fails, check the server log line `[skill_blacklist] could not give`.
 3. **Playtime on the sidebar looks reset** (it showed hours, then 55m). It comes from a NeoEssentials placeholder in
    `config/serversetup/scoreboard.json`. Get that file to see which placeholder it uses (session vs total).
 4. "Display entity Not a string" log error and names shown twice: needs `logs/latest.log` from when it happens.
@@ -229,5 +237,6 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
 - Items drop on death only in `multiworld:wild` (SMP). The owner has confirmed this works.
 - Bosses don't show a health bar while alive. Only the dead-boss countdown bar shows.
 - Mobs roam 28 blocks. Bosses 10 blocks.
+- Boss buffs apply only inside the Caverns, never to bosses elsewhere.
 - Don't change player classes or class skills.
 - Banned skills list (section 3) is final unless the owner changes it.

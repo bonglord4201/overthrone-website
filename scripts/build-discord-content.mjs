@@ -445,7 +445,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "Place the mob with its spawn egg, **look at it**, then: `/mobspawn boss [minutes]` or `/mobspawn mob [minutes]` (default 60 min, e.g. `/mobspawn boss 1` to test). Same as `/setboss` / `/setmob`",
     "It never despawns, gets pulled back if it wanders 32+ blocks, and respawns at the same spot after it's killed. Floating text shows its **real name** + a respawn countdown. Boss kills are announced",
     "`/mobspawn list` Spawns in this world · `/mobspawn info` Nearest spawn details + puts its text back · `/mobspawn respawnall` Respawn every killed one now · `/mobspawn holo` Put floating texts back · `/mobspawn clearall` Remove EVERY spawn (mobs stay alive)",
-    "Bosses **chase** players but stay within 10 blocks of their spot, and get **+100% health / +50% attack damage** (settings at the top of `mob_spawns.js`). After updating, run `/mobspawn respawnall` so bosses frozen by the old version can move. While dead, players within 48 blocks see a red bar counting down to their return. Mobs stay within 28 blocks of their spot (pulled back if further)",
+    "Bosses **chase** players but stay within 10 blocks of their spot, and **inside the Caverns** get **+100% health / +50% attack damage** by default. Bosses frozen by the old version are swapped once for a fresh copy that can move. While dead, players within 48 blocks see a red bar counting down to their return. Mobs stay within 28 blocks of their spot (pulled back if further)",
     "Look at its mob or stand within 16 blocks of its spot: `/mobspawn time <minutes>` Change its timer · `/mobspawn move` Move its spot (and the mob) to where you stand (a rotation moves all its bosses) · `/mobspawn remove` Stop tracking it (the mob stays alive) · `/mobspawn remove kill` Remove it + kill the mob",
     "Bosses set with `/setboss` count as bosses for Caverns cash + trackers",
     "Spawned bosses/mobs lose **Nullification** + **Regeneration** skills (so they can be killed). `/mobspawn skills` Look at a mob: its skills (red = removed). Change the words in `STRIP_SKILLS` at the top of `mob_spawns.js`"
@@ -455,6 +455,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "1. Place each boss with its egg close together and set each one: look at it → `/mobspawn boss`",
     "2. Stand among them → `/mobspawn rotation` (30 min between bosses) or `/mobspawn rotation 45` for your own time",
     "`/mobspawn rotation next` Skip the wait (next boss appears now) · `/mobspawn rotation off` Back to normal separate bosses",
+    "`/mobspawn power` Show the strength of the rotation near you · `/mobspawn power <health%> <damage%>` Stronger/weaker (Caverns only; 100 = double, 0 = normal, -50 = half) · `/mobspawn power reset` Default",
     "Add a boss later: place + `/mobspawn boss` it near the others, then run `/mobspawn rotation` again · `/mobspawn list` shows rotations (⟳)"
   ].join("\n") },
   { title: "⚖️ Mob tweaks", description: [
@@ -468,6 +469,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/ftbchunks info` Who owns the chunk you're in · `/ftbchunks admin claim_as hub#0d6da155 <radius in blocks>` Claim more for the hub team (use Tab on the team name)",
     "`/ftbchunks admin bypass_protection` Toggle your bypass (on = you can build/use skills in claims). Test as a player with it OFF",
     "`/gamerule skillGriefing true` Keep this ON (it's server-wide: false stops skills everywhere)",
+    "`/worlddamage` Is this world protected? (the Caverns area is a combat zone even in the RPG world) · `/worlddamage reload` Reload `config/serversetup/world_damage.json`",
     "`/safeexplosions` Explosions blocked in hub/RPG? · `/damagezones` Is this world a no-damage safe zone? (the Caverns area is always a combat zone)",
     "`/whyhurt` Toggle: chat tells you exactly what hurts you (damage type, mob, amount) — for finding mystery damage",
     "`/keepinv` Players keep their items on death everywhere except the SMP world (/smp). Shows your world and whether items drop there",
@@ -478,6 +480,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "Banned: Predator, Gluttony, Creator, Fusionist, Infinity Prison, Cultivator, Pride, Jinchuriki, Crasher, Coalescence, Victorious Harbinger",
     "They're out of the reincarnation rolls (`config/tensura/reincarnation_config.toml`) and `skill_blacklist.js` removes them from anyone who has one (on login + every 30 s)",
     "`/skillban check <player>` What banned skills they have · `/skillban scan` Remove from everyone online now (red line = it couldn't remove one, with the reason)",
+    "Banned **unique** removed = the player gets a random allowed unique instead. Players who lost one earlier get one once (30 s after they have a race). `/skillban unique <player>` Their unique · `/skillban giveunique <player>` Give one now (only if they have none)",
     "`/skillban list` · `/skillban status` (remover ACTIVE?) · Edit the `BANNED` list at the top of the file to change it"
   ].join("\n") },
   { title: "🧬 Tensura", description: [
