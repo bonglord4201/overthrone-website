@@ -17,7 +17,13 @@
     return String(k && k.location ? k.location() : k)
   }
   // the Caverns (the area set with /cavernadmin pos1/pos2, caverns.js) is a combat zone even inside the RPG World
-  const inCaverns = (p) => { try { return typeof otInCaverns == 'function' && otInCaverns(p.level, p.x, p.y, p.z) } catch (e) { return false } }
+  const inCaverns = (p) => {
+    try {
+      if (typeof otInCaverns != 'function') return false
+      if (otCavernsArea == null && typeof otCavernsLoad == 'function') otCavernsLoad(p.server)   // after /reload the area isn't loaded yet
+      return otInCaverns(p.level, p.x, p.y, p.z)
+    } catch (e) { return false }
+  }
   const isSafe = (p) => SAFE_WORLDS.indexOf(dimOf(p)) >= 0 && !inCaverns(p)
 
   // New player protection: no damage at all while picking a race, then for the first SHIELD_MINUTES of play
