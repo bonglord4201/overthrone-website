@@ -468,7 +468,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/ftbchunks info` Who owns the chunk you're in · `/ftbchunks admin claim_as hub#0d6da155 <radius in blocks>` Claim more for the hub team (use Tab on the team name)",
     "`/ftbchunks admin bypass_protection` Toggle your bypass (on = you can build/use skills in claims). Test as a player with it OFF",
     "`/gamerule skillGriefing true` Keep this ON (it's server-wide: false stops skills everywhere)",
-    "`/safeexplosions` Explosions blocked in hub/RPG? · `/damagezones` Is this world a no-damage safe zone?",
+    "`/safeexplosions` Explosions blocked in hub/RPG? · `/damagezones` Is this world a no-damage safe zone? (the Caverns area is always a combat zone)",
     "`/whyhurt` Toggle: chat tells you exactly what hurts you (damage type, mob, amount) — for finding mystery damage",
     "`/keepinv` Players keep their items on death everywhere except the SMP world (/smp). Shows your world and whether items drop there",
     "`/mobinfighting` RPG world: wild mobs can't hurt each other (stops the Solo Leveling crash when a mob kills a mob). Shows how many hits it blocked",

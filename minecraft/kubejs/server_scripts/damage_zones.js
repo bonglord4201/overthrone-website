@@ -1,5 +1,5 @@
 // OVERTHRONE - where players can get hurt.
-// Safe worlds (no damage at all): the hub and the RPG World. Everywhere else (Wild/Overworld, SMP,
+// Safe worlds (no damage at all): the hub and the RPG World, EXCEPT inside the Caverns area (players can be hurt there). Everywhere else (Wild/Overworld, SMP,
 // Survival, Resource, Nether, End, dungeons...) players take damage normally.
 // Uses the player's own "invulnerable" flag, so it also clears a flag some other mod or script
 // left switched on (that made players immune everywhere: "Target is invulnerable").
@@ -16,7 +16,9 @@
     if (typeof k === 'function') k = e.level.dimension()
     return String(k && k.location ? k.location() : k)
   }
-  const isSafe = (p) => SAFE_WORLDS.indexOf(dimOf(p)) >= 0
+  // the Caverns (the area set with /cavernadmin pos1/pos2, caverns.js) is a combat zone even inside the RPG World
+  const inCaverns = (p) => { try { return typeof otInCaverns == 'function' && otInCaverns(p.level, p.x, p.y, p.z) } catch (e) { return false } }
+  const isSafe = (p) => SAFE_WORLDS.indexOf(dimOf(p)) >= 0 && !inCaverns(p)
 
   // New player protection: no damage at all while picking a race, then for the first SHIELD_MINUTES of play
   // (only for players below SHIELD_MAX_LEVEL, so veterans never get it). A timer shows above the hotbar.

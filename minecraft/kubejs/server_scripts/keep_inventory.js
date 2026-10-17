@@ -7,15 +7,15 @@
 // Staff (op):  /keepinv   shows the world you're in and whether you'd keep or drop your items there
 
 (function () {
-  // the SMP world: any world whose id is in this list or ends in ":smp" (check yours with /keepinv)
-  const DROP_WORLDS = ['multiworld:smp']
+  // the SMP world (/smp). Its real world id is multiworld:wild (renamed to SMP). Check yours with /keepinv
+  const DROP_WORLDS = ['multiworld:wild']
 
   const dimOf = (level) => {
     var k = level.dimension
     if (typeof k === 'function') k = level.dimension()
     return String(k && k.location ? k.location() : k)
   }
-  const isDropWorld = (d) => DROP_WORLDS.indexOf(d) >= 0 || /:smp$/.test(d)
+  const isDropWorld = (d) => DROP_WORLDS.indexOf(d) >= 0
 
   var GameRules = null
   try { GameRules = Java.loadClass('net.minecraft.world.level.GameRules') } catch (x) { }
