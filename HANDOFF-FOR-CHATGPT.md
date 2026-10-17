@@ -200,7 +200,12 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
 - Update posts so far: 1.3 (`0009`), 1.4 Caverns (`0010`), 1.5 Caverns Bosses (`0011`: announcements,
   server-updates, changelog posts, and it refreshes "The Caverns Guide" post only if unedited). New updates =
   new `UPDATEXX_POSTS` in guide-data.mjs + a new numbered migration in build-pages.mjs. Never edit an applied migration.
-- Work branch used by Claude: `claude/trusting-hawking-0enn7u`. PR #16 (Update 1.5) was opened. Merging to `main`
+- **Update 1.6** (2026-10-17): `UPDATE16_POSTS` + migration `0012_update_1_6.sql` (Caverns combat zone, tougher bosses,
+  crate key drops, keep inventory except SMP, unique skill replacement, fixes). It refreshes "The Caverns Guide" post only if
+  it still equals `CAVERNS_GUIDE_1_5` in build-pages.mjs. Discord: `#changelog` has an Update 1.6 block, and the @everyone text is
+  in `discord-bot/announcement-update-1-6.txt`. Next update = `UPDATE17_POSTS` + `0013`, freezing the current Caverns guide
+  body as `CAVERNS_GUIDE_1_6` first.
+- Work branch used by Claude: `claude/trusting-hawking-0enn7u`. PR #16 (Update 1.5) is merged; Update 1.6 is in a new PR. Merging to `main`
   deploys the site.
 - Other docs in the repo: `PROJECT-STATUS.md` (website/Tebex status), `tebex-storefront/`, `marketing/`, `notes/`.
 

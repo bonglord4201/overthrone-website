@@ -17,7 +17,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { RULES_UPDATED, RULES_INTRO, RULE_SECTIONS } from "./rules-data.mjs";
 import { VOTE_SLOTS } from "./vote-data.mjs";
-import { GUIDE_UPDATED, GUIDE_INTRO, SECTIONS, FORUM_POSTS, NEW_CATEGORIES, CATEGORY_WELCOMES, RACES_CATEGORY, RACES_POST, UPDATE13_CATEGORY, UPDATE13_GUIDE_POSTS, UPDATE13_POSTS, UPDATE14_GUIDE_POSTS, UPDATE14_POSTS, UPDATE15_POSTS } from "./guide-data.mjs";
+import { GUIDE_UPDATED, GUIDE_INTRO, SECTIONS, FORUM_POSTS, NEW_CATEGORIES, CATEGORY_WELCOMES, RACES_CATEGORY, RACES_POST, UPDATE13_CATEGORY, UPDATE13_GUIDE_POSTS, UPDATE13_POSTS, UPDATE14_GUIDE_POSTS, UPDATE14_POSTS, UPDATE15_POSTS, UPDATE16_POSTS } from "./guide-data.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -333,6 +333,8 @@ console.log("wrote migrations/0010_update_1_4.sql");
 // ---------------------------------------------------------------- Update 1.5 (Caverns bosses) in the forums
 // The Caverns Guide post exactly as Update 1.4 posted it (migration 0010), so 0011 only replaces it if untouched.
 const CAVERNS_GUIDE_1_4 = "## The Caverns\nA deep mine full of mobs, bosses and every kind of gathering node. No level needed, and everything you do down there pays cash.\n\n- **/warp caverns**: Go to the Caverns\n- **/caverns**: Your Caverns menu and trackers\n\n- **Mobs** (Kill for cash): Every mob you kill in the Caverns pays **cash** and gives **Combat XP**. Stronger mobs pay more.\n- **Bosses** (Up to $10,000): Bosses lurk in the deep. They hit hard, so bring your best gear and some friends. They pay the most.\n- **Nodes** (Every type): Mining, Gemology, Farming and Foraging nodes are all down here. Gathering one pays **cash** plus profession XP.\n\n- **Cash:** every kill and every node in the Caverns pays **$100 to $10,000**. Stronger mobs and higher-level nodes pay more.\n- **There's a per-minute limit** on Caverns cash, so mob farms can't print money.\n- **Trackers:** talk to the **Cavern Guide** NPC or type **/caverns** to see your kills, bosses slain, nodes gathered, cash earned, best payout and time spent.\n- **No level requirement:** anyone can go. Your profession level still has to be at least a node's level to gather it.\n\nGathering works the same as everywhere else: hit a node **3 times**. It comes back after **1 minute**.\n\n[Open the full Player Guide](/guide#caverns)";
+// ...and exactly as Update 1.5 (migration 0011) set it, so 0012 only replaces it if still untouched.
+const CAVERNS_GUIDE_1_5 = "## The Caverns\nA deep mine full of mobs, bosses and every kind of gathering node. No level needed, and everything you do down there pays cash.\n\n- **/warp caverns**: Go to the Caverns\n- **/caverns**: Your Caverns menu and trackers\n\n- **Mobs** (Kill for cash): Every mob you kill in the Caverns pays **cash** and gives **Combat XP**. Stronger mobs pay more.\n- **Bosses** (Up to $10,000): Bosses lurk in the deep. They have **up to 7 layers of armour** to break before they take damage, so bring your best gear and some friends. They pay the most.\n- **Nodes** (Every type): Mining, Gemology, Farming and Foraging nodes are all down here. Gathering one pays **cash** plus profession XP.\n\n- **Cash:** every kill and every node in the Caverns pays **$100 to $10,000**. Stronger mobs and higher-level nodes pay more.\n- **There's a per-minute limit** on Caverns cash, so mob farms can't print money.\n- **Trackers:** talk to the **Cavern Guide** NPC or type **/caverns** to see your kills, bosses slain, nodes gathered, cash earned, best payout and time spent.\n- **No level requirement:** anyone can go. Your profession level still has to be at least a node's level to gather it.\n- **Boss spots:** each boss has its own spot with its **real name** floating above it. When it's slain, a countdown shows when it's back, and chat tells everyone when a boss is slain or returns.\n- **Random Boss spots:** some spots hold a different boss each time. The floating text shows **☠ Random Boss ☠ Arrives in** with a timer. Every boss on that spot shows up once before any repeats, and never the same one twice in a row.\n- **Mobs and bosses stay home:** they're pulled back to their spot if they wander, so you can't drag them out of the Caverns.\n\n**Doing no damage to a boss?** That's not a bug. Caverns bosses have up to **7 layers of armour** that must be broken before your hits hurt them. This is **end-game content**: bring your best gear and team up.\n\nGathering works the same as everywhere else: hit a node **3 times** (the floating text shows your progress). It comes back after **1 minute**.\n\n[Open the full Player Guide](/guide#caverns)";
 const cavernsGuideBody = sectionText(byId.caverns) + "\n\n[Open the full Player Guide](/guide#caverns)";
 const update15Sql = [
   "-- Update 1.5: Caverns bosses, new player protection, banned skills and fixes.",
@@ -342,8 +344,23 @@ const update15Sql = [
   ...UPDATE15_POSTS.map((up) => postSql(up.category, up.title, up.body, up.pinned)),
   "",
   "-- The Caverns Guide post gets the new boss info, only if nobody has edited it in /admin since Update 1.4.",
-  `UPDATE forum_posts SET body = ${sq(cavernsGuideBody)} WHERE title = 'The Caverns Guide' AND body = ${sq(CAVERNS_GUIDE_1_4)};`,
+  `UPDATE forum_posts SET body = ${sq(CAVERNS_GUIDE_1_5)} WHERE title = 'The Caverns Guide' AND body = ${sq(CAVERNS_GUIDE_1_4)};`,
   ""
 ].join("\n");
 fs.writeFileSync(path.join(root, "migrations/0011_update_1_5.sql"), update15Sql);
 console.log("wrote migrations/0011_update_1_5.sql");
+
+// ---------------------------------------------------------------- Update 1.6 (Caverns combat, keys, keep inventory) in the forums
+const update16Sql = [
+  "-- Update 1.6: Caverns combat zone, tougher bosses, crate key drops, keep inventory, unique skill replacement, fixes.",
+  "-- The update posts in Announcements, Server Updates and Changelog.",
+  "-- Generated by scripts/build-pages.mjs from scripts/guide-data.mjs. Only adds what is missing.",
+  "",
+  ...UPDATE16_POSTS.map((up) => postSql(up.category, up.title, up.body, up.pinned)),
+  "",
+  "-- The Caverns Guide post gets the new combat + key info, only if nobody has edited it in /admin since Update 1.5.",
+  `UPDATE forum_posts SET body = ${sq(cavernsGuideBody)} WHERE title = 'The Caverns Guide' AND body = ${sq(CAVERNS_GUIDE_1_5)};`,
+  ""
+].join("\n");
+fs.writeFileSync(path.join(root, "migrations/0012_update_1_6.sql"), update16Sql);
+console.log("wrote migrations/0012_update_1_6.sql");
