@@ -1,0 +1,35 @@
+{
+  "id": "overthrone:demon_lord_awakening",
+  "display_name": "Demon Lord Awakening",
+  "slot": "aura",
+  "aura": {
+    "style": "summoning_circle",
+    "particle": "glow",
+    "colors": [
+      [
+        255,
+        40,
+        40
+      ],
+      [
+        150,
+        0,
+        20
+      ],
+      [
+        40,
+        0,
+        10
+      ]
+    ],
+    "particle_count": 0,
+    "size": 1.2,
+    "speed": 0.8,
+    "radius": 1.2,
+    "height": 1.0,
+    "alpha": 1.0,
+    "rotation_speed": 0.7,
+    "emissive": true,
+    "motion_response": 1.0
+  }
+}

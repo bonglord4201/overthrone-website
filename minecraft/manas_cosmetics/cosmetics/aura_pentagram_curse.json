@@ -1,0 +1,35 @@
+{
+  "id": "overthrone:pentagram_curse",
+  "display_name": "Cursed Pentagram",
+  "slot": "aura",
+  "aura": {
+    "style": "pentagram",
+    "particle": "glow",
+    "colors": [
+      [
+        255,
+        90,
+        200
+      ],
+      [
+        160,
+        0,
+        120
+      ],
+      [
+        40,
+        0,
+        40
+      ]
+    ],
+    "particle_count": 0,
+    "size": 1.0,
+    "speed": 0.8,
+    "radius": 1.1,
+    "height": 1.0,
+    "alpha": 1.0,
+    "rotation_speed": 0.7,
+    "emissive": true,
+    "motion_response": 1.0
+  }
+}

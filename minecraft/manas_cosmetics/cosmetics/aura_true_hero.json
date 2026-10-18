@@ -1,0 +1,35 @@
+{
+  "id": "overthrone:true_hero",
+  "display_name": "True Hero",
+  "slot": "aura",
+  "aura": {
+    "style": "halo",
+    "particle": "spark",
+    "colors": [
+      [
+        255,
+        255,
+        220
+      ],
+      [
+        255,
+        215,
+        80
+      ],
+      [
+        255,
+        160,
+        20
+      ]
+    ],
+    "particle_count": 0,
+    "size": 1.1,
+    "speed": 1.0,
+    "radius": 1.0,
+    "height": 1.0,
+    "alpha": 1.0,
+    "rotation_speed": 1.0,
+    "emissive": true,
+    "motion_response": 1.0
+  }
+}

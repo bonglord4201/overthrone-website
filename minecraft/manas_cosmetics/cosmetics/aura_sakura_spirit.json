@@ -1,0 +1,35 @@
+{
+  "id": "overthrone:sakura_spirit",
+  "display_name": "Sakura Spirit",
+  "slot": "aura",
+  "aura": {
+    "style": "falling_embers",
+    "particle": "glow",
+    "colors": [
+      [
+        255,
+        220,
+        235
+      ],
+      [
+        255,
+        150,
+        190
+      ],
+      [
+        230,
+        90,
+        150
+      ]
+    ],
+    "particle_count": 0,
+    "size": 1.0,
+    "speed": 0.7,
+    "radius": 1.2,
+    "height": 1.1,
+    "alpha": 1.0,
+    "rotation_speed": 0.6,
+    "emissive": true,
+    "motion_response": 1.0
+  }
+}

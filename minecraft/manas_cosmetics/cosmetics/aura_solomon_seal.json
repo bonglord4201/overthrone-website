@@ -1,0 +1,35 @@
+{
+  "id": "overthrone:solomon_seal",
+  "display_name": "Seal of the Demon King",
+  "slot": "aura",
+  "aura": {
+    "style": "hexagram",
+    "particle": "glow",
+    "colors": [
+      [
+        255,
+        230,
+        120
+      ],
+      [
+        230,
+        160,
+        30
+      ],
+      [
+        120,
+        60,
+        0
+      ]
+    ],
+    "particle_count": 0,
+    "size": 1.0,
+    "speed": 0.8,
+    "radius": 1.1,
+    "height": 1.0,
+    "alpha": 1.0,
+    "rotation_speed": 0.6,
+    "emissive": true,
+    "motion_response": 1.0
+  }
+}

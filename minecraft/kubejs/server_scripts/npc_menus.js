@@ -378,6 +378,7 @@
     if (g.type == 'tag') return owns(p, 'tag:' + g.id)
     if (g.type == 'namecolor') return owns(p, 'nc:' + g.id)
     if (g.type == 'cos') return owns(p, g.kind + ':' + g.id)
+    if (g.type == 'manas') return owns(p, 'manas:' + g.id)
     return false
   }
   const balanceIcon = (s, bal) => icon(s, 'minecraft:amethyst_shard', '&d&lThrone Shards',
@@ -534,6 +535,11 @@
       addOwned(p, g.kind + ':' + g.id)
       run(s, `tellraw ${p.username} ${JSON.stringify(['', { text: 'Equip it: ', color: 'gray' }, { text: '[CLICK HERE]', color: 'light_purple', bold: true, clickEvent: { action: 'run_command', value: KINDS[g.kind].cmd }, hoverEvent: { action: 'show_text', contents: 'Opens ' + KINDS[g.kind].cmd } }, { text: ' or type ' + KINDS[g.kind].cmd + ' / /cosmetics', color: 'gray' }])}`)
     }
+    else if (g.type == 'manas') {
+      run(s, `manas_cosmetics unlock ${p.username} ${g.id}`)
+      addOwned(p, 'manas:' + g.id)
+      run(s, `tellraw ${p.username} ${JSON.stringify(['', { text: 'Equip it: ', color: 'gray' }, { text: '[OPEN WARDROBE]', color: 'light_purple', bold: true, clickEvent: { action: 'run_command', value: '/wardrobe' }, hoverEvent: { action: 'show_text', contents: 'Opens your wardrobe' } }, { text: ' or type /wardrobe', color: 'gray' }])}`)
+    }
     else if (g.type == 'cmd') g.commands.forEach(c => run(s, c.split('{p}').join(p.username)))
     console.info('[throneshop] ' + p.username + ' bought ' + label + ' for ' + it.price + ' shards')
     p.tell(`§a§lThrone Shop §7» You bought §f${label}§7 for §d${fmt(it.price)} Throne Shards§7!`)
@@ -565,8 +571,25 @@
       list: OT_FX[k].map(c => ({ id: c.id, name: c.name, icon: c.icon, price: c.price, crate: !!c.crate, desc: c.desc })) }
   })
   const KIND_ORDER = ['tag', 'nc', 'cc', 'glow', 'grad', 'status', 'join'].concat(Object.keys(FXK).filter(k => KINDS[k]))
-  // cosmetics_fx.js switched off (renamed to .off): no empty PARTICLE EFFECTS tile in the Throne Shop
-  if (!KINDS.aura) SHOP.children = SHOP.children.filter(c => c.name != '&6&lPARTICLE EFFECTS')
+  // 3D cosmetics (Manas Cosmetics mod, list in manas_cosmetics.js) take the PARTICLE EFFECTS spot in the Throne Shop.
+  // The particle effects (cosmetics_fx.js) stay in /cosmetics if that file is on, but aren't sold any more.
+  SHOP.children = SHOP.children.filter(c => c.name != '&6&lPARTICLE EFFECTS')
+  if (typeof OT_MANAS !== 'undefined') {
+    const manasCat = (key, name, ic, desc) => ({ icon: ic, name: name, layout: 'grid', desc: desc,
+      children: OT_MANAS[key].filter(c => !c.crate && c.price).map(c => ({ icon: c.icon, name: c.name, price: c.price,
+        desc: ['A real 3D cosmetic.', '', '&7Equip it in your wardrobe:', '&f/wardrobe'], give: { type: 'manas', id: c.id } })) })
+    SHOP.children.push({
+      slot: [7, 3], icon: 'minecraft:elytra', name: '&d&l3D COSMETICS', kind: 'COSMETIC',
+      desc: ['Real 3D wings, halos, crowns,', 'horns and animated auras.', 'Everyone with the modpack sees them.', '', '&fEquip them: &e/wardrobe', '', '&8Some rare ones only come', '&8from the Cosmetic Crate.'],
+      layout: 'spaced',
+      children: [
+        manasCat('wings', '&5&lWINGS', 'minecraft:elytra', ['Wings on your back.']),
+        manasCat('halos', '&e&lHALOS', 'minecraft:gold_nugget', ['A glowing ring above your head.']),
+        manasCat('heads', '&6&lCROWNS & HORNS', 'minecraft:golden_helmet', ['Crowns and horns on your head.']),
+        manasCat('auras', '&b&lAURAS', 'minecraft:blaze_powder', ['Animated magic all around you.']),
+      ],
+    })
+  }
   const cosById = (kind, id) => { var l = KINDS[kind].list; for (var i = 0; i < l.length; i++) if (l[i].id == id) return l[i]; return null }
   // the equipped cosmetic of a kind (only if still owned)
   const equipped = (p, kind) => {

@@ -1,0 +1,35 @@
+{
+  "id": "overthrone:celestial",
+  "display_name": "Celestial",
+  "slot": "aura",
+  "aura": {
+    "style": "starfield_shimmer",
+    "particle": "spark",
+    "colors": [
+      [
+        255,
+        255,
+        255
+      ],
+      [
+        180,
+        200,
+        255
+      ],
+      [
+        150,
+        100,
+        255
+      ]
+    ],
+    "particle_count": 0,
+    "size": 1.0,
+    "speed": 0.8,
+    "radius": 1.2,
+    "height": 1.2,
+    "alpha": 1.0,
+    "rotation_speed": 0.8,
+    "emissive": true,
+    "motion_response": 1.0
+  }
+}

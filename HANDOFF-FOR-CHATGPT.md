@@ -119,6 +119,7 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
 | `professions.js` | Professions (Mining, Gemology, Farming, Foraging, Combat 1–100) and gathering **nodes**: hit 3x, progress bar on the floating text and actionbar, respawn after 1 min, no item drops. | `/node create/remove/fixall/...`, `/professions` |
 | `kill_credit.js` | Shared `otKillerOf(event)`: which player gets a kill's rewards (also Tensura skill kills, pets/summons → owner). Used by caverns, leveling, professions, quests, cosmetics_fx, mob_spawns. | `/killcredit` |
 | `guide_books.js` | Written books "Tensura Guide" (every Tensura race + path, EP, evolving, awakening, naming, skills, sunlight, flying, Divine forms, race reset; Mysticism races with the mod's own descriptions) and "Solo Leveling Guide" (evaluation, ranks, statues, gates, levels, Caverns; shows the player's rank/class). Global `otGiveGuideBook(p, 'tensura'|'sl')`, 30 s cooldown. Text is word-wrapped and paginated automatically (14 lines x 112 px per page). Content = verified facts only (website guide / mod lang / confirmed server facts); SL dungeons NOT included until the SLR lang file is checked. Given from START HERE + the book tile in the Tensura/SL guide menus (npc_menus.js `giveBook`). | `/tensurabook`, `/slbook` |
+| `manas_cosmetics.js` | List of our 3D cosmetics (Manas Cosmetics mod) for the Throne Shop "3D COSMETICS" and the Cosmetic Crate; files in config/manas_cosmetics/ (repo minecraft/manas_cosmetics/). | `/wardrobe` |
 | `race_scroll.js` | NPC Seris gives a Tensura Race Reset Scroll every 12 h. Finds Seris by name OR `persistentData ot_style_title` (styleall clears names). | `/racescroll ...` |
 | `rpg_border.js` | World border for the RPG world. | `/rpgborder` |
 | `rpg_protect.js` | No breaking/placing/buckets/fire in the RPG world except ops or tag `rpg_builder`. | |
@@ -221,6 +222,18 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   (position/scale/rotation), in-game editor `/manas_cosmetics edit`, 14 slots incl. aura/back/pet. The sidecar format and
   folder are NOT verified: get the mod jar from the owner before making any.
   2026-10-18: owner saw the particle cosmetics working but thinks they look bad; wants custom Manas Cosmetics instead.
+  **DONE (verified from the jar manas_cosmetics-neoforge-client-1.0.6, its own README in CosmeticManager):** files go in
+  `config/manas_cosmetics/models/<slot>/*.bbmodel` + `config/manas_cosmetics/cosmetics/*.json` (keys: id, display_name, slot,
+  weapon_type, force_equip_allowed, model (relative to config/manas_cosmetics/), scale, offset, rotation; auras: slot "aura"
+  + "aura": {style, particle, colors, particle_count, size, speed, radius, height, alpha, rotation_speed, emissive,
+  motion_response}). Commands: generate / reload / list / edit <id> / give / unlock / revoke / unlocked / wardrobe.
+  Repo: `minecraft/manas_cosmetics/` built by `scripts/build-manas-models.py` (4 wings, 3 halos, 2 crowns, 2 horns: textured
+  zero-thickness plates with transparent pixel art + voxel horns, previews in previews/) and `scripts/build-manas-auras.py`
+  (16 auras). Ids `overthrone:<name>`. List for shop/crate: `kubejs/server_scripts/manas_cosmetics.js` (`OT_MANAS`,
+  priority 10, + `/wardrobe`). Throne Shop: "3D COSMETICS" tile (slot 7,3, replaces PARTICLE EFFECTS), give type `manas`
+  runs `manas_cosmetics unlock`, ownership mirrored in ot_owned as `manas:<id>`. Cosmetic Crate defaults = all of them
+  (crate-only weight 2, others 10); owner loads them with `/crate reward reset cosmetic`. NOT verified in game yet:
+  model orientation/position (tune with /manas_cosmetics edit).
   Waiting on the Manas Cosmetics jar (this session can't reach CurseForge/Modrinth). The particle file can be switched off
   by renaming cosmetics_fx.js to .off: npc_menus.js then hides the PARTICLE EFFECTS shop tile and /aura /trail /killeffect.
 
