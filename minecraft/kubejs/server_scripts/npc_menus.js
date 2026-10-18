@@ -574,11 +574,12 @@
   // 3D cosmetics (Manas Cosmetics mod, list in manas_cosmetics.js) take the PARTICLE EFFECTS spot in the Throne Shop.
   // The particle effects (cosmetics_fx.js) stay in /cosmetics if that file is on, but aren't sold any more.
   SHOP.children = SHOP.children.filter(c => c.name != '&6&lPARTICLE EFFECTS')
-  if (typeof OT_MANAS !== 'undefined') {
-    const manasCat = (key, name, ic, desc) => ({ icon: ic, name: name, layout: 'grid', desc: desc,
+  // (no const inside blocks: KubeJS's Rhino fails the WHOLE file on that, which stopped every NPC click on 2026-10-18)
+  var manasCat = (key, name, ic, desc) => ({ icon: ic, name: name, layout: 'grid', desc: desc,
       children: OT_MANAS[key].filter(c => !c.crate && c.price).map(c => ({ icon: c.icon, name: c.name, price: c.price,
         desc: ['A real 3D cosmetic.', '', '&7Equip it in your wardrobe:', '&f/wardrobe'], give: { type: 'manas', id: c.id } })) })
-    SHOP.children.push({
+  try {
+    if (typeof OT_MANAS !== 'undefined') SHOP.children.push({
       slot: [7, 3], icon: 'minecraft:elytra', name: '&d&l3D COSMETICS', kind: 'COSMETIC',
       desc: ['Real 3D wings, halos, crowns,', 'horns and animated auras.', 'Everyone with the modpack sees them.', '', '&fEquip them: &e/wardrobe', '', '&8Some rare ones only come', '&8from the Cosmetic Crate.'],
       layout: 'spaced',
@@ -589,7 +590,7 @@
         manasCat('auras', '&b&lAURAS', 'minecraft:blaze_powder', ['Animated magic all around you.']),
       ],
     })
-  }
+  } catch (e) { console.warn('[npc_menus] 3D cosmetics shop: ' + e) }
   const cosById = (kind, id) => { var l = KINDS[kind].list; for (var i = 0; i < l.length; i++) if (l[i].id == id) return l[i]; return null }
   // the equipped cosmetic of a kind (only if still owned)
   const equipped = (p, kind) => {

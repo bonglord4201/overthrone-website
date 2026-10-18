@@ -200,6 +200,10 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   contents (particles). Any file in `kubejs/server_scripts/` runs on the server; the effects are vanilla particles sent by
   the server, so nothing is needed on the client.
 
+- **NPC clicks all broke (2026-10-18):** the 3D cosmetics shop code put a `const` inside an `if` block in npc_menus.js;
+  KubeJS's Rhino fails the WHOLE file on that (no menus, no NPC clicks). Fixed (`var` at function level + try/catch).
+  **Rule: never declare `const`/`let` inside if/for/try blocks in KubeJS scripts; use `var` or declare at function level.**
+
 - **Skills still griefing the hub/RPG World (2026-10-18, grief_guard.js):** explosions were already cancelled
   (safe_explosions.js, rpg_protect.js), so the skills break blocks another way. Likely reason the OWNER sees it: the hub is
   an FTB Chunks claim and "TenSura Compat: FTB" (tensura_ftb 2.0.0.4) lets claim members / admin bypass through, and
