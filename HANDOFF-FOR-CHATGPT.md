@@ -178,6 +178,11 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   (LivingDamageEvent$Pre: if a hit from a tamable mob whose owner isn't a player would kill, damage is set to 0 and the
   victim is killed one tick later with `kill()`, i.e. a death with no killer). Line 53 of XPGainTShadowProcedure has NOT
   been read yet: the SLR jar (`mods/SLR1.3.3.jar`) is needed to confirm the exact null. Remove the guard when SLR fixes it.
+- **2026-10-18 update:** `slr_death_guard.js` did NOT stop the crash (owner reported it still crashed; no new crash report
+  seen yet). Owner told to delete it. **The Caverns combat zone is switched OFF** (`CAVERNS_COMBAT = false` in
+  damage_zones.js, `WD_CAVERNS_COMBAT = false` in serversetup/worlddamage.js), so the whole RPG world is safe again, which was
+  the state before the crashes. Turn both back to true only after SLR is fixed/patched. Still needed from the owner:
+  `mods/SLR1.3.3.jar` (to read XPGainTShadowProcedure line 53 with javap), the newest crash report and latest.log.
 - **Tensura skill events:** never hook them (crash, see section 2).
 - **Skills griefing the hub/RPG world:** fixed by the **TenSura Compat: FTB** mod (server-side only,
   `abilityGrief=false`) plus FTB Chunks claims owned by team `hub#0d6da155` over the hub and RPG world.

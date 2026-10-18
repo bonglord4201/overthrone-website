@@ -27,7 +27,11 @@ function wdProtected(level) {
 
 // The Caverns (area set with /cavernadmin pos1/pos2 in caverns.js) are a combat zone inside the protected RPG world:
 // players there take normal damage. Same check as damage_zones.js.
+// false = the Caverns are protected like the rest of the RPG world. Switched OFF 2026-10-18 because a player dying
+// in the Caverns sets off a crash bug in the Solo Leveling mod (XPGainTShadowProcedure). true again once SLR is fixed.
+const WD_CAVERNS_COMBAT = false
 function wdInCaverns(e) {
+  if (!WD_CAVERNS_COMBAT) return false
   try {
     if (typeof otInCaverns != 'function') return false
     if (otCavernsArea == null && typeof otCavernsLoad == 'function') otCavernsLoad(e.getServer())
