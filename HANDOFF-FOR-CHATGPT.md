@@ -199,6 +199,19 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   contents (particles). Any file in `kubejs/server_scripts/` runs on the server; the effects are vanilla particles sent by
   the server, so nothing is needed on the client.
 
+- **Skills still griefing the hub/RPG World (2026-10-18, grief_guard.js):** explosions were already cancelled
+  (safe_explosions.js, rpg_protect.js), so the skills break blocks another way. Likely reason the OWNER sees it: the hub is
+  an FTB Chunks claim and "TenSura Compat: FTB" (tensura_ftb 2.0.0.4) lets claim members / admin bypass through, and
+  rpg_protect lets OPs build. Not verified with a normal player yet. Added: (3) NeoForge BreakEvent in hub/rpg cancelled
+  when not a hand break (>6 blocks from the eyes, or a 2nd break by the same player in the same tick), for everyone incl.
+  OPs; (4) modded fire blocks (no collision, replaceable, id ends fire/flame, found from the block registry, e.g. Tensura
+  Black Fire) cleared with `fill ... replace` within 16 blocks of players in hub/rpg every 2 s, vanilla fire untouched;
+  `/griefguard watch` (NeighborNotifyEvent, only active while a staff member watches) lists blocks turning to air/fire
+  without a hand break = skills that bypass BreakEvent; `/griefguard rules` lists matching game rules.
+  **Owner also wants NO skills at all in hub/RPG outside the Caverns** (Caverns: skills OK, damage only). NOT done:
+  needs a verified way to stop skill use without listening to ManasCore events (e.g. ManasCore SkillAPI cooldowns).
+  Waiting on the ManasCore jar. Test: `node minecraft/tests/grief_guard/test.js minecraft/kubejs/server_scripts/grief_guard.js`.
+
 - **KubeJS can't see `getYRot()` / `getXRot()` on players here** (TypeError "Cannot find function getYRot in object
   ServerPlayer"). Use the KubeJS names `p.yaw` / `p.pitch` (with fallbacks). This broke every aura (the render threw before
   drawing) and made npc_menus `looked()` fall back to the old ray trace (= the "attach picks the wrong NPC" bug). Both fixed.
