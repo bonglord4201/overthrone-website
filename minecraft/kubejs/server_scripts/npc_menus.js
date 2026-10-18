@@ -1316,9 +1316,9 @@
       title: 'Solo Leveling Guide', border: 'purple', slots: [
         [4, 0, 'minecraft:ender_eye', '&5&l✦ SOLO LEVELING GUIDE ✦', ['From Hunter to Monarch.', '&7Your rank: &f' + me[0] + '  &7Class: &f' + me[1]], true],
         [1, 1, 'minecraft:written_book', '&a&l① START HERE', ['Go to the &fHunter Association', '&8(/warp hunters)&7 and do your', '&fHunter Evaluation&7.', 'It gives you your &fclass&7, &fstyle', '&7and &fhunter rank&7.'].concat(BOOK_LORE), true, () => giveBook(p, 'sl')],
-        [6, 3, 'minecraft:written_book', '&5&l📖 SOLO LEVELING GUIDE BOOK', ['Everything in one book:', 'the evaluation, ranks, statues,', 'gates, levels and the Caverns.'].concat(BOOK_LORE), true, () => giveBook(p, 'sl')],
+        [6, 3, 'minecraft:written_book', '&5&l📖 SOLO LEVELING GUIDE BOOK', ['Everything in one book:', 'the evaluation, ranks, the Cartenon','Temple statues,', 'gates, levels and the Caverns.'].concat(BOOK_LORE), true, () => giveBook(p, 'sl')],
         [3, 1, 'minecraft:amethyst_shard', '&d&lTHE EVALUATION', ['Tabs: Contact, Scan, Class,', 'Style, Rank, Record.', '&fPress and HOLD the gem&7 until', 'the timer is done (about 1.5 s).', 'Ranks: &fE → D → C → B → A → S'], false],
-        [5, 1, 'minecraft:armor_stand', '&e&lSTATUES', ['&cThey are NOT broken!', 'To use a statue, &fcrouch (sneak)', '&fnext to it for 2 seconds&7.', 'Hold sneak until it activates.'], true],
+        [5, 1, 'minecraft:armor_stand', '&e&lSTUCK IN THE CARTENON TEMPLE?', ['&cThe statues are NOT broken!', 'To use a statue, &fcrouch (sneak)', '&fnext to it for 2 seconds&7.', 'Hold sneak until it activates.'], true],
         [7, 1, 'minecraft:end_portal_frame', '&c&lGATES', ['&f3 gates open every hour&7, near a', 'random player in the &fOverworld', '&8(/wild)&7.', 'Clear them for loot and XP.', 'Team up for higher ranks.'], true],
         [2, 3, 'minecraft:iron_sword', '&c&lYOUR CLASS', ['Your class and style come from', 'the evaluation.', '&7Class: &f' + me[1], '&7Rank: &f' + me[0], 'More info (rank perk): &f/hunterinfo'], false],
         [4, 3, 'minecraft:experience_bottle', '&b&lLEVELS', ['Solo Leveling has its own levels', 'and stats, on top of the server', '&f/level&7 and your Tensura race.', 'They all stack.'], false],
@@ -1335,7 +1335,7 @@
       title: 'Hunter Association', border: 'red', rows: 5, slots: [
         [4, 0, 'minecraft:netherite_helmet', '&4&l✦ HUNTER ASSOCIATION ✦', ['Rise through the Hunter Ranks:', '&fE » D » C » B » A » S » ???', '', '&7Your rank: &f' + me[0] + '  &7Class: &f' + me[1]], true],
         [2, 1, 'minecraft:amethyst_shard', '&d&l① GET EVALUATED', ['Use the &fHunter Evaluator&7 at', 'the Hunter Association, then', '&fpress and HOLD the gem&7', '(about 1.5 s).', 'You get your class, style and rank.'], true],
-        [4, 1, 'minecraft:armor_stand', '&e&lSTATUES', ['&fCrouch next to a statue for', '&f2 seconds&7 to activate it.', '&cIt is not broken!'], false],
+        [4, 1, 'minecraft:armor_stand', '&e&lSTUCK IN THE CARTENON TEMPLE?', ['&cThe statues are NOT broken!', '&fCrouch next to a statue for', '&f2 seconds&7 to activate it.'], false],
         [6, 1, 'minecraft:end_portal_frame', '&c&lGATES', ['&f3 gates every hour&7 near a player', 'in the &fOverworld&7 (/wild).', 'Clear them to rank up faster.'], false],
         [2, 2, 'minecraft:book', '&a&lYOUR HUNTER INFO', ['&7Rank: &f' + me[0], '&7Class: &f' + me[1], '', 'Ranks with the perk can see more', 'with &f/hunterinfo&7.'], false],
         [4, 2, 'minecraft:ender_eye', '&5&lSOLO LEVELING GUIDE', ['Everything about hunters,', 'classes, gates and statues.', '', '&e&lCLICK TO OPEN'], true, () => after(p, () => slGuide(p))],

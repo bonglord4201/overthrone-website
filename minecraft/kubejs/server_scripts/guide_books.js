@@ -83,7 +83,7 @@ var otGiveGuideBook = null
     ['&2&l1. START HERE', '', 'Go to the &lHunter Association&r: type &l/warp hunters&r.', '', 'Do your &lHunter Evaluation&r there. It gives you your &lclass&r, your &lstyle&r and your &lhunter rank&r.'],
     ['&2&l2. THE EVALUATION', '', 'Use the Hunter Evaluator. Its tabs: Contact, Scan, Class, Style, Rank, Record.', '', '&lPress and HOLD the gem&r until the timer is done (about 1.5 seconds). Letting go early stops it.'],
     ['&2&lHUNTER RANKS', '', '&lE > D > C > B > A > S', '', 'E is the lowest, S the highest.', '', 'Your rank and class are on the first page of this book and in the Solo Leveling Guide menu.', '', 'Rank perk: &l/hunterinfo'],
-    ['&2&l3. STATUES', '', '&4They are NOT broken!', '', 'To use a statue, &lcrouch (sneak) next to it for 2 seconds&r. Keep holding sneak until it activates.'],
+    ['&2&l3. STUCK IN THE CARTENON TEMPLE?', '', '&4The statues are NOT broken!', '', 'To use a statue, &lcrouch (sneak) next to it for 2 seconds&r. Keep holding sneak until it activates.'],
     ['&2&l4. GATES', '', '&l3 gates open every hour&r, near a random player in the &lOverworld&r (/wild).', '', 'Clear them for loot and XP. Higher ranks are harder, so team up.'],
     ['&2&lLEVELS & STATS', '', 'Solo Leveling has its own levels and stats.', '', 'They stack with your server level (&l/level&r, &l/stats&r) and your Tensura race. All of them make you stronger.'],
     ['&2&lTHE CAVERNS', '', 'Mobs, bosses and gathering nodes: &l/warp caverns&r', '', 'Every kill and node pays &2cash&r, bosses pay more. Kills can drop crate keys (0.5%, set bosses 5%).', '', '&4You CAN die there.'],
@@ -103,8 +103,8 @@ var otGiveGuideBook = null
   const charW = (c, bold) => (WIDE[c] != null ? WIDE[c] : 6) + (bold ? 1 : 0)
   const MAXW = 112, LINES = 14
   const wrap = (line) => {
-    var s = String(line), out = [], cur = '', w = 0, prefix = '', bold = false, word = '', ww = 0, codes = ''
-    var push = () => { out.push(cur); cur = prefix; w = 0 }
+    var s = String(line), out = [], cur = '', w = 0, prefix = '', bold = false, word = '', ww = 0, wordPrefix = ''
+    var push = () => { out.push(cur); cur = wordPrefix; w = 0 }   // the next line starts in the colour the word started in
     var addWord = () => {
       if (!word) return
       var space = w > 0 ? charW(' ', bold) : 0
@@ -114,6 +114,7 @@ var otGiveGuideBook = null
     }
     for (var i = 0; i < s.length; i++) {
       var c = s[i]
+      if (word === '') wordPrefix = prefix
       if (c == '&' && i + 1 < s.length && /[0-9a-flr]/i.test(s[i + 1])) {
         var k = s[i + 1].toLowerCase()
         word += '&' + k
