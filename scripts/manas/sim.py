@@ -37,9 +37,17 @@ class Model:
         self.d = data
         self.fmt = data.get('meta', {}).get('model_format', '')
         self.el = {e['uuid']: e for e in data['elements']}
-        src = data['textures'][0]['source'].split(',', 1)[1]
-        self.tex = np.array(Image.open(io.BytesIO(base64.b64decode(src))).convert('RGBA'))
-        self.uvw = data['textures'][0].get('uv_width', self.tex.shape[1]); self.uvh = data['textures'][0].get('uv_height', self.tex.shape[0])
+        # every texture, with how the mod draws it (BBModelData.Texture / BBModelRenderer.openPass):
+        #   name ending _e (or render_mode emissive) -> full bright; more half-transparent than opaque pixels -> translucent
+        self.texs = []
+        for t in data['textures']:
+            im = np.array(Image.open(io.BytesIO(base64.b64decode(t['source'].split(',', 1)[1]))).convert('RGBA'))
+            a = im[:, :, 3]; partial, opaque = int(((a > 0) & (a < 255)).sum()), int((a == 255).sum())
+            nm = t.get('name', '').lower().replace('.png', '')
+            self.texs.append({'img': im, 'emissive': nm.endswith('_e') or t.get('render_mode') == 'emissive', 'translucent': partial > opaque})
+        self.tex = self.texs[0]['img']
+        res = data.get('resolution', {})
+        self.uvw = res.get('width', self.tex.shape[1]); self.uvh = res.get('height', self.tex.shape[0])
         self.roots = [self._bone(g) for g in data['outliner'] if isinstance(g, dict)]
         loose = [self.el[c] for c in data['outliner'] if isinstance(c, str)]
         if loose: self.roots.append({'name': '__root_loose_cubes__', 'pivot': [0, 0, 0], 'rot': [0, 0, 0], 'cubes': loose, 'children': []})
@@ -118,6 +126,7 @@ def slot_matrix(slot, model, sidecar):
     if slot == 'back':
         M = T(0, 0, 2) @ D; flip = (1, 1, 1)
         want = (not entity_down) and model.avg_centroid_y() < 0
+        if sidecar.get('needs_y_flip') is not None: want = bool(sidecar['needs_y_flip'])   # CosmeticDefinition.needsYFlipOverride
         if not has_rot and want:
             if bedrock: M = M @ Rz(180); flip = (-1, -1, 1)
             else: M = M @ Rx(180); flip = (1, -1, -1)
@@ -141,15 +150,23 @@ class Canvas:
     def __init__(self, size=360, scale=7.0, yaw=0, pitch=10, center_y=-4):
         self.size, self.scale = size, scale
         self.img = np.zeros((size, size, 3), np.uint8); self.img[:] = (30, 30, 38)
+        self.late, self.ambient = [], 1.0
         self.zb = np.full((size, size), -1e9)
         # camera: world (display) coords = (-x, -y, -z) of model space (so +Y is up, +Z is the player's front)
         cy, sy = math.cos(math.radians(yaw)), math.sin(math.radians(yaw)); cp, sp = math.cos(math.radians(pitch)), math.sin(math.radians(pitch))
         self.V = np.array([[cy, 0, sy], [0, 1, 0], [-sy, 0, cy]]) ; self.V = np.array([[1, 0, 0], [0, cp, -sp], [0, sp, cp]]) @ self.V
         self.cy = center_y
-    def quad(self, M, v, uv, tex, uvw, uvh):
+    def quad(self, M, v, uv, tex, uvw, uvh, emissive=True, translucent=False):
         P = np.array([(M @ np.array([*p, 1]))[:3] for p in v])
         P = np.c_[-P[:, 0], -P[:, 1] - self.cy, -P[:, 2]] @ self.V.T
         e1, e2 = P[1] - P[0], P[3] - P[0]
+        nrm = np.cross(e1, e2); nl = np.linalg.norm(nrm)
+        # vanilla-ish entity lighting (two lights from above), only for lit textures
+        light = 1.0
+        if not emissive and nl > 1e-9:
+            nv = nrm / nl; L1 = np.array([0.2, 1.0, -0.7]); L2 = np.array([-0.2, 1.0, 0.7])
+            L1 /= np.linalg.norm(L1); L2 /= np.linalg.norm(L2)
+            light = min(1.0, 0.4 + 0.6 * (abs(nv @ L1) + abs(nv @ L2)) * 0.5) * self.ambient
         n = int(min(400, max(4, max(np.linalg.norm(e1), np.linalg.norm(e2)) * self.scale * 1.8)))
         a, b = np.meshgrid((np.arange(n) + 0.5) / n, (np.arange(n) + 0.5) / n)
         a, b = a.ravel(), b.ravel()
@@ -158,9 +175,10 @@ class Canvas:
         th, tw = tex.shape[:2]
         tu = np.clip(((u0 + (u1 - u0) * a) / uvw * tw).astype(int), 0, tw - 1)
         tv = np.clip(((v0 + (v1 - v0) * b) / uvh * th).astype(int), 0, th - 1)
-        col = tex[tv, tu]
-        keep = col[:, 3] > 30
+        col = tex[tv, tu].astype(float)
+        keep = col[:, 3] > (0 if translucent else 30)
         pts, col = pts[keep], col[keep]
+        col[:, :3] *= light
         X = (self.size / 2 + pts[:, 0] * self.scale).astype(int); Y = (self.size * 0.55 - pts[:, 1] * self.scale).astype(int); Z = pts[:, 2]
         ok = (X >= 0) & (X < self.size) & (Y >= 0) & (Y < self.size)
         X, Y, Z, col = X[ok], Y[ok], Z[ok], col[ok]
@@ -169,13 +187,22 @@ class Canvas:
         order = np.argsort(-Z)                       # nearest first
         u, first = np.unique(idx[order], return_index=True)
         sel = order[first]                           # the nearest sample for each pixel
+        if translucent:                              # drawn after everything else, blended, no depth write
+            self.late.append((u, Z[sel], col[sel])); return
         zf = self.zb.ravel(); imf = self.img.reshape(-1, 3)
         win = Z[sel] > zf[u]
-        zf[u[win]] = Z[sel][win]; imf[u[win]] = col[sel][win][:, :3]
+        zf[u[win]] = Z[sel][win]; imf[u[win]] = np.clip(col[sel][win][:, :3], 0, 255)
+    def flush(self):
+        zf = self.zb.ravel(); imf = self.img.reshape(-1, 3)
+        for u, z, col in self.late:
+            win = z > zf[u]; a = col[win][:, 3:4] / 255.0
+            base = imf[u[win]].astype(float)
+            imf[u[win]] = np.clip(base * (1 - a) + col[win][:, :3] * a, 0, 255)   # TRANSLUCENT_TRANSPARENCY: normal alpha blend
+        self.late = []
     def box(self, M, f, t, rgba):
         tex = np.array([[rgba]], np.uint8)
         x0, y0, z0 = [min(f[i], t[i]) for i in range(3)]; x1, y1, z1 = [max(f[i], t[i]) for i in range(3)]
-        for fn in FACES.values(): self.quad(M, fn(x0, y0, z0, x1, y1, z1), (0, 0, 1, 1), tex, 1, 1)
+        for fn in FACES.values(): self.quad(M, fn(x0, y0, z0, x1, y1, z1), (0, 0, 1, 1), tex, 1, 1, emissive=False)
     def player(self, M0=np.eye(4)):
         skin, shirt, pants, hair = (200, 160, 130, 255), (130, 30, 35, 255), (40, 40, 60, 255), (60, 40, 30, 255)
         self.box(M0, (-4, -8, -4), (4, 0, 4), skin); self.box(M0, (-4, -8.4, -4), (4, -7, 4), hair)
@@ -198,18 +225,22 @@ class Canvas:
                 for name, fc in c['faces'].items():
                     uv = fc['uv']
                     if uv[0] == uv[2] or uv[1] == uv[3]: continue
-                    self.quad(Mc, FACES[name](x0, y0, z0, x1, y1, z1), uv, model.tex, model.uvw, model.uvh)
+                    ti = fc.get('texture', 0); ti = ti if isinstance(ti, int) and 0 <= ti < len(model.texs) else 0
+                    tx = model.texs[ti]
+                    self.quad(Mc, FACES[name](x0, y0, z0, x1, y1, z1), uv, tx['img'], model.uvw, model.uvh, tx['emissive'], tx['translucent'])
             for k in b['children']: walk(k, Mb)
         for r in model.roots: walk(r, M)
-    def image(self): return Image.fromarray(self.img)
+    def image(self): self.flush(); return Image.fromarray(self.img)
 
-def preview(bbmodel_path, sidecar, t=0.0, yaw=180, pitch=12, size=320, scale=6.0, pet=False):
+def preview(bbmodel_path, sidecar, t=0.0, yaw=180, pitch=12, size=320, scale=6.0, pet=False, anim='idle', dark=False):
     m = Model(json.load(open(bbmodel_path)))
     if pet:   # PetCosmeticRenderer: world space, Y up from the feet, -Z = the pet's front; our canvas flips Y, so S(1,-1,1)
         c = Canvas(size, scale * 1.6, yaw, pitch, center_y=6)
+        if dark: c.img[:] = (8, 8, 14); c.ambient = 0.35
         M = S(1, -1, 1) @ S(*sidecar.get('scale', [1, 1, 1]))
-        c.model(m, M, t, 'idle'); return c.image()
+        c.model(m, M, t, anim); return c.image()
     c = Canvas(size, scale, yaw, pitch)
+    if dark: c.img[:] = (8, 8, 14); c.ambient = 0.35
     c.player()
-    c.model(m, slot_matrix(sidecar['slot'], m, sidecar), t)
+    c.model(m, slot_matrix(sidecar['slot'], m, sidecar), t, anim)
     return c.image()

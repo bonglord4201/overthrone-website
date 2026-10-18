@@ -9,16 +9,25 @@ def lerp(a, b, t): t = max(0.0, min(1.0, t)); return tuple(int(round(a[i] + (b[i
 def shade(c, k): return tuple(max(0, min(255, int(v * k))) for v in c[:3])
 def mix(a, b, t): return lerp(a, b, t)
 
+class UV(tuple):
+    """A uv rectangle (u0, v0, u1, v1) that remembers which texture of the model it is on."""
+    def __new__(cls, r, tex=0):
+        o = super().__new__(cls, r); o.tex = tex; return o
+    def mirrored(self): return UV((self[2], self[1], self[0], self[3]), self.tex)
+
 class Atlas:
-    """Packs small sprites into one texture; returns the uv rectangle of each."""
-    def __init__(self, w=256, h=256):
+    """Packs small sprites into one texture; returns the uv rectangle of each.
+    index = the texture's slot in the model: 0 = main (opaque, lit), 1 = glow (opaque, full bright: the mod makes any
+    texture whose name ends in _e full bright), 2 = soft glow (see-through + full bright)."""
+    def __init__(self, w=256, h=256, index=0, suffix=''):
         self.img = Image.new('RGBA', (w, h), (0, 0, 0, 0)); self.x = self.y = self.row = 0; self.w, self.h = w, h
+        self.index, self.suffix, self.used = index, suffix, False
     def add(self, sprite):
         sw, sh = sprite.size
-        if self.x + sw > self.w: self.x = 0; self.y += self.row; self.row = 0
+        if self.x + sw + 1 > self.w: self.x = 0; self.y += self.row + 1; self.row = 0
         if self.y + sh > self.h: raise ValueError('atlas full')
         self.img.paste(sprite, (self.x, self.y)); r = (self.x, self.y, self.x + sw, self.y + sh)
-        self.x += sw; self.row = max(self.row, sh); return r
+        self.x += sw + 1; self.row = max(self.row, sh); self.used = True; return UV(r, self.index)
     def solid(self, c, a=255):
         return self.add(Image.new('RGBA', (2, 2), tuple(c[:3]) + (a,)))
 
@@ -101,10 +110,24 @@ def runes_sprite(col, size=64):
     return im.resize((size, size), Image.LANCZOS)
 
 # ---------------------------------------------------------------- model
+def F(uv): return {'uv': [round(v, 4) for v in uv], 'texture': getattr(uv, 'tex', 0)}
+
 class BB:
     def __init__(self, name, atlas, fmt='free'):
         self.name, self.atlas, self.fmt = name, atlas, fmt
         self.elements, self.bones, self.root_bones, self.anims = [], {}, [], []
+        self.extra = []
+    def glow_atlas(self):
+        """Full-bright texture (glowing edges, runes, gems, embers). Same size as the main one (the mod divides uvs by
+        the model resolution for textures that aren't animation strips)."""
+        if not self.extra: self.extra.append(Atlas(self.atlas.w, self.atlas.h, 1, '_glow_e'))
+        return self.extra[0]
+    def soft_atlas(self):
+        """See-through + full-bright texture (soft light glows). Mostly half-transparent pixels, so the mod draws it
+        translucent."""
+        self.glow_atlas()
+        if len(self.extra) < 2: self.extra.append(Atlas(self.atlas.w, self.atlas.h, 2, '_soft_e'))
+        return self.extra[1]
     def bone(self, name, pivot, parent=None, rotation=(0, 0, 0)):
         b = {'name': name, 'origin': [round(v, 4) for v in pivot], 'rotation': list(rotation), 'color': 0, 'uuid': uid(), 'export': True,
              'mirror_uv': False, 'isOpen': True, 'locked': False, 'visibility': True, 'autouv': 0, 'children': []}
@@ -121,14 +144,15 @@ class BB:
     def box(self, bone, frm, to, uv_front, uv_side=None, origin=None, rotation=None, uv_top=None):
         """A cube: front+back faces show uv_front (top of sprite = top of the cube), sides/top/bottom show uv_side."""
         side = uv_side or uv_front; top = uv_top or side
-        f = {'north': {'uv': list(uv_front), 'texture': 0}, 'south': {'uv': list(uv_front), 'texture': 0},
-             'east': {'uv': list(side), 'texture': 0}, 'west': {'uv': list(side), 'texture': 0},
-             'up': {'uv': list(top), 'texture': 0}, 'down': {'uv': list(top), 'texture': 0}}
+        f = {'north': F(uv_front), 'south': F(uv_front), 'east': F(side), 'west': F(side), 'up': F(top), 'down': F(top)}
         return self.cube(bone, frm, to, f, origin, rotation)
     def flat(self, bone, frm, to, uv, origin=None, rotation=None):
-        return self.cube(bone, frm, to, {'up': {'uv': list(uv), 'texture': 0}, 'down': {'uv': list(uv), 'texture': 0}}, origin, rotation)
-    def plate(self, bone, frm, to, uv, origin=None, rotation=None):
-        return self.cube(bone, frm, to, {'north': {'uv': list(uv), 'texture': 0}, 'south': {'uv': list(uv), 'texture': 0}}, origin, rotation)
+        return self.cube(bone, frm, to, {'up': F(uv), 'down': F(uv)}, origin, rotation)
+    def plate(self, bone, frm, to, uv, origin=None, rotation=None, back=None):
+        """Two-sided flat piece in the XY plane. back = uv for the +Z side (default: uv mirrored, so a painted shape
+        lines up with the geometry from both sides)."""
+        b = back if back is not None else (uv.mirrored() if isinstance(uv, UV) else (uv[2], uv[1], uv[0], uv[3]))
+        return self.cube(bone, frm, to, {'north': F(uv), 'south': F(b)}, origin, rotation)
     def anim(self, name, length, tracks, loop=True):
         """tracks: {bone: {'rotation'|'position'|'scale': [(time, x, y, z), ...]}}; x/y/z may be Molang strings."""
         animators = {}
@@ -146,15 +170,18 @@ class BB:
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, 'w') as f: json.dump(data, f)
     def to_dict(self):
-        tex = self.atlas.img; w, h = tex.size
-        b = io.BytesIO(); tex.save(b, 'PNG')
+        w, h = self.atlas.img.size
+        def texdef(at):
+            b = io.BytesIO(); at.img.save(b, 'PNG')
+            return {'path': '', 'name': self.name + at.suffix + '.png', 'folder': '', 'namespace': '', 'id': str(at.index), 'group': '', 'width': w, 'height': h,
+                    'uv_width': w, 'uv_height': h, 'particle': False, 'use_as_default': False, 'layers_enabled': False, 'sync_to_project': '',
+                    'render_mode': 'default', 'render_sides': 'auto', 'frame_time': 1, 'frame_order_type': 'loop', 'frame_order': '',
+                    'frame_interpolate': False, 'visible': True, 'internal': True, 'saved': False, 'uuid': uid(), 'relative_path': '',
+                    'source': 'data:image/png;base64,' + base64.b64encode(b.getvalue()).decode()}
+        texs = [texdef(self.atlas)] + [texdef(a) for a in self.extra]
         data = {'meta': {'format_version': '4.10', 'model_format': self.fmt, 'box_uv': False}, 'name': self.name, 'model_identifier': '',
                 'visible_box': [1, 1, 0], 'variable_placeholders': '', 'variable_placeholder_buttons': [], 'timeline_setups': [],
                 'unhandled_root_fields': {}, 'resolution': {'width': w, 'height': h}, 'elements': self.elements, 'outliner': self.root_bones,
-                'textures': [{'path': '', 'name': self.name + '.png', 'folder': '', 'namespace': '', 'id': '0', 'group': '', 'width': w, 'height': h,
-                              'uv_width': w, 'uv_height': h, 'particle': False, 'use_as_default': False, 'layers_enabled': False, 'sync_to_project': '',
-                              'render_mode': 'default', 'render_sides': 'auto', 'frame_time': 1, 'frame_order_type': 'loop', 'frame_order': '',
-                              'frame_interpolate': False, 'visible': True, 'internal': True, 'saved': False, 'uuid': uid(), 'relative_path': '',
-                              'source': 'data:image/png;base64,' + base64.b64encode(b.getvalue()).decode()}],
+                'textures': texs,
                 'animations': self.anims}
         return data
