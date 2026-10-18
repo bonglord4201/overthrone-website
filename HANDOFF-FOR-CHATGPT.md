@@ -166,6 +166,12 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
 
 ---------------------------------------------------------------------------------------------------
 
+- **Mob pile-up bug fixed 2026-10-18:** `spawnNow` summoned, then looked for the new mob only within 2 blocks; if it wasn't
+  found (pushed away in a crowd) it returned false and summoned AGAIN every second, piling up dozens of mobs (High Orcs).
+  Now: one summon, then 60 s (`sp.pendingAt`) of looking for the newest untagged mob of that type within the leash range.
+  Every 5 s, extra living mobs carrying the same spawn tag are discarded (`dedupe`). `/mobspawn cleanup` discards untracked
+  mobs of a spawn's type within 32 blocks of its spot (player-owned pets are kept).
+
 ## 5. Known mod bugs and their workarounds
 
 - **Solo Leveling (SLR 1.3.3) crash:** `XPGainTShadowProcedure.java:53` NullPointerException ("Ticking entity")

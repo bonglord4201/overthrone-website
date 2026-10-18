@@ -23,6 +23,7 @@
 //   anywhere:
 //   /mobspawn list           every spawn in this world with its state
 //   /mobspawn respawnall     respawn every killed mob now
+//   /mobspawn cleanup        remove extra (untracked) mobs of your spawn types within 32 blocks of their spots
 //   /mobspawn holo           put back missing floating texts
 //   /mobspawn clearall       remove EVERY spawn (mobs stay alive)
 //   /mobspawn info           details of the nearest spawn (within 16 blocks) + puts its text back
@@ -293,6 +294,17 @@
     save(s)
   }
 
+  // more than one living mob carrying this spawn's tag: keep the tracked one, remove the rest
+  // (discard = no death, no drops, nothing for other mods to react to)
+  const dedupe = (level, id, keep) => {
+    try {
+      var tag = tagOf(id), sp = spawns[id], ku = uidOf(keep), extra = []
+      level.getAllEntities().forEach(x => { try { if (isMobOf(x, sp) && x.isAlive() && x.getTags().contains(tag) && uidOf(x) != ku) extra.push(x) } catch (y) { } })
+      extra.forEach(x => { try { x.discard() } catch (y) { } })
+      if (extra.length) logOnce('dup ' + id, 'removed ' + extra.length + ' duplicate ' + sp.type + ' for spawn ' + id)
+    } catch (x) { }
+  }
+
   // ---- tracking a live mob
   const adopt = (s, id, e) => {
     var sp = spawns[id]
@@ -309,17 +321,28 @@
     if (level == null || !loaded(level, sp.x, sp.z, sp.y)) return false   // try again once someone is nearby
     var still = findMob(level, id)
     if (still != null && still.isAlive()) { adopt(s, id, still); hideBar(s, id); setHolo(s, id, null); save(s); return true }
-    // summon without NBT, so the mob gets its normal gear/stats like from a spawn egg
-    run(s, `execute in ${sp.dim} run summon ${sp.type} ${sp.x} ${sp.y} ${sp.z}`)
-    var found = null
+    // FIX 2026-10-18: this used to summon again every second whenever it couldn't find the new mob within 2 blocks
+    // (e.g. it got pushed away in a crowd), which piled up dozens of mobs. Now: one summon, then up to 60 seconds of
+    // looking for it (the newest untagged mob of that type near the spot) before it may summon again.
+    var pending = sp.pendingAt && Date.now() - sp.pendingAt < 60000
+    if (!pending) {
+      // summon without NBT, so the mob gets its normal gear/stats like from a spawn egg
+      run(s, `execute in ${sp.dim} run summon ${sp.type} ${sp.x} ${sp.y} ${sp.z}`)
+      sp.pendingAt = Date.now()
+    }
+    var found = null, bestAge = 1e9, r = (sp.kind == 'boss' ? BOSS_ROAM : LEASH)
     level.getAllEntities().forEach(e => {
       try {
-        if (found != null || typeOf(e) != sp.type || e.getTags().contains('ot_spawn')) return
+        if (!isMobOf(e, sp) || !e.isAlive() || e.getTags().contains('ot_spawn')) return
+        try { if (typeof e.getOwnerUUID === 'function' && e.getOwnerUUID() != null) return } catch (y) { }
         var dx = e.getX() - sp.x, dy = e.getY() - sp.y, dz = e.getZ() - sp.z
-        if (dx * dx + dy * dy + dz * dz < 4) found = e
+        if (dx * dx + dy * dy + dz * dz > r * r) return
+        var age = Number(e.tickCount) || 0
+        if (age < bestAge) { bestAge = age; found = e }   // the newest one = the one just summoned
       } catch (x) { }
     })
     if (found == null) return false
+    delete sp.pendingAt
     adopt(s, id, found)
     setHolo(s, id, null)
     hideBar(s, id)
@@ -368,6 +391,7 @@
         }
         missing[id] = 0
         if (five) { try { nerfSkills(e) } catch (x) { } }
+        if (five) dedupe(level, id, e)
         if (sp.kind == 'boss') {
           if (SHOW_ALIVE_BAR) { try { aliveBar(s, id, e) } catch (x) { logOnce('bar ' + id, 'boss bar: ' + x) } }
           if (FREEZE_BOSSES) { try { freeze(s, e) } catch (x) { logOnce('frz ' + id, 'freeze: ' + x) } }
@@ -719,6 +743,25 @@
           say(ctx.source, P + '§aSet ' + ids.length + ' boss(es) to health ' + (hp >= 0 ? '+' : '') + hp + '%, damage ' + (dmg >= 0 ? '+' : '') + dmg + '%. §7Live bosses update within 5 seconds (keeping their health %).')
           return 1
         }))))
+      // removes the extra mobs a bug piled up: untagged mobs of a spawn's type within 32 blocks of that spawn's spot
+      .then(Commands.literal('cleanup').executes(ctx => {
+        var s = ctx.source.server, n = 0, per = {}
+        load(s)
+        Object.keys(spawns).forEach(id => {
+          var sp = spawns[id], level = levelOf(s, sp.dim); if (level == null) return
+          level.getAllEntities().forEach(x => {
+            try {
+              if (!isMobOf(x, sp) || !x.isAlive() || x.getTags().contains('ot_spawn') || x.isPlayer()) return
+              try { if (typeof x.getOwnerUUID === 'function' && x.getOwnerUUID() != null && x.getOwner() != null && x.getOwner().isPlayer()) return } catch (y) { }
+              var dx = x.getX() - sp.x, dy = x.getY() - sp.y, dz = x.getZ() - sp.z
+              if (dx * dx + dy * dy + dz * dz > 32 * 32) return
+              x.discard(); n++; per[sp.type] = (per[sp.type] || 0) + 1
+            } catch (y) { }
+          })
+        })
+        say(ctx.source, P + '§aRemoved §f' + n + '§a extra mob(s) near your spawn spots' + (n ? ': §7' + Object.keys(per).map(k => k + ' x' + per[k]).join(', ') : '.') + ' §7(tracked spawn mobs are kept)')
+        return 1
+      }))
       .then(Commands.literal('respawnall').executes(ctx => {
         var s = ctx.source.server, n = 0
         Object.keys(load(s)).forEach(k => { if (spawns[k].down && !spawns[k].dormant) { spawns[k].down = Date.now(); n++ } })
