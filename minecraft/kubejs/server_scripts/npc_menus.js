@@ -565,6 +565,8 @@
       list: OT_FX[k].map(c => ({ id: c.id, name: c.name, icon: c.icon, price: c.price, crate: !!c.crate, desc: c.desc })) }
   })
   const KIND_ORDER = ['tag', 'nc', 'cc', 'glow', 'grad', 'status', 'join'].concat(Object.keys(FXK).filter(k => KINDS[k]))
+  // cosmetics_fx.js switched off (renamed to .off): no empty PARTICLE EFFECTS tile in the Throne Shop
+  if (!KINDS.aura) SHOP.children = SHOP.children.filter(c => c.name != '&6&lPARTICLE EFFECTS')
   const cosById = (kind, id) => { var l = KINDS[kind].list; for (var i = 0; i < l.length; i++) if (l[i].id == id) return l[i]; return null }
   // the equipped cosmetic of a kind (only if still owned)
   const equipped = (p, kind) => {

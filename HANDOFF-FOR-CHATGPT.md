@@ -207,6 +207,9 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
 - **Manas Cosmetics (owner wants it instead of / next to particles):** engine only, each cosmetic = `.bbmodel` + JSON sidecar
   (position/scale/rotation), in-game editor `/manas_cosmetics edit`, 14 slots incl. aura/back/pet. The sidecar format and
   folder are NOT verified: get the mod jar from the owner before making any.
+  2026-10-18: owner saw the particle cosmetics working but thinks they look bad; wants custom Manas Cosmetics instead.
+  Waiting on the Manas Cosmetics jar (this session can't reach CurseForge/Modrinth). The particle file can be switched off
+  by renaming cosmetics_fx.js to .off: npc_menus.js then hides the PARTICLE EFFECTS shop tile and /aura /trail /killeffect.
 
 - **Particle cosmetics showed nothing (2026-10-18, cosmetics_fx.js):** they used `ServerLevel.sendParticles` via
   Java.loadClass (ParticleTypes / DustParticleOptions); in game nothing appeared and errors were swallowed. Now every
