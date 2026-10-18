@@ -309,6 +309,23 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   pet_storm_dragon / pet_ember_dragon) + abyssal jelly. setdefs.PETS = one pet per set (id overthrone:<set>_pet, 8 pieces
   per set). Wings: painted gold arcs + 'shed' sparkle particles (fx.Particles has a name param now). heads4 uses painted
   gold. Package marketing/overthrone-cosmetics-v6.zip (replaces v5), guide INSTALL-V6.md. Not seen in game.
+  **v7 (2026-10-18; owner: "weapon auras all over the place", "pets just float", "don't place another holo, edit the one there",
+  use Sketchfab "Lucifer's Wings" as the style reference):**
+  - Weapon auras: the mod draws them at the hand + half the blade length + aura `offset` (blocks), scaled by
+    0.4 x weapon length (CosmeticLayer.renderWeaponAura). Radius 1 meant a ball round the hand. build-manas-auras.py
+    BLADE_FIT now sets radius/height/size/count per style, plus an `offset` that puts the origin at the guard (set
+    blades: measured from their model; generic: -0.35). scripts/manas/aurasim.py ports the mod's aura styles;
+    wapreview.py renders the weapon and its aura. The validator fails a weapon aura with radius > 0.5 or no offset.
+  - Pets: `floats: true` means the pet is always airborne, so it only plays "fly". Ground animals (foxes,
+    dragonlings, slimes) are now floats false and get idle/walk/run/fly/swim/special/special2 (scripts/manas/pets7.py:
+    fox7, dragon7, phoenix7, wisp7, slime7). Bone rotation signs (checked in sim): +X = nose up, foot forward, ear back;
+    a jaw opens with negative X. Animated bones get no rest rotation (the clip value replaces it). The validator
+    checks that a walking pet has a walk clip and a floating pet has a fly clip.
+  - Membrane wings (wings4.membrane_wing): thicker shaded bones and paint.membrane(style='lucifer').
+  - crates.js: refreshHologram (every 100 ticks, player within 24 blocks) data-merges the text of the existing hologram
+    lines at their exact spots, and summons a line only if nothing is there. refreshInfoBoard rewrites the
+    ot_crate_infoboard text in place. No new commands. Package marketing/overthrone-cosmetics-v7.zip (replaces v6),
+    INSTALL-V7.md. Not seen in game.
  for top quality the owner should buy/commission .bbmodel files (BuiltByBit, MCModels,
   ManasMods' Discord) and send them; setup steps in minecraft/manas_cosmetics/README.md.
   Waiting on the Manas Cosmetics jar (this session can't reach CurseForge/Modrinth). The particle file can be switched off
@@ -460,9 +477,10 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
    It isn't from any of Claude's scripts as far as checked.
 5. The "Supermassive Slime" boss may still be unkillable (unconfirmed).
 
-6. **Cosmetics v6** (2026-10-18): painted-detail rework + 10 armour/wing sets + 10 set pets + everything priced in the shop
-   + no Caverns key drops. marketing/overthrone-cosmetics-v6.zip must be installed and tested in game (armour binding,
-   weapon orientation, ground sigils, trails, pet tricks are untested). Don't call them fixed until they've been equipped and seen rendering. Never tell the owner to run
+6. **Cosmetics v7** (2026-10-18, includes v6): blade-fitted weapon auras, walking pets, Lucifer-style membrane wings,
+   crate hologram auto-refresh, plus v6 (10 armour/wing sets + set pets + everything priced, no Caverns key drops).
+   marketing/overthrone-cosmetics-v7.zip must be installed and tested in game (armour binding,
+   weapon orientation, ground sigils, trails, weapon auras on the blade, pet gaits/tricks, hologram refresh are untested). Don't call them fixed until they've been equipped and seen rendering. Never tell the owner to run
    `/crate reward reset cosmetic`; use `/crate reward sync cosmetic`.
 
 ## 10. Already decided (don't undo)

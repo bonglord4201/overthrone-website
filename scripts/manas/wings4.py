@@ -280,11 +280,12 @@ def membrane_wing(name, P_):
     veins_h = [(Wp, t) for t in tips]
     veins_a = [((S[0], S[1]), (E[0], E[1])), ((E[0], E[1]), Wp), ((E[0], E[1]), B1), ((S[0], S[1]), B0), ((E[0], E[1]), ((B1[0] + tips[3][0]) / 2, (B1[1] + tips[3][1]) / 2))]
     holes = P_.get('holes', 0); stars = P_.get('stars', False)
-    mh, gh, fh = P.membrane(hand_poly, veins_h, D, P_['mem'], P_['edge'], P_['vein'], P_.get('glow_vein'), holes=holes, stars=stars, seed=name + 'h')
-    ma, ga, fa = P.membrane(arm_poly, veins_a, D, P.shade(P_['mem'], 0.9), P_['edge'], P_['vein'], P_.get('glow_vein'), holes=holes, stars=stars, seed=name + 'a')
+    mh, gh, fh = P.membrane(hand_poly, veins_h, D, P_['mem'], P_['edge'], P_['vein'], P_.get('glow_vein'), holes=holes, stars=stars, seed=name + 'h', style='lucifer')
+    ma, ga, fa = P.membrane(arm_poly, veins_a, D, P.shade(P_['mem'], 0.9), P_['edge'], P_['vein'], P_.get('glow_vein'), holes=holes, stars=stars, seed=name + 'a', style='lucifer')
     uh = m.atlas.add(mh); ua = m.atlas.add(ma)
     gh_uv = m.glow_atlas().add(gh) if gh is not None else None; ga_uv = m.glow_atlas().add(ga) if ga is not None else None
-    bone = k.main('bone', P.solid(P_['bone'])); bone_d = k.main('bone_d', P.solid(P.shade(P_['bone'], 0.65)))
+    # chunky 3D bones with shading (v7, after the Lucifer's Wings reference): lit top edge, darker underside
+    bone = k.main('bone', P.facet(4, 8, P.mixc(P_['bone'], (255, 255, 255), 0.22), P.shade(P_['bone'], 0.8))); bone_d = k.main('bone_d', P.facet(4, 8, P.shade(P_['bone'], 0.8), P.shade(P_['bone'], 0.5)))
     claw = k.main('claw', P.solid(P_['claw'])); claw_g = k.glow('claw_g', P.solid(P_['glow_vein'])) if P_.get('glow_vein') else None
     for s, n in ((1, 'r'), (-1, 'l')):
         wb, mb, hb = skeleton(m, n, s)
@@ -298,22 +299,22 @@ def membrane_wing(name, P_):
         panel(hb, fh, uh, gh_uv, W[2])
         # arm + fingers (tapered, with knuckles and claws)
         skeletal = P_.get('bones_style') == 'bone'
-        seg(m, wb, X(S, s), X(E, s), 1.7 if not skeletal else 1.3, bone, bone_d)
-        seg(m, mb, X(E, s), X(W, s), 1.4 if not skeletal else 1.1, bone, bone_d)
-        m.box(mb, [X(E, s)[0] - 1.0, E[1] - 1.0, E[2] - 1.0], [X(E, s)[0] + 1.0, E[1] + 1.0, E[2] + 1.0], bone, bone_d)
-        m.box(hb, [X(W, s)[0] - 1.0, W[1] - 1.0, W[2] - 1.0], [X(W, s)[0] + 1.0, W[1] + 1.0, W[2] + 1.0], bone, bone_d)
+        seg(m, wb, X(S, s), X(E, s), 2.4 if not skeletal else 1.6, bone, bone_d)
+        seg(m, mb, X(E, s), X(W, s), 2.0 if not skeletal else 1.3, bone, bone_d)
+        m.box(mb, [X(E, s)[0] - 1.4, E[1] - 1.4, E[2] - 1.4], [X(E, s)[0] + 1.4, E[1] + 1.4, E[2] + 1.4], bone, bone_d)
+        m.box(hb, [X(W, s)[0] - 1.3, W[1] - 1.3, W[2] - 1.3], [X(W, s)[0] + 1.3, W[1] + 1.3, W[2] + 1.3], bone, bone_d)
         for fi, (a, L) in enumerate(FINGERS):
             d = (math.cos(math.radians(a)), math.sin(math.radians(a)))
             A = [W[0], W[1], W[2]]; M = [W[0] + d[0] * L * 0.55, W[1] + d[1] * L * 0.55, W[2]]; T = [W[0] + d[0] * L, W[1] + d[1] * L, W[2]]
-            seg(m, hb, X(A, s), X(M, s), 0.9, bone, bone_d)
-            seg(m, hb, X(M, s), X(T, s), 0.6, bone, bone_d)
-            m.box(hb, [X(M, s)[0] - 0.55, M[1] - 0.55, M[2] - 0.55], [X(M, s)[0] + 0.55, M[1] + 0.55, M[2] + 0.55], bone, bone_d)
+            seg(m, hb, X(A, s), X(M, s), 1.3, bone, bone_d)
+            seg(m, hb, X(M, s), X(T, s), 0.95, bone, bone_d)
+            m.box(hb, [X(M, s)[0] - 0.75, M[1] - 0.75, M[2] - 0.75], [X(M, s)[0] + 0.75, M[1] + 0.75, M[2] + 0.75], bone, bone_d)
             # claw at the tip, curving on along the finger
             C1 = [T[0] + d[0] * 1.6, T[1] + d[1] * 1.6, T[2]]
             seg(m, hb, X(T, s), X(C1, s), 0.55, claw, claw, guv=claw_g if fi == 0 else None)
         # thumb claw: a hooked horn up out of the wrist
         h1 = [W[0] - 0.6, W[1] + 2.4, W[2] - 0.6]; h2 = [W[0] - 2.0, W[1] + 4.2, W[2] - 0.9]
-        seg(m, hb, X(W, s), X(h1, s), 0.9, claw, claw); seg(m, hb, X(h1, s), X(h2, s), 0.6, claw, claw, guv=claw_g)
+        seg(m, hb, X(W, s), X(h1, s), 1.3, claw, claw); seg(m, hb, X(h1, s), X(h2, s), 0.85, claw, claw, guv=claw_g)
         if P_.get('spikes'):
             sp = k.main('spike', P.solid(P_['spikes'])); spd = k.main('spike_d', P.solid(P.shade(P_['spikes'], 0.6)))
             for i in range(5):

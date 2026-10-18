@@ -210,7 +210,7 @@ def seg_dist(px, py, a, b):
     t = np.clip(((px - ax) * dx + (py - ay) * dy) / L2, 0, 1)
     return np.hypot(px - (ax + t * dx), py - (ay + t * dy))
 
-def membrane(poly, veins, D, base, edge_col, vein_col, glow_vein=None, holes=0, stars=False, seed=0, frame=None):
+def membrane(poly, veins, D, base, edge_col, vein_col, glow_vein=None, holes=0, stars=False, seed=0, frame=None, style=None):
     """Paints a wing membrane in MODEL units. poly: [(x, y)] (Y up). veins: [((x,y),(x,y))]. D: pixels per unit.
     Returns (main, glow, (x0, y0, x1, y1)) where the image's column 0 is at x1 (the north/back face shows u0 at +x)
     and row 0 at y1 (top)."""
@@ -232,7 +232,16 @@ def membrane(poly, veins, D, base, edge_col, vein_col, glow_vein=None, holes=0, 
             inside &= np.hypot((px - hx) * 1.0, (py - hy) * 1.6) > hr
     vd = np.full(px.shape, 99.0)
     for a, b in veins: vd = np.minimum(vd, seg_dist(px, py, a, b))
-    rgb = mixc(shade(base, 1.35), shade(base, 0.7), np.clip(vd / 4.0, 0, 1)) * np.ones((h, w, 1))
+    if style == 'lucifer':   # like the Sketchfab "Lucifer's Wings": dark next to the bones, a deep glowing middle, a dark stepped rim
+        inner = inside.copy()
+        for _ in range(3): inner = erode(inner)
+        rim = inside & ~inner
+        t = np.clip(vd / 3.2, 0, 1)
+        rgb = mixc(shade(base, 0.45), shade(base, 1.3), t) * np.ones((h, w, 1))
+        rgb = np.where((t > 0.75)[..., None], rgb * (1.0 - (t[..., None] - 0.75) * 0.6), rgb)
+        rgb[rim] = shade(base, 0.5)
+    else:
+        rgb = mixc(shade(base, 1.35), shade(base, 0.7), np.clip(vd / 4.0, 0, 1)) * np.ones((h, w, 1))
     tex = (np.sin(px * 3.1 + py * 1.7) * np.sin(py * 2.3 - px * 0.7)) > 0.55
     rgb = np.where(tex[..., None], rgb * 0.92, rgb)
     vm = inside & (vd < 0.32)

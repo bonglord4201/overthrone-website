@@ -6,7 +6,7 @@
 # scripts/manas/setdefs.py -> sets5.py. Auras (incl. the sets' auras): build-manas-auras.py.
 import json, os, shutil, sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'manas'))
-import catalog4 as C, sim, setdefs, sets5 as S5, sets6 as S6, look5, pets4, pets6
+import catalog4 as C, sim, setdefs, sets5 as S5, sets6 as S6, look5, pets4, pets6, pets7
 from PIL import Image, ImageDraw
 
 ROOT = os.path.join(os.path.dirname(__file__), '..', 'minecraft', 'manas_cosmetics')
@@ -40,7 +40,7 @@ for sid, d in setdefs.SETS.items():
     save(sid + '_armor', t + ' Armour', 'armor_set', S6.armor(sid + '_armor', d['armor']))
     save(sid + '_blade', t + ' ' + WEAPON_WORD.get(d['weapon']['shape'], 'Blade'), 'weapon', S6.weapon(sid + '_blade', d['weapon']))
     kind, kw, floats, pname = setdefs.PETS[sid]
-    fn = {'phoenix': pets4.phoenix, 'fox': pets4.fox, 'wisp': pets4.wisp, 'dragon': pets6.dragon, 'jelly': pets6.jelly}[kind]
+    fn = {'phoenix': pets7.phoenix7, 'fox': pets7.fox7, 'wisp': pets7.wisp7, 'dragon': pets7.dragon7, 'jelly': pets6.jelly}[kind]
     save(sid + '_pet', pname + ' (' + t + ')', 'pet', fn(sid + '_pet', **kw), {'floats': True} if floats else None)
     save(sid + '_sigil', t + ' Sigil', 'ground', S5.sigil(sid + '_sigil', d['sigil']))
 

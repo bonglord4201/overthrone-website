@@ -71,12 +71,35 @@ for sid, d in setdefs.SETS.items():
     st, part, cols = d['blade_aura']; SET_BLADES.append((sid + '_blade_aura', d['title'] + ' Blade Aura', st, part, cols, 1.1, 1.0, 1.0, 1.0, 1.0, 0))
 TRAIL = {r[0] for r in SET_AURAS}
 
+# Weapon auras are drawn by the mod at the hand, moved up the blade by half the blade length (+ "offset", blocks), then
+# scaled by 0.4 x the weapon length (CosmeticLayer.renderWeaponAura). Each style's radius/height below is fitted so the
+# particles hug the blade from guard to tip (checked with scripts/manas/wapreview.py, which ports the mod's style maths):
+#   style: (radius, height, size, count)
+BLADE_FIT = {
+  'twin_helix': (0.42, 0.75, 1.0, 220), 'flame': (0.22, 0.95, 0.95, 300), 'flame_scorched': (0.2, 0.95, 0.9, 260),
+  'rising_motes': (0.2, 9.0, 0.95, 260), 'vortex_shroud': (0.32, 0.78, 1.4, 260), 'orbiting_orbs': (0.3, 0.75, 1.0, 70),
+  'falling_embers': (0.22, 0.68, 1.1, 170), 'starfield_shimmer': (0.25, 0.88, 1.25, 170),
+}
+def blade_offset(model_path):
+    # origin at the top of the guard: offset = blade base - lift (blocks). Generic auras (any held weapon): -0.35.
+    if not model_path or not os.path.isfile(model_path): return -0.35
+    m = json.load(open(model_path)); ys = [v for e in m['elements'] for v in (e['from'][1], e['to'][1])]
+    lift = min(max(max(ys) / 16 * 0.5, 0.15), 1.5)
+    guard = [e for e in m['elements'] if e['from'][1] > 3 and abs(e['to'][2] - e['from'][2]) >= 7.9]   # the crossguard bar
+    base = (max(e['to'][1] for e in guard) if guard else max(ys) * 0.22) / 16
+    return round(base - lift, 3)
+MODELS = os.path.join(os.path.dirname(__file__), '..', 'minecraft', 'manas_cosmetics', 'models', 'weapon')
+
 def write(prefix, slot, rows):
     for (i, name, style, part, colors, size, speed, radius, height, rot, count) in rows:
         d = {'id': 'overthrone:' + i, 'display_name': name, 'slot': slot}
         if slot == 'weapon_aura': d['weapon_type'] = 'any'; d['force_equip_allowed'] = True
         d['aura'] = {'style': style, 'particle': part, 'colors': colors, 'particle_count': count, 'size': size, 'speed': speed,
                      'radius': radius, 'height': height, 'alpha': 1.0, 'rotation_speed': rot, 'emissive': True, 'motion_response': 1.8 if i in TRAIL else 1.0}
+        if slot == 'weapon_aura':
+            r, hgt, sz, n = BLADE_FIT[style]
+            blade = os.path.join(MODELS, i[:-len('_aura')] + '.bbmodel') if i.endswith('_blade_aura') else None
+            d['aura'].update({'radius': r, 'height': hgt, 'size': round(sz * size, 3), 'particle_count': n, 'offset': blade_offset(blade)})
         with open(os.path.join(OUT, prefix + i + '.json'), 'w') as f: json.dump(d, f, indent=2)
 write('aura_', 'aura', AURAS + SET_AURAS)
 write('weapon_', 'weapon_aura', WEAPON + SET_BLADES)

@@ -288,24 +288,45 @@
   const run = (server, cmd) => server.runCommandSilent(cmd)
 
   // ---------------------------------------------------------------- hologram above the crate
-  const placeHologram = (server, id) => {
-    const c = CRATES[id], at = load(server)[id]
-    if (!c || !at) return
-    run(server, `kill @e[type=minecraft:text_display,tag=ot_crate_${id}]`)
+  const holoLines = (c) => {
     const col = HOLO_COLORS[c.color] || 'gold'
-    const lines = [
+    return [
       [2.25, `{"text":"${c.name}","color":"${col}","bold":true}`, 1.3],
       [1.95, c.type === 'redeem' ? '{"text":"Click to browse rewards","color":"gray"}' : `{"text":"Right-click with a ${c.keyName || 'key'} to open","color":"gray"}`, 0.8],
       [1.75, c.type === 'redeem' ? '{"text":"Pick a reward and pay with keys","color":"gray"}' : '{"text":"Left-click or sneak + right-click to preview","color":"gray"}', 0.8],
       [1.50, `{"text":"${c.keyHint}","color":"yellow"}`, 0.75],
     ]
-    lines.forEach(l => {
-      const s = l[2]
-      run(server, `execute in ${at.dim} run summon minecraft:text_display ${at.x + 0.5} ${at.y + l[0]} ${at.z + 0.5} ` +
-        `{Tags:["ot_crate_${id}"],billboard:"center",shadow:1b,background:0,line_width:400,` +
-        `transformation:[${s}f,0f,0f,0f,0f,${s}f,0f,0f,0f,0f,${s}f,0f,0f,0f,0f,1f],text:'${l[1]}'}`)
+  }
+  const holoSummon = (at, id, l) => `summon minecraft:text_display ${at.x + 0.5} ${at.y + l[0]} ${at.z + 0.5} ` +
+    `{Tags:["ot_crate_${id}"],billboard:"center",shadow:1b,background:0,line_width:400,` +
+    `transformation:[${l[2]}f,0f,0f,0f,0f,${l[2]}f,0f,0f,0f,0f,${l[2]}f,0f,0f,0f,0f,1f],text:'${l[1]}'}`
+  const placeHologram = (server, id) => {
+    const c = CRATES[id], at = load(server)[id]
+    if (!c || !at) return
+    run(server, `kill @e[type=minecraft:text_display,tag=ot_crate_${id}]`)
+    holoLines(c).forEach(l => run(server, `execute in ${at.dim} run ` + holoSummon(at, id, l)))
+  }
+  // Keeps the hologram that is already over a crate up to date, in place (no new hologram): each line at its spot gets
+  // the current text written into it (data merge), and a line that is missing is put back at its spot. Runs every
+  // 5 seconds for crates with a player within 24 blocks (so the chunk and its holograms are loaded).
+  const refreshHologram = (server, id) => {
+    const c = CRATES[id], at = load(server)[id]
+    if (!c || !at) return
+    holoLines(c).forEach(l => {
+      var pos = `${at.x + 0.5} ${at.y + l[0]} ${at.z + 0.5}`, sel = `@e[type=minecraft:text_display,tag=ot_crate_${id},distance=..0.05,limit=1]`
+      run(server, `execute in ${at.dim} positioned ${pos} run data merge entity ${sel} {text:'${l[1]}'}`)
+      run(server, `execute in ${at.dim} positioned ${pos} unless entity ${sel} run ` + holoSummon(at, id, l))
     })
   }
+  // Same for the CRATES INFO board: wherever it was placed, its text is rewritten from INFO_BOARD (position and facing kept).
+  const infoBoardJson = () => {
+    var comp = ['']
+    INFO_BOARD.forEach((l, i) => { comp.push(Object.assign({}, l, { text: (i ? '\n' : '') + l.text })) })
+    // Inside the command the text is a quoted string, where Minecraft only accepts \\ and \' escapes:
+    // so the JSON's own backslashes (the \n line breaks) must be doubled first, then quotes escaped.
+    return JSON.stringify(comp).replace(/\\/g, '\\\\').replace(/'/g, "\\'")
+  }
+  const refreshInfoBoard = (server) => run(server, `execute as @e[type=minecraft:text_display,tag=ot_crate_infoboard] run data merge entity @s {text:'${infoBoardJson()}'}`)
 
   // ---------------------------------------------------------------- particles (OG-style drifting pixels + a slow ring)
   // Numbers must be written as decimals (1.00, not 1): Minecraft rejects a colour list that mixes 1 and 0.35.
@@ -321,6 +342,7 @@
   const fade = (c1, c2, s) => `minecraft:dust_color_transition{from_color:[${c1[0].toFixed(2)},${c1[1].toFixed(2)},${c1[2].toFixed(2)}],to_color:[${c2[0].toFixed(2)},${c2[1].toFixed(2)},${c2[2].toFixed(2)}],scale:${s.toFixed(2)}}`
   ServerEvents.tick(event => {
     const server = event.server, t = server.tickCount
+    if (t % 100 === 61) refreshInfoBoard(server)
     const all = load(server), ids = Object.keys(all)
     for (let i = 0; i < ids.length; i++) {
       var c = CRATES[ids[i]], at = all[ids[i]]
@@ -335,6 +357,14 @@
         if (d2 < 48 * 48) near = true
         if (d2 < 5 * 5 && t % 20 === 0)   // "Keys available" for this player, over the hotbar
           run(server, `title ${p.username} actionbar {"text":"${c.name} · Keys available: ${keys(p, ids[i])}","color":"yellow"}`)
+      }
+      if (t % 100 === 37 && near) {   // refresh the hologram in place (see refreshHologram)
+        var close = false
+        for (var jj = 0; jj < ps.size(); jj++) {
+          var q = ps.get(jj)
+          if (String(q.level.dimension) === at.dim && Math.abs(q.x - at.x) < 24 && Math.abs(q.y - at.y) < 24 && Math.abs(q.z - at.z) < 24) close = true
+        }
+        if (close) refreshHologram(server, ids[i])
       }
       if (!near || c.particles === false) continue
       var x = at.x + 0.5, y = at.y + 0.5, z = at.z + 0.5, a = t * 0.08
@@ -695,11 +725,7 @@
     const placeInfoBoard = (ctx, height) => {
       const p = ctx.source.playerOrException, server = p.server
       run(server, 'kill @e[type=minecraft:text_display,tag=ot_crate_infoboard]')
-      var comp = ['']
-      INFO_BOARD.forEach((l, i) => { comp.push(Object.assign({}, l, { text: (i ? '\n' : '') + l.text })) })
-      // Inside the command the text is a quoted string, where Minecraft only accepts \\ and \' escapes:
-      // so the JSON's own backslashes (the \n line breaks) must be doubled first, then quotes escaped.
-      var json = JSON.stringify(comp).replace(/\\/g, '\\\\').replace(/'/g, "\\'")
+      var json = infoBoardJson()
       run(server, `execute in ${p.level.dimension} run summon minecraft:text_display ${f(p.x)} ${f(p.y + Math.max(0, height))} ${f(p.z)} ` +
         `{Tags:["ot_crate_infoboard"],Rotation:[${f(p.yaw)}f,0f],billboard:"fixed",alignment:"center",shadow:1b,line_width:400,background:-1325400064,` +
         `brightness:{sky:15,block:15},transformation:[1.6f,0f,0f,0f,0f,1.6f,0f,0f,0f,0f,1.6f,0f,0f,0f,0f,1f],text:'${json}'}`)

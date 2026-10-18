@@ -127,13 +127,13 @@ for _sid, _d in SETS.items():
 # v6: one pet per set: (builder, kwargs, floats, pet name). builders: pets4.phoenix / fox / wisp, pets6.dragon / jelly
 PETS = {
     'celestial_sovereign': ('phoenix', dict(body=(236, 242, 255), head=(255, 255, 255), tail=(170, 205, 255), glow=(90, 230, 255)), True, 'Seraph Chick'),
-    'void_overlord': ('dragon', dict(body=(42, 32, 44), belly=(120, 20, 32), wing=(95, 10, 28), horn=(200, 150, 60), glow=(255, 40, 50), iris=(255, 70, 70), fx_col=(255, 80, 60), frill=(140, 15, 30)), True, 'Void Dragonling'),
-    'solar_emperor': ('fox', dict(fur=(255, 196, 70), light=(255, 250, 230), dark=(150, 85, 20), iris=(255, 140, 30), tails=3, glow=(255, 200, 70), fx='foxfire'), False, 'Sun Fox'),
-    'frost_monarch': ('fox', dict(fur=(230, 245, 255), light=(255, 255, 255), dark=(90, 140, 200), iris=(120, 220, 255), tails=2, glow=(150, 235, 255), spirit=True, fx='foxfire'), False, 'Frost Fox'),
-    'storm_dragon': ('dragon', dict(body=(60, 130, 220), belly=(220, 235, 255), wing=(40, 90, 190), horn=(235, 240, 250), glow=(110, 230, 255), iris=(110, 230, 255), fx_col=(150, 240, 255), frill=(80, 200, 255)), True, 'Storm Dragonling'),
+    'void_overlord': ('dragon', dict(body=(42, 32, 44), belly=(120, 20, 32), wing=(95, 10, 28), horn=(200, 150, 60), glow=(255, 40, 50), iris=(255, 70, 70), fx_col=(255, 80, 60), frill=(140, 15, 30)), False, 'Void Dragonling'),
+    'solar_emperor': ('fox', dict(fur=(255, 196, 70), light=(255, 250, 230), dark=(150, 85, 20), iris=(255, 140, 30), tails=3, glow=(255, 200, 70)), False, 'Sun Fox'),
+    'frost_monarch': ('fox', dict(fur=(230, 245, 255), light=(255, 255, 255), dark=(90, 140, 200), iris=(120, 220, 255), tails=2, glow=(150, 235, 255), spirit=True, socks=(160, 200, 240), ear_tip=(150, 235, 255)), False, 'Frost Fox'),
+    'storm_dragon': ('dragon', dict(body=(60, 130, 220), belly=(220, 235, 255), wing=(40, 90, 190), horn=(235, 240, 250), glow=(110, 230, 255), iris=(110, 230, 255), fx_col=(150, 240, 255), frill=(80, 200, 255)), False, 'Storm Dragonling'),
     'blood_demon_king': ('wisp', dict(core=(45, 6, 12), flame=(255, 40, 45), eye=(255, 225, 205)), True, 'Blood Wisp'),
     'abyssal_king': ('jelly', dict(bell=(40, 90, 190), glow=(70, 235, 220), tent=(60, 140, 220)), True, 'Abyssal Jelly'),
-    'soul_reaper': ('wisp', dict(core=(28, 22, 38), flame=(190, 120, 255), eye=(240, 255, 250)), True, 'Soul Lantern'),
-    'verdant_dragon': ('dragon', dict(body=(62, 168, 84), belly=(232, 230, 172), wing=(52, 140, 62), horn=(240, 200, 80), glow=(150, 255, 170), iris=(255, 220, 90), fx_col=(170, 255, 180), frill=(90, 200, 100)), True, 'Forest Dragonling'),
+    'soul_reaper': ('wisp', dict(core=(28, 22, 38), flame=(190, 120, 255), eye=(240, 255, 250), lantern=True), True, 'Soul Lantern'),
+    'verdant_dragon': ('dragon', dict(body=(62, 168, 84), belly=(232, 230, 172), wing=(52, 140, 62), horn=(240, 200, 80), glow=(150, 255, 170), iris=(255, 220, 90), fx_col=(170, 255, 180), frill=(90, 200, 100)), False, 'Forest Dragonling'),
     'thronebreaker': ('phoenix', dict(body=(200, 20, 32), head=(255, 190, 60), tail=(120, 0, 16), glow=(255, 200, 80)), True, 'Crimson Phoenix'),
 }

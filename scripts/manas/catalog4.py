@@ -62,15 +62,17 @@ HEADS = {
 }
 
 import pets4 as PT
+import pets7 as P7
 import pets6 as P6
 PETS = {
-    # id: (name, builder, kwargs, floats)
-    'pet_rimuru': ('Rimuru Slime', PT.slime, dict(col=(90, 185, 255), eye=(20, 25, 60), fx='bubbles'), False),
-    'pet_crimson_slime': ('Crimson Slime', PT.slime, dict(col=(215, 30, 45), eye=(255, 220, 90), crown=(255, 200, 60), glow_eyes=True, fx='embers'), False),
-    'pet_kitsune': ('Kitsune', PT.fox, dict(fur=(255, 140, 50), light=(255, 245, 230), dark=(50, 30, 30), iris=(255, 190, 40), tails=3, glow=(255, 220, 140), fx='foxfire'), False),
-    'pet_spirit_fox': ('Spirit Fox', PT.fox, dict(fur=(225, 240, 255), light=(255, 255, 255), dark=(80, 120, 170), iris=(90, 200, 255), tails=5, glow=(90, 190, 255), spirit=True, fx='foxfire'), True),
-    'pet_phoenix': ('Phoenix Chick', PT.phoenix, dict(), True),
-    'pet_storm_dragon': ('Baby Storm Dragon', P6.dragon, dict(body=(70, 150, 230), belly=(225, 240, 255), wing=(50, 110, 200), horn=(235, 240, 250), glow=(120, 230, 255), iris=(120, 230, 255), fx_col=(160, 240, 255), frill=(90, 200, 255)), True),
-    'pet_ember_dragon': ('Baby Ember Dragon', P6.dragon, dict(body=(200, 50, 30), belly=(255, 200, 100), wing=(140, 30, 20), horn=(45, 32, 30), glow=(255, 150, 40), iris=(255, 210, 70), fx_col=(255, 150, 50), frill=(255, 120, 30)), True),
-    'pet_shadow_wisp': ('Shadow Wisp', PT.wisp, dict(), True),
+    # id: (name, builder, kwargs, floats). v7: ground animals walk after you (floats False -> idle/walk/run/fly/swim clips);
+    # only birds and spirits float (they always play "fly"). Builders: scripts/manas/pets7.py.
+    'pet_rimuru': ('Rimuru Slime', P7.slime7, dict(col=(90, 185, 255), eye=(20, 25, 60), fx='bubbles', core=(150, 230, 255)), False),
+    'pet_crimson_slime': ('Crimson Slime', P7.slime7, dict(col=(215, 30, 45), eye=(255, 220, 90), crown=(255, 200, 60), glow_eyes=True, fx='embers'), False),
+    'pet_kitsune': ('Kitsune', P7.fox7, dict(fur=(255, 140, 50), light=(255, 245, 230), dark=(50, 30, 30), iris=(255, 190, 40), tails=3, glow=(255, 220, 140)), False),
+    'pet_spirit_fox': ('Spirit Fox', P7.fox7, dict(fur=(225, 240, 255), light=(255, 255, 255), dark=(80, 120, 170), iris=(90, 200, 255), tails=5, glow=(90, 190, 255), spirit=True, socks=(150, 190, 235), ear_tip=(90, 190, 255)), False),
+    'pet_phoenix': ('Phoenix Chick', P7.phoenix7, dict(), True),
+    'pet_storm_dragon': ('Baby Storm Dragon', P7.dragon7, dict(body=(70, 150, 230), belly=(225, 240, 255), wing=(50, 110, 200), horn=(235, 240, 250), glow=(120, 230, 255), iris=(120, 230, 255), fx_col=(160, 240, 255), frill=(90, 200, 255)), False),
+    'pet_ember_dragon': ('Baby Ember Dragon', P7.dragon7, dict(body=(200, 50, 30), belly=(255, 200, 100), wing=(140, 30, 20), horn=(45, 32, 30), glow=(255, 150, 40), iris=(255, 210, 70), fx_col=(255, 150, 50), frill=(255, 120, 30)), False),
+    'pet_shadow_wisp': ('Shadow Wisp', P7.wisp7, dict(), True),
 }

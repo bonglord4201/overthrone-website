@@ -39,6 +39,8 @@ for fn in sorted(os.listdir(os.path.join(MC, 'cosmetics'))):
         c = a.get('colors', [])
         if not c or not all(isinstance(x, list) and len(x) == 3 and all(isinstance(v, int) and 0 <= v <= 255 for v in x) for x in c):
             err(fn + ': colors must be [[r,g,b],...]')
+        if d.get('slot') == 'weapon_aura' and (a.get('radius', 1) > 0.5 or 'offset' not in a):
+            err(fn + ': weapon auras must be fitted to the blade (radius <= 0.5 and an offset; see build-manas-auras.py BLADE_FIT)')
     else:
         mp = os.path.join(MC, d.get('model', '-'))
         if not os.path.isfile(mp): err(fn + ': model missing ' + d.get('model', ''))
@@ -71,6 +73,10 @@ for fn in sorted(os.listdir(os.path.join(MC, 'cosmetics'))):
                     if d.get('weapon_type') not in ('sword', 'greatsword', 'longsword', 'katana', 'scythe', 'spear', 'axe', 'hammer'): err(fn + ': weapon cosmetics need a weapon type (not any)')
                     if tops and any(tops[0].get('origin', [0, 0, 0])): err(fn + ': the first bone is the grip anchor and must sit at the origin')
                 if d.get('slot') == 'ground' and max(ys) - min(ys) > 0.5: err(fn + ': ground sigils must be flat decals')
+                if d.get('slot') == 'pet':
+                    names = {an.get('name') for an in m.get('animations', [])}
+                    if not d.get('floats') and not {'walk', 'run'} & names: err(fn + ': a walking pet (floats false) needs a walk clip')
+                    if d.get('floats') and 'fly' not in names: err(fn + ': a floating pet always plays "fly" and needs that clip')
             except Exception as e: err(fn + ': bad bbmodel ' + str(e))
 
 # OT_MANAS (shop + crate list)

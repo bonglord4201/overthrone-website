@@ -217,6 +217,21 @@ class Canvas:
             base = imf[u[win]].astype(float)
             imf[u[win]] = np.clip(base * (1 - a) + col[win][:, :3] * a, 0, 255)   # TRANSLUCENT_TRANSPARENCY: normal alpha blend
         self.late = []
+    def glow(self, M, parts):
+        """Aura particles (aurasim.particles) as additive soft billboards, depth-tested against the models. M maps aura units to pixels."""
+        self.flush(); zf = self.zb.reshape(self.size, self.size); img = self.img.astype(float)
+        for x, y, z, hs, rgb, a in parts:
+            if a <= 0: continue
+            P = (M @ np.array([x, y, z, 1.0]))[:3]; hp = np.linalg.norm(M[:3, 0]) * hs * self.scale
+            c = np.array([-P[0], -P[1] - self.cy, -P[2]]) @ self.V.T
+            cx, cy = self.size / 2 + c[0] * self.scale, self.size * 0.55 - c[1] * self.scale
+            r = max(1.0, hp); x0, x1 = int(cx - r - 1), int(cx + r + 2); y0, y1 = int(cy - r - 1), int(cy + r + 2)
+            x0, y0, x1, y1 = max(x0, 0), max(y0, 0), min(x1, self.size), min(y1, self.size)
+            if x0 >= x1 or y0 >= y1: continue
+            yy, xx = np.mgrid[y0:y1, x0:x1]; d = np.sqrt((xx - cx) ** 2 + (yy - cy) ** 2) / r
+            w = np.clip(1 - d, 0, 1) ** 1.5 * a * (zf[y0:y1, x0:x1] < c[2])
+            img[y0:y1, x0:x1] += w[..., None] * np.asarray(rgb)[None, None, :]
+        self.img = np.clip(img, 0, 255).astype(np.uint8)
     def box(self, M, f, t, rgba):
         tex = np.array([[rgba]], np.uint8)
         x0, y0, z0 = [min(f[i], t[i]) for i in range(3)]; x1, y1, z1 = [max(f[i], t[i]) for i in range(3)]
