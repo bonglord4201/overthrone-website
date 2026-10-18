@@ -94,6 +94,9 @@ class Model:
         def walk(b):
             out.extend(b['cubes']); [walk(c) for c in b['children']]
         [walk(r) for r in self.roots]; return out
+    def cube_bounds(self):   # BBModelParser.computeCubeBounds: raw from/to of every cube (faceless ones too)
+        cs = self.all_cubes(); lo = [min(min(c['from'][i], c['to'][i]) for c in cs) for i in range(3)]; hi = [max(max(c['from'][i], c['to'][i]) for c in cs) for i in range(3)]
+        return lo + hi
     def avg_centroid_y(self):
         cs = [(c['from'][1] + c['to'][1]) / 2 for c in self.all_cubes()]
         return sum(cs) / len(cs) if cs else 0
@@ -135,7 +138,22 @@ def slot_matrix(slot, model, sidecar):
         return M
     if slot == 'orbit':
         return T(0, 8, 0) @ D
+    if slot == 'armor_set':
+        # CosmeticLayer.renderArmorSet: every region bone is bound to its limb (at rest = where it is authored), then
+        # applyAutoOrient: no flip (we author Y-down in player space, needs_y_flip false), lift = 12 - centre of the cube box.
+        b = model.cube_bounds(); return T(0, 12 - (b[1] + b[4]) / 2, 0) @ D
+    if slot == 'weapon':
+        # applyHandTransform for the right hand (arm raised -18 deg, the vanilla holding pose), grip at the origin
+        return T(-5, 2, 0) @ Rx(-18) @ T(-0.48, 10, 0) @ Ry(-35) @ Rz(145) @ axis_rot((-0.819, -0.574, 0), 90) @ D
+    if slot == 'ground':
+        b = model.cube_bounds(); return T(0, 23.5, 0) @ S(-1, -1, 1) @ T(0, -b[1], 0) @ D
     raise ValueError(slot)
+
+def axis_rot(ax, deg):
+    a = np.array(ax, float); a /= np.linalg.norm(a); t = math.radians(deg); c, s = math.cos(t), math.sin(t); x, y, z = a
+    R = np.array([[c + x * x * (1 - c), x * y * (1 - c) - z * s, x * z * (1 - c) + y * s], [y * x * (1 - c) + z * s, c + y * y * (1 - c), y * z * (1 - c) - x * s],
+                  [z * x * (1 - c) - y * s, z * y * (1 - c) + x * s, c + z * z * (1 - c)]])
+    M = np.eye(4); M[:3, :3] = R; return M
 
 # ---------------------------------------------------------------- drawing
 FACES = {  # BBModelRenderer.renderCube quad vertex order (v0..v3 get uv (u0,v0) (u1,v0) (u1,v1) (u0,v1))

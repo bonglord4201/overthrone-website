@@ -1,0 +1,35 @@
+{
+  "id": "overthrone:void_overlord_aura",
+  "display_name": "Void Overlord Aura",
+  "slot": "aura",
+  "aura": {
+    "style": "summoning_circle",
+    "particle": "glow",
+    "colors": [
+      [
+        255,
+        90,
+        90
+      ],
+      [
+        210,
+        10,
+        35
+      ],
+      [
+        40,
+        0,
+        10
+      ]
+    ],
+    "particle_count": 0,
+    "size": 1.25,
+    "speed": 1.0,
+    "radius": 1.15,
+    "height": 1.15,
+    "alpha": 1.0,
+    "rotation_speed": 0.9,
+    "emissive": true,
+    "motion_response": 1.8
+  }
+}

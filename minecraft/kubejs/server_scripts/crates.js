@@ -146,9 +146,9 @@
       keyHint: 'Keys only at overthronesmp.tebex.store', particles: true,
       // 3D cosmetics (Manas Cosmetics, list in manas_cosmetics.js): crate-only ones are rare. An already-unlocked one gives
       // nothing new, so the pool is kept big. After adding cosmetics, load the new ones in game: /crate reward sync cosmetic
-      rewards: (typeof OT_MANAS === 'undefined' ? [] : [].concat(OT_MANAS.wings, OT_MANAS.halos, OT_MANAS.heads, OT_MANAS.auras, OT_MANAS.weapons || [], OT_MANAS.pets || []).map(c => ({
+      rewards: (typeof OT_MANAS === 'undefined' ? [] : [].concat(OT_MANAS.wings, OT_MANAS.halos, OT_MANAS.heads, OT_MANAS.auras, OT_MANAS.weapons || [], OT_MANAS.pets || [], OT_MANAS.sets || []).map(c => ({
         cmd: 'manas_cosmetics unlock {p} ' + c.id, icon: c.icon, name: c.name.replace(/&[0-9a-fklmnor]/g, ''),
-        weight: c.crate ? 2 : 10, rare: !!c.crate }))),
+        weight: c.weight || (c.crate ? 2 : 10), rare: !!c.crate }))),
     },
     // Rune Crate: starts empty. Fill it in game with your modded rune items: /crate edit runes
     // (click an item in your inventory to add it; left/right-click a reward to change its key cost).

@@ -287,6 +287,20 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   overthrone:divine_sovereign_wings (in OT_MANAS; load into the crate with /crate reward sync cosmetic). Package:
   marketing/overthrone-cosmetics-v4.zip, guide minecraft/manas_cosmetics/INSTALL-V4.md. designs.py (v3) was removed.
   NOT yet seen in game.
+  **2026-10-18 v5: 10 premium armour & wing SETS** (ChatGPT prompt + the Aurion armour video): celestial_sovereign,
+  void_overlord, solar_emperor, frost_monarch, storm_dragon, blood_demon_king (blood_demon_wings already existed),
+  abyssal_king, soul_reaper, verdant_dragon, thronebreaker. Ids overthrone:<set>_{wings,helm,armor,blade,blade_aura,aura,sigil}.
+  Built by scripts/manas/sets5.py from scripts/manas/setdefs.py. Slots used (from the mod code): back, helmet, armor_set
+  (ONE model; top-level bones body / arm_r (pivot x<-2.5) / arm_l / leg_r (pivot x<-0.5) / leg_l are bound to those limbs;
+  authored Y-down in player space, sidecar needs_y_flip false; the mod lifts by 12 - raw cube-box centre, so a faceless
+  cube keeps the centre at exactly 12), weapon (weapon_type sword = shows over any vanilla sword; 'any' would show it in
+  an empty hand; first bone = grip anchor at the origin; in the hand +Y points forward, +Z up), weapon_aura, aura
+  (motion_response 1.8 = trails behind), ground (flat decal at the feet). boots/legs slots were NOT used: their lift maths
+  couldn't be confirmed. EVERY cosmetic now has a price and shows in the Throne Shop (owner: "no one can buy them");
+  crate: true now means "also a rare Cosmetic Crate reward" (weight 2, or weight: n). npc_menus.js has an ARMOUR SETS
+  page per set (OT_MANAS.sets + OT_MANAS_SETS). crates.js includes OT_MANAS.sets and honours c.weight. Validator checks
+  all of this. Package marketing/overthrone-cosmetics-v5.zip, guide minecraft/manas_cosmetics/INSTALL-V5.md. Not seen in game.
+  Also 2026-10-18: Caverns crate key drops OFF (caverns.js CAV_KEY_CHANCE_* = 0); Cosmetic Keys are Tebex-only (crates.js keyHint).
  for top quality the owner should buy/commission .bbmodel files (BuiltByBit, MCModels,
   ManasMods' Discord) and send them; setup steps in minecraft/manas_cosmetics/README.md.
   Waiting on the Manas Cosmetics jar (this session can't reach CurseForge/Modrinth). The particle file can be switched off
@@ -438,8 +452,9 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
    It isn't from any of Claude's scripts as far as checked.
 5. The "Supermassive Slime" boss may still be unkillable (unconfirmed).
 
-6. **Cosmetics v4** (2026-10-18): the owner installed the OVERTHRONE 20 set and it rendered, but asked for a full rework.
-   v4 (marketing/overthrone-cosmetics-v4.zip, guide inside) must be installed and tested in game. Don't call them fixed until they've been equipped and seen rendering. Never tell the owner to run
+6. **Cosmetics v5** (2026-10-18): v4 rework + 10 armour/wing sets + everything priced in the shop + no Caverns key drops.
+   marketing/overthrone-cosmetics-v5.zip (includes v4) must be installed and tested in game (armour binding, weapon
+   orientation, ground sigils, trails are untested). Don't call them fixed until they've been equipped and seen rendering. Never tell the owner to run
    `/crate reward reset cosmetic`; use `/crate reward sync cosmetic`.
 
 ## 10. Already decided (don't undo)

@@ -6,6 +6,7 @@ import gzip, json, os, re, subprocess, sys
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 MC = os.path.join(ROOT, 'manas_cosmetics')
 SLOTS = 'helmet above_head chestplate back front legs boots armor_set ears orbit pet weapon aura weapon_aura ground shield grimoire magic_staff'.split()
+SET_PARTS = ['wings', 'helm', 'armor', 'blade', 'blade_aura', 'aura', 'sigil']
 STYLES = ('rising_motes twin_helix halo circle vortex_shroud rune_circle orbiting_orbs starfield_shimmer ember_crown falling_embers pulse_rings '
           'flame flame_scorched triangle pentagram hexagram magic_circle arcane_array summoning_circle square octagram heptagram square_seal '
           'octagram_array pentacle_array nested_polygons seal_of_solomon sunburst_mandala radiant_sun clockwork_seal astral_compass pulsar_seal').split()
@@ -56,6 +57,20 @@ for fn in sorted(os.listdir(os.path.join(MC, 'cosmetics'))):
                 for t in m.get('textures', []):
                     if t.get('uv_width') != res.get('width') or t.get('uv_height') != res.get('height'): err(fn + ': texture ' + t.get('name', '') + ' size differs from the model resolution')
                 if d.get('slot') == 'back' and d.get('needs_y_flip') is not True: err(fn + ': back cosmetics need "needs_y_flip": true')
+                ys = [v for e in m['elements'] for v in (e['from'][1], e['to'][1])]
+                tops = [g for g in m['outliner'] if isinstance(g, dict)]
+                if d.get('slot') == 'armor_set':
+                    # CosmeticLayer.renderArmorSet / classifyRegion: limb binding by bone name + pivot side; lift = 12 - box centre
+                    if d.get('needs_y_flip') is not False: err(fn + ': armor_set must have "needs_y_flip": false (authored Y-down)')
+                    if abs((min(ys) + max(ys)) / 2 - 12) > 0.01: err(fn + ': armour box centre must be 12 (is %.2f)' % ((min(ys) + max(ys)) / 2))
+                    names = {g['name']: g.get('origin', [0, 0, 0]) for g in tops}
+                    for b, ok in (('body', lambda o: True), ('arm_r', lambda o: o[0] < -2.5), ('arm_l', lambda o: o[0] > 2.5), ('leg_r', lambda o: o[0] < -0.5), ('leg_l', lambda o: o[0] > 0.5)):
+                        if b not in names or not ok(names[b]): err(fn + ': armour needs a top-level bone ' + b + ' on the right side')
+                    if set(names) - {'body', 'arm_r', 'arm_l', 'leg_r', 'leg_l'}: err(fn + ': unexpected top-level bones ' + str(set(names) - {'body', 'arm_r', 'arm_l', 'leg_r', 'leg_l'}))
+                if d.get('slot') == 'weapon':
+                    if d.get('weapon_type') not in ('sword', 'greatsword', 'longsword', 'katana', 'scythe', 'spear', 'axe', 'hammer'): err(fn + ': weapon cosmetics need a weapon type (not any)')
+                    if tops and any(tops[0].get('origin', [0, 0, 0])): err(fn + ': the first bone is the grip anchor and must sit at the origin')
+                if d.get('slot') == 'ground' and max(ys) - min(ys) > 0.5: err(fn + ': ground sigils must be flat decals')
             except Exception as e: err(fn + ': bad bbmodel ' + str(e))
 
 # OT_MANAS (shop + crate list)
@@ -76,7 +91,15 @@ for g in G20:
     if 'overthrone:' + g not in ids: err('OVERTHRONE 20: missing ' + g)
     if 'overthrone:' + g not in seen: err('OVERTHRONE 20: not in OT_MANAS ' + g)
 
-print(len(ids), 'cosmetic files,', len(listed), 'in OT_MANAS,', sum(1 for c in listed if c.get('crate')), 'crate-only')
+sys.path.insert(0, os.path.join(ROOT, '..', 'scripts', 'manas'))
+import setdefs
+for sid in setdefs.SETS:
+    for part in SET_PARTS:
+        if 'overthrone:%s_%s' % (sid, part) not in ids: err('set ' + sid + ': missing ' + part)
+        if 'overthrone:%s_%s' % (sid, part) not in seen: err('set ' + sid + ': ' + part + ' not in OT_MANAS')
+missing_price = [c['id'] for c in listed if not c.get('price')]
+if missing_price: err('not sold in the Throne Shop (no price): ' + ', '.join(missing_price))
+print(len(ids), 'cosmetic files,', len(listed), 'in OT_MANAS (all sold in the Throne Shop),', sum(1 for c in listed if c.get('crate')), 'also rare crate rewards')
 if sizes: print('models: %d, biggest %d KB, total %d KB compressed (sent to each player on join, in 512 KB chunks)' % (len(sizes), max(sizes) // 1024, sum(sizes) // 1024))
 for n in notes: print('note', n)
 if errors:

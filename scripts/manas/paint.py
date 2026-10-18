@@ -332,3 +332,44 @@ def face_marks(w, h, blush=(255, 140, 160), mouth=(60, 30, 35), kind='w'):
         mth = (np.abs(v - (0.45 + np.abs(u - 0.5) * 1.2)) < 0.09) & (np.abs(u - 0.5) < 0.1)
     on |= mth; rgb[mth] = C(mouth)
     return to_img(rgb, on)
+
+def panel(w, h, base, rim=None, style='plate', seed=0):
+    """A w x h px armour face, top row = top of the face. style:
+    plate  - bevelled metal: light top/left edge, dark bottom/right edge, engraved inner line, rivets in the corners
+    trim   - polished gold/silver: bright streak, darker lower half
+    dark   - plain dark metal with faint brushed lines
+    cloth  - woven fabric
+    scale  - overlapping scales (dragon/fish)
+    bone   - pitted bone"""
+    X, Y = grid(w, h); u = X / w; v = Y / h
+    b = C(base)
+    if style == 'trim':
+        rgb = mixc(shade(base, 1.35), shade(base, 0.8), v) * np.ones((h, w, 1))
+        rgb[(np.abs(v - 0.3) < 0.5 / h + 0.06)] = np.clip(shade(base, 1.6), 0, 255)
+    elif style == 'cloth':
+        rgb = b * (0.92 + 0.12 * (((X + Y) % 2) == 0))[..., None] * np.ones((h, w, 1))
+    elif style == 'scale':
+        rr = ((Y % 4) * 0 + ((X + (Y // 3 % 2) * 2) % 4))
+        rgb = mixc(shade(base, 1.25), shade(base, 0.75), (Y % 3) / 3.0) * np.ones((h, w, 1))
+        rgb[(Y.astype(int) % 3 == 2)] = shade(base, 0.55)
+    elif style == 'bone':
+        r = rng(('bone', w, h, seed)); pits = r.random((h, w)) > 0.9
+        rgb = mixc(shade(base, 1.1), shade(base, 0.85), v) * np.ones((h, w, 1)); rgb[pits] = shade(base, 0.7)
+    else:
+        rgb = mixc(shade(base, 1.2), shade(base, 0.82), v) * np.ones((h, w, 1))
+        if style == 'dark':
+            rgb[(Y.astype(int) % 3 == 0)] *= 0.94
+    if style in ('plate', 'scale', 'dark', 'bone') and w >= 3 and h >= 3:
+        rgb[0, :] = np.clip(rgb[0, :] * 1.25 + 10, 0, 255); rgb[:, 0] = np.clip(rgb[:, 0] * 1.15 + 6, 0, 255)
+        rgb[-1, :] *= 0.62; rgb[:, -1] *= 0.72
+    if style == 'plate' and w >= 8 and h >= 8:
+        ln = ((np.abs(X - 2.5) < 0.5) | (np.abs(X - (w - 2.5)) < 0.5)) & (Y > 2) & (Y < h - 2)
+        ln |= ((np.abs(Y - 2.5) < 0.5) | (np.abs(Y - (h - 2.5)) < 0.5)) & (X > 2) & (X < w - 2)
+        rgb[ln] *= 0.8
+        for cx, cy in ((1.5, 1.5), (w - 1.5, 1.5), (1.5, h - 1.5), (w - 1.5, h - 1.5)):
+            rv = (np.abs(X - cx) < 0.6) & (np.abs(Y - cy) < 0.6)
+            rgb[rv] = C(rim) if rim is not None else shade(base, 1.5)
+    if rim is not None and style in ('plate', 'dark', 'scale') and w >= 4 and h >= 4:
+        e = np.zeros((h, w), bool); e[0, :] = e[-1, :] = True; e[:, 0] = e[:, -1] = True
+        rgb[e] = C(rim); rgb[0, :] = np.clip(C(rim) * 1.2, 0, 255)
+    return to_img(np.clip(rgb, 0, 255), np.ones((h, w), bool))

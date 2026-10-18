@@ -1,0 +1,23 @@
+{
+  "id": "overthrone:verdant_dragon_sigil",
+  "display_name": "Verdant Dragon Emperor Sigil",
+  "slot": "ground",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "model": "models/ground/verdant_dragon_sigil.bbmodel",
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "offset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rotation": [
+    0.0,
+    0.0,
+    0.0
+  ]
+}

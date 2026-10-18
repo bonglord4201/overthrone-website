@@ -1,0 +1,37 @@
+{
+  "id": "overthrone:void_overlord_blade_aura",
+  "display_name": "Void Overlord Blade Aura",
+  "slot": "weapon_aura",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "aura": {
+    "style": "flame",
+    "particle": "glow",
+    "colors": [
+      [
+        255,
+        120,
+        110
+      ],
+      [
+        210,
+        10,
+        35
+      ],
+      [
+        30,
+        0,
+        8
+      ]
+    ],
+    "particle_count": 0,
+    "size": 1.1,
+    "speed": 1.0,
+    "radius": 1.0,
+    "height": 1.0,
+    "alpha": 1.0,
+    "rotation_speed": 1.0,
+    "emissive": true,
+    "motion_response": 1.0
+  }
+}

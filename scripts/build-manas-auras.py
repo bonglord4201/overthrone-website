@@ -61,13 +61,23 @@ WEAPON = [
   ('predator_mist', 'Predator Mist', 'starfield_shimmer', 'glow', [[150, 240, 255], [40, 160, 255], [20, 60, 190]], 1.0, 0.9, 1.0, 1.0, 1.0, 0),
 ]
 
+# the 10 premium sets (scripts/manas/setdefs.py): each set's aura trails behind you as you move (motion_response 1.8)
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'manas'))
+import setdefs
+SET_AURAS, SET_BLADES = [], []
+for sid, d in setdefs.SETS.items():
+    st, part, cols = d['aura']; SET_AURAS.append((sid + '_aura', d['title'] + ' Aura', st, part, cols, 1.25, 1.0, 1.15, 1.15, 0.9, 0))
+    st, part, cols = d['blade_aura']; SET_BLADES.append((sid + '_blade_aura', d['title'] + ' Blade Aura', st, part, cols, 1.1, 1.0, 1.0, 1.0, 1.0, 0))
+TRAIL = {r[0] for r in SET_AURAS}
+
 def write(prefix, slot, rows):
     for (i, name, style, part, colors, size, speed, radius, height, rot, count) in rows:
         d = {'id': 'overthrone:' + i, 'display_name': name, 'slot': slot}
         if slot == 'weapon_aura': d['weapon_type'] = 'any'; d['force_equip_allowed'] = True
         d['aura'] = {'style': style, 'particle': part, 'colors': colors, 'particle_count': count, 'size': size, 'speed': speed,
-                     'radius': radius, 'height': height, 'alpha': 1.0, 'rotation_speed': rot, 'emissive': True, 'motion_response': 1.0}
+                     'radius': radius, 'height': height, 'alpha': 1.0, 'rotation_speed': rot, 'emissive': True, 'motion_response': 1.8 if i in TRAIL else 1.0}
         with open(os.path.join(OUT, prefix + i + '.json'), 'w') as f: json.dump(d, f, indent=2)
-write('aura_', 'aura', AURAS)
-write('weapon_', 'weapon_aura', WEAPON)
-print('wrote', len(AURAS), 'auras +', len(WEAPON), 'weapon auras to', os.path.normpath(OUT))
+write('aura_', 'aura', AURAS + SET_AURAS)
+write('weapon_', 'weapon_aura', WEAPON + SET_BLADES)
+print('wrote', len(AURAS) + len(SET_AURAS), 'auras +', len(WEAPON) + len(SET_BLADES), 'weapon auras to', os.path.normpath(OUT))

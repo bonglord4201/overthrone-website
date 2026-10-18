@@ -575,13 +575,22 @@
   // The particle effects (cosmetics_fx.js) stay in /cosmetics if that file is on, but aren't sold any more.
   SHOP.children = SHOP.children.filter(c => c.name != '&6&lPARTICLE EFFECTS')
   // (no const inside blocks: KubeJS's Rhino fails the WHOLE file on that, which stopped every NPC click on 2026-10-18)
+  // every priced cosmetic is sold; crate: true ones are also rare Cosmetic Crate rewards
+  var manasItem = c => ({ icon: c.icon, name: c.name, price: c.price,
+        desc: ['A real 3D cosmetic.', '', '&7Equip it in your wardrobe:', '&f/wardrobe'].concat(c.crate ? ['', '&8Also a rare Cosmetic Crate reward.'] : []),
+        give: { type: 'manas', id: c.id } })
   var manasCat = (key, name, ic, desc) => ({ icon: ic, name: name, layout: 'grid', desc: desc,
-      children: (OT_MANAS[key] || []).filter(c => !c.crate && c.price).map(c => ({ icon: c.icon, name: c.name, price: c.price,
-        desc: ['A real 3D cosmetic.', '', '&7Equip it in your wardrobe:', '&f/wardrobe'], give: { type: 'manas', id: c.id } })) })
+      children: (OT_MANAS[key] || []).filter(c => c.price).map(manasItem) })
+  // ARMOUR SETS: one page per set (wings, helm, armour, weapon skin, weapon aura, aura, ground sigil)
+  var manasSets = () => ({ icon: 'minecraft:netherite_chestplate', name: '&4&lARMOUR SETS', layout: 'grid',
+      desc: ['10 premium sets: wings, helm,', 'full armour, weapon skin,', 'weapon aura, aura and a', 'rune circle under your feet.', '', '&7Buy each piece on its own.'],
+      children: (typeof OT_MANAS_SETS === 'undefined' ? [] : OT_MANAS_SETS).map(st => ({ icon: st.icon, name: st.name, layout: 'grid',
+        desc: ['The full ' + st.name + '&7 set.', '&7Weapon skins show on any sword.'],
+        children: (OT_MANAS.sets || []).filter(c => c.set == st.id && c.price).map(manasItem) })) })
   try {
     if (typeof OT_MANAS !== 'undefined') SHOP.children.push({
       slot: [7, 3], icon: 'minecraft:elytra', name: '&d&l3D COSMETICS', kind: 'COSMETIC',
-      desc: ['Real 3D wings, tails, halos, crowns,', 'horns, auras, weapon auras and pets.', 'Everyone with the modpack sees them.', '', '&fEquip them: &e/wardrobe', '', '&8Some rare ones only come', '&8from the Cosmetic Crate.'],
+      desc: ['Real 3D wings, tails, halos, crowns,', 'horns, auras, weapon auras, pets', 'and full armour sets.', 'Everyone with the modpack sees them.', '', '&fEquip them: &e/wardrobe'],
       layout: 'spaced',
       children: [
         manasCat('wings', '&5&lWINGS', 'minecraft:elytra', ['Wings on your back.']),
@@ -590,6 +599,7 @@
         manasCat('auras', '&b&lAURAS', 'minecraft:blaze_powder', ['Animated magic all around you.']),
         manasCat('weapons', '&c&lWEAPON AURAS', 'minecraft:netherite_sword', ['Fire, frost, lightning and', 'shadow flowing along the', 'weapon you hold.']),
         manasCat('pets', '&a&lPETS', 'minecraft:lead', ['A little companion that follows', 'you around (some fly).']),
+        manasSets(),
       ],
     })
   } catch (e) { console.warn('[npc_menus] 3D cosmetics shop: ' + e) }
