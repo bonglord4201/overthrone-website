@@ -38,6 +38,7 @@ var OT_MANAS = {
     { id: 'overthrone:overlord_wings', name: '&4&lOverlord Wings', icon: 'minecraft:netherite_ingot', crate: true },
     { id: 'overthrone:void_star_wings', name: '&5&lVoid Star Wings', icon: 'minecraft:end_crystal', crate: true },
     { id: 'overthrone:throne_guard_wings', name: '&6&lThrone Guard Wings', icon: 'minecraft:golden_chestplate', crate: true },
+    { id: 'overthrone:divine_sovereign_wings', name: '&e&lDivine Sovereign Wings', icon: 'minecraft:nether_star', crate: true },
   ],
   halos: [
     { id: 'overthrone:hero_halo', name: '&e&lHero Halo', icon: 'minecraft:gold_nugget', price: 5000 },

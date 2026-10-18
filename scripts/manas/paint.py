@@ -296,3 +296,39 @@ def magic_circle(n, gold, light, dark, part='outer', seed=0):
     edge = on & ~erode(on); rgb[edge] = C(dark)
     rgb[hi & on] = C(light)
     return to_img(rgb, on)
+
+def eyes_sprite(w, h, iris, style='round', sep=0.5, ew=0.32, eh=0.62, pupil=(15, 12, 25), lid=None):
+    """Two big glossy chibi eyes on a transparent sprite (w x h px). style: round | tall (slime) | sharp (dragon/fox)."""
+    X, Y = grid(w, h); u = X / w; v = Y / h
+    on = np.zeros((h, w), bool); rgb = np.zeros((h, w, 3))
+    for cx in (0.5 - sep / 2, 0.5 + sep / 2):
+        du = (u - cx) / (ew / 2); dv = (v - 0.5) / (eh / 2)
+        if style == 'sharp':
+            inside = (du ** 2 + dv ** 2 < 1) & (dv > -0.75 + 0.5 * np.abs(du))
+        else:
+            inside = du ** 2 + dv ** 2 < 1
+        on |= inside
+        d = np.sqrt(du ** 2 + dv ** 2)
+        col = np.where((d < 0.78)[..., None], mixc(P_shade(iris, 1.35), P_shade(iris, 0.7), np.clip((dv + 1) / 2, 0, 1)), C(pupil) * np.ones((h, w, 1)))
+        col = np.where(((np.abs(du) < 0.3) & (np.abs(dv) < 0.42))[..., None], C(pupil) * np.ones((h, w, 1)), col)
+        rgb = np.where(inside[..., None], col, rgb)
+        hl = (((du + 0.35) ** 2 + (dv + 0.38) ** 2) < 0.07) | (((du - 0.3) ** 2 + (dv - 0.35) ** 2) < 0.025)
+        rgb[inside & hl] = (255, 255, 255)
+    edge = on & ~erode(on); rgb[edge] = C(pupil)
+    return to_img(rgb, on)
+
+def P_shade(c, k): return shade(c, k)
+
+def face_marks(w, h, blush=(255, 140, 160), mouth=(60, 30, 35), kind='w'):
+    """Blush + a tiny mouth on a transparent sprite (placed just under the eyes)."""
+    X, Y = grid(w, h); u = X / w; v = Y / h
+    on = np.zeros((h, w), bool); rgb = np.zeros((h, w, 3))
+    for cx in (0.18, 0.82):
+        b = ((u - cx) / 0.12) ** 2 + ((v - 0.35) / 0.18) ** 2 < 1
+        on |= b; rgb[b] = C(blush)
+    if kind == 'w':
+        mth = (np.abs(v - (0.45 + np.abs(((u - 0.5) * 8) % 2 - 1) * 0.18)) < 0.08) & (np.abs(u - 0.5) < 0.12)
+    else:
+        mth = (np.abs(v - (0.45 + np.abs(u - 0.5) * 1.2)) < 0.09) & (np.abs(u - 0.5) < 0.1)
+    on |= mth; rgb[mth] = C(mouth)
+    return to_img(rgb, on)

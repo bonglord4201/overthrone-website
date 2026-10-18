@@ -2,7 +2,7 @@
 # (manas_cosmetics 1.0.6, decompiled): sidecar scale/offset/rotation must be 3-number arrays, slot from the mod's list,
 # aura style/particle from AuraSpec, colours as [r,g,b] arrays.
 #   python3 minecraft/tests/validate_manas_cosmetics.py
-import json, os, re, subprocess, sys
+import gzip, json, os, re, subprocess, sys
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 MC = os.path.join(ROOT, 'manas_cosmetics')
 SLOTS = 'helmet above_head chestplate back front legs boots armor_set ears orbit pet weapon aura weapon_aura ground shield grimoire magic_staff'.split()
@@ -15,6 +15,7 @@ G20 = ('overlord_wings celestial_wings storm_crystal_wings blood_demon_wings ser
        'void_crown demon_horns crystal_orbit shadow_smoke_aura arcane_rune_aura golden_inferno_aura').split()
 errors = []
 notes = []
+sizes = []
 def err(m): errors.append(m)
 
 ids = {}
@@ -47,6 +48,14 @@ for fn in sorted(os.listdir(os.path.join(MC, 'cosmetics'))):
                 if not m.get('textures') or not str(m['textures'][0].get('source', '')).startswith('data:image/png;base64,'):
                     err(fn + ': model texture not embedded')
                 if not any(a.get('name') == 'idle' for a in m.get('animations', [])): notes.append(fn + ': no idle animation (static model)')
+                elif m['animations'][0].get('name') != 'idle': err(fn + ': the first clip must be idle (the mod bakes the rest pose from it)')
+                gz = len(gzip.compress(json.dumps(m, separators=(',', ':')).encode()))
+                if gz > 900 * 1024: err(fn + ': %d KB compressed, the mod drops cosmetics over 1024 KB on the wire' % (gz // 1024))
+                sizes.append(gz)
+                res = m.get('resolution', {})
+                for t in m.get('textures', []):
+                    if t.get('uv_width') != res.get('width') or t.get('uv_height') != res.get('height'): err(fn + ': texture ' + t.get('name', '') + ' size differs from the model resolution')
+                if d.get('slot') == 'back' and d.get('needs_y_flip') is not True: err(fn + ': back cosmetics need "needs_y_flip": true')
             except Exception as e: err(fn + ': bad bbmodel ' + str(e))
 
 # OT_MANAS (shop + crate list)
@@ -68,6 +77,7 @@ for g in G20:
     if 'overthrone:' + g not in seen: err('OVERTHRONE 20: not in OT_MANAS ' + g)
 
 print(len(ids), 'cosmetic files,', len(listed), 'in OT_MANAS,', sum(1 for c in listed if c.get('crate')), 'crate-only')
+if sizes: print('models: %d, biggest %d KB, total %d KB compressed (sent to each player on join, in 512 KB chunks)' % (len(sizes), max(sizes) // 1024, sum(sizes) // 1024))
 for n in notes: print('note', n)
 if errors:
     print('\n'.join('FAIL ' + e for e in errors)); sys.exit(1)

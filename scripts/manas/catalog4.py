@@ -32,4 +32,44 @@ BACK = {
     'bone_reaper_wings': ('Bone Reaper Wings', W.membrane_wing, dict(mem=(30, 20, 40), edge=(10, 5, 15), vein=(20, 10, 30), bone=(235, 225, 205), claw=(235, 225, 205), glow_vein=(80, 255, 200), holes=14, bones_style='bone', soft=(60, 255, 190), fx='souls', fxcol=(120, 255, 210))),
     'spirit_fox_tails': ('Spirit Fox Tails', W.tails, dict(n=5, base=(235, 245, 255), tip=(160, 210, 255), glow=(90, 190, 255), fx=True, fxcol=(120, 210, 255), soft=(80, 170, 255))),
     'throne_guard_wings': ('Throne Guard Wings', W.mech_wing, dict(dark=BLACK, light=GOLD, glow=(255, 40, 50), gold=GOLD, soft=(230, 20, 30))),
+    # ---- flagship (layered seraph wings, gold blades and a rotating sigil, like the Aurion set the owner showed)
+    'divine_sovereign_wings': ('Divine Sovereign Wings', W.divine, dict(root=(255, 255, 255), tip=(185, 175, 250), streak=(40, 30, 70), gold=(255, 200, 60), glow=(215, 205, 255))),
+}
+
+import heads4 as H
+CRIM = (230, 25, 45)
+HEADS = {
+    # id: (name, slot, builder, kwargs)
+    'hero_halo': ('Hero Halo', 'above_head', H.halo_basic, dict(col=(255, 200, 60), light=(255, 248, 200), dark=(170, 110, 20), bloom=(255, 220, 120), fx='sparkles')),
+    'fallen_halo': ('Fallen Halo', 'above_head', H.halo_basic, dict(col=(200, 20, 35), light=(255, 120, 110), dark=(40, 10, 14), bloom=(220, 20, 30), broken=True, fx='drips', tilt=12)),
+    'void_halo': ('Void Halo', 'above_head', H.halo_basic, dict(col=(170, 70, 255), light=(235, 200, 255), dark=(40, 10, 70), bloom=(160, 80, 255), sigil=(190, 110, 255), orbs=(200, 120, 255), fx='stars')),
+    'crimson_crystal_halo': ('Crimson Crystal Halo', 'above_head', H.halo_basic, dict(col=(200, 150, 50), light=(255, 230, 150), dark=(90, 50, 10), bloom=(230, 30, 50), crystals=CRIM, fx='embers')),
+    'radiant_double_halo': ('Radiant Double Halo', 'above_head', H.halo_basic, dict(col=(255, 200, 60), light=(255, 250, 220), dark=(170, 110, 20), bloom=(255, 230, 140), double=True, rays=True, sigil=(255, 210, 90), fx='sparkles')),
+    'blood_crystal_ring': ('Blood Crystal Ring', 'above_head', H.crystal_orbit, dict(col=(210, 15, 35), n=8, y=4.5, r=8.5, tilt=(8, 0, 5))),
+    'demon_sigil': ('Demon Sigil', 'above_head', H.sigil_halo, dict(col=(255, 50, 45))),
+    'throne_halo': ('Throne Halo', 'above_head', H.sunburst, dict()),
+    'crystal_orbit': ('Crimson Crystal Orbit', 'above_head', H.crystal_orbit, dict(col=(235, 30, 55), n=6)),
+    'soul_crystals': ('Soul Crystals', 'orbit', H.crystal_orbit, dict(col=(190, 120, 255), n=3, y=-5, r=11, tilt=(0, 0, 0), slot_down=True)),
+    'royal_crown': ('Royal Crown', 'helmet', H.crown, dict(style='royal', metal=(225, 165, 40), light=(255, 235, 140), dark=(130, 80, 15), gem_cols=[(230, 20, 40), (40, 140, 255), (40, 210, 100)], fx='sparkles')),
+    'demon_king_crown': ('Demon King Crown', 'helmet', H.crown, dict(style='demon', metal=(45, 40, 52), light=(110, 100, 125), dark=(15, 12, 20), gem_cols=[(255, 40, 50)], tall=1.2, fx='embers')),
+    'ice_crown': ('Ice Crown', 'helmet', H.crown, dict(style='ice', metal=(110, 170, 225), light=(230, 250, 255), dark=(40, 80, 140), gem_cols=[(200, 240, 255)], tall=1.3, fx='snow', points=3)),
+    'shard_crown': ('Shattered Crown', 'helmet', H.crown, dict(style='shard', metal=(35, 20, 28), light=(90, 60, 75), dark=(12, 6, 10), gem_cols=[(225, 25, 45)], tall=1.0, fx='embers')),
+    'void_crown': ('Void Crown', 'helmet', H.crown, dict(style='void', metal=(30, 18, 45), light=(90, 60, 130), dark=(10, 5, 18), gem_cols=[(170, 70, 255)], tall=1.2, fx='void', accent=(200, 120, 255))),
+    'demon_horns': ('Demon Lord Horns', 'helmet', H.horns, dict(kind='demon', base=(30, 14, 16), tip=(12, 4, 6), glow=(255, 70, 30), fx='embers')),
+    'oni_horns': ('Oni Horns', 'helmet', H.horns, dict(kind='oni', base=(245, 235, 215), tip=(200, 30, 30), glow=None)),
+    'ram_horns': ('Ram Horns', 'helmet', H.horns, dict(kind='ram', base=(170, 135, 100), tip=(90, 65, 45), glow=None)),
+    'blood_rune_circlet': ('Blood Rune Circlet', 'helmet', H.circlet, dict()),
+}
+
+import pets4 as PT
+PETS = {
+    # id: (name, builder, kwargs, floats)
+    'pet_rimuru': ('Rimuru Slime', PT.slime, dict(col=(90, 185, 255), eye=(20, 25, 60), fx='bubbles'), False),
+    'pet_crimson_slime': ('Crimson Slime', PT.slime, dict(col=(215, 30, 45), eye=(255, 220, 90), crown=(255, 200, 60), glow_eyes=True, fx='embers'), False),
+    'pet_kitsune': ('Kitsune', PT.fox, dict(fur=(255, 140, 50), light=(255, 245, 230), dark=(50, 30, 30), iris=(255, 190, 40), tails=3, glow=(255, 220, 140), fx='foxfire'), False),
+    'pet_spirit_fox': ('Spirit Fox', PT.fox, dict(fur=(225, 240, 255), light=(255, 255, 255), dark=(80, 120, 170), iris=(90, 200, 255), tails=5, glow=(90, 190, 255), spirit=True, fx='foxfire'), True),
+    'pet_phoenix': ('Phoenix Chick', PT.phoenix, dict(), True),
+    'pet_storm_dragon': ('Baby Storm Dragon', PT.dragon, dict(body=(70, 150, 230), belly=(225, 240, 255), wing=(50, 110, 200), horn=(235, 240, 250), glow=(120, 230, 255), iris=(120, 230, 255)), True),
+    'pet_ember_dragon': ('Baby Ember Dragon', PT.dragon, dict(body=(190, 40, 30), belly=(255, 190, 90), wing=(130, 25, 20), horn=(40, 30, 30), glow=(255, 140, 30), iris=(255, 200, 60)), True),
+    'pet_shadow_wisp': ('Shadow Wisp', PT.wisp, dict(), True),
 }

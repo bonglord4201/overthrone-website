@@ -1,4 +1,4 @@
-# OVERTHRONE custom cosmetics for Manas Cosmetics (v2)
+# OVERTHRONE custom cosmetics for Manas Cosmetics (v4)
 
 Goes on the server in `config/manas_cosmetics/` (layout from the mod's own README, manas_cosmetics 1.0.6):
 
@@ -8,7 +8,10 @@ Goes on the server in `config/manas_cosmetics/` (layout from the mod's own READM
   have only this file: the mod draws them itself.
 - `previews/`: pictures of the models (not needed on the server).
 
-Rebuild: `python3 scripts/build-manas-models.py` and `python3 scripts/build-manas-auras.py`.
+Rebuild: `python3 scripts/build-manas-models.py` and `python3 scripts/build-manas-auras.py`. Designs live in
+`scripts/manas/catalog4.py` (ids, names, colours) and `wings4.py` / `heads4.py` / `pets4.py`; preview a single model with
+`scripts/manas/look.py`. Check everything with `python3 minecraft/tests/validate_manas_cosmetics.py`.
+Install guide for the v4 rework: `INSTALL-V4.md`.
 Shop/crate list: `minecraft/kubejs/server_scripts/manas_cosmetics.js` (every id there must have a file here).
 
 ## Adding bought or self-made models
