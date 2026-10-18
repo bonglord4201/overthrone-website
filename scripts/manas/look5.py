@@ -1,7 +1,7 @@
 # Preview sheet of one set: wings, armour + helmet on the body, weapon in hand, ground sigil.
 import sys, os, json
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import sets5 as S5, setdefs, sim
+import sets5 as S5, sets6 as S6, setdefs, sim
 import numpy as np
 from PIL import Image, ImageDraw
 def render_combo(paths, t, yaw, pitch, size, scale, dark=False):
@@ -13,7 +13,7 @@ def render_combo(paths, t, yaw, pitch, size, scale, dark=False):
     return c.image()
 def sheet(set_id, out_dir, png=None):
     d = setdefs.SETS[set_id]
-    parts = [('back', 'wings', S5.wings), ('helmet', 'helm', S5.helm), ('armor_set', 'armor', S5.armor), ('weapon', 'weapon', S5.weapon), ('ground', 'sigil', S5.sigil)]
+    parts = [('back', 'wings', S5.wings), ('helmet', 'helm', S6.helm), ('armor_set', 'armor', S6.armor), ('weapon', 'weapon', S6.weapon), ('ground', 'sigil', S5.sigil)]
     paths = []
     for slot, key, fn in parts:
         p = os.path.join(out_dir, set_id + '_' + key + '.bbmodel'); fn(set_id + '_' + key, d[key]).write(p)

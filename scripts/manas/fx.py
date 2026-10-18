@@ -88,13 +88,13 @@ def fade(f, a=0.15, b=0.7, lo=0.02):
 
 class Particles:
     """Collects particle bones and their keyframes; add_tracks(tracks) puts them into every animation clip."""
-    def __init__(self, m, parent=None, L=4.0):
-        self.m, self.L, self.n, self.tracks = m, L, 0, {}
-        self.root = m.bone('fx', [0, 0, 0], parent)
+    def __init__(self, m, parent=None, L=4.0, name='fx'):
+        self.m, self.L, self.n, self.tracks, self.nm = m, L, 0, {}, name
+        self.root = m.bone(name, [0, 0, 0], parent)
     def add(self, pos, delta, size, uv, phase, spin=0.0, sway=0.0, plate=False, breaks=(0.0, 0.15, 0.7, 1.0), fade_in=0.15, fade_out=0.7, rot=(0, 0, 0)):
         i = self.n; self.n += 1
-        mv = self.m.bone('fx%d' % i, list(pos), self.root)
-        sc = self.m.bone('fxs%d' % i, list(pos), mv)
+        mv = self.m.bone(self.nm + '%d' % i, list(pos), self.root)
+        sc = self.m.bone(self.nm + 's%d' % i, list(pos), mv)
         h = size / 2
         if plate:
             self.m.plate(sc, [pos[0] - h, pos[1] - h, pos[2] - 0.05], [pos[0] + h, pos[1] + h, pos[2] + 0.05], uv, origin=list(pos), rotation=list(rot))
@@ -103,10 +103,10 @@ class Particles:
         L = self.L
         tr = {'position': cycle_keys(L, phase, lambda f: (round(delta[0] * f, 3), round(delta[1] * f, 3), round(delta[2] * f, 3)))}
         if sway: tr['rotation'] = [(0, 0, 0, f'math.sin(query.anim_time*160+{i * 70})*{sway}')]
-        self.tracks['fx%d' % i] = tr
+        self.tracks[self.nm + '%d' % i] = tr
         st = {'scale': cycle_keys(L, phase, lambda f: (round(fade(f, fade_in, fade_out), 3),) * 3, breaks=(0.0, fade_in, fade_out, 1.0))}
         if spin: st['rotation'] = [(0, 0, f'query.anim_time*{spin}+{i * 40}', 0)]
-        self.tracks['fxs%d' % i] = st
+        self.tracks[self.nm + 's%d' % i] = st
     def add_tracks(self, tracks):
         for k, v in self.tracks.items(): tracks[k] = v
         return tracks

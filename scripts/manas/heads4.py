@@ -4,6 +4,7 @@
 #   orbit      : Y DOWN, origin 8 px below the neck (soul crystals).
 # Glow textures make rings/gems/runes full bright; soft textures add bloom; small model pieces act as particles.
 import math, random
+import armorart as AA
 from bb import BB, Atlas
 import paint as P
 from fx import Kit, Particles, clips
@@ -56,7 +57,7 @@ def simple_clips(m, tracks, fx, L=3.0):
 # ================================================================== HALOS (above_head)
 def halo_basic(name, col, light, dark, bloom=None, broken=False, sigil=None, crystals=None, double=False, rays=False, orbs=None, fx=None, tilt=0.0):
     m = BB(name, Atlas(256, 256)); k = Kit(m)
-    gl = k.glow('ring', P.facet(4, 8, light, col)); gd = k.main('ringd', P.facet(4, 8, col, dark))
+    gl = k.glow('ring', AA.gold(8, 8, {'gold': col})[0]); gd = k.main('ringd', AA.gold(8, 8, {'gold': P.mixc(col, dark, 0.5)})[0])
     y = 12.0
     m.bone('tilt', [0, y, 0], rotation=(tilt, 0, tilt * 0.6))
     m.bone('halo', [0, y, 0], 'tilt')
@@ -136,7 +137,7 @@ def sunburst(name, gold=GOLD, gem=(220, 20, 40)):
     m.bone('sun', list(c))
     vdisc(m, 'sun', c, 8.0, k.glow('sun', P.magic_circle(112, gold, GOLD_L, GOLD_D, 'outer', seed=3)))
     vdisc(m, 'sun', [c[0], c[1], c[2] + 0.2], 5.6, k.glow('sun_i', P.magic_circle(96, gold, GOLD_L, GOLD_D, 'inner', seed=4)))
-    rb = k.glow('ray', P.facet(4, 16, GOLD_L, gold)); gm = k.glow('gem', P.dot(gem, 4, core=(255, 150, 150)))
+    rb = k.glow('ray', AA.gold(6, 16, {'gold': gold})[0]); gm = k.glow('gem', P.dot(gem, 4, core=(255, 150, 150)))
     for i in range(16):
         a = 2 * math.pi * i / 16; L = 2.6 if i % 2 else 4.2
         x, yy = math.cos(a) * (8.4 + L / 2), c[1] + math.sin(a) * (8.4 + L / 2)
@@ -190,7 +191,7 @@ def around(s=4.45, n_side=3):
 def crown(name, style, metal, light, dark, gem_cols, tall=1.0, fx=None, accent=None, points=2):
     """style: royal | demon | ice | shard | void."""
     m = BB(name, Atlas(256, 128)); k = Kit(m)
-    met = k.main('met', P.facet(4, 8, light, metal)); met_d = k.main('metd', P.solid(dark))
+    met = k.main('met', AA.gold(8, 8, {'gold': metal})[0]); met_d = k.main('metd', AA.gold(8, 8, {'gold': dark})[0])
     gems = [k.glow('gem%d' % i, P.dot(g, 4, core=P.mixc(g, (255, 255, 255), 0.6))) for i, g in enumerate(gem_cols)]
     m.bone('crown', [0, 8, 0])
     y0 = 6.3
@@ -296,7 +297,7 @@ def horns(name, kind, base, tip, glow=None, fx=None):
 def circlet(name, metal=GOLD, dark=(25, 15, 20), gem=(220, 20, 40)):
     """Thin dark band with glowing crimson runes, a gold rim, a teardrop gem over the brow and rune glyphs orbiting."""
     m = BB(name, Atlas(256, 64)); k = Kit(m)
-    met = k.main('met', P.facet(4, 4, GOLD_L, metal)); dk = k.main('dk', P.solid(dark))
+    met = k.main('met', AA.gold(8, 8, {'gold': metal})[0]); dk = k.main('dk', P.solid(dark))
     gl = k.glow('rune', P.facet(4, 4, P.mixc(gem, (255, 255, 255), 0.3), gem))
     m.bone('c', [0, 5.5, 0])
     band(m, 'c', 5.0, 1.3, dk, dk, s=4.3, t=0.45)

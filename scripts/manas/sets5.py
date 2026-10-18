@@ -27,6 +27,9 @@ class Mats:
         self.m, self.k, self.mats, self.ydown = m, k, mats, ydown
     def uv(self, name, w, h):
         spec = self.mats[name]
+        if isinstance(spec[0], str) and spec[0] == 'paint':      # ('paint', painter(w, h, pal) -> (main, glow), pal)
+            px = max(2, min(48, int(round(w * 4)))); py = max(2, min(48, int(round(h * 4))))
+            return self.k.main(('p', name, px, py), spec[1](px, py, spec[2])[0])
         if isinstance(spec[0], str) and spec[0] == 'glow':
             return self.k.glow('g_' + name, P.facet(4, 4, P.mixc(spec[1], (255, 255, 255), 0.35), spec[1]))
         base, rim, style = spec
@@ -340,11 +343,12 @@ def crown(m, k, M, h, H):
 def F(uv): return {'uv': [round(v, 4) for v in uv], 'texture': getattr(uv, 'tex', 0)}
 
 # ===================================================================== WEAPON (weapon slot, sword type)
-def weapon(name, Wd):
+def weapon(name, Wd, painted=None):
     """Wd: shape (long|great|crystal|dragon|jagged|trident|scythe|leaf|spear|royal), blade, edge (glow), guard, grip, gem."""
     m = BB(name, Atlas(256, 256)); k = Kit(m)
     mats = {'blade': (Wd['blade'], None, 'trim'), 'guard': (Wd['guard'], None, 'trim'), 'grip': (Wd['grip'], None, 'cloth'),
             'dark': (P.shade(Wd['grip'], 0.8), None, 'dark'), 'edge': ('glow', Wd['edge']), 'gem': ('glow', Wd['gem'])}
+    if painted: mats.update(painted)
     M = Mats(m, k, mats)
     m.bone('grip', [0, 0, 0])                          # first bone = grip anchor (pivot 0 -> held at the origin)
     g = 'grip'
@@ -441,9 +445,10 @@ def wings(name, Wg):
     m = BB(name, Atlas(512, 512)); k = Kit(m)
     prims = {}
     arc_col = Wg.get('arcs')
-    gmain = k.main('arc', P.facet(4, 8, P.mixc(arc_col, (255, 255, 255), 0.5), arc_col)) if arc_col else None
-    gdark = k.main('arcd', P.solid(P.shade(arc_col, 0.6))) if arc_col else None
-    gglow = k.glow('arcg', P.facet(4, 8, P.mixc(arc_col, (255, 255, 255), 0.5), arc_col)) if arc_col else None
+    import armorart as AA
+    gmain = k.main('arc', AA.gold(8, 16, {'gold': arc_col})[0]) if arc_col else None          # painted, engraved gold
+    gdark = k.main('arcd', AA.gold(8, 8, {'gold': P.shade(arc_col, 0.7)})[0]) if arc_col else None
+    gglow = k.glow('arcg', AA.gold(8, 16, {'gold': arc_col})[0]) if arc_col else None
     for li, L in enumerate(Wg['layers']):
         pre = 'L%d' % li; kk, th, dy, dz, pal = L.get('k', 1.0), L.get('th', 0), L.get('dy', 0), L.get('dz', 0), L['pal']
         pts = [W4.xform(p, kk, th, dy, dz) for p in (W4.S, W4.E, W4.W, W4.H)]
@@ -503,6 +508,15 @@ def wings(name, Wg):
             x = s * (14 + (i // 2) * 5.5); y = -2 + (i // 2) * 2.0 - (i % 3) * 3
             b = m.bone('fc%d' % i, [x, y, -4], 'fcr')
             crystal3d(m, b, [x, y - 1.6, -4], 3.6 - (i // 2) * 0.3, 1.3, body, tip, gt, both=True)
+    # sparkles shedding off the wings (a second particle stream), in the gem / trim colour
+    shed = Wg.get('gems') or Wg.get('arcs')
+    if shed is not None:
+        fs = Particles(m, None, 2.5, name='shed'); rnd = random.Random(name + 'shed')
+        sg = k.glow('shed', P.dot(shed, 3, core=(255, 255, 255)))
+        for i in range(14):
+            sd = 1 if i % 2 else -1
+            fs.add([sd * rnd.uniform(10, 30), rnd.uniform(-14, 6), -rnd.uniform(2.5, 4.5)], [sd * rnd.uniform(0.5, 2.5), -rnd.uniform(3, 8), -rnd.uniform(0, 2)], 0.55, sg, i / 14, spin=200, fade_in=0.1, fade_out=0.5)
+    else: fs = None
     fx = W4.effects(m, k, dict(fx=Wg.get('fx'), fxcol=Wg.get('fxcol', (255, 230, 150)), root=Wg['layers'][0]['pal'].get('root', (255, 255, 255)),
                                tip=Wg['layers'][0]['pal'].get('tip', (200, 200, 255)), edge=(255, 255, 255)))
     def build(c):
@@ -514,7 +528,11 @@ def wings(name, Wg):
         if Wg.get('float_crystals'):
             for i in range(8): tr['fc%d' % i] = {'position': [(0, 0, f'math.sin(query.anim_time*100+{i * 45})*1.4', 0)], 'rotation': [(0, 0, f'query.anim_time*{60 + i * 10}', 0)]}
         return tr
-    clips(m, build, 4.0, fx)
+    def build2(c):
+        tr = build(c)
+        if fs is not None: fs.add_tracks(tr)
+        return tr
+    clips(m, build2, 4.0, fx)
     W4.place_back(m)
     return m
 

@@ -301,6 +301,14 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   page per set (OT_MANAS.sets + OT_MANAS_SETS). crates.js includes OT_MANAS.sets and honours c.weight. Validator checks
   all of this. Package marketing/overthrone-cosmetics-v5.zip, guide minecraft/manas_cosmetics/INSTALL-V5.md. Not seen in game.
   Also 2026-10-18: Caverns crate key drops OFF (caverns.js CAV_KEY_CHANCE_* = 0); Cosmetic Keys are Tebex-only (crates.js keyHint).
+  **v6 (owner: "too plain/blocky, no detailing/shading/layers; animate it right; redo baby dragons; pets for every set"):**
+  scripts/manas/art.py = pixel-art painter (bevels, 5-tone metal, faceted gems, filigree, outlines, glow canvas);
+  armorart.py = painted faces (chest/side/arm/leg/plate/gold/helm/blade/grip per motif); sets6.py = painted armour (body
+  shell + sculpted layers, cape bone, pauldron ornament bones, pulsing core, particles under the body bone), painted helm,
+  painted weapons (sets5 geometry + ('paint', fn, pal) materials). pets6.py = new detailed dragon (also replaces
+  pet_storm_dragon / pet_ember_dragon) + abyssal jelly. setdefs.PETS = one pet per set (id overthrone:<set>_pet, 8 pieces
+  per set). Wings: painted gold arcs + 'shed' sparkle particles (fx.Particles has a name param now). heads4 uses painted
+  gold. Package marketing/overthrone-cosmetics-v6.zip (replaces v5), guide INSTALL-V6.md. Not seen in game.
  for top quality the owner should buy/commission .bbmodel files (BuiltByBit, MCModels,
   ManasMods' Discord) and send them; setup steps in minecraft/manas_cosmetics/README.md.
   Waiting on the Manas Cosmetics jar (this session can't reach CurseForge/Modrinth). The particle file can be switched off
@@ -452,9 +460,9 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
    It isn't from any of Claude's scripts as far as checked.
 5. The "Supermassive Slime" boss may still be unkillable (unconfirmed).
 
-6. **Cosmetics v5** (2026-10-18): v4 rework + 10 armour/wing sets + everything priced in the shop + no Caverns key drops.
-   marketing/overthrone-cosmetics-v5.zip (includes v4) must be installed and tested in game (armour binding, weapon
-   orientation, ground sigils, trails are untested). Don't call them fixed until they've been equipped and seen rendering. Never tell the owner to run
+6. **Cosmetics v6** (2026-10-18): painted-detail rework + 10 armour/wing sets + 10 set pets + everything priced in the shop
+   + no Caverns key drops. marketing/overthrone-cosmetics-v6.zip must be installed and tested in game (armour binding,
+   weapon orientation, ground sigils, trails, pet tricks are untested). Don't call them fixed until they've been equipped and seen rendering. Never tell the owner to run
    `/crate reward reset cosmetic`; use `/crate reward sync cosmetic`.
 
 ## 10. Already decided (don't undo)

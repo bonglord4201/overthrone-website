@@ -20,8 +20,8 @@ SETS['void_overlord'] = dict(
                        dict(kind='feather', k=0.8, th=-30, dy=-1.5, dz=0.7, pal=dict(root=(40, 30, 40), tip=(12, 6, 12), edge=(140, 20, 30), streak=(150, 10, 20), glow=(255, 40, 50)), counts=(9, 7, 9, 6)),
                        dict(kind='crystal', k=0.6, th=-62, dy=-3.0, dz=1.3, pal=dict(root=(210, 30, 50), tip=(90, 0, 15), glow=(255, 70, 80)), counts=(6, 4, 0, 0))],
                arcs=AGOLD, gems=(255, 40, 50), soft=(230, 20, 35), fx='embers', fxcol=(255, 80, 60), float_crystals=(220, 20, 40)),
-    armor=dict(main=(20, 18, 24), panel=(48, 40, 52), trim=AGOLD, gem=(255, 40, 50), energy=(255, 30, 45), cloth=(90, 10, 20), pauldron='spiked'),
-    helm=dict(main=(20, 18, 24), panel=(48, 40, 52), trim=AGOLD, gem=(255, 40, 50), energy=(255, 30, 45), crown='horned'),
+    armor=dict(main=(20, 18, 24), panel=(84, 16, 28), trim=AGOLD, gem=(255, 40, 50), energy=(255, 30, 45), cloth=(90, 10, 20), pauldron='spiked'),
+    helm=dict(main=(20, 18, 24), panel=(84, 16, 28), trim=AGOLD, gem=(255, 40, 50), energy=(255, 30, 45), crown='horned'),
     weapon=dict(shape='great', blade=(52, 46, 58), edge=(255, 40, 50), guard=AGOLD, grip=(70, 10, 18), gem=(255, 40, 50)),
     sigil=dict(col=(235, 30, 45)),
     aura=('summoning_circle', 'glow', [[255, 90, 90], [210, 10, 35], [40, 0, 10]]), blade_aura=('flame', 'glow', [[255, 120, 110], [210, 10, 35], [30, 0, 8]]),
@@ -117,3 +117,23 @@ SETS['thronebreaker'] = dict(
     sigil=dict(col=(255, 196, 64)),
     aura=('seal_of_solomon', 'glow', [[255, 235, 150], [235, 50, 50], [100, 0, 10]]), blade_aura=('flame', 'glow', [[255, 230, 150], [235, 30, 40], [60, 0, 8]]),
 )
+
+# v6: painted-armour motif per set (armorart.motif_bg / chest designs)
+MOTIF = {'celestial_sovereign': 'feather', 'void_overlord': 'demon', 'solar_emperor': 'sun', 'frost_monarch': 'ice', 'storm_dragon': 'scale',
+         'blood_demon_king': 'demon', 'abyssal_king': 'scale', 'soul_reaper': 'bone', 'verdant_dragon': 'leaf', 'thronebreaker': 'royal'}
+for _sid, _d in SETS.items():
+    _d['armor']['motif'] = MOTIF[_sid]; _d['helm']['motif'] = MOTIF[_sid]
+
+# v6: one pet per set: (builder, kwargs, floats, pet name). builders: pets4.phoenix / fox / wisp, pets6.dragon / jelly
+PETS = {
+    'celestial_sovereign': ('phoenix', dict(body=(236, 242, 255), head=(255, 255, 255), tail=(170, 205, 255), glow=(90, 230, 255)), True, 'Seraph Chick'),
+    'void_overlord': ('dragon', dict(body=(42, 32, 44), belly=(120, 20, 32), wing=(95, 10, 28), horn=(200, 150, 60), glow=(255, 40, 50), iris=(255, 70, 70), fx_col=(255, 80, 60), frill=(140, 15, 30)), True, 'Void Dragonling'),
+    'solar_emperor': ('fox', dict(fur=(255, 196, 70), light=(255, 250, 230), dark=(150, 85, 20), iris=(255, 140, 30), tails=3, glow=(255, 200, 70), fx='foxfire'), False, 'Sun Fox'),
+    'frost_monarch': ('fox', dict(fur=(230, 245, 255), light=(255, 255, 255), dark=(90, 140, 200), iris=(120, 220, 255), tails=2, glow=(150, 235, 255), spirit=True, fx='foxfire'), False, 'Frost Fox'),
+    'storm_dragon': ('dragon', dict(body=(60, 130, 220), belly=(220, 235, 255), wing=(40, 90, 190), horn=(235, 240, 250), glow=(110, 230, 255), iris=(110, 230, 255), fx_col=(150, 240, 255), frill=(80, 200, 255)), True, 'Storm Dragonling'),
+    'blood_demon_king': ('wisp', dict(core=(45, 6, 12), flame=(255, 40, 45), eye=(255, 225, 205)), True, 'Blood Wisp'),
+    'abyssal_king': ('jelly', dict(bell=(40, 90, 190), glow=(70, 235, 220), tent=(60, 140, 220)), True, 'Abyssal Jelly'),
+    'soul_reaper': ('wisp', dict(core=(28, 22, 38), flame=(190, 120, 255), eye=(240, 255, 250)), True, 'Soul Lantern'),
+    'verdant_dragon': ('dragon', dict(body=(62, 168, 84), belly=(232, 230, 172), wing=(52, 140, 62), horn=(240, 200, 80), glow=(150, 255, 170), iris=(255, 220, 90), fx_col=(170, 255, 180), frill=(90, 200, 100)), True, 'Forest Dragonling'),
+    'thronebreaker': ('phoenix', dict(body=(200, 20, 32), head=(255, 190, 60), tail=(120, 0, 16), glow=(255, 200, 80)), True, 'Crimson Phoenix'),
+}

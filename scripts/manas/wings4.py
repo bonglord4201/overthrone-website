@@ -160,7 +160,8 @@ def crystal_shard(m, bone, R, L, w, ang, body, tipu, gtip, side):
 
 def ornament(m, k, s, n, wb, mb, hb, gold, gem, dark, trim='light'):
     """Royal trim: gold bracer + gem at the wrist, gold pauldron plates on the shoulder, gold spine studs."""
-    g = k.main('gold', P.solid(gold)); gd = k.main('gold_d', P.solid(P.shade(gold, 0.65)))
+    import armorart as AA
+    g = k.main('gold', AA.gold(8, 8, {'gold': gold})[0]); gd = k.main('gold_d', AA.gold(8, 8, {'gold': P.shade(gold, 0.7)})[0])
     gem_g = k.glow('gem', P.solid(gem))
     plate_uv = k.sprite('pauldron', lambda: P.plate(12, 14, dark, gold, gem=gem))
     Wx = X(W, s)
@@ -477,8 +478,9 @@ def divine(name, P_):
     sec = k.sprite('sec', lambda: P.feather(12, 64, root, P.mixc(root, tip, 0.8), (255, 255, 255), None, 'secondary', streak=streak, seed=2))
     cov = k.sprite('cov', lambda: P.feather(10, 32, (255, 255, 255), P.mixc(root, tip, 0.4), (255, 255, 255), None, 'covert', streak=streak, seed=3))
     small = k.sprite('small', lambda: P.feather(8, 14, (255, 255, 255), root, None, None, 'covert', seed=4))
-    gmain = k.main('gold', P.facet(4, 8, light, gold)); gdark = k.main('golddk', P.solid(dark))
-    gglow = k.glow('goldg', P.facet(4, 8, light, gold))
+    import armorart as AA
+    gmain = k.main('gold', AA.gold(8, 16, {'gold': gold})[0]); gdark = k.main('golddk', AA.gold(8, 8, {'gold': P.shade(gold, 0.7)})[0])
+    gglow = k.glow('goldg', AA.gold(8, 16, {'gold': gold})[0])
     layers = [('', 1.0, 0, 0.0, 0.0, (11, 9, 12, 8)), ('b', 0.8, -30, -1.5, 0.7, (9, 7, 9, 6)), ('c', 0.6, -64, -3.0, 1.3, (7, 5, 7, 0))]
     prims = {}
     for pre, kk, th, dy, dz, (NP, NS, NG, NM) in layers:

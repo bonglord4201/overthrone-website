@@ -6,7 +6,7 @@ import gzip, json, os, re, subprocess, sys
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 MC = os.path.join(ROOT, 'manas_cosmetics')
 SLOTS = 'helmet above_head chestplate back front legs boots armor_set ears orbit pet weapon aura weapon_aura ground shield grimoire magic_staff'.split()
-SET_PARTS = ['wings', 'helm', 'armor', 'blade', 'blade_aura', 'aura', 'sigil']
+SET_PARTS = ['wings', 'helm', 'armor', 'blade', 'blade_aura', 'aura', 'sigil', 'pet']
 STYLES = ('rising_motes twin_helix halo circle vortex_shroud rune_circle orbiting_orbs starfield_shimmer ember_crown falling_embers pulse_rings '
           'flame flame_scorched triangle pentagram hexagram magic_circle arcane_array summoning_circle square octagram heptagram square_seal '
           'octagram_array pentacle_array nested_polygons seal_of_solomon sunburst_mandala radiant_sun clockwork_seal astral_compass pulsar_seal').split()

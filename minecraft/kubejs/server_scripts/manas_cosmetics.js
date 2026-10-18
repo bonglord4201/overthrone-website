@@ -115,7 +115,7 @@ var OT_MANAS = {
     { id: 'overthrone:predator_mist', name: '&9&lPredator Mist', icon: 'minecraft:diamond_sword', price: 6000 },
     { id: 'overthrone:shadow_extraction', name: '&5&lShadow Extraction', icon: 'minecraft:netherite_sword', price: 11000, crate: true },
   ],
-  // the 10 premium armour & wing sets (scripts/manas/setdefs.py): wings, helm, armour, weapon skin, weapon aura, aura, ground sigil
+  // the 10 premium armour & wing sets (scripts/manas/setdefs.py): wings, helm, armour, weapon skin, weapon aura, aura, ground sigil, pet
   sets: [
     { id: 'overthrone:celestial_sovereign_wings', name: '&b&lCelestial Sovereign Wings', icon: 'minecraft:elytra', price: 22000, crate: true, weight: 3, set: 'celestial_sovereign' },
     { id: 'overthrone:celestial_sovereign_helm', name: '&b&lCelestial Sovereign Helm', icon: 'minecraft:golden_helmet', price: 12000, crate: true, weight: 3, set: 'celestial_sovereign' },
@@ -187,6 +187,16 @@ var OT_MANAS = {
     { id: 'overthrone:thronebreaker_blade_aura', name: '&6&lThronebreaker Ascendant Blade Aura', icon: 'minecraft:blaze_rod', price: 16000, crate: true, weight: 1, set: 'thronebreaker' },
     { id: 'overthrone:thronebreaker_aura', name: '&6&lThronebreaker Ascendant Aura', icon: 'minecraft:glowstone_dust', price: 20000, crate: true, weight: 1, set: 'thronebreaker' },
     { id: 'overthrone:thronebreaker_sigil', name: '&6&lThronebreaker Ascendant Sigil', icon: 'minecraft:enchanting_table', price: 18000, crate: true, weight: 1, set: 'thronebreaker' },
+    { id: 'overthrone:celestial_sovereign_pet', name: '&b&lSeraph Chick &7(pet)', icon: 'minecraft:egg', price: 16000, crate: true, weight: 3, set: 'celestial_sovereign' },
+    { id: 'overthrone:void_overlord_pet', name: '&4&lVoid Dragonling &7(pet)', icon: 'minecraft:egg', price: 16000, crate: true, weight: 3, set: 'void_overlord' },
+    { id: 'overthrone:solar_emperor_pet', name: '&6&lSun Fox &7(pet)', icon: 'minecraft:egg', price: 16000, crate: true, weight: 3, set: 'solar_emperor' },
+    { id: 'overthrone:frost_monarch_pet', name: '&b&lFrost Fox &7(pet)', icon: 'minecraft:egg', price: 16000, crate: true, weight: 3, set: 'frost_monarch' },
+    { id: 'overthrone:storm_dragon_pet', name: '&3&lStorm Dragonling &7(pet)', icon: 'minecraft:egg', price: 16000, crate: true, weight: 3, set: 'storm_dragon' },
+    { id: 'overthrone:blood_demon_king_pet', name: '&c&lBlood Wisp &7(pet)', icon: 'minecraft:egg', price: 16000, crate: true, weight: 3, set: 'blood_demon_king' },
+    { id: 'overthrone:abyssal_king_pet', name: '&3&lAbyssal Jelly &7(pet)', icon: 'minecraft:egg', price: 16000, crate: true, weight: 3, set: 'abyssal_king' },
+    { id: 'overthrone:soul_reaper_pet', name: '&5&lSoul Lantern &7(pet)', icon: 'minecraft:egg', price: 16000, crate: true, weight: 3, set: 'soul_reaper' },
+    { id: 'overthrone:verdant_dragon_pet', name: '&a&lForest Dragonling &7(pet)', icon: 'minecraft:egg', price: 16000, crate: true, weight: 3, set: 'verdant_dragon' },
+    { id: 'overthrone:thronebreaker_pet', name: '&6&lCrimson Phoenix &7(pet)', icon: 'minecraft:egg', price: 30000, crate: true, weight: 1, set: 'thronebreaker' },
   ],
 }
 

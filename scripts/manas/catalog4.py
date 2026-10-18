@@ -62,6 +62,7 @@ HEADS = {
 }
 
 import pets4 as PT
+import pets6 as P6
 PETS = {
     # id: (name, builder, kwargs, floats)
     'pet_rimuru': ('Rimuru Slime', PT.slime, dict(col=(90, 185, 255), eye=(20, 25, 60), fx='bubbles'), False),
@@ -69,7 +70,7 @@ PETS = {
     'pet_kitsune': ('Kitsune', PT.fox, dict(fur=(255, 140, 50), light=(255, 245, 230), dark=(50, 30, 30), iris=(255, 190, 40), tails=3, glow=(255, 220, 140), fx='foxfire'), False),
     'pet_spirit_fox': ('Spirit Fox', PT.fox, dict(fur=(225, 240, 255), light=(255, 255, 255), dark=(80, 120, 170), iris=(90, 200, 255), tails=5, glow=(90, 190, 255), spirit=True, fx='foxfire'), True),
     'pet_phoenix': ('Phoenix Chick', PT.phoenix, dict(), True),
-    'pet_storm_dragon': ('Baby Storm Dragon', PT.dragon, dict(body=(70, 150, 230), belly=(225, 240, 255), wing=(50, 110, 200), horn=(235, 240, 250), glow=(120, 230, 255), iris=(120, 230, 255)), True),
-    'pet_ember_dragon': ('Baby Ember Dragon', PT.dragon, dict(body=(190, 40, 30), belly=(255, 190, 90), wing=(130, 25, 20), horn=(40, 30, 30), glow=(255, 140, 30), iris=(255, 200, 60)), True),
+    'pet_storm_dragon': ('Baby Storm Dragon', P6.dragon, dict(body=(70, 150, 230), belly=(225, 240, 255), wing=(50, 110, 200), horn=(235, 240, 250), glow=(120, 230, 255), iris=(120, 230, 255), fx_col=(160, 240, 255), frill=(90, 200, 255)), True),
+    'pet_ember_dragon': ('Baby Ember Dragon', P6.dragon, dict(body=(200, 50, 30), belly=(255, 200, 100), wing=(140, 30, 20), horn=(45, 32, 30), glow=(255, 150, 40), iris=(255, 210, 70), fx_col=(255, 150, 50), frill=(255, 120, 30)), True),
     'pet_shadow_wisp': ('Shadow Wisp', PT.wisp, dict(), True),
 }

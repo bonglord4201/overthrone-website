@@ -6,7 +6,7 @@
 # scripts/manas/setdefs.py -> sets5.py. Auras (incl. the sets' auras): build-manas-auras.py.
 import json, os, shutil, sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'manas'))
-import catalog4 as C, sim, setdefs, sets5 as S5, look5
+import catalog4 as C, sim, setdefs, sets5 as S5, sets6 as S6, look5, pets4, pets6
 from PIL import Image, ImageDraw
 
 ROOT = os.path.join(os.path.dirname(__file__), '..', 'minecraft', 'manas_cosmetics')
@@ -36,9 +36,12 @@ WEAPON_WORD = {'spear': 'Spear', 'trident': 'Trident', 'scythe': 'Scythe', 'grea
 for sid, d in setdefs.SETS.items():
     t = d['title']
     save(sid + '_wings', t + ' Wings', 'back', S5.wings(sid + '_wings', d['wings']))
-    save(sid + '_helm', t + ' Helm', 'helmet', S5.helm(sid + '_helm', d['helm']))
-    save(sid + '_armor', t + ' Armour', 'armor_set', S5.armor(sid + '_armor', d['armor']))
-    save(sid + '_blade', t + ' ' + WEAPON_WORD.get(d['weapon']['shape'], 'Blade'), 'weapon', S5.weapon(sid + '_blade', d['weapon']))
+    save(sid + '_helm', t + ' Helm', 'helmet', S6.helm(sid + '_helm', d['helm']))
+    save(sid + '_armor', t + ' Armour', 'armor_set', S6.armor(sid + '_armor', d['armor']))
+    save(sid + '_blade', t + ' ' + WEAPON_WORD.get(d['weapon']['shape'], 'Blade'), 'weapon', S6.weapon(sid + '_blade', d['weapon']))
+    kind, kw, floats, pname = setdefs.PETS[sid]
+    fn = {'phoenix': pets4.phoenix, 'fox': pets4.fox, 'wisp': pets4.wisp, 'dragon': pets6.dragon, 'jelly': pets6.jelly}[kind]
+    save(sid + '_pet', pname + ' (' + t + ')', 'pet', fn(sid + '_pet', **kw), {'floats': True} if floats else None)
     save(sid + '_sigil', t + ' Sigil', 'ground', S5.sigil(sid + '_sigil', d['sigil']))
 
 # ------------------------------------------------------------------ previews (mod-exact placement)
