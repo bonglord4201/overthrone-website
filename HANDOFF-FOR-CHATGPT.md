@@ -199,6 +199,13 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   contents (particles). Any file in `kubejs/server_scripts/` runs on the server; the effects are vanilla particles sent by
   the server, so nothing is needed on the client.
 
+- **Particle cosmetics showed nothing (2026-10-18, cosmetics_fx.js):** they used `ServerLevel.sendParticles` via
+  Java.loadClass (ParticleTypes / DustParticleOptions); in game nothing appeared and errors were swallowed. Now every
+  particle is a vanilla `/particle` command like crate_fx.js (proven on this server):
+  `execute in <dim> positioned x y z run particle <id|dust{color:[r,g,b],scale:s}> ~ ~ ~ dx dy dz speed count force @a[distance=..48]`.
+  `// priority: 10` header so it loads before npc_menus.js (which builds the menus from `OT_FX`). `/cosfx debug` (op) shows
+  owned/equipped effects + error count and fires a test burst. Effects only show when OWNED and equipped (or previewed).
+
 - **Caverns NPC showing Silas (2026-10-18, npc_menus.js):** a copied Easy NPC keeps the original's `ot_mid_` id tag (and
   its `ss_npc_anchor` lock spot). `/npcmenu put` teleported EVERY hologram with that tag, so the original's hologram
   ("SILAS THE MERCHANT") was moved over the copy. Now `put` calls `refreshHolo` (idOf gives a copy its own id, then its own

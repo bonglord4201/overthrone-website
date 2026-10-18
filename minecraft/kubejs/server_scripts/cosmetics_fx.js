@@ -1,3 +1,4 @@
+// priority: 10
 // OVERTHRONE - animated particle cosmetics: AURAS, TRAILS and KILL EFFECTS (2026-10-18).
 // 100% server side: made of vanilla particles + sounds, so every player sees them with NO mod or resource pack.
 //
@@ -60,29 +61,18 @@ var OT_FX = {
   const preview = {}   // username -> { kind, id, until }
 
   // ---------------------------------------------------------------- particle output
-  // Java API (fast, one packet) with a /particle command fallback
-  var PT = null, Dust = null, V3 = null
-  try { PT = Java.loadClass('net.minecraft.core.particles.ParticleTypes') } catch (x) { }
-  try { Dust = Java.loadClass('net.minecraft.core.particles.DustParticleOptions'); V3 = Java.loadClass('org.joml.Vector3f') } catch (x) { }
-  var useApi = PT != null
-  const dustCache = {}
-  const dustOpt = (r, g, b, size) => {
-    var k = r + ',' + g + ',' + b + ',' + size
-    if (!dustCache[k]) dustCache[k] = new Dust(new V3(r, g, b), size)
-    return dustCache[k]
-  }
+  // FIX 2026-10-18: the Java particle API (ServerLevel.sendParticles) showed nothing in game, so every particle now uses
+  // the vanilla /particle command, the same way as crate_fx.js (proven to work on this server). "force" mode for players
+  // within 48 blocks, so they show even with the client's particle setting on Decreased.
   const f3 = (n) => Number(n).toFixed(3)
-  // spec: 'flame' (a ParticleTypes name in lower case) or [r, g, b, size] for coloured dust
+  const dimOf = (level) => { var k = level.dimension; if (typeof k === 'function') k = level.dimension(); return String(k && k.location ? k.location() : k) }
+  var fxErrors = 0, lastError = ''
+  // spec: 'flame' (a particle id without "minecraft:") or [r, g, b, size] for coloured dust
   const emit = (level, spec, x, y, z, n, dx, dy, dz, sp) => {
-    if (useApi) {
-      try {
-        var opt = typeof spec === 'string' ? PT[spec.toUpperCase()] : dustOpt(spec[0], spec[1], spec[2], spec[3] || 1)
-        level.sendParticles(opt, x, y, z, n || 1, dx || 0, dy || 0, dz || 0, sp || 0)
-        return
-      } catch (e) { useApi = false; console.warn('[cosmetics_fx] particle API failed, using commands: ' + e) }
-    }
-    var name = typeof spec === 'string' ? 'minecraft:' + spec : `minecraft:dust{color:[${f3(spec[0])},${f3(spec[1])},${f3(spec[2])}],scale:${spec[3] || 1}}`
-    level.server.runCommandSilent(`execute in ${level.dimension} run particle ${name} ${f3(x)} ${f3(y)} ${f3(z)} ${f3(dx || 0)} ${f3(dy || 0)} ${f3(dz || 0)} ${f3(sp || 0)} ${n || 1} normal`)
+    try {
+      var name = typeof spec === 'string' ? 'minecraft:' + spec : `minecraft:dust{color:[${f3(spec[0])},${f3(spec[1])},${f3(spec[2])}],scale:${f3(spec[3] || 1)}}`
+      level.server.runCommandSilent(`execute in ${dimOf(level)} positioned ${f3(x)} ${f3(y)} ${f3(z)} run particle ${name} ~ ~ ~ ${f3(dx || 0)} ${f3(dy || 0)} ${f3(dz || 0)} ${f3(sp || 0)} ${n || 1} force @a[distance=..48]`)
+    } catch (e) { fxErrors++; lastError = String(e) }
   }
   const hsv = (h) => {   // hue 0..1 -> [r,g,b]
     var i = Math.floor(h * 6), f = h * 6 - i, q = 1 - f
@@ -204,7 +194,7 @@ var OT_FX = {
           if (moved) TRAIL[tr](L, x, y, z, t)
         }
         last[name] = [x, z]
-      } catch (e) { }
+      } catch (e) { fxErrors++; lastError = String(e) }
     })
   })
   PlayerEvents.loggedOut(event => { delete last[event.player.username]; delete preview[event.player.username] })
@@ -228,6 +218,20 @@ var OT_FX = {
     const StringArg = Java.loadClass('com.mojang.brigadier.arguments.StringArgumentType')
     const KIND_OF = { aura: 'aura', trail: 'trail', killeffect: 'killfx' }
     event.register(Commands.literal('cosfx').requires(src => src.hasPermission(2))
+      // what you own/equip, and a test burst in front of you
+      .then(Commands.literal('debug').executes(ctx => {
+        var p = ctx.source.playerOrException
+        var mine = owned(p).filter(x => /^(aura|trail|killfx):/.test(x))
+        p.tell('§d[cosfx] §7Equipped: aura §f' + (p.persistentData.getString(KEYS.aura) || '-') + '§7, trail §f' + (p.persistentData.getString(KEYS.trail) || '-') +
+          '§7, kill effect §f' + (p.persistentData.getString(KEYS.killfx) || '-'))
+        p.tell('§d[cosfx] §7Owned effects: §f' + (mine.length ? mine.join(', ') : 'none') + ' §8(an equipped effect only shows if you own it)')
+        p.tell('§d[cosfx] §7Errors since start: §f' + fxErrors + (lastError ? ' §8(last: ' + lastError + ')' : ''))
+        var L = p.level, x = Number(p.getX()), y = Number(p.getY()), z = Number(p.getZ())
+        emit(L, 'flame', x, y + 2.3, z, 20, 0.4, 0.1, 0.4, 0.01)
+        emit(L, [1, 0, 1, 1.5], x, y + 1, z, 20, 0.5, 0.5, 0.5)
+        p.tell('§d[cosfx] §7Test: you should see §6flames§7 above you and §dpink dust§7 around you right now.')
+        return 1
+      }))
       .then(Commands.literal('preview').then(Commands.argument('kind', StringArg.word()).suggests((c, b) => { Object.keys(KIND_OF).forEach(k => b.suggest(k)); return b.buildFuture() })
         .then(Commands.argument('id', StringArg.word()).suggests((c, b) => { var k = KIND_OF[String(StringArg.getString(c, 'kind'))]; if (k) OT_FX[k].forEach(x => b.suggest(x.id)); return b.buildFuture() })
           .executes(ctx => {
