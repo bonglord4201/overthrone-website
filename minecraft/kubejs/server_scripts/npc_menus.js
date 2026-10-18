@@ -231,7 +231,12 @@
         ],
       },
       { slot: [5, 3], icon: 'minecraft:black_shulker_box', name: '&b&lAUTOSELL CHESTS', kind: 'ITEM', desc: ['Sell the contents of a chest to', 'the server shop automatically.'], soon: true },
-      { slot: [7, 3], icon: 'minecraft:ender_chest', name: '&d&lLOOTBOXES', kind: 'ITEM', desc: ['Lootboxes contain exclusive tags,', 'runes, spawners and more.'], soon: true },
+      {
+        slot: [7, 3], icon: 'minecraft:blaze_powder', name: '&6&lPARTICLE EFFECTS', kind: 'COSMETIC',
+        desc: ['Animated auras around you, trails', 'behind you and effects when you', 'get a kill. Everyone sees them,', 'no download needed.', '', '&8Some rare ones only come', '&8from crates.'],
+        layout: 'spaced',
+        children: [cosCat('aura', '&6&lAURAS', 'minecraft:blaze_powder'), cosCat('trail', '&c&lTRAILS', 'minecraft:campfire'), cosCat('killfx', '&4&lKILL EFFECTS', 'minecraft:wither_skeleton_skull')],
+      },
     ],
   }
 
@@ -408,6 +413,7 @@
       if (g.kind == 'glow') { contents(['1x Glow Color']); example([c.name.split(' ')[0] + ' glowing outline around you,', '&7seen through walls by other players.']) }
       if (g.kind == 'grad') { contents(['1x Name Color Gradient', '1x Matching Chat Color']); example([grad(n, c.stops, false) + '&7: &' + c.stops[c.stops.length - 1] + 'This is a test message!']) }
       if (g.kind == 'status') { contents(['1x Status']); example(['&7Floats above your head:', c.text]) }
+      if (K && K.fx) { contents(['1x ' + K.title.replace(/s$/, '') + ' (animated)']); use((c.desc || []).concat(['Everyone sees it, no download needed.'])) }
       if (g.kind == 'join') { contents(['1x Join Message', '1x Leave Message']); example([grad(c.join.replace('{p}', n), c.stops, false), grad(c.leave.replace('{p}', n), c.stops, false)]) }
       use(['Apply using &e' + K.cmd + '&7 or &e/cosmetics', 'Wear one of each kind at a time.'])
     } else if (g.type == 'key') {
@@ -455,7 +461,7 @@
   // path = list of categories from the main page down to the open one
   const shopPage = (p, path) => {
     var s = p.server, bal = shardsOf(p), cat = path[path.length - 1], list = cat.children || []
-    if (cat.cosKind) list = KINDS[cat.cosKind].list.map(c => ({ icon: c.icon, name: c.name, price: c.price, give: { type: 'cos', kind: cat.cosKind, id: c.id } }))
+    if (cat.cosKind) list = KINDS[cat.cosKind].list.filter(c => !c.crate && c.price).map(c => ({ icon: c.icon, name: c.name, price: c.price, give: { type: 'cos', kind: cat.cosKind, id: c.id } }))
     var spaced = cat.layout == 'spaced' && list.length <= 4
     var perRow = spaced ? 4 : 7
     var rows = cat.layout == 'ranks' ? 6 : Math.min(6, Math.max(4, Math.ceil(list.length / perRow) + 3))
@@ -551,7 +557,13 @@
     join: { key: 'ot_joinmsg', title: 'Join Messages', cmd: '/joinmessage', icon: 'minecraft:feather',
       list: JOIN_MESSAGES.map(j => ({ id: j[0], name: grad(j[1].replace('{p} ', '').replace(' {p}', '').replace('{p}', ''), j[3], false), icon: 'minecraft:feather', price: JOIN_PRICE, join: j[1], leave: j[2], stops: j[3] })) },
   }
-  const KIND_ORDER = ['tag', 'nc', 'cc', 'glow', 'grad', 'status', 'join']
+  // animated particle cosmetics (cosmetics_fx.js): auras, trails, kill effects
+  const FXK = { aura: ['ot_aura', 'Auras', '/aura', 'minecraft:blaze_powder'], trail: ['ot_trail', 'Trails', '/trail', 'minecraft:campfire'], killfx: ['ot_killfx', 'Kill Effects', '/killeffect', 'minecraft:wither_skeleton_skull'] }
+  if (typeof OT_FX !== 'undefined') Object.keys(FXK).forEach(k => {
+    KINDS[k] = { key: FXK[k][0], title: FXK[k][1], cmd: FXK[k][2], icon: FXK[k][3], fx: true,
+      list: OT_FX[k].map(c => ({ id: c.id, name: c.name, icon: c.icon, price: c.price, crate: !!c.crate, desc: c.desc })) }
+  })
+  const KIND_ORDER = ['tag', 'nc', 'cc', 'glow', 'grad', 'status', 'join'].concat(Object.keys(FXK).filter(k => KINDS[k]))
   const cosById = (kind, id) => { var l = KINDS[kind].list; for (var i = 0; i < l.length; i++) if (l[i].id == id) return l[i]; return null }
   // the equipped cosmetic of a kind (only if still owned)
   const equipped = (p, kind) => {
@@ -569,6 +581,7 @@
     if (kind == 'grad') return ['&7In chat: ' + grad(n, c.stops, false) + '&7: ' + '&' + c.stops[c.stops.length - 1] + 'This is a test message!', '&7Changes your name and chat colour.']
     if (kind == 'status') return ['&7Above your head: ' + c.text]
     if (kind == 'join') return ['&7Join: ' + grad(c.join.replace('{p}', n), c.stops, false), '&7Leave: ' + grad(c.leave.replace('{p}', n), c.stops, false)]
+    if (KINDS[kind] && KINDS[kind].fx) return (c.desc || []).map(l => '&7' + l).concat(['&8Animated, everyone sees it,', '&8no download needed.'])
     return []
   }
 
@@ -782,7 +795,7 @@
     if (id != null && kind == 'nc') p.persistentData.remove(KINDS.grad.key)
     if (kind == 'glow') applyGlow(p)
     else if (kind == 'status') removeStatus(p)
-    else if (kind != 'join') refreshChat(p)
+    else if (kind != 'join' && !KINDS[kind].fx) refreshChat(p)
     var tst = tagState[p.username]; if (tst) tst.key = ''
   }
   const cosmeticsMain = (p) => {
@@ -798,7 +811,7 @@
         if ((y == 0 && x == 4) || (y == 3 && (x == 3 || x == 5))) continue
         (function (xx, yy) { gui.slot(xx, yy, sl => { sl.item = pane(s, PANES.G) }) })(x, y)
       }
-      KIND_ORDER.forEach((k, i) => gui.slot(1 + i, 1, sl => {
+      KIND_ORDER.forEach((k, i) => gui.slot(i < 7 ? 1 + i : 3 + (i - 7), i < 7 ? 1 : 2, sl => {
         var K = KINDS[k], cur = equipped(p, k), n = K.list.filter(c => owns(p, k + ':' + c.id)).length
         sl.item = icon(s, K.icon, '&e&l' + K.title.toUpperCase(), ['&fYou own: &a' + n + '&7/' + K.list.length, '&fEquipped: ' + (cur ? cur.name : '&7none'), '', '&7Also: &e' + K.cmd, '', '&e&lCLICK TO OPEN'], cur != null)
         sl.leftClicked = e => after(p, () => cosmeticMenu(p, k))
@@ -1303,7 +1316,6 @@
         [7, 1, 'minecraft:end_portal_frame', '&c&lGATES', ['&f3 gates open every hour&7, near a', 'random player in the &fOverworld', '&8(/wild)&7.', 'Clear them for loot and XP.', 'Team up for higher ranks.'], true],
         [2, 3, 'minecraft:iron_sword', '&c&lYOUR CLASS', ['Your class and style come from', 'the evaluation.', '&7Class: &f' + me[1], '&7Rank: &f' + me[0], 'More info (rank perk): &f/hunterinfo'], false],
         [4, 3, 'minecraft:experience_bottle', '&b&lLEVELS', ['Solo Leveling has its own levels', 'and stats, on top of the server', '&f/level&7 and your Tensura race.', 'They all stack.'], false],
-        [6, 3, 'minecraft:barrier', '&c&lKICKED? READ THIS', ['"Failed to decode packet" kick =', 'a Solo Leveling bug.', '&fFully close Minecraft AND your', '&flauncher&7, then rejoin.'], false],
         [3, 5, 'minecraft:ender_pearl', '&a&l➤ HUNTER ASSOCIATION', ['Go to the Hunter Association.', '', CLICK_TP], true, () => tp(p, 'warp hunters')],
         [5, 5, 'minecraft:slime_ball', '&b&lTensura Guide', ['Races, evolutions, skills.'], false, () => after(p, () => tensuraGuide(p))],
       ]
@@ -1900,20 +1912,31 @@
       .then(Commands.literal('put').executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, e = grabbed[p.username]
         if (e == null || !e.isAlive()) { say(ctx.source, '§cFirst look at the NPC and type /npcmenu grab'); return 0 }
-        var f = (n) => Number(n).toFixed(2), id = uuidOf(e)
-        run(p.server, `execute in ${p.level.dimension} run tp ${id} ${f(p.x)} ${f(p.y)} ${f(p.z)} ${f(p.yaw)} 0`)
-        // the hub NPC lock (npclock) keeps NPCs on their saved spot: give it the new spot
-        try { e.persistentData.remove('ss_npc_anchor') } catch (x) { }
+        var f = (n) => Number(n).toFixed(2), id = uuidOf(e), nx = Number(f(p.x)), ny = Number(f(p.y)), nz = Number(f(p.z))
+        // FIX 2026-10-18: the NPC lock (serversetup/npcprotect.js) holds every NPC on its saved spot. The NEW spot is saved
+        // as its anchor BEFORE it moves (the old code removed the anchor and ran "/npclock here" without its radius,
+        // which failed, so the NPC was left with no anchor and could be pushed around).
+        var anchored = false
+        try { if (typeof npSetAnchor === 'function') { npSetAnchor(e, String(p.level.dimension), nx, ny, nz); anchored = true } } catch (x) { }
+        if (!anchored) {
+          try {
+            var t = new (Java.loadClass('net.minecraft.nbt.CompoundTag'))()
+            t.putString('dim', String(p.level.dimension)); t.putDouble('x', nx); t.putDouble('y', ny); t.putDouble('z', nz)
+            e.persistentData.put('ss_npc_anchor', t); anchored = true
+          } catch (x) { }
+        }
+        run(p.server, `execute in ${p.level.dimension} run tp ${id} ${f(nx)} ${f(ny)} ${f(nz)} ${f(p.yaw)} 0`)
         p.server.scheduleInTicks(2, () => {
           try {
+            // make sure the lock's protection flags (immovable, not pushable) are on, and the hologram follows
+            try { if (typeof npProtect === 'function') npProtect(e) } catch (x) { }
             var holo = null
             e.getTags().forEach(t => { if (String(t).indexOf('ot_mid_') == 0) holo = String(t) })
             if (holo) run(p.server, `execute in ${p.level.dimension} run tp @e[type=minecraft:text_display,tag=${holo}] ${f(e.x)} ${f(e.y + 2.25)} ${f(e.z)}`)
-            asPlayer(p, `npclock here`)
           } catch (x) { }
         })
         delete grabbed[p.username]
-        say(ctx.source, '§a[npcmenu] NPC moved here (hologram too).')
+        say(ctx.source, '§a[npcmenu] NPC moved here and locked in place' + (anchored ? '' : ' §c(lock spot could not be saved: tell your dev)') + '§a (hologram too).'); pointOut(ctx.source, e)
         return 1
       })))
       .then(Commands.literal('remove').executes(ctx => guard(ctx, () => {
@@ -1973,10 +1996,11 @@
     cosCmd('gradient', p => cosmeticMenu(p, 'grad'))
     cosCmd('status', p => cosmeticMenu(p, 'status'))
     cosCmd('joinmessage', p => cosmeticMenu(p, 'join'))
+    if (KINDS.aura) { cosCmd('aura', p => cosmeticMenu(p, 'aura')); cosCmd('trail', p => cosmeticMenu(p, 'trail')); cosCmd('killeffect', p => cosmeticMenu(p, 'killfx')) }
 
     // Tebex / staff: otcosmetic give|take <player> <kind> <id>     (console works, player must be online)
     // kinds: tag, namecolor, chatcolor, glow, gradient, status, joinmessage   (ids: /otcosmetic list)
-    const KIND_ALIAS = { tag: 'tag', namecolor: 'nc', chatcolor: 'cc', glow: 'glow', gradient: 'grad', status: 'status', joinmessage: 'join' }
+    const KIND_ALIAS = { tag: 'tag', namecolor: 'nc', chatcolor: 'cc', glow: 'glow', gradient: 'grad', status: 'status', joinmessage: 'join', aura: 'aura', trail: 'trail', killeffect: 'killfx' }
     const kindSuggest = (c, b) => { Object.keys(KIND_ALIAS).forEach(k => b.suggest(k)); return b.buildFuture() }
     const idSuggest = (c, b) => {
       var k = KIND_ALIAS[String(StringArg.getString(c, 'kind')).toLowerCase()]

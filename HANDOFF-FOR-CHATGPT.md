@@ -109,6 +109,7 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
 | `kit_cooldown.js` | Enforces NeoEssentials kit cooldowns. | `/kitcd check/reset` |
 | `leveling.js` | Player levels 1–5000 (XP from quests, mobs, ores, daily login). Mirrored to scoreboard objectives for the HUD. | `/level ...` |
 | `grief_guard.js` | Hub + RPG World (incl. Caverns): any `minecraft:falling_block` that appears is cancelled and its block put back at its start position (skills that lift/move/suck up blocks); NeoForge `EntityMobGriefingEvent` denied there. Added 2026-10-18 because skills (e.g. Black Lightning) still moved blocks; the owner was probably testing as a member of the hub claim team or with FTB admin bypass, which the claims allow. Untested; `/griefguard` counters show which part catches what. | `/griefguard` |
+| `cosmetics_fx.js` | Animated particle cosmetics (auras, trails, kill effects), 100% server side. Global `OT_FX` list is read by npc_menus.js, which adds kinds `aura`/`trail`/`killfx` to its cosmetics system (/cosmetics row 2, /aura /trail /killeffect, Throne Shop "PARTICLE EFFECTS" replacing the old Lootboxes "soon" tile, `/otcosmetic give <p> aura|trail|killeffect <id>`). `crate: true` items are not sold in the shop (crate rewards only). Ownership `ot_owned` "aura:<id>", equipped `ot_aura`/`ot_trail`/`ot_killfx`. Particles via `ServerLevel.sendParticles` (falls back to /particle). Test: `node minecraft/tests/cosmetics_fx/fxtest.js minecraft/kubejs/server_scripts/cosmetics_fx.js`. | `/cosfx preview <kind> <id>` |
 | `slr_death_guard.js` | Crash guard for the SLR bug (section 5): orphaned boss clones are removed instead of dying; kills by them become plain deaths. | `/slrguard` |
 | `mob_infighting.js` | **Crash guard**: in the RPG world, wild mobs can't damage other mobs (see section 5). | `/mobinfighting` |
 | `mob_spawns.js` | **Fixed mob/boss spawns** (see section 4). | `/setmob`, `/setboss`, `/mobspawn ...` |
@@ -195,6 +196,15 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   (same type/kind on the same block) are merged at startup. findMob's "take over an untagged mob" is bosses-only now.
   spawnNow adopts the YOUNGEST (<5 s) untagged mob of the type near the spot.
   **Tests:** `sh minecraft/tests/mob_spawns/run.sh` simulates the script on a fake world (node). Run it after every change.
+
+- **NPC grab/put fix (2026-10-18):** `/npcmenu put` now saves the new spot as the NPC lock anchor (`npSetAnchor` from
+  serversetup/npcprotect.js, or the `ss_npc_anchor` compound) BEFORE teleporting, then runs `npProtect`. The old code removed the
+  anchor and ran `/npclock here` without its required radius (failed silently), leaving the NPC unanchored and pushable.
+- **Mysticism elemental realm (`mysticism:elemental_realm`)** spawns (from the mod jar's biome files): fire biome
+  tensura:salamander, earth tensura:beast_gnome, water tensura:aqua_frog, wind tensura:feathered_serpent, space
+  tensura:winged_cat, darkness mysticism:shadow_imp, every biome mysticism:memoires + vex (+ blazes/allays as creatures).
+  Mysticism race evolution requirements live in its config files (config classes io/github/Memoires/mysticism/config/race),
+  so they must be read from the server's config folder, not guessed.
 
 ## 5. Known mod bugs and their workarounds
 
