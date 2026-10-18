@@ -1167,6 +1167,177 @@
     })
   }
 
+  // ======================================================================= Guide NPCs (2026-10-18)
+  // Server Guide, Tensura Guide, Solo Leveling Guide, Hunter Association, Silas (market).
+  // Same chest-menu style as the Caverns menu: coloured border, one icon per topic (hover to read), buttons at the bottom.
+  // Facts here come from the Player Guide on the website (races: Tensura 2.0.1 defaults), our own scripts
+  // (worlds, gates, Caverns, crates...) and what the owner confirmed in game (statue: crouch 2 seconds).
+  const BORDERS = {
+    red: ['minecraft:red_stained_glass_pane', 'minecraft:black_stained_glass_pane'],
+    aqua: ['minecraft:light_blue_stained_glass_pane', 'minecraft:cyan_stained_glass_pane'],
+    purple: ['minecraft:purple_stained_glass_pane', 'minecraft:magenta_stained_glass_pane'],
+    gold: ['minecraft:orange_stained_glass_pane', 'minecraft:yellow_stained_glass_pane'],
+  }
+  // page: { title, rows, border, slots: [[x, y, itemId, name, lore, glint, onClick]] }
+  const guidePage = (p, pg) => {
+    var s = p.server, rows = pg.rows || 6, b = BORDERS[pg.border] || BORDERS.red
+    p.openChestGUI(Text.of(pg.title), rows, gui => {
+      gui.playerSlots = true
+      for (var y = 0; y < rows; y++) for (var x = 0; x < 9; x++) {
+        (function (xx, yy) {
+          var edge = yy == 0 || yy == rows - 1 || xx == 0 || xx == 8
+          gui.slot(xx, yy, sl => { sl.item = pane(s, edge ? b[(xx + yy) % 2] : 'minecraft:gray_stained_glass_pane') })
+        })(x, y)
+      }
+      pg.slots.forEach(d => {
+        gui.slot(d[0], d[1], sl => {
+          sl.item = icon(s, d[2], d[3], d[4] || [], !!d[5])
+          if (d[6]) sl.leftClicked = e => d[6]()
+        })
+      })
+      if (pg.back) gui.slot(0, rows - 1, sl => { sl.item = icon(s, 'minecraft:arrow', '&e&l← Back', ['Back to ' + pg.back[0]]); sl.leftClicked = e => after(p, pg.back[1]) })
+      gui.slot(8, rows - 1, sl => { sl.item = icon(s, 'minecraft:barrier', '&c&lClose', []); sl.leftClicked = e => { try { p.closeMenu() } catch (x) { } } })
+    })
+  }
+  const tp = (p, cmd, msg) => after(p, () => { asPlayer(p, cmd); if (msg) p.tell(msg) })
+  const CLICK_TP = '&e&lCLICK TO TELEPORT'
+
+  // ---------------------------------------------------------------- Server Guide (new NPC)
+  const serverGuide = (p) => guidePage(p, {
+    title: 'Server Guide', border: 'gold', slots: [
+      [4, 0, 'minecraft:nether_star', '&6&l✦ OVERTHRONE SERVER GUIDE ✦', ['Everything you need to get going.', 'Hover over an icon to read it,', 'click a world to go there.'], true],
+      [1, 1, 'minecraft:writable_book', '&a&l① START HERE', ['&f1. &7Pick your &frace&7 (first join).', '&7   It also gives you a random', '&7   &dunique skill&7.', '&f2. &7Do your &fHunter Evaluation', '&7   (Hunter Association).', '&f3. &7Go to the &fRPG World &7(/rpg)', '&7   for quests, shops and NPCs.', '&f4. &7Fight in &fthe Caverns&7 for cash.', '&f5. &7Build a base in &fSurvival', '&7   and claim it (/claimtool).'], true],
+      [3, 1, 'minecraft:experience_bottle', '&b&lLEVELS & STATS', ['Earn XP from quests, mobs and ores.', 'Every level = &f1 stat point&7.', 'Spend them: &f/stats', 'See your level: &f/level'], false],
+      [5, 1, 'minecraft:emerald', '&a&lMONEY', ['Cash from &fthe Caverns&7 (kills + nodes),', 'quests, jobs and selling.', 'Daily reward: &f/dailyreward', 'Vote every day: &f/vote'], false],
+      [7, 1, 'minecraft:tripwire_hook', '&e&lCRATES & KEYS', ['Keys from voting, the AFK room,', 'events, and Caverns kills', '&8(0.5%, bosses 5%)&7.', 'Crates are at &f/warp crates&7.'], false],
+      // worlds (click to go)
+      [1, 3, 'minecraft:beacon', '&6&lTHE HUB', ['The city above the clouds.', '&aSafe: no damage, no griefing.', 'Warp boards, NPCs, crates, shops.', '', CLICK_TP], true, () => tp(p, 'hub')],
+      [2, 3, 'minecraft:lectern', '&d&lRPG WORLD', ['A protected city: quests, the', 'Arcade, the Arcanum, NPCs.', '&aSafe&7, except &cthe Caverns&7.', 'Can\'t break or place blocks.', '', CLICK_TP], true, () => tp(p, 'rpg')],
+      [3, 3, 'minecraft:deepslate_diamond_ore', '&c&lTHE CAVERNS', ['Mobs, &4bosses&7 and every node.', '&cYou CAN die here.', 'Every kill and node pays &acash&7.', '', CLICK_TP], true, () => tp(p, 'warp caverns')],
+      [4, 3, 'minecraft:grass_block', '&2&lSURVIVAL', ['Build your base here.', 'Claim land so nobody can grief it:', '&f/claimtool &7and &f/claiminfo', '', CLICK_TP], false, () => tp(p, 'survival')],
+      [5, 3, 'minecraft:iron_pickaxe', '&7&lRESOURCE', ['Mine and gather freely.', 'It gets reset, so don\'t build here.', '', CLICK_TP], false, () => tp(p, 'resource')],
+      [6, 3, 'minecraft:netherite_sword', '&4&lSMP WORLD', ['&cNo claims, raiding allowed.', '&cYou DROP your items when you', '&cdie here &7(everywhere else you keep them).', '', CLICK_TP], true, () => tp(p, 'smp')],
+      [7, 3, 'minecraft:compass', '&a&lTHE WILD', ['A random spot in the overworld.', 'Gates open near players here.', '', CLICK_TP], false, () => tp(p, 'wild')],
+      [2, 4, 'minecraft:totem_of_undying', '&e&lKEEP INVENTORY', ['You keep your items when you die', 'in every world &cexcept the SMP world&7.'], false],
+      [4, 4, 'minecraft:shield', '&b&lNEW PLAYER SHIELD', ['No damage while you pick a race,', 'then for your first &f15 minutes', 'while you are below &flevel 5&7.'], false],
+      [6, 4, 'minecraft:clock', '&7&lAFK ROOM', ['Stand in the AFK room for', 'AFK Shards: 6 shards = 1 AFK Key.', '&f/warp afk'], false],
+      // buttons
+      [2, 5, 'minecraft:slime_ball', '&b&lTensura Guide', ['Races, evolutions, skills.'], false, () => after(p, () => tensuraGuide(p))],
+      [4, 5, 'minecraft:book', '&a&lServer Links', ['Discord, website, store, rules, vote.'], false, () => after(p, () => linksMenu(p))],
+      [6, 5, 'minecraft:ender_eye', '&5&lSolo Leveling Guide', ['Hunter ranks, gates, dungeons.'], false, () => after(p, () => slGuide(p))],
+    ]
+  })
+
+  // ---------------------------------------------------------------- Tensura Guide
+  // Tensura races (website Player Guide, Tensura 2.0.1 defaults)
+  const T_RACES = [
+    ['minecraft:iron_block', 'Giant', 'a', 'Easy', ['Strongest start: 50 HP, big MP+AP.', 'Giant → Ancient Giant', '&8(300k EP + 20 Ancient Debris)', '→ Divine Giant &8(2M EP)']],
+    ['minecraft:phantom_membrane', 'Lesser Daemon', 'a', 'Easy', ['Flies from day one, huge magic.', '→ Greater Daemon &8(20k EP)', '→ Arch Daemon &8(140k EP)', '→ Daemon Lord &8(2 of: body, name,', '&8   awakening) &7→ Devil Lord &8(all 3)']],
+    ['minecraft:iron_axe', 'Ogre', 'a', 'Easy', ['Melee, most evolution paths.', '→ Kijin &8(get a Spirit)&7 or', '  Enlightened Ogre &8(100k EP)', '→ Mystic / Wicked Oni &8(10 Elemental', '&8   or Daemon Essence)', '→ Spirit / Death Oni &8(400k)', '→ Divine Oni / Fighter &8(2M)']],
+    ['minecraft:rabbit_foot', 'Beastfolk', 'a', 'Easy', ['Fast melee, regeneration.', '→ Beast Lord &8(100k EP)', '→ Spirit Beast &8(400k + 4 bosses)', '→ Divine Beast &8(2M EP)']],
+    ['minecraft:feather', 'Harpy', 'a', 'Easy', ['Magic + glides like an elytra.', '→ Harpy Queen &8(200k EP)', '→ Spirit Bird &8(800k EP)', '→ Divine Bird &8(2M EP)']],
+    ['minecraft:oak_sapling', 'Elf', 'e', 'Intermediate', ['Fast, elemental magic.', '→ Enlightened Elf &8(100k EP)', '→ Elf Saint &8(400k + 4 bosses)', '→ Divine Elf &8(2M EP)']],
+    ['minecraft:tropical_fish', 'Merfolk', 'e', 'Intermediate', ['Breathes underwater, fast swimmer.', '→ Enlightened Merfolk &8(100k)', '→ Merfolk Saint &8(400k + 4 bosses)', '→ Divine Fish &8(2M EP)']],
+    ['minecraft:turtle_scute', 'Lizardman', 'e', 'Intermediate', ['Scale Armor, dragon bloodline.', '→ Dragonewt &8(10 Dragon Essence)', '→ True Dragonewt &8(800k EP)', '→ Divine Dragon &8(2M EP, wings)']],
+    ['minecraft:porkchop', 'Orc', 'e', 'Intermediate', ['Tank with a hunger skill.', '→ High Orc &8(5k EP)', '→ Orc Lord &8(10 Royal Blood)', '→ Orc Disaster &8(200k + mastered Starved)', '→ Spirit Boar &8(400k) &7→ Divine Boar &8(2M)']],
+    ['minecraft:player_head', 'Human', 'c', 'Hard', ['Weapons and battlewills.', '→ Enlightened Human &8(100k EP)', '→ Human Saint &8(400k + 4 bosses)', '→ Divine Human &8(2M EP)', '&7Or drink 5 &fZane Blood&7 → Vampire']],
+    ['minecraft:anvil', 'Dwarf', 'c', 'Hard', ['Tough, slow, hits hard.', '→ Enlightened Dwarf &8(100k EP)', '→ Dwarf Saint &8(400k + 4 bosses)', '→ Divine Dwarf &8(2M EP)']],
+    ['minecraft:leather', 'Goblin', 'c', 'Hard', ['12 HP, but evolves fast.', '→ Hobgoblin &8(2k EP)', '→ Enlightened Hobgoblin &8(100k)', '→ Hobgoblin Saint &8(400k + 4 bosses)', '→ Divine Oni &8(2M EP)']],
+    ['minecraft:skeleton_skull', 'Wight', 'c', 'Hard', ['Undead mage, hates sunlight.', '→ Wight King &8(200k EP)', '→ Spirit Skeleton &8(800k EP)', '→ Divine Skeleton &8(2M EP)']],
+    ['minecraft:redstone', 'Ghoul', 'c', 'Hard', ['Road to Divine Vampire.', '→ Vampire &8(1 Zane Blood)', '→ Vampire Overcomer &8(150k EP)', '→ Vampire Lord &8(400k EP)', '→ Divine Vampire &8(2M EP)']],
+    ['minecraft:slime_ball', 'Slime', '4', 'Extreme', ['10 HP, 50% less physical damage.', '→ Metal Slime &8(absorb 100 Magic Ore)', '→ Demon Slime &8(awaken: True', '&8   Demon Lord or True Hero)', '→ God Slime &8(2M EP)']],
+  ]
+  // races from the other mods (in the race menu on this server). Their paths: press B → Evolution Menu.
+  const X_RACES = [
+    ['minecraft:blaze_powder', 'Attuned Wyrm', 'Mysticism'], ['minecraft:bone', 'Direwolf', 'Mysticism'], ['minecraft:dragon_breath', 'Dragonoid', 'Mysticism'],
+    ['minecraft:soul_lantern', 'Forgotten', 'Mysticism'], ['minecraft:spider_eye', 'Insect', 'Mysticism'], ['minecraft:golden_apple', 'Lesser Angel', 'Mysticism'],
+    ['minecraft:fire_charge', 'Lesser Elemental', 'Mysticism'], ['minecraft:ghast_tear', 'Phantom', 'Mysticism'], ['minecraft:chain', 'Restricted Human', 'Mysticism'],
+    ['minecraft:sculk', 'Sculk Worm', 'Mysticism'], ['minecraft:cobweb', 'Small Lesser Taratect', 'Kumodesu'], ['minecraft:brown_dye', 'Kobold', 'SlimeThrone Extras'],
+    ['minecraft:glow_berries', 'Wispfolk', 'SlimeThrone Extras'], ['minecraft:sweet_berries', 'Mystic Fox', 'SlimeThrone Extras'],
+  ]
+  const raceItem = (r) => [r[0], '&' + r[2] + '&l' + r[1] + ' &8(' + r[3] + ')', r[4]]
+  const tensuraRaces = (p) => {
+    var slots = [[4, 0, 'minecraft:totem_of_undying', '&b&lTENSURA RACES', ['Hover a race to see its path.', 'EP = your max MP + AP.', '&8k = thousand, M = million'], true]]
+    T_RACES.forEach((r, i) => { var it = raceItem(r); slots.push([1 + (i % 7), 1 + Math.floor(i / 7), it[0], it[1], it[2], false]) })
+    slots.push([4, 4, 'minecraft:chest', '&d&lMORE RACES (other mods) →', ['Mysticism, Kumodesu and', 'SlimeThrone Extras races.'], true, () => after(p, () => otherRaces(p))])
+    guidePage(p, { title: 'Tensura Races', border: 'aqua', slots: slots, back: ['Tensura Guide', () => tensuraGuide(p)] })
+  }
+  const otherRaces = (p) => {
+    var slots = [[4, 0, 'minecraft:enchanted_book', '&d&lMORE RACES', ['These come from other mods.', 'Each has its own evolutions:', 'press &fB&7 → &fEvolution Menu&7 to', 'see the exact path and goals.'], true]]
+    X_RACES.forEach((r, i) => slots.push([1 + (i % 7), 1 + Math.floor(i / 7), r[0], '&d&l' + r[1], ['From: &f' + r[2], '', 'Path & requirements:', '&fB&7 → &fEvolution Menu&7 → Track'], false]))
+    guidePage(p, { title: 'More Races', border: 'purple', rows: 5, slots: slots, back: ['Tensura Races', () => tensuraRaces(p)] })
+  }
+  const tensuraGuide = (p) => guidePage(p, {
+    title: 'Tensura Guide', border: 'aqua', slots: [
+      [4, 0, 'minecraft:slime_ball', '&b&l✦ TENSURA GUIDE ✦', ['Races, evolutions, skills and magic.', 'Hover to read, click to open.'], true],
+      [1, 1, 'minecraft:writable_book', '&a&l① START HERE', ['You pick a &frace&7 on your first join.', 'You also get &fone random unique', '&fskill&7 when you pick it.', '', 'Press &fB&7: your &fStatus Menu&7.', 'Kill mobs to gain &fEP&7 (your power).'], true],
+      [3, 1, 'minecraft:totem_of_undying', '&b&lALL RACES →', ['Every race on the server,', 'its difficulty and how to', 'evolve it.', '', '&e&lCLICK TO OPEN'], true, () => after(p, () => tensuraRaces(p))],
+      [5, 1, 'minecraft:experience_bottle', '&e&lHOW TO EVOLVE', ['Press &fB&7 → &fEvolution Menu&7.', 'Pick a goal, press &fTrack&7 to see', 'it on screen, then &fEvolve&7 at 100%.', '', 'Goals: about &f100k EP&7 first,', '&f400k-800k&7 next, &f2M&7 for Divine.', '&fSaint&7 forms also need &f4 bosses&7.'], false],
+      [7, 1, 'minecraft:nether_star', '&6&lAWAKENING', ['&fTrue Demon Lord&7: a Majin with', '&f200k EP&7, then collect &f10,000 souls&7.', '&fTrue Hero&7: the other awakening.', '', 'Some evolutions (Demon Slime,', 'Devil Lord...) need an awakening.', '&fHarvest Festival&7: your followers', 'nearby evolve for free.'], true],
+      [1, 3, 'minecraft:name_tag', '&d&lNAMING', ['A stronger player can name you', '&8(default key &fN&8)&7.', 'It can push you to your next form.'], false],
+      [3, 3, 'minecraft:blaze_rod', '&c&lSKILLS & MAGIC', ['Skills level up as you use them', '&8(mastery)&7. Check them in &fB&7.', 'Race ability: &fCtrl + E&7.', '', '&cBanned skills&7 are removed', 'automatically. If your unique was', 'banned you get a new random one.'], false],
+      [5, 3, 'minecraft:paper', '&e&lITEMS FOR EVOLVING', ['Some forms need items, not EP:', '&fZane Blood, Royal Blood,', '&fDragon Essence, Elemental or', '&fDaemon Essence, Magic Ore,', '&fAncient Debris&7.'], false],
+      [7, 3, 'minecraft:recovery_compass', '&5&lCHANGE RACE', ['Talk to &fSeris the Rebirth Keeper', 'for a &fRace Reset Scroll', '&8(one every 12 hours)&7.', '', '&cIt resets your race, stats and', '&crace skills: be sure first!'], false],
+      [2, 4, 'minecraft:sunflower', '&6&lSUNLIGHT', ['Wights, Ghouls and Vampires', 'burn in sunlight. A helmet stops', 'the burning; roofs and rain stop', 'the weakness.'], false],
+      [4, 4, 'minecraft:elytra', '&f&lFLYING', ['&fLesser Daemon&7 and every daemon', 'fly from the start.', '&fTrue Dragonewt / Divine Dragon', 'grow wings. &fHarpies&7 glide.'], false],
+      [6, 4, 'minecraft:spyglass', '&a&lYOUR POWER', ['&fEP&7 = max Magicules + max Aura.', '&fMajin&7 (Slime, Wight, Ghoul,', 'Lesser Daemon) turn EP into &bMP&7.', 'Everyone else into &cAP&7.'], false],
+      [4, 5, 'minecraft:ender_eye', '&5&lSolo Leveling Guide', ['Hunter ranks, gates, dungeons.'], false, () => after(p, () => slGuide(p))],
+    ]
+  })
+
+  // ---------------------------------------------------------------- Solo Leveling Guide
+  const slInfo = (p) => {
+    var rank = '-', cls = '-'
+    try { var v = p.getData(Java.loadClass('net.solocraft.network.SololevelingModVariables').PLAYER_VARIABLES_ATTACHMENT.get()); if (String(v.ranking) != '') rank = String(v.ranking) } catch (e) { }
+    try { if (typeof hudClass === 'function') cls = String(hudClass(p)) } catch (e) { }
+    return [rank, cls]
+  }
+  const slGuide = (p) => {
+    var me = slInfo(p)
+    guidePage(p, {
+      title: 'Solo Leveling Guide', border: 'purple', slots: [
+        [4, 0, 'minecraft:ender_eye', '&5&l✦ SOLO LEVELING GUIDE ✦', ['From Hunter to Monarch.', '&7Your rank: &f' + me[0] + '  &7Class: &f' + me[1]], true],
+        [1, 1, 'minecraft:writable_book', '&a&l① START HERE', ['Go to the &fHunter Association', '&8(/warp hunters)&7 and do your', '&fHunter Evaluation&7.', 'It gives you your &fclass&7, &fstyle', '&7and &fhunter rank&7.'], true],
+        [3, 1, 'minecraft:amethyst_shard', '&d&lTHE EVALUATION', ['Tabs: Contact, Scan, Class,', 'Style, Rank, Record.', '&fPress and HOLD the gem&7 until', 'the timer is done (about 1.5 s).', 'Ranks: &fE → D → C → B → A → S'], false],
+        [5, 1, 'minecraft:armor_stand', '&e&lSTATUES', ['&cThey are NOT broken!', 'To use a statue, &fcrouch (sneak)', '&fnext to it for 2 seconds&7.', 'Hold sneak until it activates.'], true],
+        [7, 1, 'minecraft:end_portal_frame', '&c&lGATES', ['&f3 gates open every hour&7, near a', 'random player in the &fOverworld', '&8(/wild)&7.', 'Clear them for loot and XP.', 'Team up for higher ranks.'], true],
+        [2, 3, 'minecraft:iron_sword', '&c&lYOUR CLASS', ['Your class and style come from', 'the evaluation.', '&7Class: &f' + me[1], '&7Rank: &f' + me[0], 'More info (rank perk): &f/hunterinfo'], false],
+        [4, 3, 'minecraft:experience_bottle', '&b&lLEVELS', ['Solo Leveling has its own levels', 'and stats, on top of the server', '&f/level&7 and your Tensura race.', 'They all stack.'], false],
+        [6, 3, 'minecraft:barrier', '&c&lKICKED? READ THIS', ['"Failed to decode packet" kick =', 'a Solo Leveling bug.', '&fFully close Minecraft AND your', '&flauncher&7, then rejoin.'], false],
+        [3, 5, 'minecraft:ender_pearl', '&a&l➤ HUNTER ASSOCIATION', ['Go to the Hunter Association.', '', CLICK_TP], true, () => tp(p, 'warp hunters')],
+        [5, 5, 'minecraft:slime_ball', '&b&lTensura Guide', ['Races, evolutions, skills.'], false, () => after(p, () => tensuraGuide(p))],
+      ]
+    })
+  }
+
+  // ---------------------------------------------------------------- Hunter Association
+  const huntersMenu = (p) => {
+    var me = slInfo(p)
+    guidePage(p, {
+      title: 'Hunter Association', border: 'red', rows: 5, slots: [
+        [4, 0, 'minecraft:netherite_helmet', '&4&l✦ HUNTER ASSOCIATION ✦', ['Rise through the Hunter Ranks:', '&fE » D » C » B » A » S » ???', '', '&7Your rank: &f' + me[0] + '  &7Class: &f' + me[1]], true],
+        [2, 1, 'minecraft:amethyst_shard', '&d&l① GET EVALUATED', ['Use the &fHunter Evaluator&7 at', 'the Hunter Association, then', '&fpress and HOLD the gem&7', '(about 1.5 s).', 'You get your class, style and rank.'], true],
+        [4, 1, 'minecraft:armor_stand', '&e&lSTATUES', ['&fCrouch next to a statue for', '&f2 seconds&7 to activate it.', '&cIt is not broken!'], false],
+        [6, 1, 'minecraft:end_portal_frame', '&c&lGATES', ['&f3 gates every hour&7 near a player', 'in the &fOverworld&7 (/wild).', 'Clear them to rank up faster.'], false],
+        [2, 2, 'minecraft:book', '&a&lYOUR HUNTER INFO', ['&7Rank: &f' + me[0], '&7Class: &f' + me[1], '', 'Ranks with the perk can see more', 'with &f/hunterinfo&7.'], false],
+        [4, 2, 'minecraft:ender_eye', '&5&lSOLO LEVELING GUIDE', ['Everything about hunters,', 'classes, gates and statues.', '', '&e&lCLICK TO OPEN'], true, () => after(p, () => slGuide(p))],
+        [6, 2, 'minecraft:deepslate_diamond_ore', '&c&lTHE CAVERNS', ['Mobs and bosses for cash', 'and crate keys.', '', CLICK_TP], false, () => tp(p, 'warp caverns')],
+        [4, 4, 'minecraft:ender_pearl', '&a&l➤ GO TO THE EVALUATOR', ['Teleports you to the Hunter', 'Association.', '', CLICK_TP], true, () => tp(p, 'warp hunters')],
+      ]
+    })
+  }
+
+  // ---------------------------------------------------------------- Silas (market)
+  const marketMenu = (p) => guidePage(p, {
+    title: 'Silas the Merchant', border: 'purple', rows: 4, slots: [
+      [4, 0, 'minecraft:amethyst_cluster', '&d&l✦ SILAS THE MERCHANT ✦', ['"Ahh, my favourite customer!', 'Silks, steel, treasures from every', 'corner of the realm..."'], true],
+      [2, 1, 'minecraft:ender_pearl', '&a&l➤ TAKE ME TO THE MARKET', ['Teleports you to the market.', '', CLICK_TP], true, () => tp(p, 'warp market', '§d§lSILAS §7» Mind your coin purse in there!')],
+      [4, 1, 'minecraft:amethyst_shard', '&d&lWHAT ARE THRONE SHARDS?', ['The server\'s premium currency.', 'Get them from the &fAFK Crate&7', 'and the &fstore&7.', 'Spend them in the &fThrone Shop&7', 'or on a stat reset (500).'], false],
+      [6, 1, 'minecraft:chest', '&5&lTHRONE SHOP', ['Spend your Throne Shards.', '', '&e&lCLICK TO OPEN'], true, () => after(p, () => shopMain(p))],
+      [4, 2, 'minecraft:emerald', '&a&lMONEY TIPS', ['Fight in &fthe Caverns&7: every kill', 'and node pays cash.', '&f/dailyreward &7and &f/vote&7 daily.'], false],
+    ]
+  })
+
   // ======================================================================= Links
   const LINKS = [
     ['minecraft:light_blue_dye', '&9&lDiscord', 'https://discord.gg/overthronesmp'],
@@ -1314,7 +1485,8 @@
     })
   }
 
-  const MENUS = { cosmetics: p => cosmeticsMain(p), crates: crateMenu, throneshop: shopMain, kits: kitMenu, levels: levelGuide, links: linksMenu, claims: claimsMenu, smp: smpMenu, professions: professionMenu, caverns: cavernsMenu }
+  const MENUS = { cosmetics: p => cosmeticsMain(p), crates: crateMenu, throneshop: shopMain, kits: kitMenu, levels: levelGuide, links: linksMenu, claims: claimsMenu, smp: smpMenu, professions: professionMenu, caverns: cavernsMenu,
+    serverguide: serverGuide, tensuraguide: tensuraGuide, slguide: slGuide, hunters: huntersMenu, market: marketMenu }
   const TITLES = {
     cosmetics: ['&d&lCOSMETICS', '&fRIGHT-CLICK TO VIEW'],
     crates: ['&e&lCRATES', '&fRIGHT-CLICK TO VIEW'],
@@ -1326,8 +1498,13 @@
     smp: ['&a&lTHE SMP WORLD', '&fRIGHT-CLICK TO VIEW'],
     professions: ['&6&lPROFESSIONS', '&fRIGHT-CLICK TO VIEW'],
     caverns: ['&6&l⛏ THE CAVERNS', '&fRIGHT-CLICK TO VIEW'],
+    serverguide: ['&6&l✦ SERVER GUIDE ✦', '&fNEW HERE? RIGHT-CLICK ME'],
+    tensuraguide: ['&b&lTENSURA GUIDE', '&fRACES & EVOLUTION'],
+    slguide: ['&5&lSOLO LEVELING GUIDE', '&fHUNTER TO MONARCH'],
+    hunters: ['&4&lHUNTER ASSOCIATION', '&fRIGHT-CLICK TO VIEW'],
+    market: ['&d&lSILAS', '&fTHE MERCHANT'],
   }
-  const GLOW = { cosmetics: 'light_purple', crates: 'yellow', throneshop: 'light_purple', kits: 'gold', levels: 'green', links: 'aqua', claims: 'gold', smp: 'green', professions: 'gold', caverns: 'gold', cmd: 'yellow' }
+  const GLOW = { cosmetics: 'light_purple', crates: 'yellow', throneshop: 'light_purple', kits: 'gold', levels: 'green', links: 'aqua', claims: 'gold', smp: 'green', professions: 'gold', caverns: 'gold', serverguide: 'gold', tensuraguide: 'aqua', slguide: 'dark_purple', hunters: 'red', market: 'light_purple', cmd: 'yellow' }
   const openMenu = (p, type) => {
     if (p.openChestGUI === undefined) { p.tell('§cMenus need KubeJS chest GUIs.'); return }
     try { MENUS[type](p) } catch (e) { console.error('[npc_menus] ' + type + ': ' + e); if (p.hasPermissions(2)) p.tell('§c[npc_menus] ' + e) }
@@ -1605,7 +1782,7 @@
     say(ctx.source, '§a[npcmenu] Removed ' + n + ' floating texts within ' + radius + ' blocks. §7Now /npcmenu fixall and /npcmenu styleall put the right ones back.')
     return 1
   }
-  const NPC_NAMES = { cosmetics: ['Cosmetics', '#FF55FF'], crates: ['Crates', '#FFFF55'], throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'], claims: ['Land Claims', '#FFAA00'], smp: ['SMP World', '#55FF55'], professions: ['Profession Master', '#FFAA00'], caverns: ['Cavern Guide', '#FFAA00'] }
+  const NPC_NAMES = { cosmetics: ['Cosmetics', '#FF55FF'], crates: ['Crates', '#FFFF55'], throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'], claims: ['Land Claims', '#FFAA00'], smp: ['SMP World', '#55FF55'], professions: ['Profession Master', '#FFAA00'], caverns: ['Cavern Guide', '#FFAA00'], serverguide: ['Server Guide', '#FFAA00'], tensuraguide: ['Tensura Guide', '#55FFFF'], slguide: ['Solo Leveling Guide', '#AA00AA'], hunters: ['Hunter Association', '#FF5555'], market: ['Silas', '#FF55FF'] }
 
   ServerEvents.commandRegistry(event => {
     const { commands: Commands, arguments: Arguments } = event
@@ -1617,7 +1794,7 @@
     event.register(Commands.literal('npcmenu').requires(src => src.hasPermission(2))
       .then(Commands.literal('spawn').then(typeArg().executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, t = typeOf(ctx)
-        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels, links, claims, smp, professions or caverns'); return 0 }
+        if (!t) { say(ctx.source, '§cUse: ' + Object.keys(MENUS).join(', ')); return 0 }
         var e = spawnNpc(p, NPC_NAMES[t][0], NPC_NAMES[t][1])
         if (e == null) { say(ctx.source, '§cThe NPC did not spawn (check the server log).'); return 0 }
         makeMenuNpc(p.server, e, t, null)
@@ -1634,7 +1811,7 @@
       })))))
       .then(Commands.literal('attach').then(typeArg().executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, t = typeOf(ctx), e = looked(p)
-        if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels, links, claims, smp, professions or caverns'); return 0 }
+        if (!t) { say(ctx.source, '§cUse: ' + Object.keys(MENUS).join(', ')); return 0 }
         if (e == null) { say(ctx.source, '§cLook straight at an NPC (within 8 blocks).'); return 0 }
         makeMenuNpc(p.server, e, t, null)
         say(ctx.source, '§a[npcmenu] This NPC now opens the ' + t + ' menu.'); pointOut(ctx.source, e)
@@ -1903,6 +2080,9 @@
         return 1
       }))))
     event.register(Commands.literal('caverns').executes(ctx => { openMenu(ctx.source.playerOrException, 'caverns'); return 1 }))
+    // guide menus (also usable without the NPCs)
+    ;[['serverguide', 'serverguide'], ['tensuraguide', 'tensuraguide'], ['slguide', 'slguide'], ['huntermenu', 'hunters'], ['marketmenu', 'market']].forEach(c =>
+      event.register(Commands.literal(c[0]).executes(ctx => { openMenu(ctx.source.playerOrException, c[1]); return 1 })))
     event.register(Commands.literal('professionmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'professions'); return 1 }))
     event.register(Commands.literal('claimmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'claims'); return 1 }))
     event.register(Commands.literal('smpmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'smp'); return 1 }))

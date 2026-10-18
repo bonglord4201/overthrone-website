@@ -179,6 +179,13 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   helper (getEntity → getActual/actual → direct entity's owner), now in slr_death_guard.js, mob_infighting.js and mob_tweaks.js.
   The victim check runs before anything touches the damage source.
 
+- **Guide NPC menus (2026-10-18, npc_menus.js):** new menu types `serverguide`, `tensuraguide` (+ race pages: 15 Tensura races
+  with paths from the website guide, and the Mysticism/Kumodesu/SlimeThrone races which only say "B → Evolution Menu" because
+  their paths aren't verified yet), `slguide`, `hunters` (Hunter Association), `market` (Silas). Generic `guidePage()` builder.
+  Commands `/serverguide /tensuraguide /slguide /huntermenu /marketmenu`. They replace the old Easy NPC dialog NPCs when
+  attached. NOT done yet (needs the SLR jar): opening SLR's Hunter Evaluation screen straight from the NPC; Solo Leveling
+  job change / dungeon details; Mysticism evolution paths.
+
 ## 5. Known mod bugs and their workarounds
 
 - **Solo Leveling (SLR 1.3.3) crash:** `XPGainTShadowProcedure.java:53` NullPointerException ("Ticking entity")

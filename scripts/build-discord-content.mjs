@@ -332,7 +332,8 @@ channels.push({ key: "staffcommands", messages: pack([
     "Tebex: purchase `giverank {username} <rank>` · refund/chargeback `takerank {username}` (+ ban on chargeback)"
   ].join("\n") },
   { title: "🧍 Menu NPCs", description: [
-    "`/npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions|caverns>` New glowing NPC with hologram where you stand",
+    "`/npcmenu spawn <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions|caverns|serverguide|tensuraguide|slguide|hunters|market>` New glowing NPC with hologram where you stand",
+    "Guide NPCs: **serverguide** (worlds + where to start) · **tensuraguide** (all races + how to evolve) · **slguide** (evaluation, statues, gates) · **hunters** (Hunter Association) · **market** (Silas). Put one on an existing NPC: look at it, `/npcmenu attach <type>` (it flashes green and chat shows which NPC). Players can also type `/serverguide` `/tensuraguide` `/slguide` `/huntermenu` `/marketmenu`",
     "`/npcmenu spawncmd <title> <command>` NPC that runs a command, e.g. `/npcmenu spawncmd Hunters warp hunters`",
     "`/npcmenu attach <cosmetics|crates|throneshop|kits|levels|links|claims|smp|professions|caverns>` Look at an NPC: it opens that menu",
     "`/npcmenu attachcmd <command>` Look at an NPC: it runs that command · `/npcmenu detach` back to normal",
