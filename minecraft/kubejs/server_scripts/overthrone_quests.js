@@ -405,6 +405,7 @@ EntityEvents.death(event => {
   const src = event.source
   let player = src ? src.player : null
   if (!player && src && src.actual && src.actual.isPlayer && src.actual.isPlayer()) player = src.actual
+  if (!player && typeof otKillerOf === 'function') { try { player = otKillerOf(event) } catch (e) { } }   // kill_credit.js: Tensura skill kills
   if (!player) return
   const type = String(event.entity.type)
   addProgress(player, 'kill', (t) => t === type, 1)

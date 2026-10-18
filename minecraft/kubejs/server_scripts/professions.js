@@ -294,7 +294,7 @@ var otIsNodeBlock = (block) => {
   EntityEvents.death(event => {
     try {
       var e = event.entity, src = event.source, p = null
-      try { p = src.getPlayer() } catch (x) { p = null }
+      try { p = (typeof otKillerOf === 'function' ? otKillerOf(event) : event.source.getPlayer()) } catch (x) { p = null }   // kill_credit.js: also Tensura skill kills
       if (p == null || e.isPlayer() || p.isCreative()) return
       var maxHp = Number(e.getMaxHealth()) || 0
       if (maxHp <= 0) return

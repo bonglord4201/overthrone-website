@@ -594,7 +594,7 @@
       if (g) {
         // rotation: this boss's name goes away and the "Random Boss arrives in" timer starts
         var killerR = null
-        try { var pr = event.source.getPlayer(); if (pr) killerR = pr.username } catch (x) { }
+        try { var pr = (typeof otKillerOf === 'function' ? otKillerOf(event) : event.source.getPlayer()); if (pr) killerR = pr.username } catch (x) { }
         sp.uuid = null
         makeDormant(s, id)
         g.down = Date.now() + g.mins * 60000; g.active = null
@@ -611,7 +611,7 @@
       showBar(s, id, sp.mins * 60)
       if (sp.kind == 'boss') {
         var killer = null
-        try { var p = event.source.getPlayer(); if (p) killer = p.username } catch (x) { }
+        try { var p = (typeof otKillerOf === 'function' ? otKillerOf(event) : event.source.getPlayer()); if (p) killer = p.username } catch (x) { }
         run(s, 'tellraw @a ' + JSON.stringify(['', { text: '☠ ', color: 'dark_red' }, { translate: sp.key, color: 'red', bold: true },
           { text: killer ? ' was slain by ' : ' was slain', color: 'gray' }, killer ? { text: killer, color: 'gold', bold: true } : '',
           { text: '! It returns in ' + sp.mins + ' minutes.', color: 'gray' }]))

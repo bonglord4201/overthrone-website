@@ -117,6 +117,7 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
 | `npc_menus.js` (2026-10-18: `/npcmenu attach/attachcmd/detach` now pick the CLOSEST NPC on your line of sight, flash it and print its name+position; duplicated NPCs sharing an `ot_mid_` id get a fresh id) | NPCs that open chest menus (Throne Shop, Kit Selector, Level Guide, Links, Claims, SMP, Professions, Cosmetics, Crates, **Caverns** "Cavern Guide"), command NPCs, name plates. | `/npcmenu spawn <type>`, `/npcmenu spawncmd ...` |
 | `overthrone_quests.js` | Hunter Association quest board (100 quests). | `/quest`, `/quest claim` |
 | `professions.js` | Professions (Mining, Gemology, Farming, Foraging, Combat 1–100) and gathering **nodes**: hit 3x, progress bar on the floating text and actionbar, respawn after 1 min, no item drops. | `/node create/remove/fixall/...`, `/professions` |
+| `kill_credit.js` | Shared `otKillerOf(event)`: which player gets a kill's rewards (also Tensura skill kills, pets/summons → owner). Used by caverns, leveling, professions, quests, cosmetics_fx, mob_spawns. | `/killcredit` |
 | `race_scroll.js` | NPC Seris gives a Tensura Race Reset Scroll every 12 h. Finds Seris by name OR `persistentData ot_style_title` (styleall clears names). | `/racescroll ...` |
 | `rpg_border.js` | World border for the RPG world. | `/rpgborder` |
 | `rpg_protect.js` | No breaking/placing/buckets/fire in the RPG world except ops or tag `rpg_builder`. | |
@@ -183,6 +184,19 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   first, a living mob's own summons last, old-spawn-tag leftovers first. `/mobspawn cleanup` now removes ALL loose mobs within
   32 blocks of any spot (any type). New `/mobspawn scan [radius]` lists mobs near you by type: tracked / loose / summoned by a
   mob / old spawn tag / pets / named. Ask the owner for its output if pile-ups continue. Test: `tests/mob_spawns/test5.js`.
+
+- **No cash / no level XP for Caverns kills (2026-10-18):** caverns.js, leveling.js, professions.js (Combat XP),
+  overthrone_quests.js (kill quests), cosmetics_fx.js (kill effects) and mob_spawns.js (boss kill message) found the killer
+  with `event.source.getPlayer()`. Kills made with Tensura skills use Tensura damage types that hide the attacker from KubeJS,
+  so no player was found = no rewards, while vanilla still dropped XP orbs (it uses its own kill credit). New
+  **kill_credit.js** defines global `otKillerOf(event)`: source player → source attacker/actual → direct/immediate entity
+  (projectile) → `entity.getKillCredit()` (vanilla credit, same as XP orbs) → `getLastHurtByMob()`; a player-owned pet/summon
+  credits its owner. Read-only. Callers use `typeof otKillerOf === 'function' ? otKillerOf(event) : event.source.getPlayer()`.
+  **Rule: never use `event.source.getPlayer()` alone for kill rewards; use otKillerOf.** `/killcredit` (op) shows the last 8
+  mob kills, who got credit and how. The exact cause on the live server is not verified; ask for `/killcredit` output.
+- **"CLIENT-SIDE" label on cosmetics_fx.js in the MintServers file manager:** that's the panel's own guess from the file
+  contents (particles). Any file in `kubejs/server_scripts/` runs on the server; the effects are vanilla particles sent by
+  the server, so nothing is needed on the client.
 
 - **Stuck nodes (2026-10-18, professions.js):** when a node's timer ended while its area was unloaded, `respawn` deleted the
   timer but `setblock` did nothing there, so the node stayed empty forever with a frozen "Respawns in 36s" text (the restart

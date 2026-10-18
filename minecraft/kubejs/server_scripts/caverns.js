@@ -105,7 +105,7 @@ var otCavernsPay = (p, base, why) => {
   EntityEvents.death(event => {
     try {
       var e = event.entity, p = null
-      try { p = event.source.getPlayer() } catch (x) { p = null }
+      try { p = (typeof otKillerOf === 'function' ? otKillerOf(event) : event.source.getPlayer()) } catch (x) { p = null }   // kill_credit.js: also Tensura skill kills
       if (p == null || e.isPlayer() || p.isCreative() || !e.isLiving()) return
       if (otCavernsArea == null) otCavernsLoad(p.server)
       if (!otInCaverns(e.level, e.x, e.y, e.z)) return

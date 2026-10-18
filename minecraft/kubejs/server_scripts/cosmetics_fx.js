@@ -213,7 +213,7 @@ var OT_FX = {
   EntityEvents.death(event => {
     try {
       var p = null
-      try { p = event.source.getPlayer() } catch (x) { }
+      try { p = (typeof otKillerOf === 'function' ? otKillerOf(event) : event.source.getPlayer()) } catch (x) { }   // kill_credit.js
       if (p == null) return
       var id = preview[p.username] && preview[p.username].kind == 'killfx' ? preview[p.username].id : equipped(p, 'killfx')
       if (!id || !KILL[id]) return

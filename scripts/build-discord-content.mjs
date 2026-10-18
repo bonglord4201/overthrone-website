@@ -464,6 +464,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "2. Stand among them → `/mobspawn rotation` (30 min between bosses) or `/mobspawn rotation 45` for your own time",
     "`/mobspawn rotation next` Skip the wait (next boss appears now) · `/mobspawn rotation off` Back to normal separate bosses",
     "`/mobspawn cleanup` Remove every extra (untracked) mob within 32 blocks of your spawn spots, any type (e.g. High Orcs). Tracked spawn mobs, pets and named mobs are kept",
+    "`/killcredit` Last 8 mob kills: which player got the credit (cash / level XP / quests) and how. \"none\" = nobody was rewarded",
     "`/mobspawn scan [radius]` Every mob near you by type: tracked / loose / summoned by a mob / pets (default 32 blocks). Shows what the crowd guard removed",
     "`/mobspawn power` Show the strength of the rotation near you · `/mobspawn power <health%> <damage%>` Stronger/weaker (Caverns only; 100 = double, 0 = normal, -50 = half) · `/mobspawn power reset` Default",
     "Add a boss later: place + `/mobspawn boss` it near the others, then run `/mobspawn rotation` again · `/mobspawn list` shows rotations (⟳)"

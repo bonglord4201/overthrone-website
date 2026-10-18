@@ -161,7 +161,7 @@ EntityEvents.death(event => {
   const e = event.entity
   if (!e || e.isPlayer()) return
   let p = null
-  try { p = event.source.player } catch (err) { p = null }
+  try { p = typeof otKillerOf === 'function' ? otKillerOf(event) : event.source.player } catch (err) { p = null }   // kill_credit.js: also Tensura skill kills
   if (!p || !p.isPlayer || !p.isPlayer()) return
   let hp = 0
   try { hp = e.maxHealth } catch (err) { hp = 0 }
