@@ -1,0 +1,15 @@
+const T = require('./harness.js')
+const { level, server, Ent, tick, pdata, cmds } = T
+const mobs = (type) => level.ents.filter(e => e.type == type)
+const g = new Ent('tensura:orc', 10, 60, 10, ['ot_spawn', 'ot_sp_o1']); level.ents.push(g)
+pdata['ot_spawns'] = JSON.stringify({ o1: { type: 'tensura:orc', key: 'k', kind: 'mob', mins: 1, dim: 'multiworld:rpg', x: 10, y: 60, z: 10, h: 2.6, uuid: g.uuid, down: 0 } })
+T.H.loaded.forEach(f => f({ server }))
+tick()
+level.ents = level.ents.filter(e => e !== g)        // its chunk unloads (gone from the entity list)
+for (let i = 0; i < 20; i++) tick()
+console.log('after 20s missing -> orcs loaded:', mobs('tensura:orc').length, '| summons so far:', cmds.filter(c => /summon tensura/.test(c)).length)
+level.ents.push(g)                                   // old one loads back in
+for (let i = 0; i < 10; i++) tick()
+console.log('old one back -> orcs:', mobs('tensura:orc').length, '| total summons:', cmds.filter(c => /summon tensura/.test(c)).length)
+for (let i = 0; i < 300; i++) tick()
+console.log('5 min later -> orcs:', mobs('tensura:orc').length, '| total summons:', cmds.filter(c => /summon tensura/.test(c)).length)

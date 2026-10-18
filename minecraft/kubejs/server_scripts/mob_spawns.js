@@ -122,8 +122,9 @@
       try { level.getAllEntities().forEach(x => { try { if (e == null && isMobOf(x, sp) && x.getTags().contains(tagOf(id))) e = x } catch (y) { } }) } catch (x) { }
       // some mod bosses replace themselves with a new entity (phase change): same type, new UUID, no tags.
       // Take over an untagged living mob of the same type near the spot instead of spawning a second one.
-      if (e == null) {
-        var r = (sp.kind == 'boss' ? BOSS_ROAM : LEASH) + 8
+      // (bosses only: for normal mobs this grabbed wild mobs of the same type from up to 36 blocks away)
+      if (e == null && sp.kind == 'boss') {
+        var r = BOSS_ROAM + 8
         try { level.getAllEntities().forEach(x => { try {
           if (e != null || !isMobOf(x, sp) || !x.isAlive() || x.getTags().contains('ot_spawn')) return
           try { if (typeof x.getOwnerUUID === 'function' && x.getOwnerUUID() != null) return } catch (y) { }   // a boss's clone/summon, never the boss itself
@@ -155,16 +156,15 @@
   }
   const placeHolo = (s, id) => {
     var sp = spawns[id]; if (!sp) return
+    delete holoState[id]
     run(s, `execute in ${sp.dim} run kill @e[type=minecraft:text_display,tag=${tagOf(id)}]`)
     var left = sp.down ? Math.max(0, Math.ceil((sp.down - Date.now()) / 1000)) : null
     run(s, `execute in ${sp.dim} run summon minecraft:text_display ${sp.x} ${sp.y + sp.h} ${sp.z} ` +
       `{Tags:["ot_spawnholo","${tagOf(id)}"],billboard:"center",shadow:1b,background:0,line_width:300,` +
       `transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'${holoText(sp, left)}'}`)
   }
-  const setHolo = (s, id, secsLeft) => {
-    var sp = spawns[id]; if (!sp) return
-    run(s, `execute in ${sp.dim} run data merge entity @e[type=minecraft:text_display,tag=${tagOf(id)},limit=1] {text:'${holoText(sp, secsLeft)}'}`)
-  }
+  // the floating text (and its countdown) is kept right by syncHolos() once a second, for every copy
+  const setHolo = (s, id, secsLeft) => { }
 
   // ---- boss respawn timer bar (only while the boss is dead; the boss itself usually has its own health bar)
   const barId = (id) => 'overthrone:sp_' + String(id).toLowerCase().replace(/[^a-z0-9_]/g, '')
@@ -233,6 +233,80 @@
   const wasFrozen = (e) => { try { return Attr != null && Number(e.getAttribute(Attr.MOVEMENT_SPEED).getBaseValue()) == 0 } catch (x) { return false } }
   const hideBar = (s, id) => { var sp = spawns[id]; run(s, `bossbar remove ${barId(id)}`); if (sp) delete sp.bar }
 
+  // ---- floating text sync (FIX 2026-10-18)
+  // Floating names are text_display entities. Removing them with a command only reaches LOADED areas, so every
+  // restart (and every change while the Caverns weren't loaded) left an old copy behind: stacked names, and the
+  // timer only updated one copy, so the one you saw looked frozen.
+  // Now, once a second, for every world that has spawns, ALL our floating texts are looked up and made right:
+  //   exactly one per spawn (none while it waits in a rotation), extras and leftovers from removed spawns deleted,
+  //   text updated on the one that's kept, moved back if it's in the wrong place. Only where the area is loaded.
+  const holoState = {}   // key -> { u: uuid of the kept text entity, t: text last written }
+  const HOLO_TAG = 'ot_spawnholo'
+  const summonHolo = (s, dim, x, y, z, tag, text) => run(s, `execute in ${dim} run summon minecraft:text_display ${x} ${y} ${z} ` +
+    `{Tags:["${HOLO_TAG}","${tag}"],billboard:"center",shadow:1b,background:0,line_width:300,` +
+    `transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'${text}'}`)
+  const syncHolos = (s) => {
+    var now = Date.now(), want = {}   // dim -> [{key, tag, x, y, z, text}]
+    Object.keys(spawns).forEach(id => {
+      var sp = spawns[id]; if (sp.dormant) return
+      var left = sp.down && now < sp.down ? Math.ceil((sp.down - now) / 1000) : null
+      ;(want[sp.dim] = want[sp.dim] || []).push({ key: id, tag: tagOf(id), x: sp.x, y: sp.y + (sp.h || 2), z: sp.z, text: holoText(sp, left) })
+    })
+    Object.keys(groups).forEach(gid => {
+      var g = groups[gid]; if (!g.down) return
+      ;(want[g.dim] = want[g.dim] || []).push({ key: 'g:' + gid, tag: gTag(gid), x: g.x, y: g.y, z: g.z, text: gText(Math.max(0, Math.ceil((g.down - now) / 1000))) })
+    })
+    s.getAllLevels().forEach(level => {
+      var dim = dimOf(level), list = want[dim] || [], found = {}, any = false
+      try {
+        level.getAllEntities().forEach(x => {
+          try {
+            if (typeOf(x) != 'minecraft:text_display') return
+            var t = x.getTags(); if (!t.contains(HOLO_TAG)) return
+            var key = null
+            t.forEach(tt => { tt = String(tt); if (tt.indexOf('ot_sp_') == 0 || tt.indexOf('ot_grp_') == 0) key = tt })
+            any = true
+            ;(found[key] = found[key] || []).push(x)
+          } catch (y) { }
+        })
+      } catch (x) { return }
+      if (!any && !list.length) return
+      // leftovers: texts of spawns/rotations that no longer exist, or that shouldn't show right now
+      var wanted = {}; list.forEach(w => { wanted[w.tag] = true })
+      Object.keys(found).forEach(tag => {
+        if (wanted[tag]) return
+        var known = tag.indexOf('ot_sp_') == 0 ? spawns[tag.substring(6)] : (tag.indexOf('ot_grp_') == 0 ? groups[tag.substring(7)] : null)
+        // a known spawn whose text shouldn't show (waiting in a rotation, rotation boss out) or an unknown one: remove
+        found[tag].forEach(x => { try { x.discard() } catch (y) { } })
+        if (known == null) logOnce('orphan ' + tag, 'removed leftover floating text ' + tag)
+      })
+      list.forEach(w => {
+        if (!loaded(level, w.x, w.z, w.y)) return   // can't see that area right now: leave it, sync once it's loaded
+        var have = found[w.tag] || [], st = holoState[w.key]
+        if (!have.length) {
+          summonHolo(s, dim, w.x, w.y, w.z, w.tag, w.text)
+          holoState[w.key] = { u: null, t: w.text }
+          return
+        }
+        // keep the one we wrote to last time (or the first), delete the rest
+        var keep = have[0]
+        if (st && st.u) have.forEach(x => { if (uidOf(x) == st.u) keep = x })
+        var removed = 0
+        have.forEach(x => { if (x !== keep) { try { x.discard(); removed++ } catch (y) { } } })
+        if (removed) logOnce('dupholo ' + w.key, 'removed ' + removed + ' duplicate floating text(s) for ' + w.tag)
+        var ku = uidOf(keep)
+        if (!st || st.u != ku || st.t != w.text) {
+          run(s, `data merge entity ${ku} {text:'${w.text}'}`)
+          holoState[w.key] = { u: ku, t: w.text }
+        }
+        try {
+          var dx = keep.getX() - w.x, dy = keep.getY() - w.y, dz = keep.getZ() - w.z
+          if (dx * dx + dy * dy + dz * dz > 0.25) keep.teleportTo(w.x, w.y, w.z)
+        } catch (y) { }
+      })
+    })
+  }
+
   // ---- boss rotations: several boss spawns share one spot; only one boss is out at a time.
   // When it dies its name disappears, "Random boss arrives in 30:00" counts down, then the next boss appears.
   // Every boss comes once per cycle (random order, never the same one twice in a row).
@@ -242,13 +316,7 @@
     { text: '\nArrives in ' + mmss(secsLeft), color: 'yellow' }]).replace(/\\/g, '\\\\').replace(/'/g, "\\'")
   const gShow = (s, gid, secsLeft) => {
     var g = groups[gid]; if (!g) return
-    if (!g.holo) {
-      run(s, `execute in ${g.dim} run kill @e[type=minecraft:text_display,tag=${gTag(gid)}]`)
-      run(s, `execute in ${g.dim} run summon minecraft:text_display ${g.x} ${g.y} ${g.z} ` +
-        `{Tags:["ot_spawnholo","${gTag(gid)}"],billboard:"center",shadow:1b,background:0,line_width:300,` +
-        `transformation:[0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,0.9f,0f,0f,0f,0f,1f],text:'${gText(secsLeft)}'}`)
-      g.holo = true
-    } else run(s, `execute in ${g.dim} run data merge entity @e[type=minecraft:text_display,tag=${gTag(gid)},limit=1] {text:'${gText(secsLeft)}'}`)
+    // (its floating "Random Boss arrives in" text is kept right by syncHolos)
     var b = gBar(gid), name = JSON.stringify(['', { text: '☠ ', color: 'dark_red' }, { text: 'Random Boss', color: 'red', bold: true }, { text: ' arrives in ' + mmss(secsLeft), color: 'yellow' }])
     if (!g.bar) { run(s, `bossbar add ${b} ${name}`); run(s, `bossbar set ${b} color red`); run(s, `bossbar set ${b} style notched_10`); g.bar = true }
     run(s, `bossbar set ${b} name ${name}`)
@@ -330,15 +398,18 @@
       run(s, `execute in ${sp.dim} run summon ${sp.type} ${sp.x} ${sp.y} ${sp.z}`)
       sp.pendingAt = Date.now()
     }
-    var found = null, bestAge = 1e9, r = (sp.kind == 'boss' ? BOSS_ROAM : LEASH)
+    // the mob that was just summoned: untagged, same type, near the spot. Young ones (under 5 s old) first, then the
+    // closest, so a wandering wild mob of the same type isn't taken instead (that left the summoned one behind).
+    var found = null, bestScore = 1e18, r = (sp.kind == 'boss' ? BOSS_ROAM : LEASH)
     level.getAllEntities().forEach(e => {
       try {
         if (!isMobOf(e, sp) || !e.isAlive() || e.getTags().contains('ot_spawn')) return
         try { if (typeof e.getOwnerUUID === 'function' && e.getOwnerUUID() != null) return } catch (y) { }
-        var dx = e.getX() - sp.x, dy = e.getY() - sp.y, dz = e.getZ() - sp.z
-        if (dx * dx + dy * dy + dz * dz > r * r) return
+        var dx = e.getX() - sp.x, dy = e.getY() - sp.y, dz = e.getZ() - sp.z, d2 = dx * dx + dy * dy + dz * dz
+        if (d2 > r * r) return
         var age = Number(e.tickCount) || 0
-        if (age < bestAge) { bestAge = age; found = e }   // the newest one = the one just summoned
+        var score = (age < 100 ? 0 : 1e9) + d2
+        if (score < bestScore) { bestScore = score; found = e }
       } catch (x) { }
     })
     if (found == null) return false
@@ -351,10 +422,27 @@
     return true
   }
 
+  // two spawns of the same mob on the same spot (e.g. /setmob run twice): keep one
+  const mergeDuplicates = (s) => {
+    var ids = Object.keys(spawns), gone = 0
+    ids.forEach((a, i) => {
+      var A = spawns[a]; if (!A) return
+      ids.slice(i + 1).forEach(b => {
+        var B = spawns[b]; if (!B || B.dim != A.dim || B.type != A.type || B.kind != A.kind || !!B.group != !!A.group) return
+        var dx = A.x - B.x, dy = A.y - B.y, dz = A.z - B.z
+        if (dx * dx + dy * dy + dz * dz > 1) return
+        delete spawns[b]; gone++
+        Object.keys(groups).forEach(gid => { var g = groups[gid]; g.members = (g.members || []).filter(k => k != b); if (g.queue) g.queue = g.queue.filter(k => k != b) })
+      })
+    })
+    if (gone) { console.warn('[mob_spawns] merged ' + gone + ' duplicate spawn(s) (same mob on the same spot)'); save(s) }
+    return gone
+  }
   ServerEvents.loaded(event => {
     var s = event.server; load(s)
-    Object.keys(spawns).forEach(id => { if (!spawns[id].dormant) placeHolo(s, id) })
-    Object.keys(groups).forEach(gid => { var g = groups[gid]; delete g.holo; delete g.bar; if (g.down) gShow(s, gid, Math.max(0, Math.ceil((g.down - Date.now()) / 1000))) })
+    mergeDuplicates(s)
+    // floating texts are placed by syncHolos once their area is loaded (placing them blind left copies behind)
+    Object.keys(groups).forEach(gid => { var g = groups[gid]; delete g.holo; delete g.bar })
   })
 
   // countdowns every second; every 5 seconds: missing mobs (despawned / removed) and the leash
@@ -409,6 +497,7 @@
         if (dx * dx + dy * dy + dz * dz > leash * leash) { try { e.teleportTo(sp.x, sp.y, sp.z) } catch (y) { run(s, `execute in ${sp.dim} run tp ${uidOf(e)} ${sp.x} ${sp.y} ${sp.z}`) } }
       } catch (x) { logOnce('tick ' + id, 'tick ' + sp.type + ': ' + x) }
     })
+    try { syncHolos(s) } catch (x) { logOnce('sync', 'floating text sync: ' + x) }
   })
 
   // killed: start the timer

@@ -186,6 +186,16 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   attached. NOT done yet (needs the SLR jar): opening SLR's Hunter Evaluation screen straight from the NPC; Solo Leveling
   job change / dungeon details; Mysticism evolution paths.
 
+- **Floating text rewrite (2026-10-18, mob_spawns.js):** stacked names + frozen timers came from text_display entities
+  being removed with `kill @e[...]` (only reaches LOADED areas) and re-summoned blind (startup, changes while unloaded),
+  and `setHolo` updating only one copy (`limit=1`). Now `syncHolos()` runs every second: per world it scans all our
+  text_displays (tag `ot_spawnholo` + `ot_sp_<id>` / `ot_grp_<gid>`), keeps exactly one per spawn (none for dormant
+  rotation members), discards extras and leftovers of deleted spawns, writes the text only when it changes, moves it back
+  if misplaced, and only acts where the area is entity-ticking. Startup no longer places texts. Duplicate spawn entries
+  (same type/kind on the same block) are merged at startup. findMob's "take over an untagged mob" is bosses-only now.
+  spawnNow adopts the YOUNGEST (<5 s) untagged mob of the type near the spot.
+  **Tests:** `sh minecraft/tests/mob_spawns/run.sh` simulates the script on a fake world (node). Run it after every change.
+
 ## 5. Known mod bugs and their workarounds
 
 - **Solo Leveling (SLR 1.3.3) crash:** `XPGainTShadowProcedure.java:53` NullPointerException ("Ticking entity")
