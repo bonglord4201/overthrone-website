@@ -16,6 +16,7 @@
 //   /npcmenu clearholo [radius]                    deletes ALL floating text within radius (default 4) of you, not crates
 //   /npcmenu fixall                                hides the NPC name tags + redoes all menu holograms in your world
 //   /npcmenu grab, then /npcmenu put   moves the NPC you looked at to where you stand (hologram too)
+//   /npcmenu info                  what the NPC you look at is: its menu, id, holograms, and whether it's a copy sharing an id
 //   /npcmenu remove                                deletes the menu NPC you are looking at (and its hologram)
 //   /npcmenu hologram <text...>                    (re)places the hologram over the NPC you are looking at.
 //                                                  Use | for a new line, e.g. /npcmenu hologram &6&lJOBS|&7Right-click
@@ -1645,13 +1646,14 @@
   }
   // every menu NPC has its own id tag (its hologram uses it). A copied/duplicated NPC can carry the same tag as the
   // original, which made changes show up on both: if another NPC shares this NPC's id, this one gets a fresh id.
+  const copied = {}   // NPC uuid -> true when idOf found it was a copy of another NPC (same id tag)
   const idOf = (e) => {
     var id = null
     e.getTags().forEach(t => { if (String(t).indexOf('ot_mid_') == 0) id = String(t) })
     if (id != null) {
       var shared = false, me = uuidOf(e)
       try { e.level.getAllEntities().forEach(x => { try { if (!shared && uuidOf(x) != me && String(x.type).indexOf('easy_npc') >= 0 && x.getTags().contains(id)) shared = true } catch (y) { } }) } catch (x) { }
-      if (shared) { e.removeTag(id); id = null }
+      if (shared) { e.removeTag(id); id = null; copied[uuidOf(e)] = true }
     }
     if (id == null) { id = 'ot_mid_' + Date.now().toString(36) + Math.floor(Math.random() * 1296).toString(36); e.addTag(id) }
     return id
@@ -1679,6 +1681,7 @@
       var t = typeOfNpc(e), cmd = String(e.persistentData.getString('ot_menu_cmd') || '')
       if (t == null && !cmd) return
       var id = idOf(e)
+      if (copied[uuidOf(e)]) { delete copied[uuidOf(e)]; ownAnchor(e) }
       ids.push(id)
       hideName(s, e)
       clearClickAction(s, e)
@@ -1687,12 +1690,16 @@
       if (t != null) placeHolo(s, e, TITLES[t], id)
       n++
     })
-    var stray = 0
+    var stray = 0, npcAt = {}
+    p.level.getEntities().forEach(e => { try { var i = null; e.getTags().forEach(t => { if (String(t).indexOf('ot_mid_') == 0) i = String(t) }); if (i && String(e.type).indexOf('easy_npc') >= 0) npcAt[i] = e } catch (x) { } })
     p.level.getEntities().forEach(e => {
       if (String(e.type) != 'minecraft:text_display' || !e.getTags().contains('ot_menu_holo')) return
-      var mine = false
-      e.getTags().forEach(t => { if (ids.indexOf(String(t)) >= 0) mine = true })
-      if (!mine) { e.discard(); stray++ }
+      var mine = null
+      e.getTags().forEach(t => { if (ids.indexOf(String(t)) >= 0) mine = String(t) })
+      // no NPC of its own, or floating over somewhere else than its NPC (moved there by the old /npcmenu put)
+      var far = false
+      try { var o = npcAt[mine]; if (o) { var dx = e.x - o.x, dz = e.z - o.z; far = dx * dx + dz * dz > 1 } } catch (x) { }
+      if (!mine || far) { e.discard(); stray++ }
     })
     return [n, stray]
   }
@@ -1743,13 +1750,35 @@
   }
   const restyle = (server, e) => styleNpc(server, e, String(e.persistentData.getString('ot_style_title')), String(e.persistentData.getString('ot_style_color') || '#FFAA00'))
 
+  // FIX 2026-10-18: puts back THIS NPC's own hologram (from its menu type / style / command title). /npcmenu put used to
+  // teleport every hologram carrying the NPC's id tag: a copied NPC carries the original's tag, so the ORIGINAL's
+  // hologram (e.g. "SILAS THE MERCHANT") was moved over the copied NPC.
+  const refreshHolo = (server, e) => {
+    var id = idOf(e), t = typeOfNpc(e), cmd = String(e.persistentData.getString('ot_menu_cmd') || '')
+    if (e.getTags().contains('ot_menu_npc') && t != null) { placeHolo(server, e, TITLES[t], id); return true }
+    if (e.getTags().contains('ot_menu_npc') && cmd) { placeHolo(server, e, ['&e&l' + String(e.persistentData.getString('ot_menu_title') || 'CLICK ME').toUpperCase(), '&fRIGHT-CLICK'], id); return true }
+    if (e.getTags().contains('ot_styled')) { restyle(server, e); return true }
+    return false
+  }
+  // a copied NPC also carries the original's lock spot (serversetup/npcprotect.js would pull it back onto the original):
+  // give it its own lock spot where it stands now
+  const ownAnchor = (e) => {
+    try { if (typeof npSetAnchor === 'function') { npSetAnchor(e, String(e.level.dimension), Number(e.getX()), Number(e.getY()), Number(e.getZ())); return true } } catch (x) { }
+    try {
+      var t = new (Java.loadClass('net.minecraft.nbt.CompoundTag'))()
+      t.putString('dim', String(e.level.dimension)); t.putDouble('x', Number(e.getX())); t.putDouble('y', Number(e.getY())); t.putDouble('z', Number(e.getZ()))
+      e.persistentData.put('ss_npc_anchor', t); return true
+    } catch (x) { }
+    return false
+  }
   const makeMenuNpc = (server, e, type, cmd, title) => {
     Object.keys(MENUS).forEach(t => e.removeTag('ot_menu_' + t))
     e.persistentData.remove('ot_menu_cmd')
-    if (cmd) e.persistentData.putString('ot_menu_cmd', cmd)
+    if (cmd) { e.persistentData.putString('ot_menu_cmd', cmd); e.persistentData.putString('ot_menu_title', String(title || 'CLICK ME')) }
     else e.addTag('ot_menu_' + type)
     e.addTag('ot_menu_npc')
     var id = idOf(e)
+    if (copied[uuidOf(e)]) { delete copied[uuidOf(e)]; ownAnchor(e) }
     setGlow(server, e, GLOW[cmd ? 'cmd' : type])
     hideName(server, e)
     clearClickAction(server, e)
@@ -1836,6 +1865,24 @@
         say(ctx.source, '§a[npcmenu] Clicking this NPC now runs §f/' + cmd); pointOut(ctx.source, e)
         return 1
       }))))
+      // what the NPC you look at is: its menu, id, how many holograms carry its id, and other NPCs sharing it
+      .then(Commands.literal('info').executes(ctx => guard(ctx, () => {
+        var p = ctx.source.playerOrException, e = looked(p)
+        if (e == null) { say(ctx.source, '§cLook straight at an NPC (within 8 blocks).'); return 0 }
+        var id = null
+        e.getTags().forEach(t => { if (String(t).indexOf('ot_mid_') == 0) id = String(t) })
+        var holos = 0, twins = 0, me = uuidOf(e)
+        if (id) p.level.getEntities().forEach(x => { try {
+          if (!x.getTags().contains(id)) return
+          if (String(x.type) == 'minecraft:text_display') holos++
+          else if (uuidOf(x) != me) twins++
+        } catch (y) { } })
+        var t = typeOfNpc(e), cmd = String(e.persistentData.getString('ot_menu_cmd') || '')
+        say(ctx.source, '§6[npcmenu] §7Menu: §f' + (t || (cmd ? 'command /' + cmd : (e.getTags().contains('ot_styled') ? 'styled only (own dialog)' : 'none'))) +
+          ' §7· id: §f' + (id || 'none') + ' §7· holograms with this id: §f' + holos + (twins ? ' §c· ' + twins + ' other NPC(s) share this id (a copy): /npcmenu fixall' : ''))
+        pointOut(ctx.source, e)
+        return 1
+      })))
       .then(Commands.literal('debug').executes(ctx => { clickDebug = !clickDebug; say(ctx.source, '§e[npcmenu] click debug ' + (clickDebug ? 'ON: right-click an NPC' : 'OFF')); return 1 }))
       .then(Commands.literal('detach').executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, e = looked(p)
@@ -1930,9 +1977,11 @@
           try {
             // make sure the lock's protection flags (immovable, not pushable) are on, and the hologram follows
             try { if (typeof npProtect === 'function') npProtect(e) } catch (x) { }
-            var holo = null
-            e.getTags().forEach(t => { if (String(t).indexOf('ot_mid_') == 0) holo = String(t) })
-            if (holo) run(p.server, `execute in ${p.level.dimension} run tp @e[type=minecraft:text_display,tag=${holo}] ${f(e.x)} ${f(e.y + 2.25)} ${f(e.z)}`)
+            // its OWN hologram is placed fresh over it (idOf gives a copied NPC its own id first)
+            if (!refreshHolo(p.server, e)) {
+              var holo = idOf(e)
+              run(p.server, `execute in ${p.level.dimension} run tp @e[type=minecraft:text_display,tag=${holo},limit=1,sort=nearest] ${f(e.x)} ${f(e.y + 2.25)} ${f(e.z)}`)
+            }
           } catch (x) { }
         })
         delete grabbed[p.username]

@@ -198,6 +198,14 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   contents (particles). Any file in `kubejs/server_scripts/` runs on the server; the effects are vanilla particles sent by
   the server, so nothing is needed on the client.
 
+- **Caverns NPC showing Silas (2026-10-18, npc_menus.js):** a copied Easy NPC keeps the original's `ot_mid_` id tag (and
+  its `ss_npc_anchor` lock spot). `/npcmenu put` teleported EVERY hologram with that tag, so the original's hologram
+  ("SILAS THE MERCHANT") was moved over the copy. Now `put` calls `refreshHolo` (idOf gives a copy its own id, then its own
+  hologram is placed fresh from its type / style / stored `ot_menu_title`). When idOf finds a copy during attach/fixall it
+  also gives it its own lock spot where it stands (`ownAnchor`). `/npcmenu fixall` also removes holograms floating away
+  from their NPC. New `/npcmenu info`. Not verified how the owner placed the NPC; this was the only code path that moves
+  another NPC's hologram.
+
 - **Stuck nodes (2026-10-18, professions.js):** when a node's timer ended while its area was unloaded, `respawn` deleted the
   timer but `setblock` did nothing there, so the node stayed empty forever with a frozen "Respawns in 36s" text (the restart
   respawn in `ServerEvents.loaded` had the same problem). Now: `respawn` waits until the block's chunk is loaded
