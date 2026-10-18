@@ -1579,14 +1579,18 @@
   // (The old ray trace could return an NPC standing behind or in front of the one you meant.)
   const looked = (p) => {
     try {
-      var yaw = Number(p.getYRot()) * Math.PI / 180, pitch = Number(p.getXRot()) * Math.PI / 180
+      // FIX 2026-10-18: getYRot/getXRot aren't visible to KubeJS here (TypeError), which silently dropped this to the old
+      // ray trace below = the wrong NPC. KubeJS calls them yaw / pitch.
+      var num = (a, b, c) => { try { var v = Number(a()); if (!isNaN(v)) return v } catch (x) { } try { var v2 = Number(b()); if (!isNaN(v2)) return v2 } catch (x) { } return Number(c()) }
+      var yaw = num(() => p.yaw, () => p.getYaw(), () => p.getYRot()) * Math.PI / 180
+      var pitch = num(() => p.pitch, () => p.getPitch(), () => p.getXRot()) * Math.PI / 180
       var lx = -Math.sin(yaw) * Math.cos(pitch), ly = -Math.sin(pitch), lz = Math.cos(yaw) * Math.cos(pitch)
-      var ex = Number(p.getX()), ey = Number(p.getEyeY()), ez = Number(p.getZ())
+      var ex = Number(p.getX()), ez = Number(p.getZ()), ey = num(() => p.getEyeY(), () => p.eyeY, () => Number(p.getY()) + 1.62)
       var best = null, bestAlong = 9
       p.level.getAllEntities().forEach(e => {
         try {
           if (String(e.type).indexOf('easy_npc') < 0) return
-          var h = Number(e.getBbHeight()), w = Number(e.getBbWidth())
+          var h = num(() => e.getBbHeight(), () => e.bbHeight, () => 1.8), w = num(() => e.getBbWidth(), () => e.bbWidth, () => 0.6)
           var dx = Number(e.getX()) - ex, dy = Number(e.getY()) + h / 2 - ey, dz = Number(e.getZ()) - ez
           var along = dx * lx + dy * ly + dz * lz                       // distance along your view
           if (along <= 0 || along > 8) return

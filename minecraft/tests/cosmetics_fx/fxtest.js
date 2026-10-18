@@ -8,8 +8,8 @@ eval(src)
 const RE=/^execute in minecraft:overworld positioned -?\d+\.\d{3} -?\d+\.\d{3} -?\d+\.\d{3} run particle minecraft:([a-z_]+|dust\{color:\[[\d.]+,[\d.]+,[\d.]+\],scale:[\d.]+\}) ~ ~ ~ -?[\d.]+ -?[\d.]+ -?[\d.]+ [\d.]+ (\d+) force @a\[distance=\.\.48\]$/
 const level={dimension:'minecraft:overworld',server:{runCommandSilent:c=>{ if(!/ particle /.test(c)) return; const m=c.match(RE); if(!m){errs++; if(errs<4) console.log('BAD', c)} else sent+=+m[2] }}}
 const pd={ot_owned:'',ot_aura:'',ot_trail:'',ot_killfx:''}
-const p={username:'A',level,getX:()=>0,getY:()=>64,getZ:()=>0,getYRot:()=>45,isSpectator:()=>false,isInvisible:()=>false,isAlive:()=>true,persistentData:{getString:k=>pd[k]||''}}
-const server={tickCount:0,players:[p]}
+const p={username:'A',level,getX:()=>0,getY:()=>64,getZ:()=>0,yaw:45,isSpectator:()=>false,isInvisible:()=>false,isAlive:()=>true,persistentData:{getString:k=>pd[k]||''}}
+const server={tickCount:0,players:[p],runCommandSilent:c=>level.server.runCommandSilent(c)}
 for (const kind of ['aura','trail']) for (const c of OT_FX[kind]) { pd.ot_owned=kind+':'+c.id; pd['ot_'+kind]=c.id; sent=0
   for(let i=0;i<40;i++){ server.tickCount+=2; if(kind=='trail') p.getX=()=>server.tickCount*0.1; H.tick.forEach(f=>f({server})) }
   console.log(kind, c.id, 'particles in 4s:', sent); pd['ot_'+kind]='' }

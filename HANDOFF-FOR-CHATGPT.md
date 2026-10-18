@@ -199,6 +199,15 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   contents (particles). Any file in `kubejs/server_scripts/` runs on the server; the effects are vanilla particles sent by
   the server, so nothing is needed on the client.
 
+- **KubeJS can't see `getYRot()` / `getXRot()` on players here** (TypeError "Cannot find function getYRot in object
+  ServerPlayer"). Use the KubeJS names `p.yaw` / `p.pitch` (with fallbacks). This broke every aura (the render threw before
+  drawing) and made npc_menus `looked()` fall back to the old ray trace (= the "attach picks the wrong NPC" bug). Both fixed.
+  cosmetics_fx sends commands through the server from the tick event (`SRV`), logs each distinct error once, and
+  `/cosfx debug` now reports the test burst's own result plus a raw `/particle end_rod` for comparison.
+- **Manas Cosmetics (owner wants it instead of / next to particles):** engine only, each cosmetic = `.bbmodel` + JSON sidecar
+  (position/scale/rotation), in-game editor `/manas_cosmetics edit`, 14 slots incl. aura/back/pet. The sidecar format and
+  folder are NOT verified: get the mod jar from the owner before making any.
+
 - **Particle cosmetics showed nothing (2026-10-18, cosmetics_fx.js):** they used `ServerLevel.sendParticles` via
   Java.loadClass (ParticleTypes / DustParticleOptions); in game nothing appeared and errors were swallowed. Now every
   particle is a vanilla `/particle` command like crate_fx.js (proven on this server):

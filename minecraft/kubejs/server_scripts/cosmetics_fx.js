@@ -66,19 +66,24 @@ var OT_FX = {
   // within 48 blocks, so they show even with the client's particle setting on Decreased.
   const f3 = (n) => Number(n).toFixed(3)
   const dimOf = (level) => { var k = level.dimension; if (typeof k === 'function') k = level.dimension(); return String(k && k.location ? k.location() : k) }
-  var fxErrors = 0, lastError = ''
+  var fxErrors = 0, lastError = '', errSeen = {}
+  var SRV = null   // the server, taken from the tick event (level.server isn't reliable on every KubeJS build)
+  const srvOf = (level) => { if (SRV) return SRV; try { return level.getServer() } catch (e) { return level.server } }
+  const noteErr = (e) => { fxErrors++; lastError = String(e); if (!errSeen[lastError]) { errSeen[lastError] = 1; console.warn('[cosmetics_fx] ' + lastError) } }
+  // facing direction in degrees: KubeJS names it yaw (ServerPlayer.getYRot isn't visible to scripts here)
+  const yawOf = (p) => { try { var v = Number(p.yaw); if (!isNaN(v)) return v } catch (e) { } try { return Number(p.getYaw()) } catch (e) { } try { return Number(p.getYRot()) } catch (e) { } return 0 }
   // spec: 'flame' (a particle id without "minecraft:") or [r, g, b, size] for coloured dust
   const emit = (level, spec, x, y, z, n, dx, dy, dz, sp) => {
     try {
       var name = typeof spec === 'string' ? 'minecraft:' + spec : `minecraft:dust{color:[${f3(spec[0])},${f3(spec[1])},${f3(spec[2])}],scale:${f3(spec[3] || 1)}}`
-      level.server.runCommandSilent(`execute in ${dimOf(level)} positioned ${f3(x)} ${f3(y)} ${f3(z)} run particle ${name} ~ ~ ~ ${f3(dx || 0)} ${f3(dy || 0)} ${f3(dz || 0)} ${f3(sp || 0)} ${n || 1} force @a[distance=..48]`)
-    } catch (e) { fxErrors++; lastError = String(e) }
+      srvOf(level).runCommandSilent(`execute in ${dimOf(level)} positioned ${f3(x)} ${f3(y)} ${f3(z)} run particle ${name} ~ ~ ~ ${f3(dx || 0)} ${f3(dy || 0)} ${f3(dz || 0)} ${f3(sp || 0)} ${n || 1} force @a[distance=..48]`)
+    } catch (e) { noteErr(e) }
   }
   const hsv = (h) => {   // hue 0..1 -> [r,g,b]
     var i = Math.floor(h * 6), f = h * 6 - i, q = 1 - f
     return [[1, f, 0], [q, 1, 0], [0, 1, f], [0, q, 1], [f, 0, 1], [1, 0, q]][((i % 6) + 6) % 6]
   }
-  const sound = (level, name, x, y, z, vol, pitch) => level.server.runCommandSilent(`execute in ${level.dimension} positioned ${f3(x)} ${f3(y)} ${f3(z)} run playsound ${name} player @a[distance=..24] ~ ~ ~ ${vol || 1} ${pitch || 1}`)
+  const sound = (level, name, x, y, z, vol, pitch) => srvOf(level).runCommandSilent(`execute in ${dimOf(level)} positioned ${f3(x)} ${f3(y)} ${f3(z)} run playsound ${name} player @a[distance=..24] ~ ~ ~ ${vol || 1} ${pitch || 1}`)
 
   // ---------------------------------------------------------------- auras (t = ticks, a = player yaw in radians)
   const AURA = {
@@ -169,7 +174,7 @@ var OT_FX = {
       for (var h = 0; h < 45; h++) { var an = h * 0.5; emit(L, [0.35, 0, 0.6, 1.4], x + Math.cos(an) * (1 - h / 60), y + h * 0.06, z + Math.sin(an) * (1 - h / 60), 1) }
       emit(L, 'reverse_portal', x, y + 1, z, 40, 0.4, 0.8, 0.4, 0.05); emit(L, 'squid_ink', x, y + 0.2, z, 15, 0.5, 0.1, 0.5, 0.02)
       sound(L, 'minecraft:entity.wither.spawn', x, y, z, 0.4, 1.6)
-      try { L.server.runCommandSilent(`title ${p.username} actionbar ${JSON.stringify({ text: 'ARISE.', color: 'dark_purple', bold: true })}`) } catch (e) { }
+      try { srvOf(L).runCommandSilent(`title ${p.username} actionbar ${JSON.stringify({ text: 'ARISE.', color: 'dark_purple', bold: true })}`) } catch (e) { }
     },
   }
 
@@ -178,6 +183,7 @@ var OT_FX = {
   const visible = (p) => { try { return !p.isSpectator() && !p.isInvisible() && p.isAlive() } catch (e) { return false } }
   ServerEvents.tick(event => {
     var s = event.server
+    SRV = s
     if (s.tickCount % 2 != 0) return
     var t = s.tickCount, now = Date.now()
     s.players.forEach(p => {
@@ -187,14 +193,14 @@ var OT_FX = {
         if (!visible(p)) return
         var L = p.level, x = Number(p.getX()), y = Number(p.getY()), z = Number(p.getZ())
         var au = preview[name] && preview[name].kind == 'aura' ? preview[name].id : equipped(p, 'aura')
-        if (au && AURA[au]) AURA[au](L, x, y, z, t, Number(p.getYRot()) * Math.PI / 180)
+        if (au && AURA[au]) AURA[au](L, x, y, z, t, yawOf(p) * Math.PI / 180)
         var tr = preview[name] && preview[name].kind == 'trail' ? preview[name].id : equipped(p, 'trail')
         if (tr && TRAIL[tr]) {
           var lp = last[name], moved = lp && ((lp[0] - x) * (lp[0] - x) + (lp[1] - z) * (lp[1] - z)) > 0.004
           if (moved) TRAIL[tr](L, x, y, z, t)
         }
         last[name] = [x, z]
-      } catch (e) { fxErrors++; lastError = String(e) }
+      } catch (e) { noteErr(e) }
     })
   })
   PlayerEvents.loggedOut(event => { delete last[event.player.username]; delete preview[event.player.username] })
@@ -225,11 +231,18 @@ var OT_FX = {
         p.tell('§d[cosfx] §7Equipped: aura §f' + (p.persistentData.getString(KEYS.aura) || '-') + '§7, trail §f' + (p.persistentData.getString(KEYS.trail) || '-') +
           '§7, kill effect §f' + (p.persistentData.getString(KEYS.killfx) || '-'))
         p.tell('§d[cosfx] §7Owned effects: §f' + (mine.length ? mine.join(', ') : 'none') + ' §8(an equipped effect only shows if you own it)')
-        p.tell('§d[cosfx] §7Errors since start: §f' + fxErrors + (lastError ? ' §8(last: ' + lastError + ')' : ''))
+        SRV = SRV || ctx.source.server
+        var before = fxErrors
         var L = p.level, x = Number(p.getX()), y = Number(p.getY()), z = Number(p.getZ())
         emit(L, 'flame', x, y + 2.3, z, 20, 0.4, 0.1, 0.4, 0.01)
         emit(L, [1, 0, 1, 1.5], x, y + 1, z, 20, 0.5, 0.5, 0.5)
-        p.tell('§d[cosfx] §7Test: you should see §6flames§7 above you and §dpink dust§7 around you right now.')
+        // the same burst straight from the command line, to compare
+        var raw = 'particle minecraft:end_rod ' + f3(x) + ' ' + f3(y + 1.5) + ' ' + f3(z) + ' 0.6 0.6 0.6 0.02 40 force'
+        var rr = null; try { rr = ctx.source.server.runCommandSilent('execute as ' + p.username + ' at @s run ' + raw) } catch (e) { rr = 'error ' + e }
+        p.tell('§d[cosfx] §7Test burst: ' + (fxErrors == before ? '§asent with no errors' : '§c' + (fxErrors - before) + ' error(s): ' + lastError) + ' §8(world ' + dimOf(L) + ', raw result ' + rr + ')')
+        var kinds = Object.keys(errSeen)
+        p.tell('§d[cosfx] §7Errors since start: §f' + fxErrors + (kinds.length ? ' §8(' + kinds.slice(-3).join(' | ') + ')' : ''))
+        p.tell('§d[cosfx] §7Test: you should see §6flames§7 above you, §dpink dust§7 and white §fsparkles§7 around you right now.')
         return 1
       }))
       .then(Commands.literal('preview').then(Commands.argument('kind', StringArg.word()).suggests((c, b) => { Object.keys(KIND_OF).forEach(k => b.suggest(k)); return b.buildFuture() })
