@@ -1380,9 +1380,39 @@
 
   // ======================================================================= staff commands
   const say = (src, m) => src.sendSystemMessage(Text.of(m))
+  // the Easy NPC you're looking at: the CLOSEST one along your line of sight (within 8 blocks).
+  // (The old ray trace could return an NPC standing behind or in front of the one you meant.)
   const looked = (p) => {
-    var hit = p.rayTrace(8, false), e = hit == null ? null : hit.entity
-    return e == null || String(e.type).indexOf('easy_npc') < 0 ? null : e
+    try {
+      var yaw = Number(p.getYRot()) * Math.PI / 180, pitch = Number(p.getXRot()) * Math.PI / 180
+      var lx = -Math.sin(yaw) * Math.cos(pitch), ly = -Math.sin(pitch), lz = Math.cos(yaw) * Math.cos(pitch)
+      var ex = Number(p.getX()), ey = Number(p.getEyeY()), ez = Number(p.getZ())
+      var best = null, bestAlong = 9
+      p.level.getAllEntities().forEach(e => {
+        try {
+          if (String(e.type).indexOf('easy_npc') < 0) return
+          var h = Number(e.getBbHeight()), w = Number(e.getBbWidth())
+          var dx = Number(e.getX()) - ex, dy = Number(e.getY()) + h / 2 - ey, dz = Number(e.getZ()) - ez
+          var along = dx * lx + dy * ly + dz * lz                       // distance along your view
+          if (along <= 0 || along > 8) return
+          var px = dx - along * lx, py = dy - along * ly, pz = dz - along * lz
+          var side = Math.sqrt(px * px + pz * pz), up = Math.abs(py)      // how far the ray passes from its middle
+          if (side > w / 2 + 0.25 || up > h / 2 + 0.25) return
+          if (along < bestAlong) { bestAlong = along; best = e }
+        } catch (x) { }
+      })
+      return best
+    } catch (x) {
+      var hit = p.rayTrace(8, false), e2 = hit == null ? null : hit.entity
+      return e2 == null || String(e2.type).indexOf('easy_npc') < 0 ? null : e2
+    }
+  }
+  // tells staff exactly which NPC a command changed, and makes it flash so you can see it
+  const pointOut = (src, e) => {
+    try {
+      say(src, '§7  → NPC §f' + (String(e.getName().getString()) || '(no name)') + ' §7at §f' + Math.floor(e.getX()) + ' ' + Math.floor(e.getY()) + ' ' + Math.floor(e.getZ()))
+      e.getServer().runCommandSilent('particle minecraft:happy_villager ' + e.getX() + ' ' + (Number(e.getY()) + 2.2) + ' ' + e.getZ() + ' 0.3 0.3 0.3 0 15 force')
+    } catch (x) { }
   }
   const uuidOf = (e) => { try { return String(e.getStringUuid()) } catch (x) { try { return String(e.getStringUUID()) } catch (y) { return String(e.uuid) } } }
   const holoJson = (lines) => JSON.stringify(lines.map((l, i) => {
@@ -1424,10 +1454,17 @@
     // /npcmenu glow off puts the tag ot_noglow on an NPC: it stays off through fixall/styleall
     run(server, `data merge entity ${uuidOf(e)} {Glowing:${e.getTags().contains('ot_noglow') ? 0 : 1}b}`)
   }
+  // every menu NPC has its own id tag (its hologram uses it). A copied/duplicated NPC can carry the same tag as the
+  // original, which made changes show up on both: if another NPC shares this NPC's id, this one gets a fresh id.
   const idOf = (e) => {
     var id = null
     e.getTags().forEach(t => { if (String(t).indexOf('ot_mid_') == 0) id = String(t) })
-    if (id == null) { id = 'ot_mid_' + Date.now().toString(36); e.addTag(id) }
+    if (id != null) {
+      var shared = false, me = uuidOf(e)
+      try { e.level.getAllEntities().forEach(x => { try { if (!shared && uuidOf(x) != me && String(x.type).indexOf('easy_npc') >= 0 && x.getTags().contains(id)) shared = true } catch (y) { } }) } catch (x) { }
+      if (shared) { e.removeTag(id); id = null }
+    }
+    if (id == null) { id = 'ot_mid_' + Date.now().toString(36) + Math.floor(Math.random() * 1296).toString(36); e.addTag(id) }
     return id
   }
   const OPEN_CMD = { cosmetics: 'cosmetics', crates: 'cratemenu', throneshop: 'throneshop', kits: 'kitmenu', levels: 'levelguide', links: 'links', claims: 'claimmenu', smp: 'smpmenu', professions: 'professionmenu' }
@@ -1600,14 +1637,14 @@
         if (!t) { say(ctx.source, '§cUse: cosmetics, crates, throneshop, kits, levels, links, claims, smp, professions or caverns'); return 0 }
         if (e == null) { say(ctx.source, '§cLook straight at an NPC (within 8 blocks).'); return 0 }
         makeMenuNpc(p.server, e, t, null)
-        say(ctx.source, '§a[npcmenu] This NPC now opens the ' + t + ' menu.')
+        say(ctx.source, '§a[npcmenu] This NPC now opens the ' + t + ' menu.'); pointOut(ctx.source, e)
         return 1
       }))))
       .then(Commands.literal('attachcmd').then(Commands.argument('command', StringArg.greedyString()).executes(ctx => guard(ctx, () => {
         var p = ctx.source.playerOrException, e = looked(p), cmd = String(StringArg.getString(ctx, 'command')).replace(/^\//, '')
         if (e == null) { say(ctx.source, '§cLook straight at an NPC (within 8 blocks).'); return 0 }
         makeMenuNpc(p.server, e, null, cmd, String(e.getName().getString()))
-        say(ctx.source, '§a[npcmenu] Clicking this NPC now runs §f/' + cmd)
+        say(ctx.source, '§a[npcmenu] Clicking this NPC now runs §f/' + cmd); pointOut(ctx.source, e)
         return 1
       }))))
       .then(Commands.literal('debug').executes(ctx => { clickDebug = !clickDebug; say(ctx.source, '§e[npcmenu] click debug ' + (clickDebug ? 'ON: right-click an NPC' : 'OFF')); return 1 }))
@@ -1618,7 +1655,7 @@
         e.removeTag('ot_menu_npc'); e.persistentData.remove('ot_menu_cmd')
         run(p.server, `kill @e[type=minecraft:text_display,tag=${idOf(e)}]`)
         run(p.server, `data merge entity ${uuidOf(e)} {Glowing:0b}`)
-        say(ctx.source, '§a[npcmenu] NPC is back to normal.')
+        say(ctx.source, '§a[npcmenu] NPC is back to normal.'); pointOut(ctx.source, e)
         return 1
       })))
       .then(Commands.literal('style').executes(ctx => guard(ctx, () => {

@@ -125,6 +125,7 @@
         var r = (sp.kind == 'boss' ? BOSS_ROAM : LEASH) + 8
         try { level.getAllEntities().forEach(x => { try {
           if (e != null || !isMobOf(x, sp) || !x.isAlive() || x.getTags().contains('ot_spawn')) return
+          try { if (typeof x.getOwnerUUID === 'function' && x.getOwnerUUID() != null) return } catch (y) { }   // a boss's clone/summon, never the boss itself
           var dx = x.getX() - sp.x, dy = x.getY() - sp.y, dz = x.getZ() - sp.z
           if (dx * dx + dy * dy + dz * dz <= r * r) { e = x; x.addTag('ot_spawn'); x.addTag(tagOf(id)); if (sp.kind == 'boss') x.addTag('ot_boss') }
         } catch (y) { } }) } catch (x) { }

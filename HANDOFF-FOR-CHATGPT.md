@@ -108,11 +108,11 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
 | `keep_inventory.js` | keepInventory on everywhere; **in `multiworld:wild` (SMP) items drop on death**. **The owner manages this one themselves and it works: don't touch or re-send it.** | `/keepinv` |
 | `kit_cooldown.js` | Enforces NeoEssentials kit cooldowns. | `/kitcd check/reset` |
 | `leveling.js` | Player levels 1–5000 (XP from quests, mobs, ores, daily login). Mirrored to scoreboard objectives for the HUD. | `/level ...` |
-| `slr_death_guard.js` | Temporary crash guard for the SLR bug (section 5). | `/slrguard` |
+| `slr_death_guard.js` | Crash guard for the SLR bug (section 5): orphaned boss clones are removed instead of dying; kills by them become plain deaths. | `/slrguard` |
 | `mob_infighting.js` | **Crash guard**: in the RPG world, wild mobs can't damage other mobs (see section 5). | `/mobinfighting` |
 | `mob_spawns.js` | **Fixed mob/boss spawns** (see section 4). | `/setmob`, `/setboss`, `/mobspawn ...` |
 | `mob_tweaks.js` | Per-mob HP and max hit: barghest 40 HP / 5 dmg, direwolf 5 HP / 2 dmg (total max health, accounting for Tensura bonuses, re-checked every 5 s). | `/mobtweaks` |
-| `npc_menus.js` | NPCs that open chest menus (Throne Shop, Kit Selector, Level Guide, Links, Claims, SMP, Professions, Cosmetics, Crates, **Caverns** "Cavern Guide"), command NPCs, name plates. | `/npcmenu spawn <type>`, `/npcmenu spawncmd ...` |
+| `npc_menus.js` (2026-10-18: `/npcmenu attach/attachcmd/detach` now pick the CLOSEST NPC on your line of sight, flash it and print its name+position; duplicated NPCs sharing an `ot_mid_` id get a fresh id) | NPCs that open chest menus (Throne Shop, Kit Selector, Level Guide, Links, Claims, SMP, Professions, Cosmetics, Crates, **Caverns** "Cavern Guide"), command NPCs, name plates. | `/npcmenu spawn <type>`, `/npcmenu spawncmd ...` |
 | `overthrone_quests.js` | Hunter Association quest board (100 quests). | `/quest`, `/quest claim` |
 | `professions.js` | Professions (Mining, Gemology, Farming, Foraging, Combat 1–100) and gathering **nodes**: hit 3x, progress bar on the floating text and actionbar, respawn after 1 min, no item drops. | `/node create/remove/fixall/...`, `/professions` |
 | `race_scroll.js` | NPC Seris gives a Tensura Race Reset Scroll every 12 h. Finds Seris by name OR `persistentData ot_style_title` (styleall clears names). | `/racescroll ...` |
@@ -183,6 +183,14 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   damage_zones.js, `WD_CAVERNS_COMBAT = false` in serversetup/worlddamage.js), so the whole RPG world is safe again, which was
   the state before the crashes. Turn both back to true only after SLR is fixed/patched. Still needed from the owner:
   `mods/SLR1.3.3.jar` (to read XPGainTShadowProcedure line 53 with javap), the newest crash report and latest.log.
+- **2026-10-18 (later): new evidence.** Killing a boss (Ifrit, Rimuru) leaves clones/summons whose owner is the boss. Vanilla
+  `OwnableEntity.getOwner()` only looks owners up among PLAYERS, so for boss-owned mobs it returns null; SLR then calls
+  getCapability on that null owner. Crashes happened both when such a clone killed a player AND when a player killed a clone.
+  `slr_death_guard.js` v2 (LivingDamageEvent$Pre, lethal hits only): victim owned + owner not an online player ->
+  damage 0 and `discard()` (no death event); offline players' pets (owner UUID in the server's profile cache) are never
+  discarded, the lethal hit is just blocked. Killer owner-type + owner not an online player -> damage 0, victim `kill()`ed
+  next tick. `/slrguard` shows which event was hooked and counters. **Caverns combat zone is ON again** (owner insisted).
+  mob_spawns.js no longer adopts owned mobs (clones) as a missing boss. Still unconfirmed: SLR line 53 itself (need the jar).
 - **Tensura skill events:** never hook them (crash, see section 2).
 - **Skills griefing the hub/RPG world:** fixed by the **TenSura Compat: FTB** mod (server-side only,
   `abilityGrief=false`) plus FTB Chunks claims owned by team `hub#0d6da155` over the hub and RPG world.

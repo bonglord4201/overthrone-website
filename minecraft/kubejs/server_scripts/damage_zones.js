@@ -18,9 +18,9 @@
   }
   // the Caverns (the area set with /cavernadmin pos1/pos2, caverns.js) is a combat zone even inside the RPG World
   // false = the Caverns are safe like the rest of the RPG world (no player deaths there).
-  // Switched OFF 2026-10-18: players dying in the Caverns set off a crash bug in the Solo Leveling mod
-  // (XPGainTShadowProcedure). Set to true again once SLR is fixed.
-  const CAVERNS_COMBAT = false
+  // 2026-10-18: briefly switched off because deaths in the Caverns set off a crash bug in the Solo Leveling mod
+  // (XPGainTShadowProcedure); back on, with slr_death_guard.js handling those deaths.
+  const CAVERNS_COMBAT = true
   const inCaverns = (p) => {
     if (!CAVERNS_COMBAT) return false
     try {
