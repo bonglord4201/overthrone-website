@@ -3,18 +3,18 @@
   "display_name": "Cursed Pentagram",
   "slot": "aura",
   "aura": {
-    "style": "pentagram",
+    "style": "pentacle_array",
     "particle": "glow",
     "colors": [
       [
         255,
-        90,
-        200
+        100,
+        210
       ],
       [
-        160,
+        170,
         0,
-        120
+        130
       ],
       [
         40,
@@ -25,7 +25,7 @@
     "particle_count": 0,
     "size": 1.0,
     "speed": 0.8,
-    "radius": 1.1,
+    "radius": 1.15,
     "height": 1.0,
     "alpha": 1.0,
     "rotation_speed": 0.7,

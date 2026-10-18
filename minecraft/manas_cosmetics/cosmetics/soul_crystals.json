@@ -1,0 +1,23 @@
+{
+  "id": "overthrone:soul_crystals",
+  "display_name": "Soul Crystals",
+  "slot": "orbit",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "model": "models/orbit/soul_crystals.bbmodel",
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "offset": [
+    0,
+    0,
+    0
+  ],
+  "rotation": [
+    0.0,
+    0.0,
+    0.0
+  ]
+}

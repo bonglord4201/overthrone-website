@@ -576,18 +576,19 @@
   SHOP.children = SHOP.children.filter(c => c.name != '&6&lPARTICLE EFFECTS')
   // (no const inside blocks: KubeJS's Rhino fails the WHOLE file on that, which stopped every NPC click on 2026-10-18)
   var manasCat = (key, name, ic, desc) => ({ icon: ic, name: name, layout: 'grid', desc: desc,
-      children: OT_MANAS[key].filter(c => !c.crate && c.price).map(c => ({ icon: c.icon, name: c.name, price: c.price,
+      children: (OT_MANAS[key] || []).filter(c => !c.crate && c.price).map(c => ({ icon: c.icon, name: c.name, price: c.price,
         desc: ['A real 3D cosmetic.', '', '&7Equip it in your wardrobe:', '&f/wardrobe'], give: { type: 'manas', id: c.id } })) })
   try {
     if (typeof OT_MANAS !== 'undefined') SHOP.children.push({
       slot: [7, 3], icon: 'minecraft:elytra', name: '&d&l3D COSMETICS', kind: 'COSMETIC',
-      desc: ['Real 3D wings, halos, crowns,', 'horns and animated auras.', 'Everyone with the modpack sees them.', '', '&fEquip them: &e/wardrobe', '', '&8Some rare ones only come', '&8from the Cosmetic Crate.'],
+      desc: ['Real 3D wings, halos, crowns,', 'horns, auras and weapon auras.', 'Everyone with the modpack sees them.', '', '&fEquip them: &e/wardrobe', '', '&8Some rare ones only come', '&8from the Cosmetic Crate.'],
       layout: 'spaced',
       children: [
         manasCat('wings', '&5&lWINGS', 'minecraft:elytra', ['Wings on your back.']),
         manasCat('halos', '&e&lHALOS', 'minecraft:gold_nugget', ['A glowing ring above your head.']),
         manasCat('heads', '&6&lCROWNS & HORNS', 'minecraft:golden_helmet', ['Crowns and horns on your head.']),
         manasCat('auras', '&b&lAURAS', 'minecraft:blaze_powder', ['Animated magic all around you.']),
+        manasCat('weapons', '&c&lWEAPON AURAS', 'minecraft:netherite_sword', ['Fire, frost, lightning and', 'shadow flowing along the', 'weapon you hold.']),
       ],
     })
   } catch (e) { console.warn('[npc_menus] 3D cosmetics shop: ' + e) }
@@ -1529,8 +1530,33 @@
     })
   }
 
+  // ---------------------------------------------------------------- Wardrobe (3D cosmetics, Manas Cosmetics mod)
+  // The button names below are the ones in the mod's wardrobe screen.
+  const manasOwned = (p) => owned(p).filter(x => x.indexOf('manas:') == 0).length
+  const wardrobeMenu = (p) => {
+    var threeD = null
+    try { SHOP.children.forEach(c => { if (c.name == '&d&l3D COSMETICS') threeD = c }) } catch (x) { }
+    guidePage(p, {
+      title: 'Wardrobe', border: 'purple', slots: [
+        [4, 0, 'minecraft:armor_stand', '&d&l✦ THE WARDROBE ✦', ['Real 3D cosmetics: wings, halos,', 'crowns, horns, auras and', 'weapon auras.', '', '&7Bought from the shop: &f' + manasOwned(p) + '&7 (crate ones too)'], true],
+        [4, 1, 'minecraft:ender_chest', '&a&l➤ OPEN MY WARDROBE', ['Equip everything you own.', '&7Also: &f/wardrobe', '', '&e&lCLICK TO OPEN'], true, () => after(p, () => asPlayer(p, 'manas_cosmetics wardrobe'))],
+        [1, 2, 'minecraft:writable_book', '&e&l① PICK A SLOT', ['On the left of the wardrobe:', '&fHelmet, Above Head, Back,', '&fAura, Weapon Aura, Orbit...', 'A &adot&7 = something equipped there.'], false],
+        [3, 2, 'minecraft:lime_dye', '&a&l② EQUIP', ['Click a cosmetic in the list,', 'then &fEquip&7. &fUnequip&7 takes it off.', 'Greyed-out ones you don\'t own yet.', 'The &fPreview&7 shows how it looks.'], false],
+        [5, 2, 'minecraft:netherite_sword', '&c&l③ WEAPON AURAS', ['Show on the weapon you hold.', '&fForce Equip&7 shows it even', 'when you hold another weapon.'], false],
+        [7, 2, 'minecraft:chest', '&6&l④ PRESETS', ['Save your whole outfit as a', 'preset (&fSave&7), switch with', '&fLoad&7, remove with &fDelete&7.'], false],
+        [2, 3, 'minecraft:leather_chestplate', '&7&lHIDE GEAR', ['Hides your armour under', 'the cosmetics.'], false],
+        [4, 3, 'minecraft:spyglass', '&b&lPERSONALISE', ['Nudge a cosmetic\'s position', 'and size just for you', '(it doesn\'t change anyone else\'s).'], false],
+        [6, 3, 'minecraft:ender_eye', '&5&lFP VIEW', ['Show or hide your own aura', 'in first person.'], false],
+        [2, 4, 'minecraft:amethyst_shard', '&d&lBUY 3D COSMETICS', ['Throne Shop > 3D Cosmetics', '(Throne Shards).', '', '&e&lCLICK TO OPEN'], true, () => after(p, () => threeD ? shopPage(p, [threeD]) : shopMain(p))],
+        [4, 4, 'minecraft:tripwire_hook', '&e&lCOSMETIC CRATE', ['Win any of them, plus rare', '&fcrate-only&7 wings, auras and', 'crowns.', '', '&e&lCLICK TO GO TO THE CRATES'], false, () => tp(p, 'warp crates')],
+        [6, 4, 'minecraft:name_tag', '&f&lCHAT COSMETICS', ['Tags, name colours, glows,', 'statuses, join messages.', '', '&e&lCLICK TO OPEN'], false, () => after(p, () => cosmeticsMain(p))],
+        [8, 3, 'minecraft:barrier', '&c&lCAN\'T SEE THEM?', ['You need the latest &fOVERTHRONE', '&fmodpack&7 (with Manas Cosmetics).', 'Other players need it too', 'to see yours.'], false],
+      ]
+    })
+  }
+
   const MENUS = { cosmetics: p => cosmeticsMain(p), crates: crateMenu, throneshop: shopMain, kits: kitMenu, levels: levelGuide, links: linksMenu, claims: claimsMenu, smp: smpMenu, professions: professionMenu, caverns: cavernsMenu,
-    serverguide: serverGuide, tensuraguide: tensuraGuide, slguide: slGuide, hunters: huntersMenu, market: marketMenu }
+    serverguide: serverGuide, tensuraguide: tensuraGuide, slguide: slGuide, hunters: huntersMenu, market: marketMenu, wardrobe: wardrobeMenu }
   const TITLES = {
     cosmetics: ['&d&lCOSMETICS', '&fRIGHT-CLICK TO VIEW'],
     crates: ['&e&lCRATES', '&fRIGHT-CLICK TO VIEW'],
@@ -1547,8 +1573,9 @@
     slguide: ['&5&lSOLO LEVELING GUIDE', '&fHUNTER TO MONARCH'],
     hunters: ['&4&lHUNTER ASSOCIATION', '&fRIGHT-CLICK TO VIEW'],
     market: ['&d&lSILAS', '&fTHE MERCHANT'],
+    wardrobe: ['&d&l✦ WARDROBE ✦', '&f3D COSMETICS'],
   }
-  const GLOW = { cosmetics: 'light_purple', crates: 'yellow', throneshop: 'light_purple', kits: 'gold', levels: 'green', links: 'aqua', claims: 'gold', smp: 'green', professions: 'gold', caverns: 'gold', serverguide: 'gold', tensuraguide: 'aqua', slguide: 'dark_purple', hunters: 'red', market: 'light_purple', cmd: 'yellow' }
+  const GLOW = { cosmetics: 'light_purple', crates: 'yellow', throneshop: 'light_purple', kits: 'gold', levels: 'green', links: 'aqua', claims: 'gold', smp: 'green', professions: 'gold', caverns: 'gold', serverguide: 'gold', tensuraguide: 'aqua', slguide: 'dark_purple', hunters: 'red', market: 'light_purple', wardrobe: 'light_purple', cmd: 'yellow' }
   const openMenu = (p, type) => {
     if (p.openChestGUI === undefined) { p.tell('§cMenus need KubeJS chest GUIs.'); return }
     try { MENUS[type](p) } catch (e) { console.error('[npc_menus] ' + type + ': ' + e); if (p.hasPermissions(2)) p.tell('§c[npc_menus] ' + e) }
@@ -1858,7 +1885,7 @@
     say(ctx.source, '§a[npcmenu] Removed ' + n + ' floating texts within ' + radius + ' blocks. §7Now /npcmenu fixall and /npcmenu styleall put the right ones back.')
     return 1
   }
-  const NPC_NAMES = { cosmetics: ['Cosmetics', '#FF55FF'], crates: ['Crates', '#FFFF55'], throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'], claims: ['Land Claims', '#FFAA00'], smp: ['SMP World', '#55FF55'], professions: ['Profession Master', '#FFAA00'], caverns: ['Cavern Guide', '#FFAA00'], serverguide: ['Server Guide', '#FFAA00'], tensuraguide: ['Tensura Guide', '#55FFFF'], slguide: ['Solo Leveling Guide', '#AA00AA'], hunters: ['Hunter Association', '#FF5555'], market: ['Silas', '#FF55FF'] }
+  const NPC_NAMES = { cosmetics: ['Cosmetics', '#FF55FF'], crates: ['Crates', '#FFFF55'], throneshop: ['Throne Shop', '#E05CFF'], kits: ['Kit Selector', '#FFAA00'], levels: ['Level Guide', '#55FF55'], links: ['Server Links', '#55FFFF'], claims: ['Land Claims', '#FFAA00'], smp: ['SMP World', '#55FF55'], professions: ['Profession Master', '#FFAA00'], caverns: ['Cavern Guide', '#FFAA00'], serverguide: ['Server Guide', '#FFAA00'], tensuraguide: ['Tensura Guide', '#55FFFF'], slguide: ['Solo Leveling Guide', '#AA00AA'], hunters: ['Hunter Association', '#FF5555'], market: ['Silas', '#FF55FF'], wardrobe: ['Wardrobe', '#FF55FF'] }
 
   ServerEvents.commandRegistry(event => {
     const { commands: Commands, arguments: Arguments } = event
@@ -2189,7 +2216,7 @@
       }))))
     event.register(Commands.literal('caverns').executes(ctx => { openMenu(ctx.source.playerOrException, 'caverns'); return 1 }))
     // guide menus (also usable without the NPCs)
-    ;[['serverguide', 'serverguide'], ['tensuraguide', 'tensuraguide'], ['slguide', 'slguide'], ['huntermenu', 'hunters'], ['marketmenu', 'market']].forEach(c =>
+    ;[['serverguide', 'serverguide'], ['tensuraguide', 'tensuraguide'], ['slguide', 'slguide'], ['huntermenu', 'hunters'], ['marketmenu', 'market'], ['wardrobemenu', 'wardrobe']].forEach(c =>
       event.register(Commands.literal(c[0]).executes(ctx => { openMenu(ctx.source.playerOrException, c[1]); return 1 })))
     event.register(Commands.literal('professionmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'professions'); return 1 }))
     event.register(Commands.literal('claimmenu').executes(ctx => { openMenu(ctx.source.playerOrException, 'claims'); return 1 }))

@@ -4,29 +4,29 @@
   "slot": "aura",
   "aura": {
     "style": "falling_embers",
-    "particle": "glow",
+    "particle": "tear",
     "colors": [
       [
         255,
-        220,
-        235
+        225,
+        240
       ],
       [
         255,
         150,
-        190
+        195
       ],
       [
-        230,
-        90,
+        225,
+        80,
         150
       ]
     ],
     "particle_count": 0,
-    "size": 1.0,
+    "size": 1.1,
     "speed": 0.7,
-    "radius": 1.2,
-    "height": 1.1,
+    "radius": 1.25,
+    "height": 1.15,
     "alpha": 1.0,
     "rotation_speed": 0.6,
     "emissive": true,

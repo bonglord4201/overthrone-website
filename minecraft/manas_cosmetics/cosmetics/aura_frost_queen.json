@@ -4,28 +4,28 @@
   "slot": "aura",
   "aura": {
     "style": "rune_circle",
-    "particle": "spark",
+    "particle": "crystal",
     "colors": [
       [
-        240,
+        245,
         255,
         255
       ],
       [
-        150,
-        220,
+        160,
+        225,
         255
       ],
       [
         70,
         140,
-        230
+        235
       ]
     ],
     "particle_count": 0,
     "size": 1.0,
     "speed": 0.9,
-    "radius": 1.1,
+    "radius": 1.15,
     "height": 1.0,
     "alpha": 1.0,
     "rotation_speed": 0.8,

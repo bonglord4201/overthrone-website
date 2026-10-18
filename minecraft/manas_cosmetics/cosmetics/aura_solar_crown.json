@@ -1,0 +1,35 @@
+{
+  "id": "overthrone:solar_crown",
+  "display_name": "Solar Crown",
+  "slot": "aura",
+  "aura": {
+    "style": "sunburst_mandala",
+    "particle": "glow",
+    "colors": [
+      [
+        255,
+        255,
+        210
+      ],
+      [
+        255,
+        200,
+        60
+      ],
+      [
+        255,
+        120,
+        0
+      ]
+    ],
+    "particle_count": 0,
+    "size": 1.0,
+    "speed": 0.9,
+    "radius": 1.2,
+    "height": 1.0,
+    "alpha": 1.0,
+    "rotation_speed": 0.7,
+    "emissive": true,
+    "motion_response": 1.0
+  }
+}

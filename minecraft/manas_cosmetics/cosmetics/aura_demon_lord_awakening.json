@@ -8,16 +8,16 @@
     "colors": [
       [
         255,
-        40,
-        40
+        70,
+        50
       ],
       [
-        150,
+        190,
         0,
-        20
+        25
       ],
       [
-        40,
+        60,
         0,
         10
       ]
@@ -25,10 +25,10 @@
     "particle_count": 0,
     "size": 1.2,
     "speed": 0.8,
-    "radius": 1.2,
+    "radius": 1.25,
     "height": 1.0,
     "alpha": 1.0,
-    "rotation_speed": 0.7,
+    "rotation_speed": 0.6,
     "emissive": true,
     "motion_response": 1.0
   }

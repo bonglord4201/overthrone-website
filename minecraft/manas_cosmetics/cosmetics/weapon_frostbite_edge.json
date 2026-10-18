@@ -1,0 +1,37 @@
+{
+  "id": "overthrone:frostbite_edge",
+  "display_name": "Frostbite Edge",
+  "slot": "weapon_aura",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "aura": {
+    "style": "rising_motes",
+    "particle": "crystal",
+    "colors": [
+      [
+        245,
+        255,
+        255
+      ],
+      [
+        150,
+        220,
+        255
+      ],
+      [
+        60,
+        130,
+        230
+      ]
+    ],
+    "particle_count": 0,
+    "size": 1.0,
+    "speed": 0.8,
+    "radius": 1.0,
+    "height": 1.0,
+    "alpha": 1.0,
+    "rotation_speed": 1.0,
+    "emissive": true,
+    "motion_response": 1.0
+  }
+}

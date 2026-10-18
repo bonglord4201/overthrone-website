@@ -3,18 +3,18 @@
   "display_name": "Seal of the Demon King",
   "slot": "aura",
   "aura": {
-    "style": "hexagram",
+    "style": "seal_of_solomon",
     "particle": "glow",
     "colors": [
       [
         255,
-        230,
-        120
+        235,
+        140
       ],
       [
-        230,
-        160,
-        30
+        235,
+        165,
+        35
       ],
       [
         120,
@@ -25,7 +25,7 @@
     "particle_count": 0,
     "size": 1.0,
     "speed": 0.8,
-    "radius": 1.1,
+    "radius": 1.15,
     "height": 1.0,
     "alpha": 1.0,
     "rotation_speed": 0.6,

@@ -1,0 +1,35 @@
+{
+  "id": "overthrone:clockwork_king",
+  "display_name": "Clockwork King",
+  "slot": "aura",
+  "aura": {
+    "style": "clockwork_seal",
+    "particle": "spark",
+    "colors": [
+      [
+        255,
+        240,
+        190
+      ],
+      [
+        220,
+        170,
+        70
+      ],
+      [
+        120,
+        80,
+        30
+      ]
+    ],
+    "particle_count": 0,
+    "size": 1.0,
+    "speed": 0.8,
+    "radius": 1.2,
+    "height": 1.0,
+    "alpha": 1.0,
+    "rotation_speed": 0.6,
+    "emissive": true,
+    "motion_response": 1.0
+  }
+}

@@ -3,18 +3,18 @@
   "display_name": "Black Flame",
   "slot": "aura",
   "aura": {
-    "style": "ember_crown",
+    "style": "flame",
     "particle": "glow",
     "colors": [
       [
-        170,
-        90,
+        190,
+        110,
         255
       ],
       [
-        70,
+        80,
         0,
-        120
+        140
       ],
       [
         5,
@@ -23,10 +23,10 @@
       ]
     ],
     "particle_count": 0,
-    "size": 1.2,
+    "size": 1.25,
     "speed": 1.0,
     "radius": 1.0,
-    "height": 1.0,
+    "height": 1.1,
     "alpha": 1.0,
     "rotation_speed": 1.0,
     "emissive": true,

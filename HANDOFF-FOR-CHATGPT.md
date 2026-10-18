@@ -238,6 +238,17 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   runs `manas_cosmetics unlock`, ownership mirrored in ot_owned as `manas:<id>`. Cosmetic Crate defaults = all of them
   (crate-only weight 2, others 10); owner loads them with `/crate reward reset cosmetic`. NOT verified in game yet:
   model orientation/position (tune with /manas_cosmetics edit).
+  **v2 (2026-10-18, owner said v1 looked bad, no animation/detail):** verified more from the jar: renderer plays the
+  Blockbench animation named `idle` (also walk/run/fly/swim/...), slot `weapon_aura` = an aura spec drawn along the held
+  weapon, 31 aura styles + 10 particle shapes (AuraSpec.KNOWN_STYLES/KNOWN_PARTICLES; see scripts/build-manas-auras.py),
+  weapon model cosmetics can also have `"particles": {particle, on:[attack|use|charging], count, spread, speed, interval}`.
+  Now 17 models (6 wings with shaded 128px textures, rim-glow plate, 3D bones and flap animation; 3 halos + sigil spinning;
+  3 crowns with 3D spikes/gems; 3 horns; Soul Crystals orbit) + 24 auras + 10 weapon auras = 51, all in `OT_MANAS`
+  (manas_cosmetics.js, new `weapons` list). Throne Shop 3D COSMETICS has a WEAPON AURAS section. New menu type `wardrobe`
+  (npc_menus.js `wardrobeMenu`, `/wardrobemenu`, `/npcmenu attach wardrobe`): how the wardrobe works (button names from
+  the mod's screen: Equip, Unequip, Force Equip, Hide Gear, Personalise, FP View, Presets Save/Load/Delete) + buttons.
+  Procedural models have limits: for top quality the owner should buy/commission .bbmodel files (BuiltByBit, MCModels,
+  ManasMods' Discord) and send them; setup steps in minecraft/manas_cosmetics/README.md.
   Waiting on the Manas Cosmetics jar (this session can't reach CurseForge/Modrinth). The particle file can be switched off
   by renaming cosmetics_fx.js to .off: npc_menus.js then hides the PARTICLE EFFECTS shop tile and /aura /trail /killeffect.
 

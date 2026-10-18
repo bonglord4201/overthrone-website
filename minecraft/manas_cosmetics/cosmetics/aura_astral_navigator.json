@@ -1,0 +1,35 @@
+{
+  "id": "overthrone:astral_navigator",
+  "display_name": "Astral Navigator",
+  "slot": "aura",
+  "aura": {
+    "style": "astral_compass",
+    "particle": "star",
+    "colors": [
+      [
+        220,
+        240,
+        255
+      ],
+      [
+        120,
+        160,
+        255
+      ],
+      [
+        70,
+        40,
+        200
+      ]
+    ],
+    "particle_count": 0,
+    "size": 1.0,
+    "speed": 0.8,
+    "radius": 1.2,
+    "height": 1.0,
+    "alpha": 1.0,
+    "rotation_speed": 0.6,
+    "emissive": true,
+    "motion_response": 1.0
+  }
+}

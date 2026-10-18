@@ -1,0 +1,35 @@
+{
+  "id": "overthrone:dimension_rift",
+  "display_name": "Dimension Rift",
+  "slot": "aura",
+  "aura": {
+    "style": "nested_polygons",
+    "particle": "pixel",
+    "colors": [
+      [
+        255,
+        120,
+        255
+      ],
+      [
+        90,
+        220,
+        255
+      ],
+      [
+        20,
+        0,
+        60
+      ]
+    ],
+    "particle_count": 0,
+    "size": 1.0,
+    "speed": 1.0,
+    "radius": 1.15,
+    "height": 1.0,
+    "alpha": 1.0,
+    "rotation_speed": 1.0,
+    "emissive": true,
+    "motion_response": 1.0
+  }
+}

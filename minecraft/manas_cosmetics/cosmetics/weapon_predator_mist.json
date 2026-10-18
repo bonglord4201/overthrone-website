@@ -1,0 +1,37 @@
+{
+  "id": "overthrone:predator_mist",
+  "display_name": "Predator Mist",
+  "slot": "weapon_aura",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "aura": {
+    "style": "starfield_shimmer",
+    "particle": "glow",
+    "colors": [
+      [
+        150,
+        240,
+        255
+      ],
+      [
+        40,
+        160,
+        255
+      ],
+      [
+        20,
+        60,
+        190
+      ]
+    ],
+    "particle_count": 0,
+    "size": 1.0,
+    "speed": 0.9,
+    "radius": 1.0,
+    "height": 1.0,
+    "alpha": 1.0,
+    "rotation_speed": 1.0,
+    "emissive": true,
+    "motion_response": 1.0
+  }
+}
