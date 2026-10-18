@@ -50,6 +50,17 @@ for fn in sorted(os.listdir(os.path.join(MC, 'cosmetics'))):
                 if not m.get('elements'): err(fn + ': model has no cubes')
                 if not m.get('textures') or not str(m['textures'][0].get('source', '')).startswith('data:image/png;base64,'):
                     err(fn + ': model texture not embedded')
+                bone_ids = set()
+                def _walk(g):
+                    if isinstance(g, dict):
+                        bone_ids.add(g.get('uuid')); [_walk(c) for c in g.get('children', [])]
+                [_walk(g) for g in m.get('outliner', [])]
+                for an in m.get('animations', []):
+                    bad = [v.get('name') for k_, v in (an.get('animators') or {}).items() if k_ not in bone_ids]
+                    if bad: err(fn + ': animation ' + str(an.get('name')) + ' drives bones that do not exist: ' + ', '.join(map(str, bad[:5])))
+                tex_n = len(m.get('textures', []))
+                if any(isinstance(f_.get('texture'), int) and f_['texture'] >= tex_n for e_ in m['elements'] for f_ in e_.get('faces', {}).values()):
+                    err(fn + ': a face points at a texture index that does not exist')
                 if not any(a.get('name') == 'idle' for a in m.get('animations', [])): notes.append(fn + ': no idle animation (static model)')
                 elif m['animations'][0].get('name') != 'idle': err(fn + ': the first clip must be idle (the mod bakes the rest pose from it)')
                 gz = len(gzip.compress(json.dumps(m, separators=(',', ':')).encode()))

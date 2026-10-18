@@ -326,6 +326,17 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
     lines at their exact spots, and summons a line only if nothing is there. refreshInfoBoard rewrites the
     ot_crate_infoboard text in place. No new commands. Package marketing/overthrone-cosmetics-v7.zip (replaces v6),
     INSTALL-V7.md. Not seen in game.
+  **v8 premium rebuild (2026-10-19; owner: "stop making basic cosmetics", reference = Polygony "Aurion" set + Sketchfab
+  Lucifer/Angel wings). Staged: one set at a time, each tested in game before the next.**
+  - Stage 1 done offline: scripts/manas/celestial7.py builds Celestial Sovereign wings/helm/armor/blade (same ids).
+    scripts/manas/premium.py maps a set id to its premium module; build-manas-models.py and look5.py use it, and
+    fall back to sets5/sets6 for the other 9 sets.
+  - Lessons from the references: dark base + ivory/gold accents (contrast), fitted shells painted at 4 texels/px, dense
+    overlapping individual feathers in 6 layers (not one fan of sticks), sculpted gold frame + crescent blades, a big
+    rotating sigil ring behind the head. Helpers: feather_tex (vanes/shaft/barbs/splits), seg3d/blade_arc (any
+    direction, fin=True for YZ-plane arcs), rise (plates pointing up), tint (art.mix can't blend pixel arrays).
+  - Package marketing/overthrone-cosmetics-v8-stage1-celestial.zip (4 bbmodels + previews + INSTALL-V8-STAGE1.md).
+    Validator now also checks animation bone references and texture indices. Waiting on in-game test before stage 4.
  for top quality the owner should buy/commission .bbmodel files (BuiltByBit, MCModels,
   ManasMods' Discord) and send them; setup steps in minecraft/manas_cosmetics/README.md.
   Waiting on the Manas Cosmetics jar (this session can't reach CurseForge/Modrinth). The particle file can be switched off
@@ -477,7 +488,8 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
    It isn't from any of Claude's scripts as far as checked.
 5. The "Supermassive Slime" boss may still be unkillable (unconfirmed).
 
-6. **Cosmetics v7** (2026-10-18, includes v6): blade-fitted weapon auras, walking pets, Lucifer-style membrane wings,
+6. **Cosmetics v8 stage 1** (Celestial Sovereign rebuild) waiting on an in-game test video; then rebuild the other 9 sets one by one.
+7. **Cosmetics v7** (2026-10-18, includes v6): blade-fitted weapon auras, walking pets, Lucifer-style membrane wings,
    crate hologram auto-refresh, plus v6 (10 armour/wing sets + set pets + everything priced, no Caverns key drops).
    marketing/overthrone-cosmetics-v7.zip must be installed and tested in game (armour binding,
    weapon orientation, ground sigils, trails, weapon auras on the blade, pet gaits/tricks, hologram refresh are untested). Don't call them fixed until they've been equipped and seen rendering. Never tell the owner to run

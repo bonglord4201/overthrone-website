@@ -6,7 +6,7 @@
 # scripts/manas/setdefs.py -> sets5.py. Auras (incl. the sets' auras): build-manas-auras.py.
 import json, os, shutil, sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'manas'))
-import catalog4 as C, sim, setdefs, sets5 as S5, sets6 as S6, look5, pets4, pets6, pets7
+import catalog4 as C, sim, setdefs, sets5 as S5, sets6 as S6, look5, pets4, pets6, pets7, premium
 from PIL import Image, ImageDraw
 
 ROOT = os.path.join(os.path.dirname(__file__), '..', 'minecraft', 'manas_cosmetics')
@@ -35,10 +35,11 @@ for cid, (name, fn, kw, floats) in C.PETS.items(): save(cid, name, 'pet', fn(cid
 WEAPON_WORD = {'spear': 'Spear', 'trident': 'Trident', 'scythe': 'Scythe', 'great': 'Greatsword', 'royal': 'Greatsword', 'long': 'Sword'}
 for sid, d in setdefs.SETS.items():
     t = d['title']
-    save(sid + '_wings', t + ' Wings', 'back', S5.wings(sid + '_wings', d['wings']))
-    save(sid + '_helm', t + ' Helm', 'helmet', S6.helm(sid + '_helm', d['helm']))
-    save(sid + '_armor', t + ' Armour', 'armor_set', S6.armor(sid + '_armor', d['armor']))
-    save(sid + '_blade', t + ' ' + WEAPON_WORD.get(d['weapon']['shape'], 'Blade'), 'weapon', S6.weapon(sid + '_blade', d['weapon']))
+    pb = premium.builders(sid) or {'wings': S5.wings, 'helm': S6.helm, 'armor': S6.armor, 'weapon': S6.weapon}   # v8 premium sets
+    save(sid + '_wings', t + ' Wings', 'back', pb['wings'](sid + '_wings', d['wings']))
+    save(sid + '_helm', t + ' Helm', 'helmet', pb['helm'](sid + '_helm', d['helm']))
+    save(sid + '_armor', t + ' Armour', 'armor_set', pb['armor'](sid + '_armor', d['armor']))
+    save(sid + '_blade', t + ' ' + WEAPON_WORD.get(d['weapon']['shape'], 'Blade'), 'weapon', pb['weapon'](sid + '_blade', d['weapon']))
     kind, kw, floats, pname = setdefs.PETS[sid]
     fn = {'phoenix': pets7.phoenix7, 'fox': pets7.fox7, 'wisp': pets7.wisp7, 'dragon': pets7.dragon7, 'jelly': pets6.jelly}[kind]
     save(sid + '_pet', pname + ' (' + t + ')', 'pet', fn(sid + '_pet', **kw), {'floats': True} if floats else None)

@@ -1,7 +1,7 @@
 # Preview sheet of one set: wings, armour + helmet on the body, weapon in hand, ground sigil.
 import sys, os, json
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import sets5 as S5, sets6 as S6, setdefs, sim
+import sets5 as S5, sets6 as S6, setdefs, sim, premium
 import numpy as np
 from PIL import Image, ImageDraw
 def render_combo(paths, t, yaw, pitch, size, scale, dark=False):
@@ -13,7 +13,8 @@ def render_combo(paths, t, yaw, pitch, size, scale, dark=False):
     return c.image()
 def sheet(set_id, out_dir, png=None):
     d = setdefs.SETS[set_id]
-    parts = [('back', 'wings', S5.wings), ('helmet', 'helm', S6.helm), ('armor_set', 'armor', S6.armor), ('weapon', 'weapon', S6.weapon), ('ground', 'sigil', S5.sigil)]
+    pb = premium.builders(set_id) or {'wings': S5.wings, 'helm': S6.helm, 'armor': S6.armor, 'weapon': S6.weapon}
+    parts = [('back', 'wings', pb['wings']), ('helmet', 'helm', pb['helm']), ('armor_set', 'armor', pb['armor']), ('weapon', 'weapon', pb['weapon']), ('ground', 'sigil', S5.sigil)]
     paths = []
     for slot, key, fn in parts:
         p = os.path.join(out_dir, set_id + '_' + key + '.bbmodel'); fn(set_id + '_' + key, d[key]).write(p)
@@ -25,7 +26,7 @@ def sheet(set_id, out_dir, png=None):
     ims = [('front, armour', render_combo(body, 0.0, 20, 8, 380, 9.0)), ('back, armour', render_combo(body, 0.0, 200, 10, 380, 9.0)),
            ('full set, back', render_combo(paths, 0.0, 165, 12, 380, 4.6)), ('full set, front', render_combo(paths, 1.2, 20, 10, 380, 4.6)),
            ('flap', render_combo(paths, 1.8, 140, 15, 380, 4.6)), ('night', render_combo(paths, 2.4, 30, 10, 380, 4.6, dark=True)),
-           ('helmet close', render_combo([paths[1]], 0.0, 35, 12, 380, 16.0)), ('armour side', render_combo(body, 0.0, 95, 5, 380, 9.0))]
+           ('helmet close', render_combo([paths[1]], 0.0, 35, 12, 380, 16.0)), ('full set, side', render_combo(paths, 0.0, 95, 5, 380, 4.6))]
     o = Image.new('RGB', (380 * 4, 400 * 2), (15, 15, 20)); dr = ImageDraw.Draw(o)
     for i, (l, im) in enumerate(ims):
         x, y = (i % 4) * 380, (i // 4) * 400; o.paste(im, (x, y)); dr.text((x + 6, y + 382), d['title'] + ' - ' + l, fill=(255, 255, 255))
