@@ -24,11 +24,26 @@
   }
   const wildMob = (e) => !!e && !e.isPlayer() && !ownedByPlayer(e)
 
+  // who caused the damage, safely: Tensura's own damage types (e.g. tensura.paralyzing) don't expose getEntity() to KubeJS
+  const attackerOf = (src) => {
+    var a = null
+    try { a = src.getEntity() } catch (x) { }
+    if (a == null) { try { a = src.getActual() } catch (x) { } }
+    if (a == null) { try { a = src.actual } catch (x) { } }
+    if (a == null) {
+      var d = null
+      try { d = src.getDirectEntity() } catch (x) { }
+      if (d == null) { try { d = src.getImmediate() } catch (x) { } }
+      if (d != null) { try { a = d.getOwner() } catch (x) { } if (a == null) a = d }
+    }
+    return a
+  }
+
   NativeEvents.onEvent('net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent', event => {
     try {
       var target = event.getEntity()
       if (!target || target.isPlayer() || ownedByPlayer(target)) return
-      var src = event.getSource(), atk = src.getEntity() || src.getDirectEntity()
+      var src = event.getSource(), atk = attackerOf(src)
       if (!atk || !wildMob(atk)) return
       if (WORLDS.indexOf(dimOf(target)) < 0) return
       event.setCanceled(true)

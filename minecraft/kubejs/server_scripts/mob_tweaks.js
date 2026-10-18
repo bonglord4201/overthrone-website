@@ -65,11 +65,27 @@
   })
 
   // cap the damage of every hit whose attacker (or the attacker's projectile) is a tweaked mob
+  // who caused the damage, safely: Tensura's own damage types (e.g. tensura.paralyzing) don't expose getEntity() to KubeJS
+  const attackerOf = (src) => {
+    var a = null
+    try { a = src.getEntity() } catch (x) { }
+    if (a == null) { try { a = src.getActual() } catch (x) { } }
+    if (a == null) { try { a = src.actual } catch (x) { } }
+    if (a == null) {
+      var d = null
+      try { d = src.getDirectEntity() } catch (x) { }
+      if (d == null) { try { d = src.getImmediate() } catch (x) { } }
+      if (d != null) { try { a = d.getOwner() } catch (x) { } if (a == null) a = d }
+    }
+    return a
+  }
+
   NativeEvents.onEvent('net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent', event => {
     try {
       var src = event.getSource(), t = null
-      if (src.getEntity()) t = tweakFor(src.getEntity())
-      if (!t && src.getDirectEntity()) t = tweakFor(src.getDirectEntity())
+      var atk = attackerOf(src)
+      if (atk) t = tweakFor(atk)
+      if (!t) { try { var d = src.getDirectEntity(); if (d) t = tweakFor(d) } catch (x) { } }
       if (t && t.damage && event.getAmount() > t.damage) event.setAmount(t.damage)
     } catch (x) { }
   })

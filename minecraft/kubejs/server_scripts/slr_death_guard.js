@@ -38,12 +38,31 @@
     try { return !!a && !a.isPlayer() && typeof a.getOwnerUUID === 'function' && !ownerOnlinePlayer(a) } catch (x) { return false }
   }
 
+  // who caused the damage. Tensura's own damage types (e.g. "tensura.paralyzing" from Paralysing Breath) don't expose
+  // getEntity() to KubeJS, which made the guard fail on 2026-10-18 07:09 and let the crash through. Try every way.
+  const attackerOf = (src) => {
+    var a = null
+    try { a = src.getEntity() } catch (x) { }
+    if (a == null) { try { a = src.getActual() } catch (x) { } }
+    if (a == null) { try { a = src.actual } catch (x) { } }
+    if (a == null) {   // a projectile/breath: its shooter
+      var d = null
+      try { d = src.getDirectEntity() } catch (x) { }
+      if (d == null) { try { d = src.getImmediate() } catch (x) { } }
+      if (d == null) { try { d = src.immediate } catch (x) { } }
+      if (d != null) { try { a = d.getOwner() } catch (x) { } }
+    }
+    return a
+  }
+
   const handle = (event, dmg, setDmg) => {
     try {
       var v = event.getEntity()
       if (!v || !v.isAlive()) return
       if (Number(dmg()) < Number(v.getHealth())) return   // not a killing blow: leave it alone
       var s = v.getServer()
+      var src = null
+      try { src = event.getSource() } catch (x) { }
       // 1. the dying mob is owned, and its owner can't be found
       if (isOwned(v) && !ownerOnlinePlayer(v)) {
         setDmg(0)
@@ -53,7 +72,7 @@
         return
       }
       // 2. killed by an owner-type mob without an online player owner
-      if (riskyKiller(event.getSource().getEntity())) {
+      if (src != null && riskyKiller(attackerOf(src))) {
         setDmg(0)
         stats.redirected++
         s.scheduleInTicks(1, () => { try { if (v.isAlive()) v.kill() } catch (x) { console.warn('[slr_death_guard] kill: ' + x) } })

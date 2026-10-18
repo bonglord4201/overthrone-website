@@ -172,6 +172,12 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   Every 5 s, extra living mobs carrying the same spawn tag are discarded (`dedupe`). `/mobspawn cleanup` discards untracked
   mobs of a spawn's type within 32 blocks of its spot (player-owned pets are kept).
 
+- **2026-10-18 07:09 crash:** the guard WAS loaded but threw `Cannot find function getEntity in object DamageSource
+  (tensura.paralyzing)`: Tensura's own DamageSource subclasses don't expose getEntity() to KubeJS, so the guard stopped and
+  the death went through. **Rule: never call `src.getEntity()` directly on damage sources here**; use the `attackerOf(src)`
+  helper (getEntity → getActual/actual → direct entity's owner), now in slr_death_guard.js, mob_infighting.js and mob_tweaks.js.
+  The victim check runs before anything touches the damage source.
+
 ## 5. Known mod bugs and their workarounds
 
 - **Solo Leveling (SLR 1.3.3) crash:** `XPGainTShadowProcedure.java:53` NullPointerException ("Ticking entity")
