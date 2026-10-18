@@ -115,7 +115,7 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
 | `mob_spawns.js` | **Fixed mob/boss spawns** (see section 4). | `/setmob`, `/setboss`, `/mobspawn ...` |
 | `mob_tweaks.js` | Per-mob HP and max hit: barghest 40 HP / 5 dmg, direwolf 5 HP / 2 dmg (total max health, accounting for Tensura bonuses, re-checked every 5 s). | `/mobtweaks` |
 | `npc_menus.js` (2026-10-18: `/npcmenu attach/attachcmd/detach` now pick the CLOSEST NPC on your line of sight, flash it and print its name+position; duplicated NPCs sharing an `ot_mid_` id get a fresh id) | NPCs that open chest menus (Throne Shop, Kit Selector, Level Guide, Links, Claims, SMP, Professions, Cosmetics, Crates, **Caverns** "Cavern Guide"), command NPCs, name plates. | `/npcmenu spawn <type>`, `/npcmenu spawncmd ...` |
-| `overthrone_quests.js` | Hunter Association quest board (100 quests). | `/quest`, `/quest claim` |
+| `overthrone_quests.js` | **SWITCHED OFF on the server** (renamed `overthrone_quests.js.off`): the old chat quest board (100 quests), replaced by the FTB Quest Book. Keep it off; never tell the owner to upload/enable it (quests would run twice). | (`/quest`) |
 | `professions.js` | Professions (Mining, Gemology, Farming, Foraging, Combat 1–100) and gathering **nodes**: hit 3x, progress bar on the floating text and actionbar, respawn after 1 min, no item drops. | `/node create/remove/fixall/...`, `/professions` |
 | `kill_credit.js` | Shared `otKillerOf(event)`: which player gets a kill's rewards (also Tensura skill kills, pets/summons → owner). Used by caverns, leveling, professions, quests, cosmetics_fx, mob_spawns. | `/killcredit` |
 | `race_scroll.js` | NPC Seris gives a Tensura Race Reset Scroll every 12 h. Finds Seris by name OR `persistentData ot_style_title` (styleall clears names). | `/racescroll ...` |
@@ -186,7 +186,7 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   mob / old spawn tag / pets / named. Ask the owner for its output if pile-ups continue. Test: `tests/mob_spawns/test5.js`.
 
 - **No cash / no level XP for Caverns kills (2026-10-18):** caverns.js, leveling.js, professions.js (Combat XP),
-  overthrone_quests.js (kill quests), cosmetics_fx.js (kill effects) and mob_spawns.js (boss kill message) found the killer
+  overthrone_quests.js (kill quests; that file is switched off on the server), cosmetics_fx.js (kill effects) and mob_spawns.js (boss kill message) found the killer
   with `event.source.getPlayer()`. Kills made with Tensura skills use Tensura damage types that hide the attacker from KubeJS,
   so no player was found = no rewards, while vanilla still dropped XP orbs (it uses its own kill credit). New
   **kill_credit.js** defines global `otKillerOf(event)`: source player → source attacker/actual → direct/immediate entity
