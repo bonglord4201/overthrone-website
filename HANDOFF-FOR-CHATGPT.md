@@ -108,6 +108,7 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
 | `keep_inventory.js` | keepInventory on everywhere; **in `multiworld:wild` (SMP) items drop on death**. **The owner manages this one themselves and it works: don't touch or re-send it.** | `/keepinv` |
 | `kit_cooldown.js` | Enforces NeoEssentials kit cooldowns. | `/kitcd check/reset` |
 | `leveling.js` | Player levels 1–5000 (XP from quests, mobs, ores, daily login). Mirrored to scoreboard objectives for the HUD. | `/level ...` |
+| `slr_death_guard.js` | Temporary crash guard for the SLR bug (section 5). | `/slrguard` |
 | `mob_infighting.js` | **Crash guard**: in the RPG world, wild mobs can't damage other mobs (see section 5). | `/mobinfighting` |
 | `mob_spawns.js` | **Fixed mob/boss spawns** (see section 4). | `/setmob`, `/setboss`, `/mobspawn ...` |
 | `mob_tweaks.js` | Per-mob HP and max hit: barghest 40 HP / 5 dmg, direwolf 5 HP / 2 dmg (total max health, accounting for Tensura bonuses, re-checked every 5 s). | `/mobtweaks` |
@@ -170,6 +171,13 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
 - **Solo Leveling (SLR 1.3.3) crash:** `XPGainTShadowProcedure.java:53` NullPointerException ("Ticking entity")
   when a mob kills another mob (e.g. Tensura Orc kills Goblin in the RPG world). Workaround: `mob_infighting.js`.
   Don't clear those mobs with `/kill` (it might trigger the same code). A fixed SLR version would be the real fix.
+- **Same SLR crash, 2026-10-18:** a player killed by `tensura_neb:rimuru_clone` in the Caverns (multiworld:rpg). Every crash
+  so far: the killer was a Tensura tamable-type mob (TensuraTamableEntity / PlayerLikeEntity) with no player owner. No KubeJS
+  frames in the stack: the NPE is inside SLR's own LivingDeathEvent listener. It only started for players in the RPG world
+  because the Caverns became a combat zone (before that, players couldn't die there). **Workaround:** `slr_death_guard.js`
+  (LivingDamageEvent$Pre: if a hit from a tamable mob whose owner isn't a player would kill, damage is set to 0 and the
+  victim is killed one tick later with `kill()`, i.e. a death with no killer). Line 53 of XPGainTShadowProcedure has NOT
+  been read yet: the SLR jar (`mods/SLR1.3.3.jar`) is needed to confirm the exact null. Remove the guard when SLR fixes it.
 - **Tensura skill events:** never hook them (crash, see section 2).
 - **Skills griefing the hub/RPG world:** fixed by the **TenSura Compat: FTB** mod (server-side only,
   `abilityGrief=false`) plus FTB Chunks claims owned by team `hub#0d6da155` over the hub and RPG world.
