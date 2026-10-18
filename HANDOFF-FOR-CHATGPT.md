@@ -108,6 +108,7 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
 | `keep_inventory.js` | keepInventory on everywhere; **in `multiworld:wild` (SMP) items drop on death**. **The owner manages this one themselves and it works: don't touch or re-send it.** | `/keepinv` |
 | `kit_cooldown.js` | Enforces NeoEssentials kit cooldowns. | `/kitcd check/reset` |
 | `leveling.js` | Player levels 1–5000 (XP from quests, mobs, ores, daily login). Mirrored to scoreboard objectives for the HUD. | `/level ...` |
+| `grief_guard.js` | Hub + RPG World (incl. Caverns): any `minecraft:falling_block` that appears is cancelled and its block put back at its start position (skills that lift/move/suck up blocks); NeoForge `EntityMobGriefingEvent` denied there. Added 2026-10-18 because skills (e.g. Black Lightning) still moved blocks; the owner was probably testing as a member of the hub claim team or with FTB admin bypass, which the claims allow. Untested; `/griefguard` counters show which part catches what. | `/griefguard` |
 | `slr_death_guard.js` | Crash guard for the SLR bug (section 5): orphaned boss clones are removed instead of dying; kills by them become plain deaths. | `/slrguard` |
 | `mob_infighting.js` | **Crash guard**: in the RPG world, wild mobs can't damage other mobs (see section 5). | `/mobinfighting` |
 | `mob_spawns.js` | **Fixed mob/boss spawns** (see section 4). | `/setmob`, `/setboss`, `/mobspawn ...` |

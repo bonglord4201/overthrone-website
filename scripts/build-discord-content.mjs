@@ -481,6 +481,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/safeexplosions` Explosions blocked in hub/RPG? · `/damagezones` Is this world a no-damage safe zone? (the Caverns area is always a combat zone)",
     "`/whyhurt` Toggle: chat tells you exactly what hurts you (damage type, mob, amount) — for finding mystery damage",
     "`/keepinv` Players keep their items on death everywhere except the SMP world (/smp). Shows your world and whether items drop there",
+    "`/griefguard` Hub + RPG World: blocks moved/lifted by skills are put straight back, and mob griefing is denied. Shows what it caught",
     "`/slrguard` Crash guard for the Solo Leveling bug: boss clones/summons whose boss is gone are removed instead of dying, and kills BY them become a plain death. Shows what it did",
     "`/mobinfighting` RPG world: wild mobs can't hurt each other (stops the Solo Leveling crash when a mob kills a mob). Shows how many hits it blocked",
     "New players: no damage while picking a race + first 15 min of play (below level 5). `/newbieshield <player> <minutes>` give/extend it (0 = end it)"
