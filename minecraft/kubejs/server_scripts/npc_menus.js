@@ -1214,6 +1214,9 @@
     })
   }
   const tp = (p, cmd, msg) => after(p, () => { asPlayer(p, cmd); if (msg) p.tell(msg) })
+  // the full written guide book (guide_books.js)
+  const BOOK_LORE = ['', '&e&l📖 CLICK: GET THE FULL GUIDE BOOK']
+  const giveBook = (p, which) => after(p, () => { if (typeof otGiveGuideBook === 'function') otGiveGuideBook(p, which); else p.tell('§cThe guide books are not loaded (guide_books.js).') })
   const CLICK_TP = '&e&lCLICK TO TELEPORT'
 
   // ---------------------------------------------------------------- Server Guide (new NPC)
@@ -1284,7 +1287,8 @@
   const tensuraGuide = (p) => guidePage(p, {
     title: 'Tensura Guide', border: 'aqua', slots: [
       [4, 0, 'minecraft:slime_ball', '&b&l✦ TENSURA GUIDE ✦', ['Races, evolutions, skills and magic.', 'Hover to read, click to open.'], true],
-      [1, 1, 'minecraft:writable_book', '&a&l① START HERE', ['You pick a &frace&7 on your first join.', 'You also get &fone random unique', '&fskill&7 when you pick it.', '', 'Press &fB&7: your &fStatus Menu&7.', 'Kill mobs to gain &fEP&7 (your power).'], true],
+      [1, 1, 'minecraft:written_book', '&a&l① START HERE', ['You pick a &frace&7 on your first join.', 'You also get &fone random unique', '&fskill&7 when you pick it.', '', 'Press &fB&7: your &fStatus Menu&7.', 'Kill mobs to gain &fEP&7 (your power).'].concat(BOOK_LORE), true, () => giveBook(p, 'tensura')],
+      [1, 4, 'minecraft:written_book', '&3&l📖 TENSURA GUIDE BOOK', ['Everything in one book:', 'every race and its full path,', 'EP goals, awakening, naming,', 'skills, sunlight, flying.'].concat(BOOK_LORE), true, () => giveBook(p, 'tensura')],
       [3, 1, 'minecraft:totem_of_undying', '&b&lALL RACES →', ['Every race on the server,', 'its difficulty and how to', 'evolve it.', '', '&e&lCLICK TO OPEN'], true, () => after(p, () => tensuraRaces(p))],
       [5, 1, 'minecraft:experience_bottle', '&e&lHOW TO EVOLVE', ['Press &fB&7 → &fEvolution Menu&7.', 'Pick a goal, press &fTrack&7 to see', 'it on screen, then &fEvolve&7 at 100%.', '', 'Goals: about &f100k EP&7 first,', '&f400k-800k&7 next, &f2M&7 for Divine.', '&fSaint&7 forms also need &f4 bosses&7.'], false],
       [7, 1, 'minecraft:nether_star', '&6&lAWAKENING', ['&fTrue Demon Lord&7: a Majin with', '&f200k EP&7, then collect &f10,000 souls&7.', '&fTrue Hero&7: the other awakening.', '', 'Some evolutions (Demon Slime,', 'Devil Lord...) need an awakening.', '&fHarvest Festival&7: your followers', 'nearby evolve for free.'], true],
@@ -1311,7 +1315,8 @@
     guidePage(p, {
       title: 'Solo Leveling Guide', border: 'purple', slots: [
         [4, 0, 'minecraft:ender_eye', '&5&l✦ SOLO LEVELING GUIDE ✦', ['From Hunter to Monarch.', '&7Your rank: &f' + me[0] + '  &7Class: &f' + me[1]], true],
-        [1, 1, 'minecraft:writable_book', '&a&l① START HERE', ['Go to the &fHunter Association', '&8(/warp hunters)&7 and do your', '&fHunter Evaluation&7.', 'It gives you your &fclass&7, &fstyle', '&7and &fhunter rank&7.'], true],
+        [1, 1, 'minecraft:written_book', '&a&l① START HERE', ['Go to the &fHunter Association', '&8(/warp hunters)&7 and do your', '&fHunter Evaluation&7.', 'It gives you your &fclass&7, &fstyle', '&7and &fhunter rank&7.'].concat(BOOK_LORE), true, () => giveBook(p, 'sl')],
+        [6, 3, 'minecraft:written_book', '&5&l📖 SOLO LEVELING GUIDE BOOK', ['Everything in one book:', 'the evaluation, ranks, statues,', 'gates, levels and the Caverns.'].concat(BOOK_LORE), true, () => giveBook(p, 'sl')],
         [3, 1, 'minecraft:amethyst_shard', '&d&lTHE EVALUATION', ['Tabs: Contact, Scan, Class,', 'Style, Rank, Record.', '&fPress and HOLD the gem&7 until', 'the timer is done (about 1.5 s).', 'Ranks: &fE → D → C → B → A → S'], false],
         [5, 1, 'minecraft:armor_stand', '&e&lSTATUES', ['&cThey are NOT broken!', 'To use a statue, &fcrouch (sneak)', '&fnext to it for 2 seconds&7.', 'Hold sneak until it activates.'], true],
         [7, 1, 'minecraft:end_portal_frame', '&c&lGATES', ['&f3 gates open every hour&7, near a', 'random player in the &fOverworld', '&8(/wild)&7.', 'Clear them for loot and XP.', 'Team up for higher ranks.'], true],

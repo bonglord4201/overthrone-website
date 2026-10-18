@@ -146,6 +146,7 @@ channels.push({ key: "commands", messages: pack([
     "`/levelguide` Your level, XP and how to level up",
     "`/links` Discord, website, store, rules and vote links in chat",
     "`/cosmetics` Equip everything you bought from the Throne Shop",
+    "`/tensurabook` Get the Tensura Guide book (every race, how to evolve, awakening, skills) · `/slbook` Get the Solo Leveling Guide book",
     "`/tags` · `/namecolor` · `/chatcolor` · `/glowcolor` · `/gradient` · `/status` · `/joinmessage` Equip one kind",
     "`/flytime` Turn bought flight on/off (time only counts down while flying) · `/flytime left` Time left",
     "`/crate keys` How many crate keys you have · `/vote` Vote for free keys",
