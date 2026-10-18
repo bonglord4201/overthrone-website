@@ -143,7 +143,7 @@
     },
     cosmetic: {
       name: 'COSMETIC CRATE', keyName: 'Cosmetic Key', color: 'white', dust: [0.9, 0.9, 1.0],
-      keyHint: 'Earn keys in game', particles: true,
+      keyHint: 'Keys only at overthronesmp.tebex.store', particles: true,
       // 3D cosmetics (Manas Cosmetics, list in manas_cosmetics.js): crate-only ones are rare. An already-unlocked one gives
       // nothing new, so the pool is kept big. After adding cosmetics, load the new ones in game: /crate reward sync cosmetic
       rewards: (typeof OT_MANAS === 'undefined' ? [] : [].concat(OT_MANAS.wings, OT_MANAS.halos, OT_MANAS.heads, OT_MANAS.auras, OT_MANAS.weapons || [], OT_MANAS.pets || []).map(c => ({
@@ -187,7 +187,7 @@
     { text: 'CRATES INFO', color: '#FF3B3B', bold: true },
     { text: '' },
     { text: 'Get VOTE KEYS by voting every day: /vote', color: '#5CFF5C', bold: true },
-    { text: 'WEAPON, ARMOR & RUNE KEYS at overthronesmp.tebex.store', color: '#FFD84A', bold: true },
+    { text: 'WEAPON, ARMOR, RUNE & COSMETIC KEYS at overthronesmp.tebex.store', color: '#FFD84A', bold: true },
     { text: 'LEGENDARY, MYTHIC & EVENT KEYS: events, bosses & quests', color: '#FF8CFF', bold: true },
     { text: 'Left-click a crate to see its rewards', color: '#FFFFFF' },
     { text: '' },

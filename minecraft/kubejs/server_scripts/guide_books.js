@@ -86,7 +86,7 @@ var otGiveGuideBook = null
     ['&2&l3. STUCK IN THE CARTENON TEMPLE?', '', '&4The statues are NOT broken!', '', 'To use a statue, &lcrouch (sneak) next to it for 2 seconds&r. Keep holding sneak until it activates.'],
     ['&2&l4. GATES', '', '&l3 gates open every hour&r, near a random player in the &lOverworld&r (/wild).', '', 'Clear them for loot and XP. Higher ranks are harder, so team up.'],
     ['&2&lLEVELS & STATS', '', 'Solo Leveling has its own levels and stats.', '', 'They stack with your server level (&l/level&r, &l/stats&r) and your Tensura race. All of them make you stronger.'],
-    ['&2&lTHE CAVERNS', '', 'Mobs, bosses and gathering nodes: &l/warp caverns&r', '', 'Every kill and node pays &2cash&r, bosses pay more. Kills can drop crate keys (0.5%, set bosses 5%).', '', '&4You CAN die there.'],
+    ['&2&lTHE CAVERNS', '', 'Mobs, bosses and gathering nodes: &l/warp caverns&r', '', 'Every kill and node pays &2cash&r, bosses pay more.', '', '&4You CAN die there.'],
     ['&5&lGOOD LUCK, HUNTER!', '', 'Lost? Talk to the &lServer Guide&r NPC or the &lHunter Association&r.', '', 'Full guide on the website:', '&9overthronesmp.net/guide', '', '&8OVERTHRONE'],
   ]
 

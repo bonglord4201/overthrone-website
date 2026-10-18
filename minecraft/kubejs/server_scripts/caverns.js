@@ -17,8 +17,8 @@
 //   /cavernadmin board remove     remove the board(s) within 8 blocks of you
 //   /cavernadmin board removeall  remove every Caverns board
 //
-// Crate keys: every mob killed in the Caverns has a 0.5% chance (set bosses: 5%) to give the killer a random
-// Legendary, Mythic or Cosmetic Key (/crate key give). Change CAV_KEY_* below.
+// Crate keys: switched off (owner, 2026-10-18: keys are not a Caverns drop; Cosmetic Keys are Tebex-only).
+// To bring Legendary/Mythic drops back, raise CAV_KEY_CHANCE_* below (never add the cosmetic key back).
 
 // ---------------------------------------------------------------- settings
 const CAV_CASH_MIN = 100
@@ -29,9 +29,9 @@ const CAV_BOSS_HP = 150                    // mobs with at least this much max h
 const CAV_MOB_CASH = (maxHp) => maxHp * 10 // before the random +-20% and the min/max
 const CAV_NODE_CASH = (lvl) => lvl * 100
 // crate key drops for kills inside the Caverns (given straight to the killer, one random key from the list)
-const CAV_KEY_CHANCE_MOB = 0.005           // 0.5% for any mob
-const CAV_KEY_CHANCE_BOSS = 0.05           // 5% for a boss placed with /setboss (/mobspawn boss)
-const CAV_KEY_CRATES = [['legendary', 'Legendary Key', 'gold'], ['mythic', 'Mythic Key', 'light_purple'], ['cosmetic', 'Cosmetic Key', 'white']]
+const CAV_KEY_CHANCE_MOB = 0               // was 0.5% for any mob (off)
+const CAV_KEY_CHANCE_BOSS = 0              // was 5% for a /setboss boss (off)
+const CAV_KEY_CRATES = [['legendary', 'Legendary Key', 'gold'], ['mythic', 'Mythic Key', 'light_purple']]
 
 // player trackers (persistentData)
 const CAV_K = { kills: 'ot_cav_kills', bosses: 'ot_cav_bosses', nodes: 'ot_cav_nodes', cash: 'ot_cav_cash', best: 'ot_cav_best', time: 'ot_cav_time' }
@@ -115,7 +115,7 @@ var otCavernsPay = (p, base, why) => {
       d.putLong(CAV_K.kills, (Number(d.getLong(CAV_K.kills)) || 0) + 1)
       if (boss) d.putLong(CAV_K.bosses, (Number(d.getLong(CAV_K.bosses)) || 0) + 1)
       otCavernsPay(p, CAV_MOB_CASH(maxHp), boss ? 'boss' : 'mob')
-      // crate key drop: 5% for a /setboss boss, 0.5% for everything else
+      // crate key drop (off while both chances are 0)
       var setBoss = e.getTags().contains('ot_boss')
       if (Math.random() < (setBoss ? CAV_KEY_CHANCE_BOSS : CAV_KEY_CHANCE_MOB)) {
         var k = CAV_KEY_CRATES[Math.floor(Math.random() * CAV_KEY_CRATES.length)], s = p.server

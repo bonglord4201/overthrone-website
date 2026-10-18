@@ -221,7 +221,7 @@ channels.push({ key: "changelog", messages: pack([
     "**🆕 Update 1.6: Real Caverns Combat**",
     "🔸 **The Caverns are a combat zone:** mobs and bosses can now hunt you and hurt you there. The hub and the rest of the RPG world stay safe",
     "🔸 **Tougher bosses:** Caverns bosses now **chase you** and have **more health and damage**",
-    "🔸 **Crate keys:** every Caverns kill has a **0.5%** chance to drop a Legendary, Mythic or Cosmetic Key. Bosses: **5%**!",
+    "🔸 **Crate keys** don't drop in the Caverns. Cosmetic Keys are only sold at **overthronesmp.tebex.store**.",
     "🔸 **Keep your items:** you no longer lose your inventory when you die, **except in the SMP world** (`/smp`)",
     "🔸 **Lost a banned unique skill?** You now get a new random unique skill instead",
     "🔸 Sidebar reminds you **Use /hub** to return to spawn when you're out in the worlds",
@@ -450,7 +450,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/cavernadmin board [height]` Put a \"Doing no damage? 7 armour layers, end-game content\" warning board where you stand (default 2 up, place one per boss)",
     "`/cavernadmin board flip` Turn boards within 8 blocks round · `/cavernadmin board remove` Remove boards within 8 blocks · `/cavernadmin board removeall` Remove them all",
     "NPC: `/npcmenu spawn caverns` (Cavern Guide) · Players: `/caverns` menu, `/warp caverns`",
-    "Crate keys: every Caverns kill has a **0.5%** chance (set bosses **5%**) to give the killer a random Legendary, Mythic or Cosmetic Key (announced in chat)",
+    "Crate keys: Caverns key drops are OFF (CAV_KEY_CHANCE_* = 0 in caverns.js). Cosmetic Keys are Tebex-only",
     "Settings (cash min/max, per-minute cap, how much mobs/nodes pay) are at the top of `caverns.js`"
   ].join("\n") },
   { title: "👹 Mob & boss spawns", description: [
