@@ -143,47 +143,140 @@ var otIsNodeBlock = (block) => {
     return JSON.stringify([''].concat(lines)).replace(/\\/g, '\\\\').replace(/'/g, "\\'")
   }
   const holoY = (n) => /\[.*age=/.test(n.state) ? 1.1 : 1.5
+  // FIX 2026-10-18: floating texts are kept right by syncHolos() once a second (exactly one per node, text updated on
+  // that one). Commands like "kill" / "data merge ... limit=1" only reach LOADED areas, so they left frozen copies
+  // ("Respawns in 36s" that never moved) behind.
+  const holoHits = {}   // key -> hits shown on the text while someone is gathering it
+  const holoState = {}  // key -> { u: uuid of the kept text, t: text last written }
   const placeHolo = (s, key, isDown) => {
     var n = otNodeCache[key]; if (!n) return
     var tag = tagOf(key)
+    delete holoState[key]
     run(s, `execute in ${n.dim} run kill @e[type=minecraft:text_display,tag=${tag}]`)
-    run(s, `execute in ${n.dim} run summon minecraft:text_display ${n.x + 0.5} ${n.y + holoY(n)} ${n.z + 0.5} ` +
-      `{Tags:["ot_node","${tag}"],billboard:"center",shadow:1b,background:0,line_width:300,` +
-      `transformation:[0.7f,0f,0f,0f,0f,0.7f,0f,0f,0f,0f,0.7f,0f,0f,0f,0f,1f],text:'${holoText(n, isDown)}'}`)
+    summonHolo(s, n, tag, holoText(n, isDown, isDown && down[key] ? Math.max(0, Math.ceil((down[key] - Date.now()) / 1000)) : null))
   }
+  const summonHolo = (s, n, tag, text) => run(s, `execute in ${n.dim} run summon minecraft:text_display ${n.x + 0.5} ${n.y + holoY(n)} ${n.z + 0.5} ` +
+    `{Tags:["ot_node","${tag}"],billboard:"center",shadow:1b,background:0,line_width:300,` +
+    `transformation:[0.7f,0f,0f,0f,0f,0.7f,0f,0f,0f,0f,0.7f,0f,0f,0f,0f,1f],text:'${text}'}`)
+  const wantText = (key) => {
+    var n = otNodeCache[key]
+    if (down[key]) return holoText(n, true, Math.max(0, Math.ceil((down[key] - Date.now()) / 1000)))
+    return holoText(n, false, null, holoHits[key] || 0)
+  }
+  // writes the text now on the copy we keep (if we know it), otherwise the next sync does it
   const setHoloText = (s, key, isDown, secsLeft, hits) => {
-    var n = otNodeCache[key]; if (!n) return
-    run(s, `execute in ${n.dim} run data merge entity @e[type=minecraft:text_display,tag=${tagOf(key)},limit=1] {text:'${holoText(n, isDown, secsLeft, hits)}'}`)
+    if (!otNodeCache[key]) return
+    if (!isDown && hits) holoHits[key] = hits; else delete holoHits[key]
+    var st = holoState[key], t = wantText(key)
+    if (st && st.u && st.t != t) { run(s, `data merge entity ${st.u} {text:'${t}'}`); st.t = t }
+  }
+
+  // is this spot loaded? blocks: chunk loaded; texts: entities there loaded and ticking
+  var BlockPos = null
+  try { BlockPos = Java.loadClass('net.minecraft.core.BlockPos') } catch (x) { }
+  const levelOf = (s, dim) => { var f = null; s.getAllLevels().forEach(l => { if (f == null && dimOf(l) == dim) f = l }); return f }
+  const entsLoaded = (level, n) => {
+    if (BlockPos != null) { try { return !!level.isPositionEntityTicking(new BlockPos(n.x, n.y, n.z)) } catch (e) { } }
+    try { return !!level.getChunkSource().hasChunk(n.x >> 4, n.z >> 4) } catch (e) { }
+    var near = false   // last resort: a player within 96 blocks always keeps it loaded
+    try { level.players().forEach(p => { var dx = p.getX() - n.x, dz = p.getZ() - n.z; if (dx * dx + dz * dz < 96 * 96) near = true }) } catch (e) { }
+    return near
+  }
+  const blockLoaded = (level, n) => {
+    if (BlockPos != null) { try { return !!level.isLoaded(new BlockPos(n.x, n.y, n.z)) } catch (e) { } }
+    return entsLoaded(level, n)
+  }
+  var tagKeys = null, tagCount = -1   // floating-text tag -> node key
+  const tagMap = () => {
+    var ks = Object.keys(otNodeCache)
+    if (tagKeys == null || tagCount != ks.length) { tagKeys = {}; ks.forEach(k => { tagKeys[tagOf(k)] = k }); tagCount = ks.length }
+    return tagKeys
+  }
+  const uidOf = (e) => { try { return String(e.getStringUuid()) } catch (x) { try { return String(e.getUuid()) } catch (y) { return String(e.uuid) } } }
+  const syncHolos = (s) => {
+    var byDim = {}
+    Object.keys(otNodeCache).forEach(k => { var n = otNodeCache[k]; (byDim[n.dim] = byDim[n.dim] || []).push(k) })
+    var tm = tagMap()
+    s.getAllLevels().forEach(level => {
+      var dim = dimOf(level), keys = byDim[dim] || [], found = {}, any = false
+      try {
+        level.getAllEntities().forEach(x => {
+          try {
+            var t = x.getTags(); if (!t.contains('ot_node')) return
+            try { if (String(x.getEncodeId()) != 'minecraft:text_display') return } catch (y) { }
+            var tag = null
+            t.forEach(tt => { tt = String(tt); if (tt.indexOf('ot_node_') == 0) tag = tt })
+            any = true
+            ;(found[tag] = found[tag] || []).push(x)
+          } catch (y) { }
+        })
+      } catch (x) { return }
+      if (!any && !keys.length) return
+      // texts of nodes that no longer exist (or in the wrong world)
+      Object.keys(found).forEach(tag => {
+        var k = tm[tag]
+        if (k == null || otNodeCache[k].dim != dim) found[tag].forEach(x => { try { x.discard() } catch (y) { } })
+      })
+      keys.forEach(k => {
+        var n = otNodeCache[k]
+        if (!entsLoaded(level, n)) return   // area not loaded: fixed once it is
+        var tag = tagOf(k), have = found[tag] || [], st = holoState[k], t = wantText(k)
+        if (!have.length) { summonHolo(s, n, tag, t); holoState[k] = { u: null, t: t }; return }
+        var keep = have[0]
+        if (st && st.u) have.forEach(x => { if (uidOf(x) == st.u) keep = x })
+        have.forEach(x => { if (x !== keep) { try { x.discard() } catch (y) { } } })
+        var ku = uidOf(keep)
+        if (!st || st.u != ku || st.t != t) { run(s, `data merge entity ${ku} {text:'${t}'}`); holoState[k] = { u: ku, t: t } }
+      })
+    })
   }
 
   // ---- gathered look and respawn
   const depletedState = (n) => /age=\d+/.test(n.state) ? n.state.replace(/age=\d+/, 'age=0') : 'minecraft:air'
-  const respawn = (s, key) => {
+  // FIX 2026-10-18: a node whose timer ran out while nobody was near it used to lose its timer without its block
+  // coming back (setblock does nothing in an unloaded area), so it stayed empty with a frozen text. Now it waits
+  // until its area is loaded and respawns then. force = staff commands (try anyway).
+  const respawn = (s, key, force) => {
     var n = otNodeCache[key]
+    if (!n) { delete down[key]; return true }
+    var level = levelOf(s, n.dim)
+    if (!force && (level == null || !blockLoaded(level, n))) return false
     delete down[key]
-    if (!n) return
     // crops sit on farmland: put it back if it got trampled to dirt
     if (/age=/.test(n.state)) run(s, `execute in ${n.dim} if block ${n.x} ${n.y - 1} ${n.z} minecraft:dirt run setblock ${n.x} ${n.y - 1} ${n.z} minecraft:farmland[moisture=7]`)
     run(s, `execute in ${n.dim} run setblock ${n.x} ${n.y} ${n.z} ${n.state}`)
     setHoloText(s, key, false)
+    return true
+  }
+  // a ready node (not counting down) that is empty (e.g. stuck by the old bug): put its block back once it's loaded
+  const heal = (s) => {
+    Object.keys(otNodeCache).forEach(k => {
+      if (down[k]) return
+      var n = otNodeCache[k], level = levelOf(s, n.dim)
+      if (level == null || !blockLoaded(level, n)) return
+      var dep = depletedState(n)
+      if (dep == 'minecraft:air') run(s, `execute in ${n.dim} if block ${n.x} ${n.y} ${n.z} minecraft:air run setblock ${n.x} ${n.y} ${n.z} ${n.state}`)
+      else run(s, `execute in ${n.dim} if block ${n.x} ${n.y} ${n.z} ${dep} run setblock ${n.x} ${n.y} ${n.z} ${n.state}`)
+    })
   }
 
   ServerEvents.loaded(event => {
     var s = event.server
     load(s)
-    Object.keys(down).forEach(k => respawn(s, k))   // anything gathered before a restart comes back now
+    // anything gathered before a restart comes back now (or as soon as its area loads: the tick below does that)
+    Object.keys(down).forEach(k => { down[k] = Math.min(down[k], Date.now()) })
     save(s)
   })
   ServerEvents.tick(event => {
     var s = event.server
-    if (s.tickCount % 20 != 0 || down == null) return
+    if (s.tickCount % 20 != 0) return
+    load(s)
     var now = Date.now(), changed = false
-    // respawn the ready ones, and count the others down on their floating text (once a second)
-    Object.keys(down).forEach(k => {
-      if (down[k] <= now) { respawn(s, k); changed = true }
-      else setHoloText(s, k, true, Math.ceil((down[k] - now) / 1000))
-    })
+    // respawn the ready ones (their area must be loaded; the floating text counts itself down in syncHolos)
+    Object.keys(down).forEach(k => { if (down[k] <= now && respawn(s, k)) changed = true })
     if (changed) save(s)
+    if (s.tickCount % 100 == 0) { try { heal(s) } catch (x) { console.warn('[professions] heal: ' + x) } }
+    try { syncHolos(s) } catch (x) { console.warn('[professions] floating text sync: ' + x) }
   })
 
   // ---- profession perks (re-applied on join, respawn and level up)
@@ -359,7 +452,7 @@ var otIsNodeBlock = (block) => {
         load(t.p.server)
         var n = otNodeCache[t.key]
         if (!n) { say(ctx.source, P + '§cThat block is not a node.'); return 0 }
-        if (down[t.key]) respawn(t.p.server, t.key)   // put the real block back first
+        if (down[t.key]) respawn(t.p.server, t.key, true)   // put the real block back first
         run(t.p.server, `execute in ${n.dim} run kill @e[type=minecraft:text_display,tag=${tagOf(t.key)}]`)
         delete otNodeCache[t.key]; delete down[t.key]
         save(t.p.server)
@@ -391,7 +484,7 @@ var otIsNodeBlock = (block) => {
         var s = ctx.source.server
         load(s)
         var ks = Object.keys(down)
-        ks.forEach(k => respawn(s, k))
+        ks.forEach(k => respawn(s, k, true))
         save(s)
         say(ctx.source, P + '§aRespawned ' + ks.length + ' node(s).')
         return 1

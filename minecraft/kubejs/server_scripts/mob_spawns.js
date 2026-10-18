@@ -23,7 +23,8 @@
 //   anywhere:
 //   /mobspawn list           every spawn in this world with its state
 //   /mobspawn respawnall     respawn every killed mob now
-//   /mobspawn cleanup        remove extra (untracked) mobs of your spawn types within 32 blocks of their spots
+//   /mobspawn cleanup        remove every extra (untracked) mob within 32 blocks of your spawn spots (pets/named kept)
+//   /mobspawn scan [radius]  every mob near you by type: tracked / loose / summoned by a mob / pets (default 32)
 //   /mobspawn holo           put back missing floating texts
 //   /mobspawn clearall       remove EVERY spawn (mobs stay alive)
 //   /mobspawn info           details of the nearest spawn (within 16 blocks) + puts its text back
@@ -445,6 +446,84 @@
     Object.keys(groups).forEach(gid => { var g = groups[gid]; delete g.holo; delete g.bar })
   })
 
+  // ---- crowd guard (FIX 2026-10-18)
+  // "Loose" mobs are living mobs near a spawn spot that this script doesn't track: wild spawns, a boss's summons,
+  // mobs that changed into another mob (e.g. an Orc becoming a High Orc is a NEW mob of another type), or leftovers
+  // still wearing an old spawn tag. Only monsters, and mobs from the same mod as a spawn in that world, count.
+  // Never counted: players, anything owned by a player (pets/summons, also of offline players), named mobs, NPCs.
+  // Every 5 seconds, around every loaded spot: more than CROWD_CAP loose mobs within CROWD_RADIUS = the youngest
+  // extras are removed quietly (discard: no death, no drops). A boss's own living summons are removed last.
+  // CROWD_CAP = 0 turns this off. /mobspawn scan shows what's around you, /mobspawn cleanup removes them all now.
+  const CROWD_CAP = 8
+  const CROWD_RADIUS = 24
+  var crowdRemoved = 0, crowdByType = {}
+  const nsOf = (t) => String(t).split(':')[0]
+  const isPlayerUuid = (s, u) => {
+    try { if (s.getPlayerList().getPlayer(u) != null) return true } catch (x) { }
+    try { var c = s.getProfileCache().get(u); if (c != null && c.isPresent()) return true } catch (x) { }
+    return false
+  }
+  // owner of a mob: 'none' | 'player' | 'mob' (a living mob owns it) | 'gone' (its owner isn't around)
+  const ownerKind = (s, level, x) => {
+    var u = null
+    try { if (typeof x.getOwnerUUID === 'function') u = x.getOwnerUUID() } catch (y) { }
+    if (u == null) { try { var o0 = x.getOwner(); if (o0 != null) return o0.isPlayer() ? 'player' : 'mob' } catch (y) { } return 'none' }
+    var o = null
+    try { o = level.getEntity(u) } catch (y) { }
+    if (o != null) { try { if (o.isPlayer()) return 'player' } catch (y) { } try { return o.isAlive() ? 'mob' : 'gone' } catch (y) { return 'mob' } }
+    return isPlayerUuid(s, u) ? 'player' : 'gone'
+  }
+  const isMonster = (x) => { try { return String(x.getType().getCategory()).toLowerCase().indexOf('monster') >= 0 } catch (y) { return false } }
+  const hasName = (x) => { try { return !!x.hasCustomName() } catch (y) { return false } }
+  // the tracked mob of an existing spawn (never loose)
+  const trackedIds = () => { var t = {}; Object.keys(spawns).forEach(k => { if (spawns[k].uuid) t[spawns[k].uuid] = k }); return t }
+  // classify one entity: null = not a mob we care about, else { kind: 'tracked'|'loose'|'pet'|'summon'|'named', ... }
+  const classify = (s, level, x, tracked, nss) => {
+    try {
+      if (!x.isLiving() || x.isPlayer() || !x.isAlive()) return null
+      var t = typeOf(x); if (!t || t == 'minecraft:armor_stand' || nsOf(t) == 'easy_npc') return null
+      var tg = x.getTags()
+      if (tg.contains('ot_spawn') && tracked[uidOf(x)]) return { kind: 'tracked', type: t, id: tracked[uidOf(x)] }
+      var ok = isMonster(x) || !!nss[nsOf(t)] || tg.contains('ot_spawn')
+      if (!ok) return null
+      var ow = ownerKind(s, level, x)
+      if (ow == 'player') return { kind: 'pet', type: t }
+      if (hasName(x)) return { kind: 'named', type: t }
+      return { kind: ow == 'mob' ? 'summon' : 'loose', type: t, orphan: tg.contains('ot_spawn') }
+    } catch (y) { return null }
+  }
+  const nsFor = (dim) => { var n = {}; Object.keys(spawns).forEach(k => { var sp = spawns[k]; if (sp.dim == dim && nsOf(sp.type) != 'minecraft') n[nsOf(sp.type)] = true }); return n }
+  const crowdGuard = (s) => {
+    if (!CROWD_CAP) return
+    var tracked = trackedIds()
+    s.getAllLevels().forEach(level => {
+      var dim = dimOf(level), spots = Object.keys(spawns).filter(k => spawns[k].dim == dim && !spawns[k].dormant)
+      if (!spots.length) return
+      var nss = nsFor(dim), mobs = []
+      try { level.getAllEntities().forEach(x => { var c = classify(s, level, x, tracked, nss); if (c && (c.kind == 'loose' || c.kind == 'summon')) mobs.push({ e: x, c: c }) }) } catch (x) { return }
+      if (mobs.length <= CROWD_CAP) return
+      var gone = {}
+      spots.forEach(k => {
+        var sp = spawns[k]
+        if (!loaded(level, sp.x, sp.z, sp.y)) return
+        var near = mobs.filter(m => {
+          if (gone[uidOf(m.e)]) return false
+          var dx = m.e.getX() - sp.x, dy = m.e.getY() - sp.y, dz = m.e.getZ() - sp.z
+          return dx * dx + dy * dy + dz * dz <= CROWD_RADIUS * CROWD_RADIUS
+        })
+        if (near.length <= CROWD_CAP) return
+        // keep: a boss's living summons first, then the oldest; remove the rest (old spawn-tag leftovers go first)
+        var rank = (m) => (m.c.orphan ? 2e9 : 0) + (m.c.kind == 'summon' ? -1e9 : 0) - (Number(m.e.tickCount) || 0)
+        near.sort((a, b) => rank(a) - rank(b))
+        near.slice(CROWD_CAP).forEach(m => {
+          try { m.e.discard(); gone[uidOf(m.e)] = true; crowdRemoved++; crowdByType[m.c.type] = (crowdByType[m.c.type] || 0) + 1 } catch (y) { }
+        })
+      })
+      var n = Object.keys(gone).length
+      if (n) logOnce('crowd ' + dim, 'crowd guard removed ' + n + ' extra mob(s) near spawn spots in ' + dim + ' (total since start: ' + crowdRemoved + ')')
+    })
+  }
+
   // countdowns every second; every 5 seconds: missing mobs (despawned / removed) and the leash
   ServerEvents.tick(event => {
     var s = event.server
@@ -497,6 +576,7 @@
         if (dx * dx + dy * dy + dz * dz > leash * leash) { try { e.teleportTo(sp.x, sp.y, sp.z) } catch (y) { run(s, `execute in ${sp.dim} run tp ${uidOf(e)} ${sp.x} ${sp.y} ${sp.z}`) } }
       } catch (x) { logOnce('tick ' + id, 'tick ' + sp.type + ': ' + x) }
     })
+    if (five) { try { crowdGuard(s) } catch (x) { logOnce('crowd', 'crowd guard: ' + x) } }
     try { syncHolos(s) } catch (x) { logOnce('sync', 'floating text sync: ' + x) }
   })
 
@@ -553,6 +633,28 @@
         })
       }
       return e
+    }
+    const scan = (ctx, r) => {
+      var p = ctx.source.playerOrException, s = p.server, level = p.level
+      load(s)
+      var tracked = trackedIds(), nss = nsFor(dimOf(level)), rows = {}, total = 0
+      level.getAllEntities().forEach(x => {
+        try {
+          if (x.distanceToSqr(p) > r * r) return
+          var c = classify(s, level, x, tracked, nss); if (!c) return
+          var row = rows[c.type] = rows[c.type] || { tracked: 0, loose: 0, summon: 0, pet: 0, named: 0, orphan: 0 }
+          row[c.kind]++; if (c.orphan) row.orphan++; total++
+        } catch (y) { }
+      })
+      say(ctx.source, P + '§eMobs within ' + r + ' blocks: §f' + total + ' §8(crowd guard: max ' + CROWD_CAP + ' loose per spot, removed ' + crowdRemoved + ' since start)')
+      Object.keys(rows).sort((a, b) => { var A = rows[a], B = rows[b]; return (B.loose + B.summon) - (A.loose + A.summon) }).slice(0, 15).forEach(t => {
+        var w = rows[t], spawnType = Object.keys(spawns).some(k => spawns[k].type == t)
+        say(ctx.source, '§7- §f' + t + (spawnType ? ' §6(a spawn type)' : '') + '§7: ' + [
+          w.tracked ? '§atracked ' + w.tracked : '', w.loose ? '§cloose ' + w.loose : '', w.summon ? '§dsummoned by a mob ' + w.summon : '',
+          w.orphan ? '§4old spawn tag ' + w.orphan : '', w.pet ? '§bplayer pets ' + w.pet : '', w.named ? '§3named ' + w.named : ''].filter(x => x).join('§7, '))
+      })
+      if (Object.keys(crowdByType).length) say(ctx.source, '§8Removed by the crowd guard: ' + Object.keys(crowdByType).map(k => k + ' x' + crowdByType[k]).join(', '))
+      return 1
     }
     // the spawn you're looking at (its mob), else the nearest spot (side to side only, height ignored: bosses can fly)
     const nearest = (p, max) => {
@@ -832,25 +934,32 @@
           say(ctx.source, P + '§aSet ' + ids.length + ' boss(es) to health ' + (hp >= 0 ? '+' : '') + hp + '%, damage ' + (dmg >= 0 ? '+' : '') + dmg + '%. §7Live bosses update within 5 seconds (keeping their health %).')
           return 1
         }))))
-      // removes the extra mobs a bug piled up: untagged mobs of a spawn's type within 32 blocks of that spawn's spot
+      // removes every loose mob (see the crowd guard) within 32 blocks of any spawn spot, right now
       .then(Commands.literal('cleanup').executes(ctx => {
         var s = ctx.source.server, n = 0, per = {}
         load(s)
-        Object.keys(spawns).forEach(id => {
-          var sp = spawns[id], level = levelOf(s, sp.dim); if (level == null) return
+        var tracked = trackedIds()
+        s.getAllLevels().forEach(level => {
+          var dim = dimOf(level), spots = Object.keys(spawns).filter(k => spawns[k].dim == dim)
+          if (!spots.length) return
+          var nss = nsFor(dim)
           level.getAllEntities().forEach(x => {
             try {
-              if (!isMobOf(x, sp) || !x.isAlive() || x.getTags().contains('ot_spawn') || x.isPlayer()) return
-              try { if (typeof x.getOwnerUUID === 'function' && x.getOwnerUUID() != null && x.getOwner() != null && x.getOwner().isPlayer()) return } catch (y) { }
-              var dx = x.getX() - sp.x, dy = x.getY() - sp.y, dz = x.getZ() - sp.z
-              if (dx * dx + dy * dy + dz * dz > 32 * 32) return
-              x.discard(); n++; per[sp.type] = (per[sp.type] || 0) + 1
+              var c = classify(s, level, x, tracked, nss)
+              if (!c || (c.kind != 'loose' && c.kind != 'summon')) return
+              var near = spots.some(k => { var sp = spawns[k], dx = x.getX() - sp.x, dy = x.getY() - sp.y, dz = x.getZ() - sp.z; return dx * dx + dy * dy + dz * dz <= 32 * 32 })
+              if (!near) return
+              x.discard(); n++; per[c.type] = (per[c.type] || 0) + 1
             } catch (y) { }
           })
         })
-        say(ctx.source, P + '§aRemoved §f' + n + '§a extra mob(s) near your spawn spots' + (n ? ': §7' + Object.keys(per).map(k => k + ' x' + per[k]).join(', ') : '.') + ' §7(tracked spawn mobs are kept)')
+        say(ctx.source, P + '§aRemoved §f' + n + '§a extra mob(s) near your spawn spots' + (n ? ': §7' + Object.keys(per).map(k => k + ' x' + per[k]).join(', ') : '.') +
+          ' §7(tracked spawn mobs, pets and named mobs are kept)')
         return 1
       }))
+      // what's around you: every mob within the radius by type, and whether this script tracks it
+      .then(Commands.literal('scan').executes(ctx => scan(ctx, 32))
+        .then(Commands.argument('radius', Arguments.INTEGER.create(event)).executes(ctx => scan(ctx, Math.max(4, Math.min(128, Arguments.INTEGER.getResult(ctx, 'radius')))))))
       .then(Commands.literal('respawnall').executes(ctx => {
         var s = ctx.source.server, n = 0
         Object.keys(load(s)).forEach(k => { if (spawns[k].down && !spawns[k].dormant) { spawns[k].down = Date.now(); n++ } })

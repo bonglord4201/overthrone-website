@@ -5,5 +5,6 @@
 # test2.js : a summoned mob pushed away is still found (no repeat summons), wild mobs aren't taken
 # test3.js : boss rotation shows exactly one "Random Boss" text, then the boss's own text
 # test4.js : a mob that unloads and comes back doesn't leave a duplicate
+# test5.js : 20 piled-up High Orcs near an orc spawn are cut to the crowd cap; pets, named and far mobs kept
 cd "$(dirname "$0")"
-for t in test.js test2.js test3.js test4.js; do echo "== $t"; node "$t" ../../kubejs/server_scripts/mob_spawns.js || exit 1; done
+for t in test.js test2.js test3.js test4.js test5.js; do echo "== $t"; node "$t" ../../kubejs/server_scripts/mob_spawns.js || exit 1; done

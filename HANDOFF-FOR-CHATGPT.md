@@ -174,6 +174,23 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   Every 5 s, extra living mobs carrying the same spawn tag are discarded (`dedupe`). `/mobspawn cleanup` discards untracked
   mobs of a spawn's type within 32 blocks of its spot (player-owned pets are kept).
 
+- **Orcs still piling up (2026-10-18, second fix):** `/mobspawn cleanup` removed 0 because the piled-up mobs were High Orcs,
+  NOT the spawn's exact type, and cleanup only matched the exact type. The cause of the extra High Orcs is NOT verified
+  (could be natural spawns, a boss's summons, or mobs that turned into another mob). Fix that works whatever the cause:
+  a **crowd guard** in mob_spawns.js (`CROWD_CAP = 8`, `CROWD_RADIUS = 24`; 0 = off). Every 5 s, around each loaded spawn
+  spot, "loose" mobs (monster category OR same mod namespace as a spawn in that world; untracked; not owned by a player incl.
+  offline players via the profile cache; no custom name; not easy_npc/armor stands) above the cap are discarded, youngest
+  first, a living mob's own summons last, old-spawn-tag leftovers first. `/mobspawn cleanup` now removes ALL loose mobs within
+  32 blocks of any spot (any type). New `/mobspawn scan [radius]` lists mobs near you by type: tracked / loose / summoned by a
+  mob / old spawn tag / pets / named. Ask the owner for its output if pile-ups continue. Test: `tests/mob_spawns/test5.js`.
+
+- **Stuck nodes (2026-10-18, professions.js):** when a node's timer ended while its area was unloaded, `respawn` deleted the
+  timer but `setblock` did nothing there, so the node stayed empty forever with a frozen "Respawns in 36s" text (the restart
+  respawn in `ServerEvents.loaded` had the same problem). Now: `respawn` waits until the block's chunk is loaded
+  (`level.isLoaded(BlockPos)`), staff commands force it; every 5 s ready nodes that are empty get their block back (`heal`);
+  floating texts are kept by `syncHolos` once a second (one per node, extras/orphans removed, text written by UUID, no more
+  `data merge ... limit=1`). Test: `node minecraft/tests/professions/test.js minecraft/kubejs/server_scripts/professions.js`.
+
 - **2026-10-18 07:09 crash:** the guard WAS loaded but threw `Cannot find function getEntity in object DamageSource
   (tensura.paralyzing)`: Tensura's own DamageSource subclasses don't expose getEntity() to KubeJS, so the guard stopped and
   the death went through. **Rule: never call `src.getEntity()` directly on damage sources here**; use the `attackerOf(src)`
