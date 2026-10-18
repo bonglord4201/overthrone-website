@@ -72,16 +72,21 @@ def build_wing(name, style, P):
         n_sec, n_pri = (7, 10) if style != 'leaf' else (9, 12)
         for i in range(n_sec):
             t = (i + 0.5) / n_sec; R = [A[k] + (B[k] - A[k]) * t for k in range(3)]
-            if style == 'shatter' and i % 3 == 1: continue
+            if (style == 'shatter' or P.get('tatter')) and i % 3 == 1: continue
             hang(m, wb, z(R, -0.1 - 0.05 * i), (12 + 5 * t) * P.get('len', 1.0), 3.0, 0.6, s * (2 + 12 * t), spr[1 if len(spr) > 1 else 0], side_uv)
         for i in range(n_pri):
             t = (i + 0.5) / n_pri; R = [B[k] + (C[k] - B[k]) * t for k in range(3)]
-            if style == 'shatter' and i % 3 == 2: continue
+            if (style == 'shatter' or P.get('tatter')) and i % 3 == 2: continue
             hang(m, fb, z(R, 0.15 + 0.05 * i), (16 + 11 * t) * P.get('len', 1.0), 2.8, 0.6, s * (14 + 50 * t), spr[0], side_uv)
         if style in ('feather', 'demon', 'phoenix', 'bone', 'galaxy', 'crystal', 'frost'):
             for i in range(13):
                 t = (i + 0.5) / 13; R = [A[k] + (C[k] - A[k]) * t for k in range(3)]
                 hang(m, wb if t < 0.42 else fb, z(R, -0.6), 6 + 4 * t, 3.0, 0.7, s * (6 + 34 * t), spr[-1], side_uv)
+        if P.get('plates'):   # armour plates over the arm: black with a gold rim (OVERTHRONE look)
+            pl = at.add(feather_sprite(P['plates'][0], shade(P['plates'][0], 0.8), P['plates'][1], None, 6, 12))
+            for i in range(9):
+                t = (i + 0.5) / 9; R = [A[k] + (C[k] - A[k]) * t for k in range(3)]
+                hang(m, wb if t < 0.42 else fb, z(R, -0.95), 4.5 + 2 * t, 3.4, 0.9, s * (4 + 30 * t), pl, at.solid(P['plates'][1]))
         if style == 'leaf':   # flowers on the vine
             for i in range(4):
                 t = 0.15 + 0.25 * i; R = [A[k] + (C[k] - A[k]) * t for k in range(3)]
@@ -95,8 +100,28 @@ def build_wing(name, style, P):
             sz = 0.6 + (i % 3) * 0.35
             m.box('shards', [x - sz / 2, y - sz, -3 - sz / 2], [x + sz / 2, y + sz, -3 + sz / 2], spr[0], side_uv, rotation=[0, 45, 20 * i])
         extra = {'shards': {'position': [(0, 0, 'math.sin(query.anim_time*75)*1.2', 0)]}}
+    if P.get('halo'):   # a halo floating above the head (placed by place_back_halo once the wing's size is known)
+        hu = at.solid(P['halo']); hs = at.solid(shade(P['halo'], 0.7))
+        m.bone('halo', [0, 0, 2])
+        ring(m, 'halo', 0, 5.0, 24, hu); ring(m, 'halo', 0, 5.0, 12, hs, size=(0.6, 0.9, 0.9))
+        extra = dict(extra or {}); extra['halo'] = {'rotation': [(0, 0, 'query.anim_time*45', 0)], 'position': [(0, 0, 'math.sin(query.anim_time*90)*0.5', 0)]}
     wing_anim(m, amp=12 if style in ('mech', 'goldmech') else 16, extra=extra)
+    if P.get('halo'): place_back_halo(m)
     return m
+
+def place_back_halo(m):
+    """Moves the 'halo' bone so it floats ~3 px above the head. The mod centres back models on their height
+    (lift = -4 - centre y, see sim.slot_matrix), so the halo's spot depends on the whole model: iterate."""
+    import sim
+    hal = [e for e in m.elements if e['uuid'] in m.bones['halo']['children']]
+    for _ in range(6):
+        mod = sim.Model(m.to_dict()); a = mod.rest_aabb(); lift = -4 - (a[1] + a[4]) / 2
+        want_y = 11 - lift                      # model y = -(y + lift) -> 11 px above the neck (3 above the head)
+        cy = sum((e['from'][1] + e['to'][1]) / 2 for e in hal) / len(hal); dy = want_y - cy
+        if abs(dy) < 0.05: break
+        for e in hal:
+            for k in ('from', 'to', 'origin'): e[k][1] = round(e[k][1] + dy, 4)
+        m.bones['halo']['origin'][1] = round(m.bones['halo']['origin'][1] + dy, 4)
 
 WINGS = {
     'demon_lord_wings': ('Demon Lord Wings', 'demon', dict(root=(120, 10, 20), tip=(25, 0, 5), edge=(255, 200, 70), shaft=(70, 0, 10), arm=(30, 10, 10), accent=(255, 190, 60))),
@@ -115,10 +140,11 @@ WINGS = {
 }
 
 # =========================================================================================== KITSUNE TAILS (back)
-def kitsune_tails(name, base=(120, 190, 255), tip=(240, 250, 255)):
+def kitsune_tails(name, base=(120, 190, 255), tip=(240, 250, 255), flame=None):
     at = Atlas(64, 64); m = BB(name, at)
     Y0 = -10
     segs = [at.solid(lerp(base, tip, k / 4)) for k in range(5)]
+    if flame: segs[-1] = at.solid(flame); segs[-2] = at.solid(lerp(tip, flame, 0.5))
     m.bone('tails', [0, Y0, -1])
     for i in range(9):
         a = -72 + i * 18   # fan from -72 to +72 degrees
@@ -245,6 +271,48 @@ def horns(name, base, tip, glow=None, path='demon', scale=1.0):
             ang = math.degrees(math.atan2((nx[0] - pv[0]), (nx[1] - pv[1])))
             uv = gl if (gl and i >= n - 2) else (ridge[i] if i % 2 else cols[i])
             m.box(bn, [x - sz / 2, y - sz * 0.65, z - sz / 2], [x + sz / 2, y + sz * 0.65, z + sz / 2], uv, origin=[x, y, z], rotation=[0, 0, -ang])
+    return m
+
+def circlet(name, metal=(220, 170, 50), dark=(25, 15, 20), gem=(220, 20, 40)):
+    """A thin gold-and-black band across the forehead with crimson rune stones and a teardrop crystal on the front."""
+    at = Atlas(64, 16); m = BB(name, at)
+    M, Dk, G, Gl = at.solid(metal), at.solid(dark), at.solid(gem), at.solid(lerp(gem, (255, 255, 255), 0.4))
+    m.bone('circlet', [0, 5.5, 0])
+    s, y0, y1 = 4.25, 5.0, 6.2
+    for (f, t) in [([-s, y0, -s - 0.35], [s, y1, -s]), ([-s, y0, s], [s, y1, s + 0.35]), ([-s - 0.35, y0, -s - 0.35], [-s, y1, s + 0.35]), ([s, y0, -s - 0.35], [s + 0.35, y1, s + 0.35])]:
+        m.box('circlet', f, t, M, Dk)
+    for (f, t) in [([-s, y0 + 0.4, -s - 0.45], [s, y0 + 0.8, -s - 0.35]), ([-s, y0 + 0.4, s + 0.35], [s, y0 + 0.8, s + 0.45])]:
+        m.box('circlet', f, t, Dk)
+    for x in (-3, -1.5, 1.5, 3):   # rune stones on the front band
+        m.box('circlet', [x - 0.35, y0 + 0.25, -s - 0.6], [x + 0.35, y1 - 0.25, -s - 0.35], G)
+    crystal_at(m, 'circlet', 0, y1 + 0.4, -s - 0.75, 2.6, 1.1, Gl, G)   # centre crystal over the brow
+    m.anim('idle', 4.0, {'circlet': {'position': [(0, 0, 'math.sin(query.anim_time*90)*0.05', 0)]}})
+    return m
+
+def throne_halo(name, gold=(255, 205, 70), light=(255, 245, 190), gem=(220, 20, 40)):
+    """A gold halo crowned with small spikes and crimson gems, turning slowly above the head."""
+    at = Atlas(64, 32); m = BB(name, at)
+    G, L, R, Dk = at.solid(gold), at.solid(light), at.solid(gem), at.solid(shade(gold, 0.65))
+    glow = at.add(ring_sprite(light, gold, 32))
+    m.bone('halo', [0, 12, 0])
+    m.flat('halo', [-7.5, 12, -7.5], [7.5, 12, 7.5], glow)
+    ring(m, 'halo', 12, 6.0, 28, G); ring(m, 'halo', 12, 6.0, 14, L, size=(0.6, 0.95, 0.95))
+    for i in range(8):
+        a = math.radians(i * 45); x, z = math.cos(a) * 6.0, math.sin(a) * 6.0
+        h = 2.6 if i % 2 == 0 else 1.6
+        m.box('halo', [x - 0.35, 12.3, z - 0.35], [x + 0.35, 12.3 + h, z + 0.35], L, Dk, origin=[x, 12.3, z], rotation=[0, 45, 0])
+        if i % 2 == 0: m.box('halo', [x - 0.45, 12.4, z - 0.45], [x + 0.45, 13.3, z + 0.45], R, origin=[x, 12.4, z], rotation=[0, 45, 0])
+    m.anim('idle', 8.0, {'halo': {'rotation': [(0, 0, 'query.anim_time*45', 0)], 'position': [(0, 0, 'math.sin(query.anim_time*90)*0.5', 0)]}})
+    return m
+
+def crystal_orbit(name, col=(235, 30, 55)):
+    """Five large crimson crystals circling the head on a tilted path."""
+    at = Atlas(32, 16); m = BB(name, at); cu = at.solid(col); cs = at.solid(shade(col, 0.6)); hi = at.solid(lerp(col, (255, 255, 255), 0.5))
+    m.bone('tilt', [0, 11, 0], rotation=(14, 0, 8))
+    m.bone('orbit', [0, 11, 0], 'tilt')
+    for i in range(5):
+        a = math.radians(i * 72); crystal_at(m, 'orbit', math.cos(a) * 9.5, 11, math.sin(a) * 9.5, 4.2, 1.7, cu if i % 2 else hi, cs)
+    m.anim('idle', 8.0, {'orbit': {'rotation': [(0, 0, 'query.anim_time*45', 0)], 'position': [(0, 0, 'math.sin(query.anim_time*90)*0.6', 0)]}})
     return m
 
 # =========================================================================================== ORBIT (Y down!)

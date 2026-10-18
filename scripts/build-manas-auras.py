@@ -42,6 +42,10 @@ AURAS = [
   ('eightfold_path', 'Eightfold Seal', 'octagram_array', 'glow', [[220, 255, 220], [90, 220, 140], [20, 110, 80]], 1.0, 0.8, 1.2, 1.0, 0.6, 0),
   ('dimension_rift', 'Dimension Rift', 'nested_polygons', 'pixel', [[255, 120, 255], [90, 220, 255], [20, 0, 60]], 1.0, 1.0, 1.15, 1.0, 1.0, 0),
   ('ember_monarch', 'Ember Monarch', 'ember_crown', 'glow', [[255, 220, 120], [255, 90, 30], [120, 10, 10]], 1.1, 1.0, 1.0, 1.0, 1.0, 0),
+  # the "OVERTHRONE 20" auras (ids/names from ChatGPT's pack; its versions used a style/particles/colour format the mod rejects)
+  ('shadow_smoke_aura', 'Shadow Smoke Aura', 'vortex_shroud', 'smoke', [[120, 0, 25], [30, 10, 35], [5, 0, 8]], 1.4, 0.8, 1.05, 1.15, 0.9, 0),
+  ('arcane_rune_aura', 'Arcane Rune Aura', 'rune_circle', 'glow', [[210, 255, 255], [40, 210, 245], [60, 90, 255]], 1.1, 0.8, 1.2, 1.0, 0.7, 0),
+  ('golden_inferno_aura', 'Golden Inferno Aura', 'flame', 'glow', [[255, 245, 150], [255, 175, 20], [200, 80, 0]], 1.25, 1.1, 1.05, 1.15, 1.0, 0),
 ]
 # weapon auras: drawn along the weapon you hold (any weapon)
 WEAPON = [

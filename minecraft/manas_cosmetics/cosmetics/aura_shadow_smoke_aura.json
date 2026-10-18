@@ -1,0 +1,35 @@
+{
+  "id": "overthrone:shadow_smoke_aura",
+  "display_name": "Shadow Smoke Aura",
+  "slot": "aura",
+  "aura": {
+    "style": "vortex_shroud",
+    "particle": "smoke",
+    "colors": [
+      [
+        120,
+        0,
+        25
+      ],
+      [
+        30,
+        10,
+        35
+      ],
+      [
+        5,
+        0,
+        8
+      ]
+    ],
+    "particle_count": 0,
+    "size": 1.4,
+    "speed": 0.8,
+    "radius": 1.05,
+    "height": 1.15,
+    "alpha": 1.0,
+    "rotation_speed": 0.9,
+    "emissive": true,
+    "motion_response": 1.0
+  }
+}

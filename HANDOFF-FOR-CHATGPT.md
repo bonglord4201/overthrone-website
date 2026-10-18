@@ -260,6 +260,19 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   Generator: scripts/manas/{bb.py,designs.py,sim.py} + scripts/build-manas-models.py -> 37 models (13 wings + kitsune
   tails, 6 halos/rings/sigil, 4 crowns, 3 horns, orbit crystals, 8 pets) + 34 auras/weapon auras = 71, all in OT_MANAS
   (new `pets` list; shop has a PETS section). `dragon_wings` id kept (now "Aqua Spirit Wings").
+  **2026-10-18 "OVERTHRONE 20" set:** a ChatGPT pack (OVERTHRONE_20_Manas_Cosmetics.zip) loaded nothing.
+  Every sidecar had `"scale": 1.0`, but scale/offset/rotation MUST be 3-number arrays, otherwise the mod skips the file.
+  It also used slot "head" (invalid; use helmet or above_head), aura style "orbit" and minecraft particle ids (invalid),
+  hex colours (must be [[r,g,b]]), Y-up wings above the neck (render upside down), no animations, every face uv 0..16,
+  and a `demon_horns` file that overwrote the existing one. All 20 were rebuilt with the same ids, using our generator
+  (the G20 dict in scripts/build-manas-models.py, plus 3 auras in build-manas-auras.py). overthrone:demon_horns stays the
+  original. OT_MANAS now has 90 entries (19 new; crate-only: overlord_wings, void_star_wings, throne_guard_wings,
+  throne_halo, golden_inferno_aura). New staff command: `/crate reward sync <crate>` (crates.js) adds default rewards
+  missing from an edited crate and never removes any. Use it instead of `reset`, which wipes in-game edits.
+  Offline check: `python3 minecraft/tests/validate_manas_cosmetics.py`. Install guide:
+  minecraft/manas_cosmetics/INSTALL-OVERTHRONE-20.md; zip: marketing/overthrone-20-cosmetics.zip.
+  NOT yet tested in game: whether the 20 show in /manas_cosmetics list and the wardrobe, render in the right place, and animate.
+  Note: re-running build-manas-models.py gives every model new random uuids; restore unchanged models with git checkout.
  for top quality the owner should buy/commission .bbmodel files (BuiltByBit, MCModels,
   ManasMods' Discord) and send them; setup steps in minecraft/manas_cosmetics/README.md.
   Waiting on the Manas Cosmetics jar (this session can't reach CurseForge/Modrinth). The particle file can be switched off
@@ -410,6 +423,10 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
 4. "Display entity Not a string" log error and names shown twice: needs `logs/latest.log` from when it happens.
    It isn't from any of Claude's scripts as far as checked.
 5. The "Supermassive Slime" boss may still be unkillable (unconfirmed).
+
+6. **OVERTHRONE 20 cosmetics** (2026-10-18): the owner must install them (marketing/overthrone-20-cosmetics.zip, guide inside)
+   and test them in game. Don't call them fixed until they've been equipped and seen rendering. Never tell the owner to run
+   `/crate reward reset cosmetic`; use `/crate reward sync cosmetic`.
 
 ## 10. Already decided (don't undo)
 

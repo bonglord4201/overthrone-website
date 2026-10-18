@@ -17,6 +17,7 @@
 //              /crate reward cmd <crate> <weight> <command>   adds a command reward (money, level XP, shards...);
 //                                      hold the item you want as its icon (rename it in an anvil to set the name). {p} = player.
 //              /crate reward list <crate>     /crate reward reset <crate>   (back to the defaults in this file)
+//              /crate reward sync <crate>     adds rewards from the defaults below that the crate is missing (keeps the rest)
 // The chance of a reward = its weight / total weight. The defaults below are used until you edit a crate in game.
 // particles: false turns off the built-in crate particles.
 
@@ -144,7 +145,7 @@
       name: 'COSMETIC CRATE', keyName: 'Cosmetic Key', color: 'white', dust: [0.9, 0.9, 1.0],
       keyHint: 'Earn keys in game', particles: true,
       // 3D cosmetics (Manas Cosmetics, list in manas_cosmetics.js): crate-only ones are rare. An already-unlocked one gives
-      // nothing new, so the pool is kept big. After changing this list, load it in game: /crate reward reset cosmetic
+      // nothing new, so the pool is kept big. After adding cosmetics, load the new ones in game: /crate reward sync cosmetic
       rewards: (typeof OT_MANAS === 'undefined' ? [] : [].concat(OT_MANAS.wings, OT_MANAS.halos, OT_MANAS.heads, OT_MANAS.auras, OT_MANAS.weapons || [], OT_MANAS.pets || []).map(c => ({
         cmd: 'manas_cosmetics unlock {p} ' + c.id, icon: c.icon, name: c.name.replace(/&[0-9a-fklmnor]/g, ''),
         weight: c.crate ? 2 : 10, rare: !!c.crate }))),
@@ -772,6 +773,21 @@
           if (!known(ctx, id)) return 0
           loadEdited(ctx.source.server)[id] = defaults(id); saveEdited(ctx.source.server)
           reply(ctx, `§eRewards for ${id} reset to the defaults.`); return 1
+        })))
+        // adds the command rewards from this file's defaults that the crate doesn't have yet (e.g. new 3D cosmetics).
+        // Never removes or changes a reward that is already in the crate.
+        .then(Commands.literal('sync').then(crateArg().executes(ctx => {
+          var id = crateOf(ctx)
+          if (!known(ctx, id)) return 0
+          var list = rewardsOf(ctx.source.server, id)
+          var have = {}
+          list.forEach(r => { if (r.cmd) have[String(r.cmd)] = true })
+          var added = defaults(id).filter(r => r.cmd && !have[String(r.cmd)])
+          added.forEach(r => list.push(r))
+          saveEdited(ctx.source.server)
+          reply(ctx, `§aAdded ${added.length} new reward(s) to ${id}; kept all ${list.length - added.length} existing ones.`)
+          added.forEach(r => reply(ctx, `§8+ §f${r.name}`))
+          return 1
         })))
         .then(Commands.literal('claimblocks').then(crateArg().then(Commands.argument('weight', Arguments.INTEGER.create(event))
           .then(Commands.argument('amount', Arguments.INTEGER.create(event)).executes(ctx => {

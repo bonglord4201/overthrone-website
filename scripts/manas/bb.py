@@ -142,6 +142,10 @@ class BB:
         self.anims.append({'uuid': uid(), 'name': name, 'loop': 'loop' if loop else 'once', 'override': False, 'length': length, 'snapping': 20,
                            'selected': False, 'anim_time_update': '', 'blend_weight': '', 'start_delay': '', 'loop_delay': '', 'animators': animators})
     def write(self, path):
+        data = self.to_dict()
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, 'w') as f: json.dump(data, f)
+    def to_dict(self):
         tex = self.atlas.img; w, h = tex.size
         b = io.BytesIO(); tex.save(b, 'PNG')
         data = {'meta': {'format_version': '4.10', 'model_format': self.fmt, 'box_uv': False}, 'name': self.name, 'model_identifier': '',
@@ -153,5 +157,4 @@ class BB:
                               'frame_interpolate': False, 'visible': True, 'internal': True, 'saved': False, 'uuid': uid(), 'relative_path': '',
                               'source': 'data:image/png;base64,' + base64.b64encode(b.getvalue()).decode()}],
                 'animations': self.anims}
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path, 'w') as f: json.dump(data, f)
+        return data

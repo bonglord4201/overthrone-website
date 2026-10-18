@@ -25,6 +25,19 @@ var OT_MANAS = {
     { id: 'overthrone:golden_demon_wings', name: '&6&lGolden Demon Wings', icon: 'minecraft:gold_block', crate: true },
     { id: 'overthrone:void_wings', name: '&5&lVoid Wings', icon: 'minecraft:ender_eye', crate: true },
     { id: 'overthrone:shadow_monarch_wings', name: '&4&lShattered Monarch Wings', icon: 'minecraft:phantom_membrane', crate: true },
+    // OVERTHRONE 20 set (overthrone:demon_horns was already here, so it is not added twice)
+    { id: 'overthrone:celestial_wings', name: '&f&lCelestial Wings', icon: 'minecraft:quartz', price: 11000 },
+    { id: 'overthrone:storm_crystal_wings', name: '&b&lStorm Crystal Wings', icon: 'minecraft:light_blue_stained_glass', price: 11000 },
+    { id: 'overthrone:blood_demon_wings', name: '&4&lBlood Demon Wings', icon: 'minecraft:nether_wart', price: 11000 },
+    { id: 'overthrone:seraph_halo_wings', name: '&e&lSeraph Halo Wings', icon: 'minecraft:golden_apple', price: 12000 },
+    { id: 'overthrone:frost_shard_wings', name: '&b&lFrost Shard Wings', icon: 'minecraft:packed_ice', price: 11000 },
+    { id: 'overthrone:verdant_spirit_wings', name: '&a&lVerdant Spirit Wings', icon: 'minecraft:azalea_leaves', price: 9000 },
+    { id: 'overthrone:infernal_mech_wings', name: '&6&lInfernal Mech Wings', icon: 'minecraft:magma_block', price: 12000 },
+    { id: 'overthrone:bone_reaper_wings', name: '&7&lBone Reaper Wings', icon: 'minecraft:bone_block', price: 11000 },
+    { id: 'overthrone:spirit_fox_tails', name: '&b&lSpirit Fox Tails', icon: 'minecraft:soul_lantern', price: 12000 },
+    { id: 'overthrone:overlord_wings', name: '&4&lOverlord Wings', icon: 'minecraft:netherite_ingot', crate: true },
+    { id: 'overthrone:void_star_wings', name: '&5&lVoid Star Wings', icon: 'minecraft:end_crystal', crate: true },
+    { id: 'overthrone:throne_guard_wings', name: '&6&lThrone Guard Wings', icon: 'minecraft:golden_chestplate', crate: true },
   ],
   halos: [
     { id: 'overthrone:hero_halo', name: '&e&lHero Halo', icon: 'minecraft:gold_nugget', price: 5000 },
@@ -35,6 +48,8 @@ var OT_MANAS = {
     { id: 'overthrone:blood_crystal_ring', name: '&c&lBlood Crystal Ring', icon: 'minecraft:red_dye', price: 8000 },
     { id: 'overthrone:crimson_crystal_halo', name: '&4&lCrimson Crystal Halo', icon: 'minecraft:redstone_block', crate: true },
     { id: 'overthrone:soul_crystals', name: '&5&lSoul Crystals &7(orbit)', icon: 'minecraft:amethyst_cluster', crate: true },
+    { id: 'overthrone:crystal_orbit', name: '&c&lCrimson Crystal Orbit', icon: 'minecraft:redstone_ore', price: 9000 },
+    { id: 'overthrone:throne_halo', name: '&6&lThrone Halo', icon: 'minecraft:gold_block', crate: true },
   ],
   heads: [
     { id: 'overthrone:royal_crown', name: '&6&lRoyal Crown', icon: 'minecraft:golden_helmet', price: 6000 },
@@ -44,6 +59,8 @@ var OT_MANAS = {
     { id: 'overthrone:ram_horns', name: '&6&lRam Horns', icon: 'minecraft:brown_dye', price: 5000 },
     { id: 'overthrone:demon_king_crown', name: '&8&lDemon King Crown', icon: 'minecraft:netherite_helmet', crate: true },
     { id: 'overthrone:shard_crown', name: '&4&lShattered Crown', icon: 'minecraft:crying_obsidian', crate: true },
+    { id: 'overthrone:blood_rune_circlet', name: '&c&lBlood Rune Circlet', icon: 'minecraft:redstone', price: 6000 },
+    { id: 'overthrone:void_crown', name: '&5&lVoid Crown', icon: 'minecraft:obsidian', price: 8000 },
   ],
   pets: [
     { id: 'overthrone:pet_rimuru', name: '&b&lRimuru Slime &7(pet)', icon: 'minecraft:slime_ball', price: 8000 },
@@ -80,6 +97,9 @@ var OT_MANAS = {
     { id: 'overthrone:dimension_rift', name: '&d&lDimension Rift Aura', icon: 'minecraft:crying_obsidian', crate: true },
     { id: 'overthrone:demon_lord_awakening', name: '&4&lDemon Lord Awakening', icon: 'minecraft:wither_skeleton_skull', crate: true },
     { id: 'overthrone:shadow_monarch', name: '&5&lShadow Monarch Aura', icon: 'minecraft:black_dye', crate: true },
+    { id: 'overthrone:shadow_smoke_aura', name: '&4&lShadow Smoke Aura', icon: 'minecraft:gray_dye', price: 6000 },
+    { id: 'overthrone:arcane_rune_aura', name: '&3&lArcane Rune Aura', icon: 'minecraft:lapis_lazuli', price: 6000 },
+    { id: 'overthrone:golden_inferno_aura', name: '&6&lGolden Inferno Aura', icon: 'minecraft:blaze_rod', crate: true },
   ],
   weapons: [
     { id: 'overthrone:black_flame_blade', name: '&5&lBlack Flame Blade', icon: 'minecraft:netherite_sword', price: 6000 },

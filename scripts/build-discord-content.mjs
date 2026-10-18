@@ -292,7 +292,8 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/crate reward cmd <crate> <weight> <command>` Command reward (hold the icon item). `{p}` = player",
     "  e.g. `/crate reward cmd vote 20 eco give {p} 1000`",
     "`/crate reward list <crate>` Every reward with its chance or cost",
-    "`/crate reward reset <crate>` Back to the default rewards"
+    "`/crate reward sync <crate>` Adds new default rewards it is missing (keeps every existing one)",
+    "`/crate reward reset <crate>` Back to the default rewards (wipes in-game edits)"
   ].join("\n") },
   { title: "🔑 Keys", description: [
     "`/crate key give <player> <crate> <amount>` Gives key items",
@@ -488,7 +489,7 @@ channels.push({ key: "staffcommands", messages: pack([
     "`/whyhurt` Toggle: chat tells you exactly what hurts you (damage type, mob, amount) — for finding mystery damage",
     "`/keepinv` Players keep their items on death everywhere except the SMP world (/smp). Shows your world and whether items drop there",
     "`/griefguard` Hub + RPG World (Caverns too): moved blocks put back, mob griefing denied, skill block breaks blocked (also for OPs), floor fire (Black Fire) removed. Shows what it caught",
-    "**3D cosmetics (Manas Cosmetics):** `/manas_cosmetics list` · `/manas_cosmetics reload` (after uploading files) · `/manas_cosmetics edit <id>` move/scale a model or design an aura live · `/manas_cosmetics unlock <player> <id>` give one (ids like `overthrone:hero_halo`) · `/crate reward reset cosmetic` loads the cosmetics into the Cosmetic Crate · Wardrobe NPC: look at an NPC, `/npcmenu attach wardrobe` (or `/npcmenu spawn wardrobe`)",
+    "**3D cosmetics (Manas Cosmetics):** `/manas_cosmetics list` · `/manas_cosmetics reload` (after uploading files) · `/manas_cosmetics edit <id>` move/scale a model or design an aura live · `/manas_cosmetics unlock <player> <id>` give one (ids like `overthrone:hero_halo`) · `/crate reward sync cosmetic` adds new cosmetics to the Cosmetic Crate (keeps the existing rewards) · Wardrobe NPC: look at an NPC, `/npcmenu attach wardrobe` (or `/npcmenu spawn wardrobe`)",
     "`/griefguard watch` Live chat report of every hub/RPG block that skills turn into air/fire · `/griefguard fires` fire ids it removes · `/griefguard rules` griefing/skill game rules",
     "**Particle cosmetics** (no download for players): auras, trails, kill effects. Give one: `/otcosmetic give <player> aura|trail|killeffect <id>` (ids: `/otcosmetic list aura`). Crate reward command: `otcosmetic give {p} aura frost_spiral`. Try any on yourself: `/cosfx preview <aura|trail|killeffect> <id>`. Not showing? `/cosfx debug` (what you own/equip, errors, and a test burst). Crate-only: auras `demon_lord` `shadow_monarch`, trail `shadow`, kill effect `arise`",
     "`/slrguard` Crash guard for the Solo Leveling bug: boss clones/summons whose boss is gone are removed instead of dying, and kills BY them become a plain death. Shows what it did",

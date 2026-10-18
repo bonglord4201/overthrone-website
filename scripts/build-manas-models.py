@@ -42,6 +42,28 @@ save('ram_horns', 'Ram Horns', 'helmet', D.horns('ram_horns', (160, 130, 100), (
 save('soul_crystals', 'Soul Crystals', 'orbit', D.soul_crystals('soul_crystals'))
 for cid, (name, fn, floats) in D.PETS.items(): save(cid, name, 'pet', fn(cid), {'floats': True} if floats else None)
 
+# ------------------------------------------------------------------ the "OVERTHRONE 20" set (ids/names from ChatGPT's pack, rebuilt
+# from scratch: its files couldn't load). overthrone:demon_horns already existed, so it stays the one above (no duplicate).
+G20 = {
+    'overlord_wings': ('Overlord Wings', 'demon', dict(root=(150, 10, 25), tip=(20, 0, 5), edge=(255, 200, 70), shaft=(60, 0, 10), arm=(20, 10, 10), accent=(255, 200, 70), plates=((25, 20, 25), (255, 200, 70)))),
+    'celestial_wings': ('Celestial Wings', 'feather', dict(root=(255, 255, 255), tip=(150, 190, 255), edge=(255, 230, 150), arm=(255, 220, 120))),
+    'storm_crystal_wings': ('Storm Crystal Wings', 'crystal', dict(core=(210, 250, 255), edge=(40, 160, 230), arm=(120, 200, 240))),
+    'blood_demon_wings': ('Blood Demon Wings', 'demon', dict(root=(170, 0, 15), tip=(60, 0, 5), edge=(40, 0, 5), shaft=(20, 0, 0), arm=(15, 5, 5), accent=(255, 40, 40))),
+    'seraph_halo_wings': ('Seraph Halo Wings', 'feather', dict(root=(255, 252, 240), tip=(245, 225, 170), edge=(255, 215, 90), arm=(255, 210, 80), halo=(255, 215, 90))),
+    'void_star_wings': ('Void Star Wings', 'galaxy', dict(core=(60, 20, 110), edge=(10, 0, 30), arm=(40, 10, 70))),
+    'frost_shard_wings': ('Frost Shard Wings', 'frost', dict(core=(235, 250, 255), edge=(60, 110, 200), arm=(150, 200, 240), tatter=True)),
+    'verdant_spirit_wings': ('Verdant Spirit Wings', 'leaf', dict(leaf=(120, 220, 120), vein=(60, 150, 80), arm=(80, 60, 30), accent=(255, 180, 220))),
+    'infernal_mech_wings': ('Infernal Mech Wings', 'mech', dict(dark=(30, 15, 10), glow=(255, 110, 20), arm=(50, 30, 20), accent=(255, 60, 0), edge=(255, 140, 40))),
+    'bone_reaper_wings': ('Bone Reaper Wings', 'bone', dict(root=(40, 30, 45), tip=(10, 5, 15), edge=(230, 220, 200), shaft=(230, 220, 200), arm=(230, 220, 200), accent=(230, 220, 200), tatter=True)),
+    'throne_guard_wings': ('Throne Guard Wings', 'goldmech', dict(dark=(20, 15, 15), glow=(255, 205, 80), arm=(210, 160, 50), accent=(220, 20, 40), edge=(255, 215, 100))),
+}
+for cid, (name, style, pal) in G20.items(): save(cid, name, 'back', D.build_wing(cid, style, pal))
+save('spirit_fox_tails', 'Spirit Fox Tails', 'back', D.kitsune_tails('spirit_fox_tails', (240, 245, 255), (180, 220, 255), flame=(90, 180, 255)))
+save('blood_rune_circlet', 'Blood Rune Circlet', 'helmet', D.circlet('blood_rune_circlet'))
+save('throne_halo', 'Throne Halo', 'above_head', D.throne_halo('throne_halo'))
+save('void_crown', 'Void Crown', 'helmet', D.crown('void_crown', (20, 10, 30), (90, 50, 140), [(170, 60, 255), (90, 20, 200)], tall=1.6, shard=True, float_shards=True))
+save('crystal_orbit', 'Crimson Crystal Orbit', 'above_head', D.crystal_orbit('crystal_orbit'))
+
 # ------------------------------------------------------------------ previews (mod-exact placement)
 os.makedirs(PREV, exist_ok=True)
 for f in os.listdir(PREV): os.remove(os.path.join(PREV, f))

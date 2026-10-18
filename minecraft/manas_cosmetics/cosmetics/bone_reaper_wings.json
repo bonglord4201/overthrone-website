@@ -1,0 +1,23 @@
+{
+  "id": "overthrone:bone_reaper_wings",
+  "display_name": "Bone Reaper Wings",
+  "slot": "back",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "model": "models/back/bone_reaper_wings.bbmodel",
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "offset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rotation": [
+    0.0,
+    0.0,
+    0.0
+  ]
+}
