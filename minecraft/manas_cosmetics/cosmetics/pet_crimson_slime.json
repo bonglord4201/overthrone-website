@@ -1,0 +1,23 @@
+{
+  "id": "overthrone:pet_crimson_slime",
+  "display_name": "Crimson Slime",
+  "slot": "pet",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "model": "models/pet/pet_crimson_slime.bbmodel",
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "offset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rotation": [
+    0.0,
+    0.0,
+    0.0
+  ]
+}

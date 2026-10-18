@@ -581,7 +581,7 @@
   try {
     if (typeof OT_MANAS !== 'undefined') SHOP.children.push({
       slot: [7, 3], icon: 'minecraft:elytra', name: '&d&l3D COSMETICS', kind: 'COSMETIC',
-      desc: ['Real 3D wings, halos, crowns,', 'horns, auras and weapon auras.', 'Everyone with the modpack sees them.', '', '&fEquip them: &e/wardrobe', '', '&8Some rare ones only come', '&8from the Cosmetic Crate.'],
+      desc: ['Real 3D wings, tails, halos, crowns,', 'horns, auras, weapon auras and pets.', 'Everyone with the modpack sees them.', '', '&fEquip them: &e/wardrobe', '', '&8Some rare ones only come', '&8from the Cosmetic Crate.'],
       layout: 'spaced',
       children: [
         manasCat('wings', '&5&lWINGS', 'minecraft:elytra', ['Wings on your back.']),
@@ -589,6 +589,7 @@
         manasCat('heads', '&6&lCROWNS & HORNS', 'minecraft:golden_helmet', ['Crowns and horns on your head.']),
         manasCat('auras', '&b&lAURAS', 'minecraft:blaze_powder', ['Animated magic all around you.']),
         manasCat('weapons', '&c&lWEAPON AURAS', 'minecraft:netherite_sword', ['Fire, frost, lightning and', 'shadow flowing along the', 'weapon you hold.']),
+        manasCat('pets', '&a&lPETS', 'minecraft:lead', ['A little companion that follows', 'you around (some fly).']),
       ],
     })
   } catch (e) { console.warn('[npc_menus] 3D cosmetics shop: ' + e) }
@@ -1540,7 +1541,7 @@
       title: 'Wardrobe', border: 'purple', slots: [
         [4, 0, 'minecraft:armor_stand', '&d&l✦ THE WARDROBE ✦', ['Real 3D cosmetics: wings, halos,', 'crowns, horns, auras and', 'weapon auras.', '', '&7Bought from the shop: &f' + manasOwned(p) + '&7 (crate ones too)'], true],
         [4, 1, 'minecraft:ender_chest', '&a&l➤ OPEN MY WARDROBE', ['Equip everything you own.', '&7Also: &f/wardrobe', '', '&e&lCLICK TO OPEN'], true, () => after(p, () => asPlayer(p, 'manas_cosmetics wardrobe'))],
-        [1, 2, 'minecraft:writable_book', '&e&l① PICK A SLOT', ['On the left of the wardrobe:', '&fHelmet, Above Head, Back,', '&fAura, Weapon Aura, Orbit...', 'A &adot&7 = something equipped there.'], false],
+        [1, 2, 'minecraft:writable_book', '&e&l① PICK A SLOT', ['On the left of the wardrobe:', '&fHelmet, Above Head, Back,', '&fAura, Weapon Aura, Orbit, Pet...', 'A &adot&7 = something equipped there.', '&7Pets follow you around.'], false],
         [3, 2, 'minecraft:lime_dye', '&a&l② EQUIP', ['Click a cosmetic in the list,', 'then &fEquip&7. &fUnequip&7 takes it off.', 'Greyed-out ones you don\'t own yet.', 'The &fPreview&7 shows how it looks.'], false],
         [5, 2, 'minecraft:netherite_sword', '&c&l③ WEAPON AURAS', ['Show on the weapon you hold.', '&fForce Equip&7 shows it even', 'when you hold another weapon.'], false],
         [7, 2, 'minecraft:chest', '&6&l④ PRESETS', ['Save your whole outfit as a', 'preset (&fSave&7), switch with', '&fLoad&7, remove with &fDelete&7.'], false],

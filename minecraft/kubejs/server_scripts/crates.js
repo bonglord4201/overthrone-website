@@ -145,7 +145,7 @@
       keyHint: 'Earn keys in game', particles: true,
       // 3D cosmetics (Manas Cosmetics, list in manas_cosmetics.js): crate-only ones are rare. An already-unlocked one gives
       // nothing new, so the pool is kept big. After changing this list, load it in game: /crate reward reset cosmetic
-      rewards: (typeof OT_MANAS === 'undefined' ? [] : [].concat(OT_MANAS.wings, OT_MANAS.halos, OT_MANAS.heads, OT_MANAS.auras, OT_MANAS.weapons || []).map(c => ({
+      rewards: (typeof OT_MANAS === 'undefined' ? [] : [].concat(OT_MANAS.wings, OT_MANAS.halos, OT_MANAS.heads, OT_MANAS.auras, OT_MANAS.weapons || [], OT_MANAS.pets || []).map(c => ({
         cmd: 'manas_cosmetics unlock {p} ' + c.id, icon: c.icon, name: c.name.replace(/&[0-9a-fklmnor]/g, ''),
         weight: c.crate ? 2 : 10, rare: !!c.crate }))),
     },

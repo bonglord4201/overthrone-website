@@ -247,7 +247,20 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
   (manas_cosmetics.js, new `weapons` list). Throne Shop 3D COSMETICS has a WEAPON AURAS section. New menu type `wardrobe`
   (npc_menus.js `wardrobeMenu`, `/wardrobemenu`, `/npcmenu attach wardrobe`): how the wardrobe works (button names from
   the mod's screen: Equip, Unequip, Force Equip, Hide Gear, Personalise, FP View, Presets Save/Load/Delete) + buttons.
-  Procedural models have limits: for top quality the owner should buy/commission .bbmodel files (BuiltByBit, MCModels,
+  **v3 (2026-10-18): decompiled the mod (CFR 0.152 from Maven Central) and copied its placement maths into
+  scripts/manas/sim.py, so previews match the game.** Facts (CosmeticLayer/BBModelRenderer/BBModelParser):
+  model space Y DOWN, -Z = front, origin = neck; cubes used as written (no conversion). HELMET: head pivot, +4px down,
+  -3.5 lift, then rotX(180)+rotY(180) (= author Y-up, head at y 0..8, -Z = face). ABOVE_HEAD: same but +14.4 then -13
+  (author halos at y ~11+ yourself). BACK: body pivot, +2px behind, flipped by rotX(180) ONLY if the average cube centre
+  y < 0 (so author Y-up and keep the model below y=0; -Z = away from the back), then its height is auto-centred to 4px
+  below the neck. ORBIT: 8px below the neck, NOT flipped (author Y-down). PET: world space, Y up from the feet, -Z front,
+  states idle/walk/fly(+special/special2), sidecar "floats": true for hovering pets. Any offset/rotation in a sidecar
+  (e.g. saved by /manas_cosmetics edit) switches OFF the auto placement. Animation rotations REPLACE the bone rotation,
+  applied Z then Y then X; keyframes can be Molang (math.sin/cos in degrees, query.anim_time).
+  Generator: scripts/manas/{bb.py,designs.py,sim.py} + scripts/build-manas-models.py -> 37 models (13 wings + kitsune
+  tails, 6 halos/rings/sigil, 4 crowns, 3 horns, orbit crystals, 8 pets) + 34 auras/weapon auras = 71, all in OT_MANAS
+  (new `pets` list; shop has a PETS section). `dragon_wings` id kept (now "Aqua Spirit Wings").
+ for top quality the owner should buy/commission .bbmodel files (BuiltByBit, MCModels,
   ManasMods' Discord) and send them; setup steps in minecraft/manas_cosmetics/README.md.
   Waiting on the Manas Cosmetics jar (this session can't reach CurseForge/Modrinth). The particle file can be switched off
   by renaming cosmetics_fx.js to .off: npc_menus.js then hides the PARTICLE EFFECTS shop tile and /aura /trail /killeffect.

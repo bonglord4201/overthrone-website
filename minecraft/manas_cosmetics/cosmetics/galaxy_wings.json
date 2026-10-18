@@ -1,0 +1,23 @@
+{
+  "id": "overthrone:galaxy_wings",
+  "display_name": "Galaxy Wings",
+  "slot": "back",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "model": "models/back/galaxy_wings.bbmodel",
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "offset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rotation": [
+    0.0,
+    0.0,
+    0.0
+  ]
+}
