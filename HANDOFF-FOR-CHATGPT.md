@@ -337,6 +337,11 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
     direction, fin=True for YZ-plane arcs), rise (plates pointing up), tint (art.mix can't blend pixel arrays).
   - Package marketing/overthrone-cosmetics-v8-stage1-celestial.zip (4 bbmodels + previews + INSTALL-V8-STAGE1.md).
     Validator now also checks animation bone references and texture indices. Waiting on in-game test before stage 4.
+  - 2026-10-19 owner: every wing except divine_sovereign_wings looks bad; make ONE really good design first, then use it
+    as the reference for the rest. celestial7.wings is now v3: the divine() layout (3 radiating layers, gold blades,
+    magic-circle sigil) with solid stepped feather slabs (slab(): 4 stepped blocks sharing one painted face; faces on the
+    glow texture so they're full bright, sides shaded), bevelled gold (bevel_gold), heads4.crystal joints/tips, a 3D sigil
+    ring + gem + orbiting crystals, and 34 particles. 930 cubes, 194 KB gz. wings_v1/wings_v2 are kept for reference.
  for top quality the owner should buy/commission .bbmodel files (BuiltByBit, MCModels,
   ManasMods' Discord) and send them; setup steps in minecraft/manas_cosmetics/README.md.
   Waiting on the Manas Cosmetics jar (this session can't reach CurseForge/Modrinth). The particle file can be switched off

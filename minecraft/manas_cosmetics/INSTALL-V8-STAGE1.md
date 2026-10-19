@@ -12,14 +12,15 @@ The IDs stay the same, so the Throne Shop, the Cosmetic Crate and players who al
 | Helm | `overthrone:celestial_sovereign_helm` | See "Helm" below. |
 | Greatsword | `overthrone:celestial_sovereign_blade` | Winged gold guard, steel blade with a glowing cyan rune channel, gems orbiting the blade. |
 
-**Wings** (352 pieces):
-- Six layers of separate, overlapping feathers: 12 primaries with gold tips, 10 secondaries, 5 tertials, 14 greater, 12 median and 12 marginal coverts.
-- Hand-painted feathers with a quill, barbs, splits in the vane and lavender shading.
-- A sculpted gold frame along the top edge, with set cyan gems at the shoulder, elbow and wrist.
-- Two sweeping gold crescent blades per wing.
-- A gold spine medallion.
-- A slowly turning celestial sigil ring behind the head.
-- Falling feathers, and a soft light behind the wings.
+**Wings** (the showcase design, rebuilt 2026-10-19 after your video; 930 pieces):
+- Built on the layout of the Divine Sovereign wings you liked: three radiating feather layers that make a spiky, glowing burst, sweeping gold blades and a glowing sigil in the middle.
+- Every feather is now a **solid 3D slab** with a stepped pixel tip, like the Angel Wings and Lucifer's Wings references, instead of a flat sheet.
+- The feather faces are hand-painted (shaft, barbs, split barbs, lavender shading, outline) and drawn full bright so the wings glow. The solid sides keep the 3D shading.
+- Gold-tipped feathers, and the primaries end in a glowing cyan point.
+- A chunky bevelled gold frame, with set cyan crystals at the shoulder, elbow and wrist.
+- 8 solid gold blades, the main ones tipped with crystals.
+- The sigil: a gold outer disc and a cyan inner disc turning opposite ways, inside a 3D gold ring with a big cyan gem and 4 orbiting crystals.
+- Effects: 14 gold motes rising, 12 cyan sparkles streaming off the wingtips, and 8 feathers drifting down and spinning.
 
 **Armour** (147 pieces):
 - A painted shell at 4× detail: a dark navy undersuit with ivory plates, gold trim and cyan gems.
@@ -77,7 +78,7 @@ Restore the backup from step 1, or put the four old `.bbmodel` files back, then 
 - The textures match the model resolution.
 - The armour bone layout and centre match what the mod expects.
 - The weapon grip is at the origin.
-- The sizes are well under the mod's limit: wings 65 KB, armour 44 KB, helm 14 KB and sword 5 KB, compressed.
+- The sizes are under the mod's limit: wings 194 KB, armour 44 KB, helm 14 KB and sword 5 KB, compressed. The mod's limit is 1024 KB.
 - The preview pictures use the mod's own placement maths.
 
 None of this has been seen in game yet.

@@ -104,7 +104,7 @@ def ring(m, bone, c, r, n, th, depth, uv, start=0.0):
 # ===================================================================== WINGS
 S_, E_, W_, H_ = (2.0, -15.0, -1.2), (8.0, -5.0, -2.4), (13.5, 4.5, -3.8), (18.5, 8.5, -5.2)
 
-def wings(name, pal=PAL):
+def wings_v1(name, pal=PAL):
     m = BB(name, Atlas(512, 512)); k = Kit(m)
     iv, lv, gd, gm = pal['ivory'], pal['lav'], pal['gold'], pal['gem']
     edge = sh(lv, 0.72); shaft = pal['shaft']
@@ -192,6 +192,255 @@ def wings(name, pal=PAL):
         for s, n in ((1, 'r'), (-1, 'l')): tr.update(W4.flap_tracks(c, n, s, prims_all[n], 'feather'))
         tr['sigil'] = {'rotation': [(0, 0, 0, 'query.anim_time*18')]}
         tr['spine'] = {'position': [(0, 0, 'math.sin(query.anim_time*90)*0.15', 0)]}
+        return tr
+    clips(m, build, 4.0, fx)
+    W4.place_back(m)
+    return m
+
+# ---------------------------------------------------------------- v2 wings: solid 3D feathers (owner feedback 2026-10-19)
+# The references (Sketchfab "Angel Wings" / "Lucifer's Wings", and the Divine Sovereign wings the owner likes) are built
+# from THICK pieces: every feather is a solid slab made of 3 stepped blocks (a voxel taper, like a pixel-art tip), painted
+# on its faces with shaded edges, so the wing has depth from every side instead of being paper plates.
+def feather_slab_tex(w, h, base, shade, shaft, tip=None, seed=0, glowtip=None):
+    """Opaque feather face (root at the top row): bright leading vane, lavender-shaded trailing vane, a cream rachis,
+    slanted barbs, a crisp outline, a few split barbs, soft shadow towards the tip and a gold (optionally glowing) tip."""
+    r = np.random.default_rng(seed)
+    Y, X = np.mgrid[0:h, 0:w].astype(float); X += 0.5; Y += 0.5; t = Y / h; u = X / w
+    sx = w * 0.4
+    trail = np.clip((X - sx) / (w - sx), 0, 1)
+    col = mix(base, shade, np.clip(0.55 * trail ** 1.3 + 0.35 * np.clip((t - 0.45) / 0.55, 0, 1), 0, 1)[..., None])
+    barb = (((Y - np.abs(X - sx) * 0.75) % 2.6) < 0.9) & (np.abs(X - sx) > 0.8)
+    col = np.where(barb[..., None], col * 0.9, col)
+    for _ in range(3):   # split barbs
+        y0 = r.uniform(0.3, 0.8) * h; sp = (X > sx + 1) & (np.abs((Y - y0) - (X - sx) * 0.75) < 0.5); col = np.where(sp[..., None], col * 0.78, col)
+    col = np.where((np.abs(X - sx) < 0.6)[..., None], mix(shaft, sh(shaft, 0.8), t[..., None]), col)
+    col = np.where(((X < 1) | (X > w - 1))[..., None], mix(shade, (90, 86, 120), 0.35) * np.ones((h, w, 1)), col)
+    col = col * (1 + (r.random((h, w)) - 0.5)[..., None] * 0.04)
+    if tip is not None:
+        f = np.clip((t - 0.82) * 6, 0, 1)[..., None]; col = col * (1 - f) + C(tip) * f
+    if glowtip is not None:
+        f = np.clip((t - 0.9) * 10, 0, 1)[..., None]; col = col * (1 - f) + C(glowtip) * f
+    out = np.zeros((h, w, 4), np.uint8); out[..., :3] = np.clip(col, 0, 255).astype(np.uint8); out[..., 3] = 255
+    return Image.fromarray(out, 'RGBA')
+
+def edge_tex(col):
+    c = Canvas(4, 8); c.fill(c.m_rect(0, 0, 4, 8), col, grad=0.3); return c.images()[0]
+
+def bevel_gold(w, h, col):
+    """Chunky bevelled gold bar (Lucifer-style bone): light top edge, dark bottom edge, engraved line."""
+    c = Canvas(w, h); r = ramp(col)
+    c.rgb[:] = r[2]; c.a[:] = True
+    c.rgb[: max(1, h // 5)] = r[4]; c.rgb[max(1, h // 5): h // 2] = r[3]; c.rgb[-max(1, h // 5):] = r[1]; c.rgb[-1:] = r[0]
+    c.engrave([(0, h * 0.55), (w, h * 0.55)], col, 0.8)
+    return c.images()[0]
+
+def slab(m, bone, R, L, w, ang, face, sides, tipside, s, tilt=0.0, th=0.55, glow=None, steps=((0.0, 0.55, 1.0), (0.55, 0.75, 0.84), (0.75, 0.89, 0.6), (0.89, 1.0, 0.3))):
+    """A solid feather hanging DOWN from root R: stepped blocks (voxel taper) sharing one painted face texture."""
+    u0, v0, u1, v1 = face
+    for (a, b, k_) in steps:
+        ww = w * k_
+        fu0 = u0 + (u1 - u0) * (0.5 - k_ / 2); fu1 = u0 + (u1 - u0) * (0.5 + k_ / 2)
+        fv0 = v0 + (v1 - v0) * a; fv1 = v0 + (v1 - v0) * b
+        uv = UV((fu0, fv0, fu1, fv1), face.tex)
+        fu = uv if s > 0 else uv.mirrored()
+        faces = {'north': P4F(fu), 'south': P4F(fu.mirrored()), 'east': P4F(sides), 'west': P4F(sides), 'up': P4F(sides), 'down': P4F(tipside)}
+        m.cube(bone, [R[0] - ww / 2, R[1] - L * b, R[2] - th / 2], [R[0] + ww / 2, R[1] - L * a, R[2] + th / 2], faces, list(R), [tilt, 0, ang])
+        if glow is not None and b >= 0.99:
+            e = 0.05
+            m.cube(bone, [R[0] - ww / 2 - e, R[1] - L * b - e, R[2] - th / 2 - e], [R[0] + ww / 2 + e, R[1] - L * a, R[2] + th / 2 + e],
+                   {'north': P4F(glow), 'south': P4F(glow), 'east': P4F(glow), 'west': P4F(glow), 'down': P4F(glow)}, list(R), [tilt, 0, ang])
+
+def P4F(uv): return {'uv': [round(v, 4) for v in uv], 'texture': getattr(uv, 'tex', 0)}
+
+S2, E2, W2, H2 = (2.0, -14.0, -1.0), (7.5, -4.5, -1.8), (12.0, 6.0, -2.8), (16.5, 12.0, -3.6)
+
+def wings_v2(name, pal=PAL):
+    m = BB(name, Atlas(512, 512)); k = Kit(m)
+    iv, lv, gd, gm = pal['ivory'], pal['lav'], pal['gold'], pal['gem']
+    tipg = (255, 214, 110)
+    F_prim = k.main('fprim', feather_slab_tex(20, 72, (255, 255, 255), lv, pal['shaft'], tip=tipg, seed=1))
+    F_sec = k.main('fsec', feather_slab_tex(20, 60, (252, 252, 255), lv, pal['shaft'], tip=tipg, seed=2))
+    F_ter = k.main('fter', feather_slab_tex(20, 44, iv, lv, pal['shaft'], seed=3))
+    F_cov = k.main('fcov', feather_slab_tex(18, 32, (255, 255, 255), mix(iv, lv, 0.5), pal['shaft'], seed=4))
+    F_sm = k.main('fsm', feather_slab_tex(14, 18, (255, 255, 255), mix(iv, lv, 0.35), pal['shaft'], seed=5))
+    side = k.main('fside', edge_tex(sh(lv, 0.8))); tside = k.main('ftip', edge_tex(tipg)); wside = k.main('fwside', edge_tex((246, 244, 250)))
+    tglow = k.glow('tglow', P.dot(gm, 2))
+    gb = k.main('gbev', bevel_gold(8, 16, gd)); gbd = k.main('gbevd', bevel_gold(8, 16, sh(gd, 0.8)))
+    gcap = k.main('gcap', gold_tex(8, 8, gd)); gglow = k.glow('gglow', gold_tex(6, 8, lit(gd, 0.3), False))
+    cry = k.main('cry', P.facet(4, 8, lit(gm, 0.5), sh(gm, 0.7))); cryg = k.glow('cryg', P.facet(4, 4, (255, 255, 255), lit(gm, 0.3)))
+    import heads4 as H4
+    prims_all = {}
+    for s, n in ((1, 'r'), (-1, 'l')):
+        wb, mb, hb = W4.skeleton(m, n, s, pts=(S2, E2, W2))
+        X = lambda p: [p[0] * s, p[1], p[2]]
+        prims = []
+        for i in range(11):                                   # primaries: fan from down-out to up-out
+            t = i / 10; R = lerp3(W2, H2, t); R[2] += 0.75 + 0.03 * i
+            ang = 30 + 118 * t ** 1.05
+            L = 19 + 6 * math.sin(min(1.0, t * 1.2) * math.pi * 0.7)
+            pb = m.bone('p%d_%s' % (i, n), X(R), hb); prims.append(pb)
+            slab(m, pb, X(R), L, 6.2, s * ang, F_prim, side, tside, s, tilt=-3, glow=None)
+        for i in range(9):                                    # secondaries
+            t = i / 8; R = lerp3(E2, W2, t); R[2] += 0.45 - 0.02 * i
+            slab(m, mb, X(R), 16.5 + 3 * t, 6.6, s * (6 + 24 * t), F_sec, side, tside, s, tilt=-2)
+        for i in range(5):                                    # tertials
+            t = 0.1 + 0.2 * i; R = lerp3(S2, E2, t); R[2] += 0.2
+            slab(m, wb, X(R), 11 + 5 * t, 6.6, s * (-4 + 9 * t), F_ter, side, wside, s, tilt=-2)
+        for i in range(12):                                   # greater coverts
+            t = i / 11; R = lerp3(S2, H2, 0.04 + 0.9 * t); R[2] -= 0.25
+            b = wb if t < 0.33 else (mb if t < 0.62 else hb)
+            ang = (2 + 26 * t / 0.62) if t < 0.62 else 28 + 100 * (t - 0.62) / 0.38
+            slab(m, b, X(R), 9 + 2 * math.sin(t * math.pi), 5.6, s * ang, F_cov, side, wside, s, tilt=-5, th=0.5)
+        for i in range(10):                                   # small coverts on the leading edge
+            t = i / 9; R = lerp3(S2, H2, 0.02 + 0.84 * t); R[1] += 0.6; R[2] -= 0.85
+            b = wb if t < 0.36 else (mb if t < 0.66 else hb)
+            slab(m, b, X(R), 5.2, 4.6, s * (8 + 92 * t ** 1.3), F_sm, side, wside, s, tilt=-8, th=0.45, steps=((0.0, 0.7, 1.0), (0.7, 1.0, 0.6)))
+        # chunky bevelled gold frame (Lucifer-style bone) + knuckle caps + set crystals
+        Sx, Ex, Wx, Hx = X([S2[0], S2[1] + 1.2, S2[2] - 1.3]), X([E2[0], E2[1] + 1.2, E2[2] - 1.3]), X([W2[0], W2[1] + 1.0, W2[2] - 1.3]), X([H2[0] + 0.8, H2[1] + 0.8, H2[2] - 1.2])
+        seg(m, wb, Sx, Ex, 2.6, gb, gbd, thz=2.2); seg(m, mb, Ex, Wx, 2.2, gb, gbd, thz=2.0); seg(m, hb, Wx, Hx, 1.7, gb, gbd, thz=1.7)
+        for b, c_, r_, d_ in ((wb, Sx, 1.9, (-0.3, 1, -0.6)), (mb, Ex, 1.6, (0.4, 1, -0.6)), (hb, Wx, 1.5, (0.6, 1, -0.5)), (hb, Hx, 1.2, (0.9, 0.7, -0.4))):
+            m.box(b, [c_[0] - r_, c_[1] - r_, c_[2] - r_], [c_[0] + r_, c_[1] + r_, c_[2] + r_], gcap, gcap, origin=list(c_), rotation=[0, 0, 45])
+            H4.crystal(m, b, [c_[0], c_[1] + r_ * 0.4, c_[2] - r_ * 0.6], 3.2 * r_ / 1.6, 1.1 * r_ / 1.6, cry, cry, cryg, d=(d_[0] * s, d_[1], d_[2]))
+        # gold horn arcs rising from the wing root over the head (concept sheet #1), tipped with a crystal
+        for j, (A, Cc, B, w0) in enumerate((([S2[0] + 0.6, S2[1] + 2.6, S2[2] - 1.8], [S2[0] + 9.0, S2[1] + 12.0, S2[2] - 1.8], [S2[0] + 3.0, S2[1] + 24.5, S2[2] - 1.2], 1.8),
+                                            ([E2[0], E2[1] + 1.8, E2[2] - 1.9], [E2[0] + 9.5, E2[1] + 7.0, E2[2] - 1.9], [E2[0] + 7.0, E2[1] + 17.5, E2[2] - 1.5], 1.4))):
+            pts = arc_pts(X(A), X(Cc), X(B), 10)
+            blade_arc(m, wb if j == 0 else mb, pts, w0, 0.35, 1.0, gb, gbd, guv=gglow)
+            H4.crystal(m, wb if j == 0 else mb, pts[-1], 2.6, 0.9, cry, cry, cryg, d=(0.15 * s, 1, 0))
+        prims_all[n] = prims
+    # spine medallion + rotating sigil (kept from the Divine Sovereign look the owner likes)
+    m.bone('spine', [0, -12, -1.6])
+    m.box('spine', [-1.8, -16.0, -2.4], [1.8, -9.0, -1.0], gb, gbd)
+    gem3d(m, k, 'spine', [0, -12.5, -2.8], 2.0, gm, setting=gd, rot=(0, 0, 45))
+    SY = 0.0
+    m.bone('sigil', [0, SY, 0.4])
+    ring(m, 'sigil', (0, SY, 0.4), 11.5, 40, 0.8, 0.45, gcap); ring(m, 'sigil', (0, SY, 0.4), 9.8, 36, 0.45, 0.3, gcap); ring(m, 'sigil', (0, SY, 0.4), 3.2, 16, 0.5, 0.3, gcap)
+    for i in range(8):
+        a = 2 * math.pi * i / 8
+        seg(m, 'sigil', [math.cos(a) * 3.2, SY + math.sin(a) * 3.2, 0.4], [math.cos(a) * 9.8, SY + math.sin(a) * 9.8, 0.4], 0.35, gcap, thz=0.25)
+        gem3d(m, k, 'sigil', [math.cos(a + math.pi / 8) * 10.65, SY + math.sin(a + math.pi / 8) * 10.65, 0.3], 0.9, gm, rot=(0, 0, 45))
+    W4.soft_glow(m, k, (120, 220, 255))
+    # special effects: shed feathers, wingtip sparkle streams, rising light motes
+    fx = Particles(m, None, 4.0, 'wf'); rr = random.Random(name)
+    flake = k.main('flake', feather_slab_tex(4, 8, (255, 255, 255), lv, pal['shaft'], seed=9))
+    spark = k.glow('wspark', P.dot(gm, 3, core=(255, 255, 255))); gmote = k.glow('gmote', P.dot(lit(gd, 0.3), 3, core=(255, 255, 230)))
+    for i in range(12):   # feathers drifting down and out, spinning
+        s = 1 if i % 2 else -1
+        fx.add([s * rr.uniform(6, 16), rr.uniform(-12, 4), rr.uniform(-4, -1)], [s * rr.uniform(1, 4), -rr.uniform(10, 16), -rr.uniform(0, 3)], 1.2, flake, i / 12, spin=200, sway=25, plate=True)
+    for i in range(14):   # sparkles streaming off the wingtips
+        s = 1 if i % 2 else -1
+        fx.add([s * rr.uniform(20, 30), rr.uniform(4, 20), rr.uniform(-4, -2)], [s * rr.uniform(1, 3), -rr.uniform(4, 9), -rr.uniform(1, 3)], 0.55, spark, i / 14, spin=160)
+    for i in range(10):   # golden motes rising along the frame
+        s = 1 if i % 2 else -1
+        fx.add([s * rr.uniform(3, 14), rr.uniform(-12, 4), rr.uniform(-4, -2.5)], [0, rr.uniform(5, 9), 0], 0.5, gmote, i / 10, spin=120)
+    def build(c):
+        tr = {}
+        for s, n in ((1, 'r'), (-1, 'l')): tr.update(W4.flap_tracks(c, n, s, prims_all[n], 'feather'))
+        tr['sigil'] = {'rotation': [(0, 0, 0, 'query.anim_time*18')], 'scale': [(0, 'math.sin(query.anim_time*90)*0.03+1', 'math.sin(query.anim_time*90)*0.03+1', 1)]}
+        tr['spine'] = {'position': [(0, 0, 'math.sin(query.anim_time*90)*0.15', 0)]}
+        return tr
+    clips(m, build, 4.0, fx)
+    W4.place_back(m)
+    return m
+
+# ---------------------------------------------------------------- v3 wings (the showcase design)
+# Built on the layout of the Divine Sovereign wings the owner likes (three radiating feather layers that make a spiky,
+# airy burst, many sweeping gold blades, a glowing sigil in the middle), upgraded: every feather is a solid stepped
+# 3D slab with painted faces and a gold tip, the frame is chunky bevelled gold with set cyan crystals, the blades are
+# solid and crystal-tipped, the sigil has a 3D gold frame and a cyan heart, and it sheds feathers, sparkles and light.
+def wings(name, pal=PAL):
+    m = BB(name, Atlas(512, 512)); k = Kit(m)
+    iv, lv, gd, gm = pal['ivory'], pal['lav'], pal['gold'], pal['gem']
+    tipg = (255, 214, 110)
+    S0, E0, W0, H0 = W4.S, W4.E, W4.W, W4.H
+    lv2 = (196, 194, 226)
+    F_prim = k.glow('fprim', feather_slab_tex(14, 80, (255, 255, 255), lv2, pal['shaft'], tip=tipg, glowtip=lit(gm, 0.3), seed=1))
+    F_sec = k.glow('fsec', feather_slab_tex(14, 64, (255, 255, 255), lv2, pal['shaft'], tip=tipg, seed=2))
+    F_cov = k.glow('fcov', feather_slab_tex(12, 34, (255, 255, 255), mix(iv, lv2, 0.6), pal['shaft'], seed=4))
+    F_sm = k.glow('fsm', feather_slab_tex(10, 18, (255, 255, 255), mix(iv, lv2, 0.45), pal['shaft'], seed=5))
+    side = k.main('fside', edge_tex(sh(lv, 0.85))); tside = k.main('ftip', edge_tex(tipg)); wside = k.main('fwside', edge_tex((236, 234, 244)))
+    tglow = None
+    gb = k.main('gbev', bevel_gold(8, 16, gd)); gbd = k.main('gbevd', bevel_gold(8, 16, sh(gd, 0.8)))
+    gcap = k.main('gcap', gold_tex(8, 8, gd)); gglow = k.glow('gglow', gold_tex(6, 8, lit(gd, 0.3), False))
+    cry = k.main('cry', P.facet(4, 8, lit(gm, 0.5), sh(gm, 0.7))); cryg = k.glow('cryg', P.facet(4, 4, (255, 255, 255), lit(gm, 0.3)))
+    import heads4 as H4
+    xf = W4.xform
+    layers = [('', 1.0, 0, 0.0, 0.0, (11, 9, 12, 8)), ('b', 0.82, -30, -1.5, 0.8, (9, 7, 9, 6)), ('c', 0.62, -64, -3.0, 1.5, (7, 5, 7, 0))]
+    prims = {}
+    for li, (pre, kk, th, dy, dz, (NP, NS, NG, NM)) in enumerate(layers):
+        Sx, Ex, Wx, Hx = [xf(p, kk, th, dy, dz) for p in (S0, E0, W0, H0)]
+        for s, n in ((1, 'r'), (-1, 'l')):
+            X = lambda p: [p[0] * s, p[1], p[2]]
+            wb, mb, hb = W4.skeleton(m, n, s, pre=pre, pts=(Sx, Ex, Wx))
+            fw = 1.7 * kk if li == 0 else 1.4 * kk
+            seg(m, wb, X(Sx), X(Ex), fw * 1.25, gb, gbd, thz=fw); seg(m, mb, X(Ex), X(Wx), fw * 1.05, gb, gbd, thz=fw * 0.9); seg(m, hb, X(Wx), X(Hx), fw * 0.85, gb, gbd, thz=fw * 0.8)
+            pl = []
+            for i in range(NP):
+                t = i / (NP - 1); R = lerp3(Wx, Hx, 0.05 + 0.95 * t); R[2] += 0.4 + 0.03 * i
+                pb = m.bone(pre + 'p%d_%s' % (i, n), X(R), hb); pl.append(pb)
+                L = (20 + 11 * math.sin(min(1, t * 1.1) * math.pi * 0.6)) * kk
+                slab(m, pb, X(R), L, 3.4 * max(0.85, kk), s * (28 + 98 * t ** 1.1 + th), F_prim, side, tside, s, th=0.5, glow=tglow if li == 0 else None)
+            prims[pre + n] = pl
+            for i in range(NS):
+                t = i / (NS - 1); R = lerp3(Ex, Wx, t); R[2] += 0.25 - 0.02 * i
+                slab(m, mb, X(R), (17 + 4 * t) * kk, 3.6 * max(0.85, kk), s * (24 * t + th), F_sec, side, tside, s, th=0.5)
+            for i in range(NG):
+                t = i / (NG - 1); R = lerp3(Sx, Hx, 0.04 + 0.9 * t); R[2] -= 0.45 + 0.01 * i
+                b = wb if t < 0.33 else (mb if t < 0.62 else hb)
+                ang = (24 * t / 0.62) if t < 0.62 else (24 + 84 * (t - 0.62) / 0.38)
+                slab(m, b, X(R), (9 + 3 * t) * kk, 3.3 * max(0.85, kk), s * (ang + th), F_cov, side, wside, s, th=0.45)
+            for i in range(NM):
+                t = i / max(1, NM - 1); R = lerp3(Sx, Hx, 0.02 + 0.8 * t); R[2] -= 0.85
+                b = wb if t < 0.33 else (mb if t < 0.62 else hb)
+                slab(m, b, X(R), 5 * kk, 3.0, s * (4 + 70 * t ** 1.5 + th), F_sm, side, wside, s, th=0.4, steps=((0.0, 0.7, 1.0), (0.7, 1.0, 0.6)))
+            if li == 0:   # set crystals on the joints of the main layer
+                for b, c_, r_, d_ in ((wb, X(Sx), 1.5, (-0.4, 1, -0.5)), (mb, X(Ex), 1.4, (0.3, 1, -0.5)), (hb, X(Wx), 1.3, (0.6, 1, -0.4))):
+                    cc = [c_[0], c_[1] + 0.4, c_[2] - 1.0]
+                    m.box(b, [cc[0] - r_, cc[1] - r_, cc[2] - r_ * 0.7], [cc[0] + r_, cc[1] + r_, cc[2] + r_ * 0.7], gcap, gcap, origin=cc, rotation=[0, 0, 45])
+                    H4.crystal(m, b, [cc[0], cc[1], cc[2] - 0.6], 3.0 * r_ / 1.4, r_ * 0.75, cry, cry, cryg, d=(d_[0] * s, d_[1], d_[2]))
+            if pre in ('', 'b'):   # sweeping gold blades along the wing: solid, bevelled, crystal-tipped
+                for (a_, b_, c_, w0) in (((E0[0] - 1, E0[1] + 1.5, E0[2] - 1.9), (W0[0] + 4, W0[1] + 9, W0[2] - 1.9), (35, 8, W0[2] - 1.9), 2.4),
+                                         ((W0[0] + 1, W0[1] - 4, W0[2] - 1.7), (24, -2, W0[2] - 1.7), (33, -12, W0[2] - 1.7), 1.7)):
+                    pts = [X(p) for p in W4.bez3(xf(a_, kk, th, dy, dz), xf(b_, kk, th, dy, dz), xf(c_, kk, th, dy, dz), 12)]
+                    blade_arc(m, hb, pts, w0 * kk, 0.35, 0.9 * kk, gb, gbd, guv=gglow)
+                    if li == 0:
+                        d = [pts[-1][j] - pts[-2][j] for j in range(3)]
+                        H4.crystal(m, hb, pts[-1], 2.4, 0.8, cry, cry, cryg, d=d)
+    # the sigil: glowing gold discs (as on the Divine Sovereign) inside a 3D gold frame with a cyan heart and orbiting crystals
+    cy, cz = -12.0, -6.0
+    m.bone('sigil', [0, cy, cz]); m.bone('sig_o', [0, cy, cz], 'sigil'); m.bone('sig_i', [0, cy, cz], 'sigil')
+    light, dark = (255, 250, 200), (150, 95, 15)
+    uo = k.glow('circ_o', P.magic_circle(112, gd, light, dark, 'outer')); ui = k.glow('circ_i', P.magic_circle(112, gm, (230, 255, 255), (20, 90, 120), 'inner'))
+    R1, R2 = 13.0, 9.5
+    m.plate('sig_o', [-R1, cy - R1, cz - 0.05], [R1, cy + R1, cz + 0.05], uo)
+    m.plate('sig_i', [-R2, cy - R2, cz - 0.25], [R2, cy + R2, cz - 0.15], ui)
+    ring(m, 'sig_o', (0, cy, cz + 0.1), R1 + 0.6, 44, 0.9, 0.7, gb)
+    gem3d(m, k, 'sigil', [0, cy, cz - 0.6], 2.6, gm, setting=gd, rot=(0, 0, 45))
+    for i in range(4):
+        a = math.radians(45 + i * 90); x, y = math.cos(a) * (R1 + 2.2), cy + math.sin(a) * (R1 + 2.2)
+        H4.crystal(m, 'sig_o', [x, y, cz], 2.4, 0.9, cry, cry, cryg, d=(math.cos(a), math.sin(a), 0), both=True)
+    m.plate('sigil', [-17, cy - 17, cz + 1.0], [17, cy + 17, cz + 1.1], k.soft('sig_soft', P.soft(64, 64, gd, peak=70)))
+    # special effects
+    fx = Particles(m, None, 4.0, 'wf'); rr = random.Random(name)
+    flake = k.main('flake', feather_slab_tex(4, 8, (255, 255, 255), lv, pal['shaft'], seed=9))
+    spark = k.glow('wspark', P.dot(gm, 3, core=(255, 255, 255))); gmote = k.glow('gmote', P.dot((255, 225, 120), 3, core=(255, 255, 255)))
+    for i in range(14):   # gold motes rising through the wings
+        fx.add([rr.uniform(-28, 28), rr.uniform(-26, 0), -4.0], [rr.uniform(-1, 1), rr.uniform(5, 11), -rr.uniform(0, 2)], 0.7, gmote, i / 14, spin=150)
+    for i in range(12):   # cyan sparkles streaming off the wingtips
+        s = 1 if i % 2 else -1
+        fx.add([s * rr.uniform(26, 36), rr.uniform(-14, 10), -3.0], [s * rr.uniform(1, 3), -rr.uniform(4, 9), -rr.uniform(1, 3)], 0.6, spark, i / 12, spin=170)
+    for i in range(8):    # feathers drifting down, spinning
+        s = 1 if i % 2 else -1
+        fx.add([s * rr.uniform(8, 24), rr.uniform(-6, 2), -3.0], [s * rr.uniform(1, 4), -15, -2], 1.6, flake, i / 8 + 0.03, sway=25, plate=True, spin=120)
+    def build(c):
+        tr = {}
+        for li, (pre, kk, th, dy, dz, _) in enumerate(layers):
+            for s, n in ((1, 'r'), (-1, 'l')):
+                tr.update(W4.flap_tracks(c, n, s, prims[pre + n], pre=pre, ph=li * 35, amp=1.0 - li * 0.2))
+        spd = 2.0 if c in ('fly', 'jump') else 1.0
+        tr['sig_o'] = {'rotation': [(0, 0, 0, f'query.anim_time*{18 * spd}')]}
+        tr['sig_i'] = {'rotation': [(0, 0, 0, f'-query.anim_time*{30 * spd}')]}
+        tr['sigil'] = {'position': [(0, 0, 'math.sin(query.anim_time*90)*0.4', 0)]}
         return tr
     clips(m, build, 4.0, fx)
     W4.place_back(m)
