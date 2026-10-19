@@ -1,0 +1,10 @@
+# Copy to .dev.vars for `npm run dev`. On Cloudflare, set the real values with
+#   npx wrangler secret put ADMIN_PATH
+#   npx wrangler secret put ADMIN_PASSWORD
+#   npx wrangler secret put SESSION_SECRET
+#
+# ADMIN_PATH is the secret address of the admin panel: 16-64 letters, numbers, - or _.
+# With the value below the panel is at http://localhost:8787/my-secret-admin-place-123/
+ADMIN_PATH=my-secret-admin-place-123
+ADMIN_PASSWORD=change-me-to-a-long-password
+SESSION_SECRET=change-me-to-64-random-characters-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa

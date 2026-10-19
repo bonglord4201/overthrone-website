@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "colorroll-dice",
+  "main": "src/worker.js",
+  "compatibility_date": "2025-11-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    // The API, uploaded pictures and /admin always run the Worker (so /admin can answer
+    // "not found"). Addresses that aren't static files also reach the Worker, which is how
+    // the secret admin address in the ADMIN_PATH secret works.
+    "run_worker_first": ["/api/*", "/media/*", "/admin", "/admin/*"]
+  },
+  // Run `npx wrangler d1 create colorroll-db` once, then paste the database_id it
+  // prints in place of PASTE_YOUR_DATABASE_ID_HERE below. (Local `wrangler dev` works
+  // without it.)
+  "d1_databases": [
+    { "binding": "DB", "database_name": "colorroll-db", "database_id": "PASTE_YOUR_DATABASE_ID_HERE", "migrations_dir": "migrations" }
+  ],
+  "observability": { "enabled": true }
+}
