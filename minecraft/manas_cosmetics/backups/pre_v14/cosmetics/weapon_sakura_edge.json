@@ -1,0 +1,38 @@
+{
+  "id": "overthrone:sakura_edge",
+  "display_name": "Sakura Edge",
+  "slot": "weapon_aura",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "aura": {
+    "style": "falling_embers",
+    "particle": "tear",
+    "colors": [
+      [
+        255,
+        225,
+        240
+      ],
+      [
+        255,
+        150,
+        195
+      ],
+      [
+        225,
+        80,
+        150
+      ]
+    ],
+    "particle_count": 170,
+    "size": 1.1,
+    "speed": 0.7,
+    "radius": 0.22,
+    "height": 0.68,
+    "alpha": 1.0,
+    "rotation_speed": 0.8,
+    "emissive": true,
+    "motion_response": 0.0,
+    "offset": -0.35
+  }
+}

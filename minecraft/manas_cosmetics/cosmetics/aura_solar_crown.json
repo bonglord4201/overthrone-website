@@ -3,7 +3,7 @@
   "display_name": "Solar Crown",
   "slot": "aura",
   "aura": {
-    "style": "sunburst_mandala",
+    "style": "halo",
     "particle": "orb",
     "colors": [
       [
@@ -28,14 +28,13 @@
       ]
     ],
     "particle_count": 260,
-    "size": 1.5,
+    "size": 0.95,
     "speed": 1.0,
-    "radius": 0.5,
+    "radius": 1.0,
     "height": 1.0,
     "alpha": 1.0,
-    "rotation_speed": 0.8,
+    "rotation_speed": 1.0,
     "emissive": true,
-    "motion_response": 0.0,
-    "offset": 2.12
+    "motion_response": 0.0
   }
 }

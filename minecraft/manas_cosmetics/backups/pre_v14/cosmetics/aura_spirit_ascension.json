@@ -1,0 +1,40 @@
+{
+  "id": "overthrone:spirit_ascension",
+  "display_name": "Spirit Ascension",
+  "slot": "aura",
+  "aura": {
+    "style": "rising_motes",
+    "particle": "orb",
+    "colors": [
+      [
+        255,
+        255,
+        255
+      ],
+      [
+        204,
+        255,
+        220
+      ],
+      [
+        96,
+        255,
+        166
+      ],
+      [
+        0,
+        214,
+        146
+      ]
+    ],
+    "particle_count": 720,
+    "size": 0.7,
+    "speed": 0.9,
+    "radius": 1.35,
+    "height": 1.5,
+    "alpha": 1.0,
+    "rotation_speed": 1.0,
+    "emissive": true,
+    "motion_response": 0.0
+  }
+}

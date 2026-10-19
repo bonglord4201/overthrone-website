@@ -1,0 +1,40 @@
+{
+  "id": "overthrone:celestial_sovereign_aura",
+  "display_name": "Celestial Sovereign Aura",
+  "slot": "aura",
+  "aura": {
+    "style": "arcane_array",
+    "particle": "orb",
+    "colors": [
+      [
+        255,
+        255,
+        255
+      ],
+      [
+        156,
+        242,
+        255
+      ],
+      [
+        255,
+        216,
+        106
+      ],
+      [
+        255,
+        246,
+        206
+      ]
+    ],
+    "particle_count": 240,
+    "size": 2.2,
+    "speed": 1.0,
+    "radius": 1.4,
+    "height": 1.0,
+    "alpha": 1.0,
+    "rotation_speed": 0.5,
+    "emissive": true,
+    "motion_response": 0.0
+  }
+}

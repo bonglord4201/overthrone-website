@@ -1,0 +1,23 @@
+{
+  "id": "overthrone:pet_storm_dragon",
+  "display_name": "Baby Storm Dragon",
+  "slot": "pet",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "model": "models/pet/pet_storm_dragon.bbmodel",
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "offset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rotation": [
+    0.0,
+    0.0,
+    0.0
+  ]
+}

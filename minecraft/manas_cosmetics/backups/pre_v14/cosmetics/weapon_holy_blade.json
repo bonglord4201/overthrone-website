@@ -1,0 +1,38 @@
+{
+  "id": "overthrone:holy_blade",
+  "display_name": "Holy Blade",
+  "slot": "weapon_aura",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "aura": {
+    "style": "rising_motes",
+    "particle": "star",
+    "colors": [
+      [
+        255,
+        255,
+        240
+      ],
+      [
+        255,
+        220,
+        110
+      ],
+      [
+        255,
+        170,
+        40
+      ]
+    ],
+    "particle_count": 260,
+    "size": 0.95,
+    "speed": 0.9,
+    "radius": 0.2,
+    "height": 9.0,
+    "alpha": 1.0,
+    "rotation_speed": 1.0,
+    "emissive": true,
+    "motion_response": 0.0,
+    "offset": -0.35
+  }
+}

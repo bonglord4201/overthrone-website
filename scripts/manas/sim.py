@@ -44,7 +44,11 @@ class Model:
             im = np.array(Image.open(io.BytesIO(base64.b64decode(t['source'].split(',', 1)[1]))).convert('RGBA'))
             a = im[:, :, 3]; partial, opaque = int(((a > 0) & (a < 255)).sum()), int((a == 255).sum())
             nm = t.get('name', '').lower().replace('.png', '')
-            self.texs.append({'img': im, 'emissive': nm.endswith('_e') or t.get('render_mode') == 'emissive', 'translucent': partial > opaque})
+            # animated strip (BBModelRenderer.computeUv): png width == uv_width, png height a multiple of uv_height
+            uw, uh = t.get('uv_width'), t.get('uv_height')
+            frames = im.shape[0] // uh if (uw and uh and im.shape[1] == uw and im.shape[0] > uh and im.shape[0] % uh == 0) else 1
+            self.texs.append({'img': im, 'emissive': nm.endswith('_e') or t.get('render_mode') in ('emissive', 'additive'), 'translucent': partial > opaque,
+                              'frames': frames, 'fw': uw, 'fh': uh, 'ft': max(1, int(t.get('frame_time', 1) or 1))})
         self.tex = self.texs[0]['img']
         res = data.get('resolution', {})
         self.uvw = res.get('width', self.tex.shape[1]); self.uvh = res.get('height', self.tex.shape[0])
@@ -265,7 +269,10 @@ class Canvas:
                     if uv[0] == uv[2] or uv[1] == uv[3]: continue
                     ti = fc.get('texture', 0); ti = ti if isinstance(ti, int) and 0 <= ti < len(model.texs) else 0
                     tx = model.texs[ti]
-                    self.quad(Mc, FACES[name](x0, y0, z0, x1, y1, z1), uv, tx['img'], model.uvw, model.uvh, tx['emissive'], tx['translucent'],
+                    img, uw, uh = tx['img'], model.uvw, model.uvh
+                    if tx['frames'] > 1:
+                        fr = (int(math.floor(t * 20)) // tx['ft']) % tx['frames']; img = img[fr * tx['fh']:(fr + 1) * tx['fh']]; uw, uh = tx['fw'], tx['fh']
+                    self.quad(Mc, FACES[name](x0, y0, z0, x1, y1, z1), uv, img, uw, uh, tx['emissive'], tx['translucent'],
                               centre=((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2))
             for k in b['children']: walk(k, Mb)
         for r in model.roots: walk(r, M)

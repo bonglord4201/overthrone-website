@@ -1,0 +1,40 @@
+{
+  "id": "overthrone:arcane_rune_aura",
+  "display_name": "Arcane Rune Aura",
+  "slot": "aura",
+  "aura": {
+    "style": "rune_circle",
+    "particle": "pixel",
+    "colors": [
+      [
+        255,
+        255,
+        255
+      ],
+      [
+        126,
+        255,
+        255
+      ],
+      [
+        0,
+        214,
+        255
+      ],
+      [
+        66,
+        116,
+        255
+      ]
+    ],
+    "particle_count": 560,
+    "size": 1.0,
+    "speed": 0.85,
+    "radius": 1.15,
+    "height": 1.1,
+    "alpha": 1.0,
+    "rotation_speed": 0.7,
+    "emissive": true,
+    "motion_response": 0.0
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "id": "overthrone:pulsar",
+  "display_name": "Pulsar",
+  "slot": "aura",
+  "aura": {
+    "style": "pulsar_seal",
+    "particle": "orb",
+    "colors": [
+      [
+        236,
+        255,
+        255
+      ],
+      [
+        116,
+        232,
+        255
+      ],
+      [
+        46,
+        156,
+        255
+      ],
+      [
+        166,
+        96,
+        255
+      ]
+    ],
+    "particle_count": 255,
+    "size": 2.0,
+    "speed": 1.0,
+    "radius": 1.3,
+    "height": 1.0,
+    "alpha": 1.0,
+    "rotation_speed": 0.8,
+    "emissive": true,
+    "motion_response": 0.0
+  }
+}

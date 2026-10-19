@@ -1,0 +1,24 @@
+{
+  "id": "overthrone:storm_dragon_armor",
+  "display_name": "Storm Dragon Armour",
+  "slot": "armor_set",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "model": "models/armor_set/storm_dragon_armor.bbmodel",
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "offset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rotation": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "needs_y_flip": false
+}

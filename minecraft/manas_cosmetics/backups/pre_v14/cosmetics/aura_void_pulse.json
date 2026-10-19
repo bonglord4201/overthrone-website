@@ -1,0 +1,40 @@
+{
+  "id": "overthrone:void_pulse",
+  "display_name": "Void Pulse",
+  "slot": "aura",
+  "aura": {
+    "style": "pulse_rings",
+    "particle": "orb",
+    "colors": [
+      [
+        255,
+        232,
+        255
+      ],
+      [
+        234,
+        126,
+        255
+      ],
+      [
+        166,
+        56,
+        255
+      ],
+      [
+        116,
+        20,
+        220
+      ]
+    ],
+    "particle_count": 600,
+    "size": 1.1,
+    "speed": 0.85,
+    "radius": 1.05,
+    "height": 1.0,
+    "alpha": 1.0,
+    "rotation_speed": 1.0,
+    "emissive": true,
+    "motion_response": 0.0
+  }
+}

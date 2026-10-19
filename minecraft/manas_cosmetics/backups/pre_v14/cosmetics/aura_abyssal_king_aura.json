@@ -1,0 +1,40 @@
+{
+  "id": "overthrone:abyssal_king_aura",
+  "display_name": "Abyssal King Aura",
+  "slot": "aura",
+  "aura": {
+    "style": "vortex_shroud",
+    "particle": "orb",
+    "colors": [
+      [
+        226,
+        255,
+        255
+      ],
+      [
+        66,
+        236,
+        240
+      ],
+      [
+        0,
+        166,
+        206
+      ],
+      [
+        26,
+        80,
+        186
+      ]
+    ],
+    "particle_count": 960,
+    "size": 0.95,
+    "speed": 0.85,
+    "radius": 1.05,
+    "height": 1.05,
+    "alpha": 1.0,
+    "rotation_speed": 1.0,
+    "emissive": true,
+    "motion_response": 0.0
+  }
+}

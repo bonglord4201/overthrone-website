@@ -1,0 +1,24 @@
+{
+  "id": "overthrone:abyssal_king_pet",
+  "display_name": "Abyssal Jelly (Abyssal King)",
+  "slot": "pet",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "model": "models/pet/abyssal_king_pet.bbmodel",
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "offset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rotation": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "floats": true
+}

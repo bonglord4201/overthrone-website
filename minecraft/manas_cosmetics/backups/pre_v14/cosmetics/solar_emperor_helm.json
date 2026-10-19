@@ -1,0 +1,23 @@
+{
+  "id": "overthrone:solar_emperor_helm",
+  "display_name": "Solar Emperor Helm",
+  "slot": "helmet",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "model": "models/helmet/solar_emperor_helm.bbmodel",
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "offset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rotation": [
+    0.0,
+    0.0,
+    0.0
+  ]
+}

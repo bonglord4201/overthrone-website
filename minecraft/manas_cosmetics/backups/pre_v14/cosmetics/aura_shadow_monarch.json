@@ -1,0 +1,40 @@
+{
+  "id": "overthrone:shadow_monarch",
+  "display_name": "Shadow Monarch",
+  "slot": "aura",
+  "aura": {
+    "style": "vortex_shroud",
+    "particle": "orb",
+    "colors": [
+      [
+        240,
+        220,
+        255
+      ],
+      [
+        176,
+        96,
+        255
+      ],
+      [
+        112,
+        34,
+        232
+      ],
+      [
+        70,
+        0,
+        150
+      ]
+    ],
+    "particle_count": 960,
+    "size": 0.95,
+    "speed": 0.9,
+    "radius": 1.05,
+    "height": 1.05,
+    "alpha": 1.0,
+    "rotation_speed": 1.0,
+    "emissive": true,
+    "motion_response": 0.0
+  }
+}

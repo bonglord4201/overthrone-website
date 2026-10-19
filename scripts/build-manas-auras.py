@@ -24,6 +24,11 @@ for fn in os.listdir(OUT):
 #    (dark stops only on smoke), and solid particle shapes (orb / pixel / tear / comet) replace the soft 'glow' fog.
 #  - Line-art circles use size ~2 (the band width is 0.022 x size) with the orb/pixel texture so the lines are bold.
 #  - Designed and checked with scripts/manas/auraview.py (day + night scene, sprinting test).
+# v14 (owner: "they're 2D and can't be seen when looking at them"): the MagicCircleStyle family (magic_circle, arcane_array,
+# summoning_circle, *_seal, *_array, nested_polygons, sunburst_mandala, radiant_sun, astral_compass) draws its lines as
+# quads LYING ON THE GROUND (MagicCircleStyle.bandSeg / flatQuad), so they vanish side-on. No aura uses them now: the
+# sigils (triangle..octagram), rune_circle, halo, circle, starfield, helix, vortex, flame, orbs and embers all draw
+# camera-facing particles (AuraStyle.renderParticle), which read from every angle.
 AURAS = [
   ('demon_lord_awakening', 'Demon Lord Awakening', 'flame_scorched', 'orb', [[255, 196, 66], [255, 76, 10], [236, 0, 32], [184, 0, 44]], 0.56, 1.0, 1.0, 1.05, 1.0, 760),
   ('shadow_monarch', 'Shadow Monarch', 'vortex_shroud', 'orb', [[240, 220, 255], [176, 96, 255], [112, 34, 232], [70, 0, 150]], 0.95, 0.9, 1.05, 1.05, 1.0, 960),
@@ -32,22 +37,22 @@ AURAS = [
   ('black_flame', 'Black Flame', 'flame', 'orb', [[214, 126, 255], [156, 46, 255], [112, 0, 232], [84, 0, 176]], 0.56, 1.0, 0.88, 1.12, 1.0, 800),
   ('inferno', 'Inferno', 'flame', 'orb', [[255, 222, 66], [255, 146, 0], [255, 76, 0], [232, 24, 0]], 0.56, 1.05, 0.88, 1.12, 1.0, 800),
   ('scorched_earth', 'Scorched Earth', 'flame_scorched', 'pixel', [[255, 206, 66], [255, 116, 0], [222, 54, 0], [156, 126, 116]], 0.5, 0.9, 1.05, 0.95, 1.0, 720),
-  ('arcane_sage', 'Arcane Sage', 'arcane_array', 'orb', [[255, 255, 255], [150, 222, 255], [116, 128, 255], [196, 120, 255]], 2.0, 1.0, 1.3, 1.0, 0.55, 240),
+  ('arcane_sage', 'Arcane Sage', 'heptagram', 'orb', [[255, 255, 255], [150, 222, 255], [116, 128, 255], [196, 120, 255]], 0.6, 1.0, 1.15, 1.0, 0.55, 1000),
   ('sakura_spirit', 'Sakura Spirit', 'falling_embers', 'tear', [[255, 244, 250], [255, 186, 220], [255, 128, 186], [240, 84, 156]], 1.55, 0.7, 1.3, 1.05, 1.0, 340),
   ('frost_queen', 'Frost Queen', 'rune_circle', 'crystal', [[255, 255, 255], [196, 242, 255], [116, 206, 255], [76, 146, 255]], 2.7, 0.9, 1.15, 1.1, 0.7, 600),
   ('great_sage', 'Great Sage', 'orbiting_orbs', 'orb', [[255, 255, 255], [166, 250, 255], [50, 186, 255], [40, 80, 230]], 1.15, 1.0, 1.0, 1.0, 1.0, 112),
   ('celestial', 'Celestial', 'starfield_shimmer', 'star', [[255, 255, 255], [255, 240, 196], [206, 186, 255], [156, 126, 255]], 3.2, 0.8, 1.2, 1.15, 1.0, 380),
   ('void_pulse', 'Void Pulse', 'pulse_rings', 'orb', [[255, 232, 255], [234, 126, 255], [166, 56, 255], [116, 20, 220]], 1.1, 0.85, 1.05, 1.0, 1.0, 600),
-  ('solomon_seal', 'Seal of the Demon King', 'seal_of_solomon', 'orb', [[255, 250, 206], [255, 216, 96], [255, 172, 34], [255, 232, 150]], 2.0, 1.0, 1.3, 1.0, 0.5, 255),
-  ('blood_moon', 'Blood Moon', 'magic_circle', 'orb', [[255, 176, 156], [255, 56, 56], [212, 0, 44], [255, 126, 96]], 2.0, 1.0, 1.3, 1.0, 0.55, 260),
+  ('solomon_seal', 'Seal of the Demon King', 'hexagram', 'star', [[255, 250, 206], [255, 216, 96], [255, 172, 34], [255, 232, 150]], 1.5, 1.0, 1.15, 1.0, 0.5, 900),
+  ('blood_moon', 'Blood Moon', 'circle', 'orb', [[255, 176, 156], [255, 56, 56], [212, 0, 44], [255, 126, 96]], 0.9, 1.0, 1.25, 1.0, 0.7, 520),
   ('spirit_ascension', 'Spirit Ascension', 'rising_motes', 'orb', [[255, 255, 255], [204, 255, 220], [96, 255, 166], [0, 214, 146]], 0.7, 0.9, 1.35, 1.5, 1.0, 720),
-  ('pentagram_curse', 'Cursed Pentagram', 'pentacle_array', 'orb', [[255, 186, 244], [255, 66, 206], [196, 0, 176], [255, 126, 232]], 2.0, 1.0, 1.3, 1.0, 0.55, 255),
-  ('clockwork_king', 'Clockwork King', 'clockwork_seal', 'pixel', [[255, 238, 176], [236, 186, 86], [206, 136, 44], [255, 222, 136]], 1.9, 1.0, 1.3, 1.0, 0.5, 255),
-  ('astral_navigator', 'Astral Navigator', 'astral_compass', 'orb', [[255, 255, 255], [176, 214, 255], [96, 146, 255], [206, 176, 255]], 2.0, 1.0, 1.35, 1.0, 0.45, 250),
-  ('solar_crown', 'Solar Crown', 'sunburst_mandala', 'orb', [[255, 255, 230], [255, 222, 80], [255, 160, 20], [255, 240, 170]], 1.5, 1.0, 0.5, 1.0, 0.8, 260, {'offset': 2.12}),
-  ('pulsar', 'Pulsar', 'pulsar_seal', 'orb', [[236, 255, 255], [116, 232, 255], [46, 156, 255], [166, 96, 255]], 2.0, 1.0, 1.3, 1.0, 0.8, 255),
-  ('eightfold_path', 'Eightfold Seal', 'octagram_array', 'orb', [[236, 255, 240], [126, 255, 176], [36, 214, 136], [186, 255, 216]], 2.0, 1.0, 1.3, 1.0, 0.5, 260),
-  ('dimension_rift', 'Dimension Rift', 'nested_polygons', 'pixel', [[255, 255, 255], [255, 96, 255], [86, 232, 255], [166, 86, 255]], 2.0, 1.0, 1.3, 1.0, 0.9, 250),
+  ('pentagram_curse', 'Cursed Pentagram', 'pentagram', 'orb', [[255, 186, 244], [255, 66, 206], [196, 0, 176], [255, 126, 232]], 0.6, 1.0, 1.15, 1.0, 0.55, 1000),
+  ('clockwork_king', 'Clockwork King', 'square', 'pixel', [[255, 238, 176], [236, 186, 86], [206, 136, 44], [255, 222, 136]], 0.6, 1.0, 1.1, 1.0, 0.5, 900),
+  ('astral_navigator', 'Astral Navigator', 'starfield_shimmer', 'star', [[255, 255, 255], [176, 214, 255], [96, 146, 255], [206, 176, 255]], 3.0, 0.8, 1.2, 1.15, 1.0, 380),
+  ('solar_crown', 'Solar Crown', 'halo', 'orb', [[255, 255, 230], [255, 222, 80], [255, 160, 20], [255, 240, 170]], 0.95, 1.0, 1.0, 1.0, 1.0, 260),
+  ('pulsar', 'Pulsar', 'orbiting_orbs', 'orb', [[236, 255, 255], [116, 232, 255], [46, 156, 255], [166, 96, 255]], 1.1, 1.0, 1.1, 1.0, 1.3, 140),
+  ('eightfold_path', 'Eightfold Seal', 'octagram', 'orb', [[236, 255, 240], [126, 255, 176], [36, 214, 136], [186, 255, 216]], 0.6, 1.0, 1.15, 1.0, 0.5, 1000),
+  ('dimension_rift', 'Dimension Rift', 'twin_helix', 'pixel', [[255, 255, 255], [255, 96, 255], [86, 232, 255], [166, 86, 255]], 0.8, 1.2, 1.05, 1.05, 1.4, 800),
   ('ember_monarch', 'Ember Monarch', 'ember_crown', 'orb', [[255, 236, 120], [255, 176, 30], [255, 100, 10], [236, 50, 0]], 1.0, 1.0, 1.1, 1.0, 1.0, 420),
   ('shadow_smoke_aura', 'Shadow Smoke Aura', 'flame', 'smoke', [[255, 96, 116], [196, 14, 46], [110, 0, 36], [56, 0, 26]], 1.35, 0.8, 0.95, 1.1, 1.0, 520),
   ('arcane_rune_aura', 'Arcane Rune Aura', 'rune_circle', 'pixel', [[255, 255, 255], [126, 255, 255], [0, 214, 255], [66, 116, 255]], 1.0, 0.85, 1.15, 1.1, 0.7, 560),
@@ -55,16 +60,16 @@ AURAS = [
 ]
 # the 10 premium set auras: the most elaborate looks, each themed to its set (scripts/manas/setdefs.py titles)
 SET_DESIGN = {
-  'celestial_sovereign': ('arcane_array', 'orb', [[255, 255, 255], [156, 242, 255], [255, 216, 106], [255, 246, 206]], 2.2, 1.0, 1.4, 1.0, 0.5, 240),
-  'void_overlord': ('summoning_circle', 'orb', [[255, 146, 126], [255, 44, 56], [186, 0, 46], [255, 96, 86]], 2.2, 1.0, 1.4, 1.0, 0.5, 260),
-  'solar_emperor': ('radiant_sun', 'orb', [[255, 255, 226], [255, 220, 76], [255, 156, 10], [255, 240, 166]], 2.2, 1.0, 1.4, 1.0, 0.6, 250),
-  'frost_monarch': ('magic_circle', 'orb', [[255, 255, 255], [186, 240, 255], [96, 196, 255], [156, 226, 255]], 2.2, 1.0, 1.4, 1.0, 0.45, 260),
+  'celestial_sovereign': ('rune_circle', 'star', [[255, 255, 255], [255, 226, 130], [110, 230, 255], [255, 240, 190]], 2.4, 0.85, 1.2, 1.15, 0.6, 620),
+  'void_overlord': ('twin_helix', 'orb', [[255, 150, 170], [236, 30, 70], [150, 40, 255], [90, 0, 200]], 0.7, 1.1, 1.1, 1.05, 1.2, 900),
+  'solar_emperor': ('halo', 'star', [[255, 255, 230], [255, 220, 76], [255, 156, 10], [255, 240, 166]], 2.6, 1.0, 1.05, 1.0, 0.9, 300),
+  'frost_monarch': ('falling_embers', 'crystal', [[255, 255, 255], [196, 240, 255], [116, 200, 255], [86, 150, 255]], 2.8, 0.7, 1.3, 1.05, 1.0, 420),
   'storm_dragon': ('twin_helix', 'comet', [[255, 255, 255], [146, 240, 255], [40, 170, 255], [116, 96, 255]], 1.1, 1.4, 1.15, 1.05, 1.6, 1000),
   'blood_demon_king': ('flame_scorched', 'orb', [[255, 96, 86], [236, 14, 42], [190, 0, 34], [140, 0, 32]], 0.56, 0.95, 1.05, 1.05, 1.0, 760),
   'abyssal_king': ('vortex_shroud', 'orb', [[226, 255, 255], [66, 236, 240], [0, 166, 206], [26, 80, 186]], 0.95, 0.85, 1.05, 1.05, 1.0, 960),
   'soul_reaper': ('rising_motes', 'comet', [[236, 255, 246], [110, 255, 210], [56, 186, 196], [126, 76, 226]], 1.15, 0.75, 1.3, 1.6, 1.0, 640),
   'verdant_dragon': ('rune_circle', 'tear', [[255, 255, 206], [156, 255, 126], [46, 222, 116], [0, 156, 96]], 1.45, 0.85, 1.15, 1.1, 0.7, 560),
-  'thronebreaker': ('square_seal', 'orb', [[255, 242, 176], [255, 204, 66], [234, 44, 44], [255, 222, 126]], 2.2, 1.0, 1.4, 1.0, 0.5, 250),
+  'thronebreaker': ('flame_scorched', 'orb', [[255, 230, 120], [255, 176, 30], [232, 30, 40], [170, 0, 30]], 0.56, 0.95, 1.05, 1.05, 1.0, 760),
 }
 # weapon auras: drawn along the weapon you hold (any weapon)
 WEAPON = [

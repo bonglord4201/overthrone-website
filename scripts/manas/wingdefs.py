@@ -74,3 +74,10 @@ MEMBRANE = {
     'abyssal_king_wings': dict(mem=(30, 90, 140), dark=(10, 30, 60), rim=(70, 235, 220), vein=(60, 200, 210), glow=(70, 235, 220), bone=(20, 50, 80), bone_rim=(70, 235, 220), claw=(200, 255, 255), scales=True, size=1.08, fingers=[(70, 17.0), (46, 24.0), (24, 27.0), (2, 26.0), (-20, 21.0)], gem=(70, 235, 220), fx='storm', fxcol=(120, 255, 240), fxcol2=(200, 255, 255), soft=(40, 200, 220)),
     'soul_reaper_wings': dict(mem=(36, 26, 52), dark=(12, 8, 18), rim=(160, 90, 255), vein=(110, 60, 200), glow=(190, 120, 255), bone=(232, 224, 208), bone_rim=(140, 130, 115), claw=(232, 224, 208), tears=12, size=1.1, gem=(190, 120, 255), fx='void', fxcol=(200, 150, 255), fxcol2=(80, 40, 140), soft=(150, 70, 255)),
 }
+
+# v14 effect identity of each premium collection (scripts/manas/essence.py THEMES); every other wing gets a theme made
+# from its own fx family and colours (essence.auto_theme)
+ESSENCE = {'celestial_sovereign_wings': 'celestial', 'solar_emperor_wings': 'solar', 'frost_monarch_wings': 'frost', 'verdant_dragon_wings': 'verdant',
+           'thronebreaker_wings': 'throne', 'void_overlord_wings': 'void', 'storm_dragon_wings': 'storm', 'blood_demon_king_wings': 'blood',
+           'abyssal_king_wings': 'abyss', 'soul_reaper_wings': 'soul'}
+for _k, _v in ESSENCE.items(): (WINGS.get(_k) or MEMBRANE[_k])['essence'] = _v

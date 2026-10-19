@@ -114,6 +114,13 @@ def wings(name):
     W4.place_back(m, root_y=WS[1])
     return m
 
-def helm(name): return C9.helm(name)
+def helm(name):
+    """v14: the v10 helm + an animated celestial halo floating above the crown (essence.halo). The helmet slot is placed
+    by a fixed lift, not by the model's bounding box (CosmeticLayer.applyAutoOrient), so the halo doesn't move the helm."""
+    import essence
+    m = C9.helm(name); m.anims = []
+    E = essence.halo(m, Kit(m), 19.6, [(255, 186, 60), (255, 232, 150), (255, 252, 230)], gems=(84, 232, 255), L=3.0)
+    clips(m, lambda c: {}, 3.0, E, names=('idle',))
+    return m
 def armor(name): return C9.armor(name)
 def weapon(name): return C9.weapon(name)

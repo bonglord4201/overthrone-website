@@ -172,10 +172,13 @@ class BB:
     def to_dict(self):
         w, h = self.atlas.img.size
         def texdef(at):
-            b = io.BytesIO(); at.img.save(b, 'PNG')
-            return {'path': '', 'name': self.name + at.suffix + '.png', 'folder': '', 'namespace': '', 'id': str(at.index), 'group': '', 'width': w, 'height': h,
-                    'uv_width': w, 'uv_height': h, 'particle': False, 'use_as_default': False, 'layers_enabled': False, 'sync_to_project': '',
-                    'render_mode': 'default', 'render_sides': 'auto', 'frame_time': 1, 'frame_order_type': 'loop', 'frame_order': '',
+            b = io.BytesIO(); img = at.strip() if hasattr(at, 'strip') else at.img; img.save(b, 'PNG', optimize=True)
+            # an animated texture (FlowAtlas) is a vertical strip of frames: uv_width/uv_height = one frame, the mod plays
+            # frame (ticks / frame_time) % frames (BBModelRenderer.computeUv); everything else = the model resolution
+            fw, fh = (at.fw, at.fh) if hasattr(at, 'strip') else (w, h)
+            return {'path': '', 'name': self.name + at.suffix + '.png', 'folder': '', 'namespace': '', 'id': str(at.index), 'group': '', 'width': img.width, 'height': img.height,
+                    'uv_width': fw, 'uv_height': fh, 'particle': False, 'use_as_default': False, 'layers_enabled': False, 'sync_to_project': '',
+                    'render_mode': 'default', 'render_sides': 'auto', 'frame_time': getattr(at, 'frame_time', 1), 'frame_order_type': 'loop', 'frame_order': '',
                     'frame_interpolate': False, 'visible': True, 'internal': True, 'saved': False, 'uuid': uid(), 'relative_path': '',
                     'source': 'data:image/png;base64,' + base64.b64encode(b.getvalue()).decode()}
         texs = [texdef(self.atlas)] + [texdef(a) for a in self.extra]

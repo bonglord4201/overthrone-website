@@ -1,0 +1,35 @@
+{
+  "id": "overthrone:solar_emperor_blade",
+  "display_name": "Solar Emperor Spear",
+  "slot": "weapon",
+  "weapon_type": "sword",
+  "force_equip_allowed": true,
+  "model": "models/weapon/solar_emperor_blade.bbmodel",
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "offset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rotation": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "particles": {
+    "particle": "minecraft:flame",
+    "on": [
+      "attack",
+      "use",
+      "charging"
+    ],
+    "count": 14,
+    "spread": 0.35,
+    "speed": 0.04,
+    "interval": 4
+  }
+}

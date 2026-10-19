@@ -1,0 +1,23 @@
+{
+  "id": "overthrone:void_overlord_helm",
+  "display_name": "Void Overlord Helm",
+  "slot": "helmet",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "model": "models/helmet/void_overlord_helm.bbmodel",
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "offset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rotation": [
+    0.0,
+    0.0,
+    0.0
+  ]
+}

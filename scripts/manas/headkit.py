@@ -78,14 +78,28 @@ def halo(name, spec):
                             spec.get('spikes', 0), spec.get('spike_len', 2.5), spec.get('broken', ()), seed=len(name), glow_runes=spec.get('runes_glow'))
     flat(m, 'halo', img, Rt, y, glow=spec.get('emissive', True))
     if g is not None: flat(m, 'halo', g, Rt, y + 0.03, glow=True, thick=0)
+    # v14: a solid 3D band under the painted top, so the halo has real depth and is seen from the side, not a flat line
+    import essence
+    essence.torus(m, k, 'halo', y - 1.2, 5.5, h=3.6, w=2.0, col=spec['col'], light=spec['light'], dark=spec['dark'], key='hr3', broken=spec.get('broken', ()))
     if spec.get('gems'):   # raised 3D gems on the cardinal points
         for i in range(4):
             a = math.radians(i * 90 + 45); gem3d(m, k, 'halo', [math.cos(a) * 5.5, y + 0.5, math.sin(a) * 5.5], 0.9, spec['gems'], rot=(45, i * 90 + 45, 0))
+    # v14: a band of glowing runes standing round the rim; a highlight runs round it (animated texture, essence.py)
+    import essence
+    rcol = spec.get('runes_glow') or spec['light']
+    rb = essence.flow(m).add('runes', lambda: essence.rune_band_frames([tuple(int(v * 0.7) for v in rcol), rcol, (255, 255, 255)]))
+    n_, rad_ = 28, 5.5; u0, v0, u1, v1 = rb
+    for i in range(n_):
+        a0, a1 = 2 * math.pi * i / n_, 2 * math.pi * (i + 1) / n_
+        if any(b0 <= math.degrees(a0) % 360 <= b1 for b0, b1 in spec.get('broken', ())): continue
+        A = np.array([math.cos(a0) * rad_, y + 0.8, math.sin(a0) * rad_]); B = np.array([math.cos(a1) * rad_, y + 0.8, math.sin(a1) * rad_])
+        essence.plane(m, 'halo', (A + B) / 2, B - A, [0, 1, 0], np.linalg.norm(B - A) * 1.06, 1.4, UV((u0 + (u1 - u0) * i / n_, v0, u0 + (u1 - u0) * (i + 1) / n_, v1), rb.tex))
     tr = {'halo': {'rotation': [(0, 0, 'query.anim_time*30', 0)], 'position': [(0, 0, 'math.sin(query.anim_time*90)*0.4', 0)]}}
     if spec.get('inner'):
         m.bone('inner', [0, y + 0.8, 0], 'tilt')
         img2, g2, Rt2 = paint_ring(4.0, 3.3, spec['inner'], spec['light'], spec['dark'], None, 0, False, spikes=12, spike_len=1.2, seed=7)
         flat(m, 'inner', img2, Rt2, y + 0.8, glow=True, thick=0.2)
+        essence.torus(m, k, 'inner', y + 0.4, 3.65, h=2.2, w=1.2, col=spec['inner'], light=spec['light'], dark=spec['dark'], n=24, key='ir3')
         tr['inner'] = {'rotation': [(0, 0, '-query.anim_time*55', 0)], 'position': [(0, 0, 'math.sin(query.anim_time*90+60)*0.4', 0)]}
     if spec.get('rays'):
         m.bone('rays', [0, y - 0.2, 0], 'tilt')

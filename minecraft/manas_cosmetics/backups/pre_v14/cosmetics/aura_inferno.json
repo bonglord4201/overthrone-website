@@ -1,0 +1,40 @@
+{
+  "id": "overthrone:inferno",
+  "display_name": "Inferno",
+  "slot": "aura",
+  "aura": {
+    "style": "flame",
+    "particle": "orb",
+    "colors": [
+      [
+        255,
+        222,
+        66
+      ],
+      [
+        255,
+        146,
+        0
+      ],
+      [
+        255,
+        76,
+        0
+      ],
+      [
+        232,
+        24,
+        0
+      ]
+    ],
+    "particle_count": 800,
+    "size": 0.56,
+    "speed": 1.05,
+    "radius": 0.88,
+    "height": 1.12,
+    "alpha": 1.0,
+    "rotation_speed": 1.0,
+    "emissive": true,
+    "motion_response": 0.0
+  }
+}

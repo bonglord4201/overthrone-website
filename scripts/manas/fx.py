@@ -99,9 +99,19 @@ class Particles:
         if plate:
             self.m.plate(sc, [pos[0] - h, pos[1] - h, pos[2] - 0.05], [pos[0] + h, pos[1] + h, pos[2] + 0.05], uv, origin=list(pos), rotation=list(rot))
         else:
-            self.m.box(sc, [pos[0] - h, pos[1] - h, pos[2] - h], [pos[0] + h, pos[1] + h, pos[2] + h], uv, uv, origin=list(pos), rotation=list(rot))
+            # v14: no more glowing cubes. The particle becomes a twinkling glow sprite (animated, see-through, full bright)
+            # in the particle's own colour, on crossed planes so it reads from every side (essence.py)
+            import essence
+            at = self.m.atlas if getattr(uv, 'tex', 0) == 0 else self.m.extra[uv.tex - 1]
+            col = at.img.getpixel((int((uv[0] + uv[2]) / 2), int((uv[1] + uv[3]) / 2)))[:3]
+            hi = tuple(min(255, int(c + (255 - c) * 0.55)) for c in col); lo = tuple(int(c * 0.85) for c in col)
+            sp = essence.flow(self.m).add('pspark%d_%02x%02x%02x' % (i % 3, *col), lambda: essence.sparkle_frames([lo, hi, (255, 255, 255)], phase=(i % 3) / 3))
+            essence.cross_sprite(self.m, sc, list(pos), max(2.2, size * 3.4), sp, planes=2)
         L = self.L
-        tr = {'position': cycle_keys(L, phase, lambda f: (round(delta[0] * f, 3), round(delta[1] * f, 3), round(delta[2] * f, 3)))}
+        # a gentle arc instead of a straight line (sideways bulge, sampled at the break points; the mod interpolates linearly)
+        lat = [-delta[2] * 0.25 + (0.4 if i % 2 else -0.4), 0, delta[0] * 0.25]
+        arc = lambda f: tuple(round(delta[k] * f + lat[k] * math.sin(math.pi * f), 3) for k in range(3))
+        tr = {'position': cycle_keys(L, phase, arc, breaks=(0.0, 0.25, 0.5, 0.75, 1.0))}
         if sway: tr['rotation'] = [(0, 0, 0, f'math.sin(query.anim_time*160+{i * 70})*{sway}')]
         self.tracks[self.nm + '%d' % i] = tr
         st = {'scale': cycle_keys(L, phase, lambda f: (round(fade(f, fade_in, fade_out), 3),) * 3, breaks=(0.0, fade_in, fade_out, 1.0))}

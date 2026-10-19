@@ -46,6 +46,10 @@ for fn in sorted(os.listdir(os.path.join(MC, 'cosmetics'))):
         c = a.get('colors', [])
         if not c or not all(isinstance(x, list) and len(x) == 3 and all(isinstance(v, int) and 0 <= v <= 255 for v in x) for x in c):
             err(fn + ': colors must be [[r,g,b],...]')
+        FLAT = {'magic_circle', 'arcane_array', 'summoning_circle', 'square_seal', 'octagram_array', 'pentacle_array', 'nested_polygons',
+                'seal_of_solomon', 'sunburst_mandala', 'radiant_sun', 'clockwork_seal', 'astral_compass', 'pulsar_seal'}
+        if d.get('slot') == 'aura' and a.get('style') in FLAT:   # MagicCircleStyle lays its lines flat on the ground: invisible side-on
+            err(fn + ': aura style ' + a['style'] + ' is drawn flat on the ground (not visible from the side); use a particle style')
         if a.get('motion_response', 1.0) != 0:   # the mod pushes particles back by velocity x 4 x motion_response (missing = 1.0)
             err(fn + ': motion_response must be 0, otherwise the aura falls behind the player when they move')
         if d.get('slot') == 'weapon_aura' and (a.get('radius', 1) > 0.5 or 'offset' not in a):
@@ -77,7 +81,13 @@ for fn in sorted(os.listdir(os.path.join(MC, 'cosmetics'))):
                 sizes.append(gz)
                 res = m.get('resolution', {})
                 for t in m.get('textures', []):
-                    if t.get('uv_width') != res.get('width') or t.get('uv_height') != res.get('height'): err(fn + ': texture ' + t.get('name', '') + ' size differs from the model resolution')
+                    uw, uh, pw, ph = t.get('uv_width'), t.get('uv_height'), t.get('width'), t.get('height')
+                    # an animated strip (BBModelRenderer.computeUv, first branch): png width == uv_width and png height a
+                    # whole number (> 1) of uv_height frames; the mod plays frame (ticks / frame_time) % frames
+                    strip = uw and uh and pw == uw and ph and ph > uh and ph % uh == 0
+                    if strip:
+                        if int(t.get('frame_time') or 0) < 1: err(fn + ': animated texture ' + t.get('name', '') + ' needs frame_time >= 1')
+                    elif uw != res.get('width') or uh != res.get('height'): err(fn + ': texture ' + t.get('name', '') + ' size differs from the model resolution')
                 if d.get('slot') == 'back' and d.get('needs_y_flip') is not True: err(fn + ': back cosmetics need "needs_y_flip": true')
                 ys = [v for e in m['elements'] for v in (e['from'][1], e['to'][1])]
                 tops = [g for g in m['outliner'] if isinstance(g, dict)]

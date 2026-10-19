@@ -1,0 +1,40 @@
+{
+  "id": "overthrone:blood_demon_king_aura",
+  "display_name": "Blood Demon King Aura",
+  "slot": "aura",
+  "aura": {
+    "style": "flame_scorched",
+    "particle": "orb",
+    "colors": [
+      [
+        255,
+        96,
+        86
+      ],
+      [
+        236,
+        14,
+        42
+      ],
+      [
+        190,
+        0,
+        34
+      ],
+      [
+        140,
+        0,
+        32
+      ]
+    ],
+    "particle_count": 760,
+    "size": 0.56,
+    "speed": 0.95,
+    "radius": 1.05,
+    "height": 1.05,
+    "alpha": 1.0,
+    "rotation_speed": 1.0,
+    "emissive": true,
+    "motion_response": 0.0
+  }
+}

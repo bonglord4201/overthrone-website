@@ -1,0 +1,35 @@
+{
+  "id": "overthrone:abyssal_king_blade",
+  "display_name": "Abyssal King Trident",
+  "slot": "weapon",
+  "weapon_type": "sword",
+  "force_equip_allowed": true,
+  "model": "models/weapon/abyssal_king_blade.bbmodel",
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "offset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rotation": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "particles": {
+    "particle": "minecraft:glow",
+    "on": [
+      "attack",
+      "use",
+      "charging"
+    ],
+    "count": 14,
+    "spread": 0.35,
+    "speed": 0.04,
+    "interval": 4
+  }
+}

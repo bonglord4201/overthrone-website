@@ -26,3 +26,20 @@ The new generator (`scripts/manas/vox.py`) builds **solid plates with real thick
 3. Each strip's front face samples its own slice of one painted texture for the whole plate, so shading and engraving run continuously across the strips. The sides use rim materials.
 4. Plates are angled and layered on purpose (bevelled halves meeting in a ridge, lames overlapping, flares) to change the player's silhouette.
 5. Feathers use the same extrusion: broad, tapered, solid feather shapes with varied profiles (primary, secondary, covert), not shared flat sticks.
+
+## v14 additions (checked in the same decompiled jar)
+
+| Feature | What the code does |
+|---|---|
+| **Animated textures** | `BBModelRenderer.computeUv`: if a texture's PNG width equals its `uv_width` and its PNG height is a whole number (more than 1) of `uv_height` frames, the face uv is read inside one frame. The frame shown is `floor(ticks / frame_time) % frames`. Frames are synced to players with the model (`SyncCosmeticRegistryPayload`). Used for travelling light streams, rune bands, pulsing cores and twinkling sparkles. |
+| **`render_mode`** | Read per texture. `emissive` (or a name ending `_e`) means full-bright. `additive` is NOT additive blending in 1.0.6: `openPass` gives it `entityCutout` plus full-bright. If any texture is `layered` or `emissive` and all textures are the same size, every texture is drawn over every face as a layer (`layeredTextures`). We never set `render_mode` and use the `_e` name instead. |
+| **See-through textures** | `detectTranslucentAlpha` decodes the PNG (8-bit RGBA, non-interlaced, any size) and counts half-transparent against opaque pixels. More half-transparent pixels means `cosmeticTranslucent` (normal alpha blend, not additive). Our flow textures keep alpha at 248 or below, so they always qualify. |
+| **Shading** | Every face, full-bright ones included, gets vanilla entity diffuse light, which depends on its normal. Upright planes come out at about 60–75%, up-facing ones at 100%. Light sprites get an extra horizontal plane so they don't turn grey. |
+| **Helmet / above_head placement** | A fixed lift (`applyAutoOrient`), not the bounding box. A halo can be added to a helm without moving it, as long as no bone is named `head`. Back models ARE centred on their rest bounding box (handled by `W4.place_back`). |
+| **Aura styles drawn flat** | The `MagicCircleStyle` family (magic_circle, arcane_array, summoning_circle, the seals and arrays, nested_polygons, sunburst_mandala, radiant_sun, astral_compass) draws its lines as quads lying on the ground (`bandSeg` / `flatQuad`), so they vanish side-on. Every other style draws camera-facing particles. The validator rejects the flat ones for the aura slot. |
+
+The tools that build on these facts are in `scripts/manas/essence.py`:
+- `FlowAtlas`: the animated texture
+- `ribbon`: crossed planes along a Catmull-Rom curve
+- `Motes`: sprites flying Bezier paths
+- `ring3d` / `torus`: solid rings

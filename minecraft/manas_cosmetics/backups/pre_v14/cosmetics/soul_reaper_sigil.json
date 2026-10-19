@@ -1,0 +1,23 @@
+{
+  "id": "overthrone:soul_reaper_sigil",
+  "display_name": "Soul Reaper Sigil",
+  "slot": "ground",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "model": "models/ground/soul_reaper_sigil.bbmodel",
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "offset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rotation": [
+    0.0,
+    0.0,
+    0.0
+  ]
+}

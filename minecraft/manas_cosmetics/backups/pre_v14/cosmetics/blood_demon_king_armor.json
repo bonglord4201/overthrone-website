@@ -1,0 +1,24 @@
+{
+  "id": "overthrone:blood_demon_king_armor",
+  "display_name": "Blood Demon King Armour",
+  "slot": "armor_set",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "model": "models/armor_set/blood_demon_king_armor.bbmodel",
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "offset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rotation": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "needs_y_flip": false
+}

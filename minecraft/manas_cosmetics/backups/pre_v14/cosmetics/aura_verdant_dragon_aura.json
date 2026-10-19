@@ -1,0 +1,40 @@
+{
+  "id": "overthrone:verdant_dragon_aura",
+  "display_name": "Verdant Dragon Emperor Aura",
+  "slot": "aura",
+  "aura": {
+    "style": "rune_circle",
+    "particle": "tear",
+    "colors": [
+      [
+        255,
+        255,
+        206
+      ],
+      [
+        156,
+        255,
+        126
+      ],
+      [
+        46,
+        222,
+        116
+      ],
+      [
+        0,
+        156,
+        96
+      ]
+    ],
+    "particle_count": 560,
+    "size": 1.45,
+    "speed": 0.85,
+    "radius": 1.15,
+    "height": 1.1,
+    "alpha": 1.0,
+    "rotation_speed": 0.7,
+    "emissive": true,
+    "motion_response": 0.0
+  }
+}

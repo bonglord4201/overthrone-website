@@ -1,6 +1,6 @@
 # OVERTHRONE SMP: full handoff (read all of this before changing anything)
 
-Last updated: 2026-10-19 (cosmetics v12). Written by Claude (Claude Code) for whoever works on the project next.
+Last updated: 2026-10-19 (cosmetics v14). Written by Claude (Claude Code) for whoever works on the project next.
 The owner is **__SK1TZ__**. They are not a coder: explain things simply, step by step, and give **complete
 files** to drag and drop (not snippets). They upload files to the server themselves through the
 MintServers file manager. Nobody can upload for them.
@@ -411,6 +411,22 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
     - 'offset' lifts an aura: solar_crown = sunburst_mandala at offset 2.12, radius 0.5 (a sun crown over the head).
     - Backup: minecraft/manas_cosmetics/backups/pre_v13/cosmetics/ (57 files). Guide INSTALL-V13-AURAS.md, zip
       marketing/overthrone-auras-v13.zip. Discord post: discord-bot/announcement-cosmetics-v13.txt. NOT tested in game.
+  - **v14 (2026-10-19): designed effects + 3D halos/auras** (owner's brief "COMPLETE WING, AURA & MAGICAL EFFECTS
+    OVERHAUL" + Celestial reference sheet; then "halos/auras are 2D, can't be seen"). Audit: minecraft/manas_cosmetics/AUDIT-V14.md
+    (scripts/manas/audit.py). New facts in MODEL-CONSTRAINTS.md (animated textures work: png height = n x uv_height,
+    frame_time ticks; render_mode additive = cutout+fullbright only; MagicCircleStyle auras are flat on the ground).
+    - scripts/manas/essence.py: FlowAtlas (animated texture slot 3, *_flow_e, 24 frames x 2 ticks), stream/bolt/pulse/
+      sparkle/rune-band painters, ribbon() (crossed planes along a Catmull-Rom path, each segment its slice of the strip,
+      can span bones), Motes (Bezier paths, tumble, dissolve), THEMES (10 set identities) + auto_theme, wing_essence
+      (feathered) / membrane_essence (bat), halo() (Celestial helm halo), ring3d()/torus() (solid 3D rings).
+    - wingkit.build/build_membrane use essence for EVERY wing (wingdefs.ESSENCE maps the set wings to themes).
+    - fx.Particles (used by halos, crowns, horns, helms, armour, pets, divine wings, tails) now draws twinkling glow
+      sprites on crossed planes on arcs instead of glowing cubes: audit = 0 cube particles.
+    - headkit halos + heads4.sigil_halo get a torus band + rune band; celestial10.helm adds essence.halo at y 19.6.
+    - Auras: no MagicCircleStyle styles left (validator rejects them).
+    - Backup: minecraft/manas_cosmetics/backups/pre_v14/ (full models + cosmetics). Guide INSTALL-V14.md, zip
+      marketing/overthrone-cosmetics-v14.zip. Total download ~11 MB. NOT tested in game (network blocks Mojang).
+    - Next: 9 set armours/helms geometry (vox sculptor), crown/horn geometry, divine wings + tails streams, pets.
  for top quality the owner should buy/commission .bbmodel files (BuiltByBit, MCModels,
   ManasMods' Discord) and send them; setup steps in minecraft/manas_cosmetics/README.md.
   Waiting on the Manas Cosmetics jar (this session can't reach CurseForge/Modrinth). The particle file can be switched off

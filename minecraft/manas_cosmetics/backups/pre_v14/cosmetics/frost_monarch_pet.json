@@ -1,0 +1,23 @@
+{
+  "id": "overthrone:frost_monarch_pet",
+  "display_name": "Frost Fox (Frost Monarch)",
+  "slot": "pet",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "model": "models/pet/frost_monarch_pet.bbmodel",
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "offset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rotation": [
+    0.0,
+    0.0,
+    0.0
+  ]
+}

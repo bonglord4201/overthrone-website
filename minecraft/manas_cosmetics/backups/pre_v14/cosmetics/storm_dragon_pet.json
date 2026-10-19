@@ -1,0 +1,23 @@
+{
+  "id": "overthrone:storm_dragon_pet",
+  "display_name": "Storm Dragonling (Storm Dragon)",
+  "slot": "pet",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "model": "models/pet/storm_dragon_pet.bbmodel",
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "offset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rotation": [
+    0.0,
+    0.0,
+    0.0
+  ]
+}

@@ -330,7 +330,15 @@ def build(name, spec):
         VS.plate('harness', (0, -13.0, -1.1), 7.2, 8.6, [[(0.5, 0.0), (1.0, 0.18), (0.92, 0.6), (0.5, 1.0), (0.08, 0.6), (0.0, 0.18)]], lay, key='harness')
         if gm: gem3d(m, k, 'harness', [0, -12.4, -1.9], 1.7, gm, rot=(0, 0, 45))
     if spec.get('soft'): W4.soft_glow(m, k, spec['soft'])
-    fx = effects(m, k, spec.get('fx', 'angel'), spec.get('fxcol', (120, 230, 255)), spec.get('fxcol2', (255, 225, 140)), span=WH[0] + 8, top=WH[1])
+    if True:   # v14: designed streams + motes (essence.py) for every feathered wing, instead of the random cube particles
+        import essence
+        # emit points: the outer ends of the flight feathers (the layer bones on the hand), not the saber / crest tips
+        pts = [p for b in m.bones if b.startswith('lay') and b.endswith('_r') and m.bones[b]['origin'][0] > WW[0] - 1 for p in essence.rest_points(m, b)]
+        pts.sort(key=lambda p: -math.hypot(p[0] - WS[0], p[1] - WS[1])); tips = [list(p) for p in pts[:max(8, len(pts) // 6)]]
+        G = dict(WS=WS, WE=WE, WW=WW, WH=WH, tip=tips[0], tips=tips, gem=[0, -12.4, -1.9] if (gm and spec.get('harness', True) and spec.get('frame')) else None)
+        fx = essence.wing_essence(m, k, essence.theme(spec.get('essence'), spec.get('fx', 'angel'), spec.get('fxcol', (120, 230, 255)), spec.get('fxcol2', (255, 225, 140))), G, sz)
+    else:
+        fx = effects(m, k, spec.get('fx', 'angel'), spec.get('fxcol', (120, 230, 255)), spec.get('fxcol2', (255, 225, 140)), span=WH[0] + 8, top=WH[1])
     def anim(c):
         tr = {}
         for s, n in ((1, 'r'), (-1, 'l')): tr.update(wrap_tracks(c, n, s))
@@ -490,7 +498,10 @@ def build_membrane(name, spec):
                          [dict(inset=0, z=0, t=0.7, paint=vox.bevel_paint(sp, tuple(int(v * 0.6) for v in sp), False), side=solid_uv(k, 'sps', tuple(int(v * 0.6) for v in sp)))],
                          rot=(0, 0, s * (math.degrees(math.atan2(nrm[1], nrm[0])) - 90)), key='spike')
     if spec.get('soft'): W4.soft_glow(m, k, spec['soft'])
-    fx = effects(m, k, spec.get('fx', 'blood'), spec.get('fxcol', (255, 60, 40)), spec.get('fxcol2', (255, 180, 80)), span=W0[0] + 22 * sz, top=W0[1] + 12)
+    # v14: designed streams + motes for every membrane wing (essence.py); the named set themes, else one from its colours
+    import essence
+    fx = essence.membrane_essence(m, k, essence.theme(spec.get('essence'), spec.get('fx', 'blood'), spec.get('fxcol', (255, 60, 40)), spec.get('fxcol2', (255, 180, 80))),
+                                  dict(S0=S0, E0=E0, W0=W0, tips=tips, z=W0[2] - 0.9, gem=spec.get('gem')), sz)
     def anim(c):
         tr = {}
         for s, n in ((1, 'r'), (-1, 'l')):

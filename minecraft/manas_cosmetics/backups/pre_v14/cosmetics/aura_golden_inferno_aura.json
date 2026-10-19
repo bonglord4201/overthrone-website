@@ -1,0 +1,40 @@
+{
+  "id": "overthrone:golden_inferno_aura",
+  "display_name": "Golden Inferno Aura",
+  "slot": "aura",
+  "aura": {
+    "style": "flame",
+    "particle": "orb",
+    "colors": [
+      [
+        255,
+        238,
+        96
+      ],
+      [
+        255,
+        198,
+        0
+      ],
+      [
+        255,
+        142,
+        0
+      ],
+      [
+        255,
+        98,
+        0
+      ]
+    ],
+    "particle_count": 800,
+    "size": 0.56,
+    "speed": 0.95,
+    "radius": 0.88,
+    "height": 1.12,
+    "alpha": 1.0,
+    "rotation_speed": 1.0,
+    "emissive": true,
+    "motion_response": 0.0
+  }
+}
