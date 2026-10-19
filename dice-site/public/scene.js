@@ -350,17 +350,59 @@
     }
   };
 
-  function paintSky() {
-    const s = theme.scene;
+  // Loaded background photos, kept so switching back to a theme is instant.
+  const imgCache = new Map();
+
+  function paintGradientScene() {
     const g = sctx.createLinearGradient(0, 0, 0, H);
-    s.sky.forEach(([stop, c]) => g.addColorStop(stop, c));
+    (theme.sky || [[0, "#000"], [1, "#000"]]).forEach(([stop, c]) => g.addColorStop(stop, c));
     sctx.fillStyle = g;
     sctx.fillRect(0, 0, W, H);
-    for (const l of s.layers) {
+    for (const l of (theme.layers || [])) {
       sctx.save();
       DRAW[l.type](sctx, l);
       sctx.restore();
     }
+  }
+
+  // Draw an image to cover the whole canvas (like CSS background-size: cover).
+  function drawCover(img) {
+    const scale = Math.max(W / img.width, H / img.height);
+    const w = img.width * scale, h = img.height * scale;
+    sctx.drawImage(img, (W - w) / 2, (H - h) / 2, w, h);
+  }
+
+  function paintTint() {
+    if (!theme.tint) return;
+    const g = sctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, theme.tint[0]);
+    g.addColorStop(1, theme.tint[1]);
+    sctx.fillStyle = g;
+    sctx.fillRect(0, 0, W, H);
+  }
+
+  function paintSky() {
+    if (!theme.image) { paintGradientScene(); return; }
+    // Show the fallback gradient immediately, then the photo once it loads.
+    paintGradientScene();
+    const token = theme.id;
+    const cached = imgCache.get(theme.image);
+    if (cached && cached.complete && cached.naturalWidth) {
+      drawCover(cached); paintTint(); return;
+    }
+    const img = cached || new Image();
+    if (!cached) {
+      img.decoding = "async";
+      img.src = theme.image;
+      imgCache.set(theme.image, img);
+    }
+    img.onload = () => {
+      // Ignore if the viewer switched themes before this finished loading.
+      if (theme.id !== token) return;
+      paintGradientScene();
+      drawCover(img);
+      paintTint();
+    };
   }
 
   // ---- particles ----
@@ -450,7 +492,7 @@
   function frame() {
     raf = requestAnimationFrame(frame);
     if (document.hidden) return;
-    const pc = theme.scene.particles;
+    const pc = theme.particles;
     fctx.clearRect(0, 0, W, H);
     for (let i = 0; i < parts.length; i++) {
       if (STEP[pc.type](parts[i], pc.rgb) === false) parts[i] = MAKE[pc.type](false);
@@ -475,7 +517,7 @@
     paintSky();
     fctx.clearRect(0, 0, W, H);
     if (reduced) return;
-    const pc = theme.scene.particles;
+    const pc = theme.particles;
     const n = Math.round(pc.count * Math.min(1, (W * H) / (1280 * 800)) + pc.count * 0.25);
     parts = Array.from({ length: Math.min(n, pc.count) }, () => MAKE[pc.type](true));
     raf = requestAnimationFrame(frame);

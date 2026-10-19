@@ -29,17 +29,21 @@ this folder.
 
 Picked from the theme menu next to the dice, in three groups:
 
-- **Worlds** (10 framed, animated scenes, each with a light source, a hero structure,
-  side pillars and a reflective floor): Hell (default), Heaven, Underwater, Void, Neon City,
-  Jungle, Frozen, Egypt, Candy, Blood Moon.
+- **Worlds** (10 cinematic image backgrounds with animated particles and glass panels):
+  Inferno, Celestial Kingdom, Abyssal Ocean, Cyberpunk Neon, Ancient Jungle, Cosmic Void,
+  Frostbound Empire, Golden Pharaoh, Candy Dream, Shadow Realm.
 - **Metal**: Gold, Silver, Bronze.
 - **Colors**: Blue, Dark Blue, Green, Dark Green, Red, Dark Red, Pink, Black & White, Black.
 
-Each theme is one entry in `public/themes.js`: its page colors (`ui`) plus a `scene` that
-`public/scene.js` paints — a sky gradient, a back-to-front list of layers (eclipse, mountains,
-castle, pyramids, pillars, waterfalls, crystals, floor and more) and one kind of moving particle.
-Copy an entry and change it to add a theme; it appears in the menu automatically. People who turn
-on "reduce motion" get the still picture without moving particles.
+Each theme is one entry in `public/themes.js`: its page colors (`ui`), an optional background
+image (`image`) in `public/images/th/`, a fallback gradient (`sky`), a readability `tint`, and
+one kind of moving particle. `public/scene.js` draws the image (cover-fit) with the tint and
+particles on top; themes without an image are drawn from gradient + shape layers instead.
+
+**To use your own higher-resolution art** for a world, drop a file with the same name into
+`public/images/th/` (e.g. `hell.webp`, `candy.webp`) and redeploy. The current images were cut
+from the reference sheet and are fairly low-res; replacing them with crisp art is the main way to
+sharpen the look.
 
 ## Admin panel
 

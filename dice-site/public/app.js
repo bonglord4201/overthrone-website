@@ -353,8 +353,8 @@
   }
 
   // ---- themes ----
-  const UI_VARS = { bg: "--bg", panel: "--panel", panelSolid: "--panel-solid", edge: "--edge", select: "--select-fg", pageFg: "--page-fg", brand: "--brand", brandAccent: "--brand-accent" };
-  const UI_DEFAULTS = { pageFg: "rgba(255, 255, 255, .78)", brand: "#ffffff", brandAccent: "var(--go)" };
+  const UI_VARS = { bg: "--bg", panel: "--panel", panelSolid: "--panel-solid", edge: "--edge", select: "--select-fg", pageFg: "--page-fg", brand: "--brand", brandAccent: "--brand-accent", accent: "--accent", accentFg: "--accent-fg" };
+  const UI_DEFAULTS = { pageFg: "rgba(255, 255, 255, .78)", brand: "#ffffff", brandAccent: "var(--go)", accent: "#ffe100", accentFg: "#3a1d00" };
   function buildThemeMenu() {
     const groups = new Map();
     for (const t of THEMES) {
