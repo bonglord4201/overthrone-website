@@ -19,7 +19,11 @@
   const THEMES = window.THEMES;
   const themeById = (id) => THEMES.find((t) => t.id === id);
   // Older theme names that were renamed.
-  const OLD_THEMES = { "sab-blue": "dark-blue", "sab-green": "dark-green", "sab-red": "dark-red", "sab-black": "black", ocean: "underwater", midnight: "galaxy" };
+  const OLD_THEMES = {
+    "sab-blue": "dark-blue", "sab-green": "dark-green", "sab-red": "dark-red", "sab-black": "black",
+    ocean: "underwater", midnight: "void", galaxy: "void", arctic: "frozen", desert: "egypt",
+    sakura: "candy", haunted: "blood", storm: "void", casino: "jungle"
+  };
   const KEY_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const ID_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
   const ID_RE = /^[A-HJ-NP-Za-km-z2-9]{10}$/;

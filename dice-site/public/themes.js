@@ -10,18 +10,23 @@
 
 window.THEMES = [
   // ---------- Worlds ----------
+  // Each world builds a framed scene: sky, a light source (eclipse/sun/glow),
+  // background structures, a hero structure, waterfalls, side pillars, a glossy
+  // reflective floor, then particles.
   {
     id: "hell", name: "Hell", group: "Worlds",
     ui: { bg: "#170403", panel: "rgba(110, 10, 6, .55)", panelSolid: "#3a0805", edge: "rgba(255, 214, 205, .5)", select: "#8e0f08" },
     scene: {
-      sky: [[0, "#1a0202"], [0.5, "#460604"], [0.82, "#a3170a"], [1, "#ff5a14"]],
+      sky: [[0, "#120101"], [0.45, "#4a0705"], [0.8, "#9c160a"], [1, "#2a0402"]],
       layers: [
-        { type: "glow", x: 0.5, y: 1.05, r: 0.75, rgb: "255, 110, 30", a: 0.55 },
-        { type: "spires", color: "#2e0604", base: 0.8, amp: 0.42, n: 16, seed: 3 },
-        { type: "mountains", color: "#1c0302", base: 0.88, amp: 0.12, seed: 5 },
-        { type: "lava", base: 0.9, seed: 7 },
-        { type: "mountains", color: "#0d0101", base: 0.985, amp: 0.05, seed: 9 },
-        { type: "vignette", a: 0.55 }
+        { type: "eclipse", x: 0.5, y: 0.2, r: 0.1, rgb: "255, 70, 30", core: "#1a0302" },
+        { type: "spires", color: "#280504", base: 0.84, amp: 0.46, n: 18, seed: 3 },
+        { type: "castle", color: "#180303", base: 0.86, h: 0.28, seed: 4, gate: "255, 110, 40", win: "255, 140, 50" },
+        { type: "pillars", color: "#1e0403", base: 0.9, top: 0.14, line: "rgba(255,120,60,.25)" },
+        { type: "mountains", color: "#0e0201", base: 0.9, amp: 0.1, seed: 6 },
+        { type: "lava", base: 0.87, seed: 7 },
+        { type: "floor", y: 0.9, rgb: "255, 80, 30", dark: "22, 2, 2", glow: "255, 130, 50" },
+        { type: "vignette", a: 0.5 }
       ],
       particles: { type: "ember", rgb: "255, 120, 40", count: 80 }
     }
@@ -30,44 +35,51 @@ window.THEMES = [
     id: "heaven", name: "Heaven", group: "Worlds",
     ui: { bg: "#bfe3ff", panel: "rgba(40, 90, 150, .62)", panelSolid: "#2c5f96", edge: "rgba(255, 236, 170, .95)", select: "#a8790a", pageFg: "#2f4560", brand: "#1d3a5c", brandAccent: "#c98a00" },
     scene: {
-      sky: [[0, "#6db8f5"], [0.5, "#c6e5ff"], [1, "#fffaf0"]],
+      sky: [[0, "#6db8f5"], [0.5, "#cfeaff"], [1, "#fff6e4"]],
       layers: [
-        { type: "rays", x: 0.5, y: -0.15, rgb: "255, 246, 205", a: 0.22, n: 14, seed: 2 },
-        { type: "glow", x: 0.5, y: -0.05, r: 0.6, rgb: "255, 244, 200", a: 0.95 },
-        { type: "clouds", y: 0.22, rgb: "255, 255, 255", a: 0.55, n: 5, size: 0.05, seed: 4 },
-        { type: "clouds", y: 0.66, rgb: "255, 255, 255", a: 0.8, n: 7, size: 0.08, seed: 6 },
-        { type: "clouds", y: 0.84, rgb: "255, 255, 255", a: 0.95, n: 9, size: 0.1, seed: 8 }
+        { type: "rays", x: 0.5, y: -0.12, rgb: "255, 246, 205", a: 0.28, n: 16, seed: 2 },
+        { type: "glow", x: 0.5, y: 0, r: 0.6, rgb: "255, 244, 200", a: 0.95 },
+        { type: "clouds", y: 0.2, rgb: "255, 255, 255", a: 0.5, n: 5, size: 0.05, seed: 4 },
+        { type: "castle", color: "#eadfae", base: 0.82, h: 0.3, seed: 5, gate: "255, 240, 190", win: "255, 230, 150" },
+        { type: "pillars", color: "#f0e6bf", base: 0.86, top: 0.1, line: "rgba(200,170,90,.4)" },
+        { type: "clouds", y: 0.74, rgb: "255, 255, 255", a: 0.85, n: 7, size: 0.09, seed: 6 },
+        { type: "floor", y: 0.86, rgb: "255, 240, 190", dark: "150, 180, 210", glow: "255, 255, 240" },
+        { type: "clouds", y: 0.96, rgb: "255, 255, 255", a: 0.95, n: 9, size: 0.11, seed: 8 }
       ],
-      particles: { type: "sparkle", rgb: "255, 220, 120", count: 40 }
+      particles: { type: "sparkle", rgb: "255, 220, 120", count: 44 }
     }
   },
   {
     id: "underwater", name: "Underwater", group: "Worlds",
     ui: { bg: "#03101f", panel: "rgba(4, 30, 64, .55)", panelSolid: "#08264a", edge: "rgba(190, 228, 255, .5)", select: "#0b4486" },
     scene: {
-      sky: [[0, "#33b0e0"], [0.4, "#0b5a96"], [1, "#03183a"]],
+      sky: [[0, "#2ea6e0"], [0.4, "#0b5a96"], [1, "#021530"]],
       layers: [
-        { type: "rays", x: 0.35, y: -0.2, rgb: "220, 245, 255", a: 0.12, n: 12, seed: 3 },
-        { type: "hills", color: "#04254a", base: 0.86, amp: 0.08, seed: 4 },
-        { type: "seaweed", color: "#0a4a3f", n: 14, seed: 5 },
-        { type: "hills", color: "#021428", base: 0.95, amp: 0.05, seed: 6 },
+        { type: "rays", x: 0.4, y: -0.2, rgb: "220, 245, 255", a: 0.14, n: 12, seed: 3 },
+        { type: "castle", color: "#06284c", base: 0.86, h: 0.32, seed: 4, gate: "90, 200, 255", win: "120, 220, 255" },
+        { type: "waterfalls", top: 0, base: 0.86, n: 5, rgb: "150, 220, 255", seed: 5 },
+        { type: "pillars", color: "#052540", base: 0.9, top: 0.12, line: "rgba(120,220,255,.3)" },
+        { type: "seaweed", color: "#0a4a3f", n: 14, seed: 6 },
+        { type: "floor", y: 0.9, rgb: "80, 190, 255", dark: "2, 14, 30", glow: "150, 230, 255" },
         { type: "vignette", a: 0.4 }
       ],
-      particles: { type: "bubble", rgb: "210, 240, 255", count: 45 }
+      particles: { type: "bubble", rgb: "210, 240, 255", count: 46 }
     }
   },
   {
-    id: "galaxy", name: "Galaxy", group: "Worlds",
+    id: "void", name: "Void", group: "Worlds",
     ui: { bg: "#07041a", panel: "rgba(30, 14, 70, .6)", panelSolid: "#1d0f45", edge: "rgba(200, 180, 255, .55)", select: "#5b2bb5" },
     scene: {
-      sky: [[0, "#05030f"], [1, "#130a30"]],
+      sky: [[0, "#05030f"], [1, "#160b34"]],
       layers: [
-        { type: "glow", x: 0.22, y: 0.3, r: 0.45, rgb: "140, 60, 255", a: 0.4 },
-        { type: "glow", x: 0.78, y: 0.62, r: 0.5, rgb: "255, 60, 170", a: 0.28 },
-        { type: "glow", x: 0.6, y: 0.12, r: 0.3, rgb: "60, 160, 255", a: 0.3 },
-        { type: "stars", n: 320, rgb: "255, 255, 255", seed: 7 }
+        { type: "stars", n: 300, rgb: "255, 255, 255", seed: 7 },
+        { type: "glow", x: 0.78, y: 0.6, r: 0.5, rgb: "255, 60, 170", a: 0.25 },
+        { type: "eclipse", x: 0.5, y: 0.34, r: 0.13, rgb: "150, 70, 255", core: "#060310" },
+        { type: "mountains", color: "#120a2c", base: 0.88, amp: 0.14, seed: 4 },
+        { type: "crystals", base: 0.9, n: 16, rgb: "170, 110, 255", seed: 5 },
+        { type: "floor", y: 0.9, rgb: "150, 90, 255", dark: "5, 3, 16", glow: "200, 150, 255" }
       ],
-      particles: { type: "star", rgb: "255, 255, 255", count: 70 }
+      particles: { type: "star", rgb: "220, 200, 255", count: 70 }
     }
   },
   {
@@ -77,11 +89,12 @@ window.THEMES = [
       sky: [[0, "#0b0221"], [0.45, "#2a0848"], [0.72, "#c22a8a"], [0.721, "#14042a"], [1, "#0b0221"]],
       layers: [
         { type: "stars", n: 140, rgb: "255, 220, 255", seed: 2, maxY: 0.6 },
-        { type: "stripedSun", x: 0.5, y: 0.6, r: 0.16, top: "#ffe45c", bottom: "#ff2d95", gap: "#3a0b5c" },
-        { type: "city", color: "#12042a", base: 0.722, amp: 0.2, win: "255, 200, 90", seed: 5 },
+        { type: "stripedSun", x: 0.5, y: 0.58, r: 0.16, top: "#ffe45c", bottom: "#ff2d95", gap: "#3a0b5c" },
+        { type: "city", color: "#160430", base: 0.722, amp: 0.26, win: "255, 200, 90", seed: 5 },
+        { type: "pillars", color: "#1c0540", base: 0.722, top: 0.1, line: "rgba(255,80,220,.5)" },
         { type: "grid", top: 0.722, rgb: "255, 70, 210" }
       ],
-      particles: { type: "sparkle", rgb: "255, 120, 230", count: 30 }
+      particles: { type: "sparkle", rgb: "255, 120, 230", count: 32 }
     }
   },
   {
@@ -90,99 +103,81 @@ window.THEMES = [
     scene: {
       sky: [[0, "#2c7a3a"], [0.55, "#0f3b1c"], [1, "#041509"]],
       layers: [
-        { type: "rays", x: 0.6, y: -0.15, rgb: "230, 255, 180", a: 0.1, n: 10, seed: 3 },
+        { type: "rays", x: 0.6, y: -0.15, rgb: "230, 255, 180", a: 0.12, n: 10, seed: 3 },
         { type: "glow", x: 0.6, y: 0.05, r: 0.5, rgb: "210, 255, 150", a: 0.3 },
-        { type: "hills", color: "#0d3d1b", base: 0.68, amp: 0.12, seed: 4 },
-        { type: "canopy", color: "#0a2e14", base: 0.78, seed: 5 },
-        { type: "hills", color: "#061f0d", base: 0.86, amp: 0.08, seed: 6 },
+        { type: "hills", color: "#0d3d1b", base: 0.66, amp: 0.12, seed: 4 },
+        { type: "castle", color: "#0a2e16", base: 0.82, h: 0.24, seed: 5, win: "180, 255, 120" },
+        { type: "waterfalls", top: 0.1, base: 0.84, n: 4, rgb: "200, 255, 210", seed: 8 },
+        { type: "pillars", color: "#0a2c14", base: 0.88, top: 0.12, line: "rgba(150,255,120,.3)" },
         { type: "canopy", color: "#031208", base: 0.95, seed: 7 },
+        { type: "floor", y: 0.9, rgb: "120, 255, 150", dark: "3, 18, 8", glow: "180, 255, 150" },
         { type: "vignette", a: 0.45 }
       ],
       particles: { type: "firefly", rgb: "220, 255, 120", count: 35 }
     }
   },
   {
-    id: "arctic", name: "Arctic", group: "Worlds",
+    id: "frozen", name: "Frozen", group: "Worlds",
     ui: { bg: "#cdeaff", panel: "rgba(20, 70, 120, .66)", panelSolid: "#1d4f7f", edge: "rgba(255, 255, 255, .9)", select: "#1d6fb0", pageFg: "#1d3a55", brand: "#163452", brandAccent: "#1d78c4" },
     scene: {
-      sky: [[0, "#7cc8f7"], [0.55, "#d6efff"], [1, "#f4fbff"]],
+      sky: [[0, "#8fd0f7"], [0.55, "#d6efff"], [1, "#eef8ff"]],
       layers: [
-        { type: "glow", x: 0.8, y: 0.12, r: 0.35, rgb: "255, 255, 240", a: 0.8 },
-        { type: "mountains", color: "#a9cde8", base: 0.62, amp: 0.3, seed: 3 },
-        { type: "mountains", color: "#7fadd1", base: 0.78, amp: 0.18, seed: 5 },
-        { type: "hills", color: "#eef7ff", base: 0.9, amp: 0.05, seed: 7 }
+        { type: "glow", x: 0.5, y: 0.08, r: 0.4, rgb: "255, 255, 250", a: 0.85 },
+        { type: "mountains", color: "#a9cde8", base: 0.6, amp: 0.3, seed: 3 },
+        { type: "castle", color: "#cfe8fa", base: 0.84, h: 0.34, seed: 5, gate: "180, 230, 255", win: "150, 210, 255" },
+        { type: "pillars", color: "#dcefff", base: 0.88, top: 0.12, line: "rgba(120,180,230,.4)" },
+        { type: "crystals", base: 0.9, n: 14, rgb: "170, 220, 255", seed: 6 },
+        { type: "floor", y: 0.9, rgb: "200, 235, 255", dark: "150, 190, 220", glow: "255, 255, 255" }
       ],
       particles: { type: "snow", rgb: "255, 255, 255", count: 90 }
     }
   },
   {
-    id: "desert", name: "Desert Sunset", group: "Worlds",
-    ui: { bg: "#3a1408", panel: "rgba(90, 30, 20, .58)", panelSolid: "#5a2010", edge: "rgba(255, 220, 170, .65)", select: "#b8501d" },
+    id: "egypt", name: "Egypt", group: "Worlds",
+    ui: { bg: "#3a1408", panel: "rgba(90, 40, 16, .58)", panelSolid: "#5a2c10", edge: "rgba(255, 220, 150, .7)", select: "#9a6418" },
     scene: {
-      sky: [[0, "#2b1055"], [0.42, "#c83a6b"], [0.66, "#ff9a3c"], [1, "#ffd27a"]],
+      sky: [[0, "#2b1055"], [0.4, "#b84a3a"], [0.64, "#ff9a3c"], [1, "#ffcf7a"]],
       layers: [
-        { type: "sun", x: 0.5, y: 0.64, r: 0.11, c1: "#fff6cf", c2: "#ffb347" },
-        { type: "dunes", color: "#c2551f", base: 0.74, amp: 0.06, seed: 3 },
-        { type: "dunes", color: "#8f3412", base: 0.84, amp: 0.06, seed: 5 },
-        { type: "dunes", color: "#541a07", base: 0.95, amp: 0.04, seed: 7 }
+        { type: "eclipse", x: 0.5, y: 0.26, r: 0.11, rgb: "255, 200, 90", core: "#3a1a08" },
+        { type: "pyramids", color: "#7a3c12", base: 0.74, h: 0.3, lit: "rgba(255,210,130,.35)", seed: 3 },
+        { type: "pillars", color: "#532808", base: 0.88, top: 0.1, line: "rgba(255,200,120,.35)" },
+        { type: "dunes", color: "#b56a1f", base: 0.82, amp: 0.05, seed: 5 },
+        { type: "dunes", color: "#6e3a0f", base: 0.92, amp: 0.04, seed: 7 },
+        { type: "floor", y: 0.9, rgb: "255, 190, 90", dark: "40, 18, 6", glow: "255, 220, 130" }
       ],
-      particles: { type: "dust", rgb: "255, 225, 180", count: 30 }
+      particles: { type: "dust", rgb: "255, 225, 170", count: 32 }
     }
   },
   {
-    id: "haunted", name: "Haunted", group: "Worlds",
-    ui: { bg: "#0a0614", panel: "rgba(40, 18, 60, .62)", panelSolid: "#24103a", edge: "rgba(255, 170, 80, .55)", select: "#c25a0a" },
+    id: "candy", name: "Candy", group: "Worlds",
+    ui: { bg: "#ffd9ec", panel: "rgba(150, 40, 100, .6)", panelSolid: "#8c2a60", edge: "rgba(255, 240, 248, .92)", select: "#c42d80", pageFg: "#6b2650", brand: "#5a1a44", brandAccent: "#d42a86" },
     scene: {
-      sky: [[0, "#0a0614"], [0.6, "#2a1240"], [1, "#40182a"]],
+      sky: [[0, "#8fd4ff"], [0.5, "#ffc2e2"], [1, "#fff0f7"]],
       layers: [
-        { type: "stars", n: 110, rgb: "255, 240, 220", seed: 3, maxY: 0.6 },
-        { type: "moon", x: 0.76, y: 0.22, r: 0.07, rgb: "255, 244, 214" },
-        { type: "hills", color: "#150a20", base: 0.8, amp: 0.1, seed: 4 },
-        { type: "deadtrees", color: "#08040d", base: 0.86, n: 6, seed: 5 },
-        { type: "hills", color: "#05020a", base: 0.95, amp: 0.04, seed: 6 },
-        { type: "glow", x: 0.5, y: 1, r: 0.6, rgb: "120, 60, 160", a: 0.25 }
+        { type: "glow", x: 0.5, y: 0.1, r: 0.45, rgb: "255, 255, 255", a: 0.8 },
+        { type: "clouds", y: 0.22, rgb: "255, 240, 250", a: 0.75, n: 6, size: 0.06, seed: 2 },
+        { type: "castle", color: "#ff9ccb", base: 0.82, h: 0.3, seed: 4, gate: "255, 255, 255", win: "255, 120, 190" },
+        { type: "pillars", color: "#ff7ab8", base: 0.88, top: 0.12, line: "rgba(255,255,255,.5)" },
+        { type: "crystals", base: 0.9, n: 14, rgb: "255, 150, 210", seed: 6 },
+        { type: "floor", y: 0.9, rgb: "255, 160, 215", dark: "150, 70, 120", glow: "255, 255, 255" }
       ],
-      particles: { type: "firefly", rgb: "255, 150, 40", count: 22 }
+      particles: { type: "petal", rgb: "255, 170, 215", count: 44 }
     }
   },
   {
-    id: "sakura", name: "Sakura", group: "Worlds",
-    ui: { bg: "#ffe3ee", panel: "rgba(130, 40, 80, .66)", panelSolid: "#7a2550", edge: "rgba(255, 240, 246, .9)", select: "#c22d7d", pageFg: "#6b2647", brand: "#5a1a3a", brandAccent: "#d42a78" },
+    id: "blood", name: "Blood Moon", group: "Worlds",
+    ui: { bg: "#0d0304", panel: "rgba(70, 10, 12, .6)", panelSolid: "#330608", edge: "rgba(255, 150, 150, .55)", select: "#a81020" },
     scene: {
-      sky: [[0, "#ffc2da"], [0.6, "#ffe6f0"], [1, "#fff6f9"]],
+      sky: [[0, "#0a0203"], [0.5, "#2a0407"], [1, "#55070e"]],
       layers: [
-        { type: "glow", x: 0.3, y: 0.2, r: 0.4, rgb: "255, 255, 255", a: 0.7 },
-        { type: "hills", color: "#e9b0c9", base: 0.7, amp: 0.2, seed: 3 },
-        { type: "hills", color: "#cf86a8", base: 0.84, amp: 0.07, seed: 5 },
-        { type: "hills", color: "#a4527b", base: 0.95, amp: 0.04, seed: 7 }
+        { type: "eclipse", x: 0.5, y: 0.24, r: 0.12, rgb: "255, 40, 50", core: "#160203" },
+        { type: "stars", n: 90, rgb: "255, 200, 200", seed: 2, maxY: 0.55 },
+        { type: "spires", color: "#1e0305", base: 0.84, amp: 0.4, n: 14, seed: 3 },
+        { type: "pillars", color: "#220406", base: 0.9, top: 0.14, line: "rgba(255,70,80,.3)" },
+        { type: "crystals", base: 0.9, n: 14, rgb: "255, 50, 70", seed: 5 },
+        { type: "floor", y: 0.9, rgb: "255, 50, 60", dark: "14, 2, 3", glow: "255, 90, 90" }
       ],
-      particles: { type: "petal", rgb: "255, 160, 195", count: 45 }
-    }
-  },
-  {
-    id: "storm", name: "Storm", group: "Worlds",
-    ui: { bg: "#1b222c", panel: "rgba(20, 28, 40, .7)", panelSolid: "#1c2533", edge: "rgba(190, 210, 240, .5)", select: "#2f4a6e" },
-    scene: {
-      sky: [[0, "#141a22"], [0.6, "#2d3846"], [1, "#3d4a58"]],
-      layers: [
-        { type: "clouds", y: 0.05, rgb: "12, 16, 22", a: 0.95, n: 8, size: 0.13, seed: 3 },
-        { type: "clouds", y: 0.2, rgb: "24, 31, 41", a: 0.85, n: 7, size: 0.09, seed: 5 },
-        { type: "hills", color: "#0c1016", base: 0.9, amp: 0.06, seed: 6 }
-      ],
-      particles: { type: "rain", rgb: "180, 200, 230", count: 150, lightning: true }
-    }
-  },
-  {
-    id: "casino", name: "Casino", group: "Worlds",
-    ui: { bg: "#04190c", panel: "rgba(0, 38, 14, .6)", panelSolid: "#0b3018", edge: "rgba(240, 214, 140, .6)", select: "#0d5b2c" },
-    scene: {
-      sky: [[0, "#13703a"], [1, "#052812"]],
-      layers: [
-        { type: "glow", x: 0.5, y: 0.35, r: 0.6, rgb: "70, 210, 120", a: 0.35 },
-        { type: "felt", seed: 3 },
-        { type: "vignette", a: 0.65 }
-      ],
-      particles: { type: "sparkle", rgb: "255, 215, 120", count: 30 }
+      particles: { type: "ember", rgb: "255, 60, 70", count: 60 }
     }
   },
 

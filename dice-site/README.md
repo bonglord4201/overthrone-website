@@ -27,18 +27,19 @@ this folder.
 
 ## Themes
 
-24 themes in three groups, picked from the theme menu next to the dice:
+Picked from the theme menu next to the dice, in three groups:
 
-- **Worlds** (painted, animated scenes): Hell (default), Heaven, Underwater, Galaxy, Neon City,
-  Jungle, Arctic, Desert Sunset, Haunted, Sakura, Storm, Casino
-- **Metal**: Gold, Silver, Bronze
-- **Colors**: Blue, Dark Blue, Green, Dark Green, Red, Dark Red, Pink, Black & White, Black
+- **Worlds** (10 framed, animated scenes, each with a light source, a hero structure,
+  side pillars and a reflective floor): Hell (default), Heaven, Underwater, Void, Neon City,
+  Jungle, Frozen, Egypt, Candy, Blood Moon.
+- **Metal**: Gold, Silver, Bronze.
+- **Colors**: Blue, Dark Blue, Green, Dark Green, Red, Dark Red, Pink, Black & White, Black.
 
-Every theme is one entry in `public/themes.js`: its page colors plus a scene (sky colors,
-layers such as mountains, clouds, city or lava, and one kind of moving particle) that
-`public/scene.js` paints behind the page. Copy an entry and change it to make a new theme;
-it appears in the menu automatically. People who turn on "reduce motion" on their device get
-the still picture without moving particles.
+Each theme is one entry in `public/themes.js`: its page colors (`ui`) plus a `scene` that
+`public/scene.js` paints — a sky gradient, a back-to-front list of layers (eclipse, mountains,
+castle, pyramids, pillars, waterfalls, crystals, floor and more) and one kind of moving particle.
+Copy an entry and change it to add a theme; it appears in the menu automatically. People who turn
+on "reduce motion" get the still picture without moving particles.
 
 ## Admin panel
 
