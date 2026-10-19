@@ -187,6 +187,7 @@
   }
   function setDie(die, f) {
     const face = die.firstChild;
+    face.classList.remove("blank");
     if (die.classList.contains("num")) {
       const on = PIPS[f + 1];
       [...face.children].forEach((p, i) => p.classList.toggle("off", !on.includes(i)));
@@ -229,37 +230,60 @@
     $("rollMeta").textContent = "Press Roll again to roll";
   }
 
-  // ---- sound ----
-  let audio;
-  function beep(freq, dur, kind = "triangle", vol = 0.08) {
+  // ---- sound (WebAudio; a layered shaker rattle + a satisfying landing chime) ----
+  let audio, noiseBuf;
+  function ac() {
+    if (!audio) {
+      audio = new (window.AudioContext || window.webkitAudioContext)();
+      const len = Math.floor(audio.sampleRate * 0.4);
+      noiseBuf = audio.createBuffer(1, len, audio.sampleRate);
+      const d = noiseBuf.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    }
+    return audio;
+  }
+  function tone(freq, dur, { type = "sine", vol = 0.12, to = freq, delay = 0 } = {}) {
     if (!state.sound) return;
     try {
-      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
-      const o = audio.createOscillator(), g = audio.createGain(), t = audio.currentTime;
-      o.type = kind; o.frequency.setValueAtTime(freq, t);
-      o.frequency.exponentialRampToValueAtTime(freq * 0.6, t + dur);
-      g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-      o.connect(g).connect(audio.destination); o.start(t); o.stop(t + dur + 0.02);
+      const a = ac(), t = a.currentTime + delay, o = a.createOscillator(), g = a.createGain();
+      o.type = type; o.frequency.setValueAtTime(freq, t); o.frequency.exponentialRampToValueAtTime(Math.max(1, to), t + dur);
+      g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(vol, t + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g).connect(a.destination); o.start(t); o.stop(t + dur + 0.03);
     } catch {}
   }
-
-  // A rising "shaker" rattle while the dice tumble: fast ticks whose pitch climbs.
-  function shakerTick(progress) {
-    beep(300 + progress * 520 + Math.random() * 80, 0.05, "square", 0.035);
+  function noise(dur, { vol = 0.14, freq = 1600, q = 0.8, delay = 0 } = {}) {
+    if (!state.sound) return;
+    try {
+      const a = ac(), t = a.currentTime + delay, s = a.createBufferSource(); s.buffer = noiseBuf;
+      const f = a.createBiquadFilter(); f.type = "bandpass"; f.frequency.value = freq; f.Q.value = q;
+      const g = a.createGain(); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      s.connect(f).connect(g).connect(a.destination); s.start(t); s.stop(t + dur + 0.02);
+    } catch {}
   }
-  // A bright pop as each die lands.
-  function popTone(i) {
-    const base = [523, 587, 659, 698, 784, 880][i % 6];
-    beep(base, 0.12, "triangle", 0.12);
+  // Rattling shaker while the dice are "rolling": soft noise ticks that climb.
+  function rollSound() {
+    const ticks = Math.max(6, Math.round(MIN_SPIN_MS / 85));
+    for (let i = 0; i < ticks; i++) noise(0.06, { vol: 0.11, freq: 1000 + (i / ticks) * 1600 + Math.random() * 500, delay: i * 0.085 });
+  }
+  // Each die lands with a soft note, climbing left to right like an arpeggio.
+  const NOTES = [523.25, 587.33, 659.25, 783.99, 880, 1046.5];
+  function landTone(i) {
+    const n = NOTES[Math.min(i, NOTES.length - 1)];
+    tone(n, 0.26, { type: "triangle", vol: 0.13 });
+    tone(n / 2, 0.2, { type: "sine", vol: 0.07 });
+    if (i === 0) noise(0.09, { vol: 0.12, freq: 280, q: 1.2 }); // soft thud under the first
   }
 
-  const SUSPENSE = ["What color will it be?", "Here we go!", "Rolling…", "Let's go!"];
+  const SUSPENSE = ["What color will it be?", "Here we go!", "Rolling…"];
 
-  // Calm mode = reduced-motion OR eye-comfort: no flashing, no bounce. Used so
-  // players with photosensitive epilepsy don't get the rapid colour changes.
-  const isCalm = () => reduced || state.comfort;
+  // Blank the die (plain white) so the colour is hidden while the dice shake.
+  function setBlank(die) {
+    die.firstChild.classList.add("blank");
+    die.style.setProperty("--glow", "transparent");
+    if (die.classList.contains("num")) [...die.firstChild.children].forEach((p) => p.classList.add("off"));
+  }
 
-  // Reveal the dice one at a time with a pop, left to right.
+  // Reveal the dice one at a time, left to right, with a pop and a climbing note.
   function revealRoll(r) {
     state.current = r;
     layoutDice(r.faces.length, r.kind);
@@ -267,14 +291,13 @@
     $("rollId").textContent = r.session || state.session;
     $("streak").textContent = r.seq;
     tickTimes();
-    const calm = isCalm();
     r.faces.forEach((f, i) => {
       const d = diceEl.children[i];
       setTimeout(() => {
         setDie(d, f);
-        if (!calm) { d.classList.remove("pop"); void d.offsetWidth; d.classList.add("pop"); }
-        popTone(i);
-      }, calm ? 0 : i * 130);
+        if (!reduced) { d.classList.remove("pop"); void d.offsetWidth; d.classList.add("pop"); }
+        landTone(i);
+      }, reduced ? 0 : i * 140);
     });
   }
 
@@ -285,27 +308,24 @@
     rolling = true;
     $("rollErr").hidden = true;
     const asked = api().roll(state.n, state.type);
-    const calm = isCalm();
-    let timer, ticks = 0;
-    if (!calm) {
+    // Eye comfort still animates (it's safe now — the colour is hidden while the
+    // dice shake, so there's no flashing). Only reduce-motion skips the animation.
+    const animate = !reduced;
+    let capTimer;
+    if (animate) {
       layoutDice(state.n, state.type);
       diceEl.classList.remove("landed");
-      diceEl.classList.add("tumbling");
-      [...diceEl.children].forEach((d) => d.classList.remove("pop"));
-      $("suspense").textContent = SUSPENSE[Math.floor(Math.random() * 2)];
+      [...diceEl.children].forEach((d) => { d.classList.remove("pop"); setBlank(d); });
+      diceEl.classList.add("shaking");
+      $("suspense").textContent = SUSPENSE[Math.floor(Math.random() * SUSPENSE.length)];
       $("suspense").hidden = false;
-      const total = Math.round(MIN_SPIN_MS / 70);
-      timer = setInterval(() => {
-        [...diceEl.children].forEach((d) => setDie(d, Math.floor(Math.random() * 6)));
-        shakerTick(ticks / total);
-        if (ticks === Math.floor(total * 0.6)) $("suspense").textContent = "Let's go!";
-        ticks++;
-      }, 70);
+      rollSound();
+      capTimer = setTimeout(() => { if (rolling) $("suspense").textContent = "Let's go!"; }, MIN_SPIN_MS * 0.55);
     }
     try {
-      const [r] = await Promise.all([asked, new Promise((ok) => setTimeout(ok, calm ? 0 : MIN_SPIN_MS))]);
-      clearInterval(timer);
-      diceEl.classList.remove("tumbling");
+      const [r] = await Promise.all([asked, new Promise((ok) => setTimeout(ok, animate ? MIN_SPIN_MS : 0))]);
+      clearTimeout(capTimer);
+      diceEl.classList.remove("shaking");
       $("suspense").hidden = true;
       revealRoll(r);
       state.history.unshift(r);
@@ -313,8 +333,8 @@
       renderHistory();
       $("announce").textContent = "Rolled " + describe(r);
     } catch (err) {
-      clearInterval(timer);
-      diceEl.classList.remove("tumbling");
+      clearTimeout(capTimer);
+      diceEl.classList.remove("shaking");
       $("suspense").hidden = true;
       if (state.current && state.current.dice === state.n && state.current.kind === state.type) showRoll(state.current);
       else showBlank();
@@ -570,16 +590,29 @@
   // ---- odds dialog ----
   const choose = (n, k) => { let r = 1; for (let i = 1; i <= k; i++) r = (r * (n - i + 1)) / i; return r; };
   const pct = (p) => (p * 100 >= 10 ? (p * 100).toFixed(1) : (p * 100).toFixed(2)) + "%";
+  // Odds panel: for the current number of dice, the chance your colour lands on
+  // exactly k of them (fair 1-in-6 per die). Shown as a row of dice with k filled.
   function openOdds() {
     const n = state.n, what = state.type === "number" ? "number" : "color";
-    $("oIntro").textContent = `You pick one ${what} and roll ${n} ${n === 1 ? "die" : "dice"}. This is how likely each result is.`;
-    const t = $("oddsTable");
-    t.replaceChildren(el("tr", {}, el("th", { textContent: `Your ${what} shows` }), el("th", { textContent: "Chance" }), el("th", { textContent: "About 1 in" })));
-    const row = (label, p, hl) => t.append(el("tr", { className: hl ? "hl" : "" }, el("td", { textContent: label }), el("td", { textContent: pct(p) }), el("td", { textContent: (1 / p < 10 ? (1 / p).toFixed(1) : Math.round(1 / p).toLocaleString()) })));
-    row("At least once", 1 - Math.pow(5 / 6, n), true);
-    for (let k = 0; k <= n; k++) {
+    $("oIntro").textContent = `You roll ${n} ${n === 1 ? "die" : "dice"} and pick one ${what}. These are the real, fair odds of it landing on exactly that many dice (each die is a true 1 in 6).`;
+    const box = $("oddsTable");
+    box.replaceChildren();
+    const pick = state.type === "number" ? 0 : COLORS.findIndex((c) => true); // first colour as the example
+    for (let k = 1; k <= n; k++) {
       const p = choose(n, k) * Math.pow(1 / 6, k) * Math.pow(5 / 6, n - k);
-      row(k === 0 ? "Not at all" : k === n && n > 1 ? `On all ${n} dice` : `Exactly ${k} time${k > 1 ? "s" : ""}`, p);
+      // a little row of n dice, k of them coloured
+      const strip = el("div", { className: "odds-dice" });
+      for (let j = 0; j < n; j++) {
+        const d = j < k ? die(state.type === "number" ? j : 0, state.type, true) : makeDie(state.type, true);
+        if (j >= k) d.firstChild.classList.add("blank");
+        strip.append(d);
+      }
+      const prob = (p * 100 >= 10 ? (p * 100).toFixed(1) : (p * 100).toFixed(3)) + "%";
+      box.append(el("div", { className: "odds-row" },
+        strip,
+        el("div", { className: "odds-fig" },
+          el("b", { textContent: `${k} ${k === 1 ? "die" : "dice"}` }),
+          el("span", { textContent: prob }))));
     }
     $("oddsDlg").showModal();
   }

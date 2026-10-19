@@ -109,40 +109,51 @@ h3 { margin: 0; font: 400 15px/1 var(--font-display); letter-spacing: .06em; }
   display: grid; grid-template-columns: repeat(var(--n), minmax(0, var(--max)));
   gap: clamp(7px, 2vw, 14px); justify-content: center; padding-block: 6px;
 }
+/* A premium rounded die: white bezel, a colour face with a top-light gradient,
+   a diagonal gloss, and a soft 3D pip. */
 .die {
+  position: relative;
   aspect-ratio: 1; max-width: 100%;
-  background: linear-gradient(155deg, #ffffff, #e7e7ea 70%, #d4d4d8); border-radius: 18%;
-  display: grid; place-items: center; padding: 7%;
-  box-shadow: 0 6px 0 rgba(0,0,0,.26), 0 12px 26px rgba(0,0,0,.4), inset 0 2px 2px rgba(255,255,255,.9), inset 0 -4px 6px rgba(0,0,0,.12);
+  border-radius: 26%;
+  display: grid; place-items: center;
+  filter: drop-shadow(0 7px 9px rgba(0,0,0,.45));
 }
-.die { position: relative; }
 /* soft colour halo behind each die, matching its face colour */
-#dice .die::before { content: ""; position: absolute; inset: 8%; border-radius: 20%; background: var(--glow, transparent); filter: blur(12px); opacity: .55; z-index: -1; transition: background-color .06s; }
-.face { position: relative; width: 100%; height: 100%; border-radius: 22%; display: grid; place-items: center; background: var(--c, var(--red)); transition: background-color .06s; box-shadow: inset 0 3px 6px rgba(255,255,255,.35), inset 0 -6px 10px rgba(0,0,0,.28); overflow: hidden; }
-/* a glossy sheen across the top-left of each die face */
-.face::after { content: ""; position: absolute; inset: 0; background: linear-gradient(145deg, rgba(255,255,255,.4), rgba(255,255,255,0) 45%); pointer-events: none; }
-.face .dot { width: 26%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffffff, #e2e2e6); box-shadow: inset 0 -2px 3px rgba(0,0,0,.25), 0 1px 1px rgba(0,0,0,.2); z-index: 1; }
-.die.num .face { background: var(--white); grid-template: repeat(3, 1fr) / repeat(3, 1fr); padding: 6%; box-shadow: inset 0 0 0 2px rgba(0,0,0,.08); }
-.die.num .pip { width: 68%; aspect-ratio: 1; border-radius: 50%; background: var(--ink); }
-.die.num .pip.off { visibility: hidden; }
-.die.num.red-one .pip { background: var(--red); }
-.dice.tumbling .die { animation: tumble .32s ease-in-out infinite; animation-delay: calc(var(--i) * -70ms); }
-.die.pop { animation: pop .34s cubic-bezier(.3, 1.7, .5, 1) both; }
-@keyframes tumble {
-  0%, 100% { transform: rotate(0) translateY(0); }
-  25% { transform: rotate(-16deg) translateY(-10px); }
-  50% { transform: rotate(9deg) translateY(2px); }
-  75% { transform: rotate(-7deg) translateY(-6px); }
+#dice .die::before { content: ""; position: absolute; inset: 6%; border-radius: 24%; background: var(--glow, transparent); filter: blur(14px); opacity: .6; z-index: -1; transition: background-color .08s; }
+.face {
+  position: relative; width: 100%; height: 100%; border-radius: 26%;
+  display: grid; place-items: center; overflow: hidden;
+  border: 3px solid rgba(255,255,255,.95);
+  background:
+    radial-gradient(130% 120% at 30% 18%, color-mix(in srgb, var(--c, #e3261b) 72%, #fff) 0%, var(--c, #e3261b) 52%, color-mix(in srgb, var(--c, #e3261b) 74%, #000) 100%);
+  box-shadow: inset 0 3px 5px rgba(255,255,255,.55), inset 0 -11px 18px rgba(0,0,0,.26);
+  transition: background .08s;
 }
-/* Each die snaps in from a blank, slightly-shrunk state when its color is revealed. */
-@keyframes pop { 0% { transform: scale(.35) rotate(-20deg); opacity: .2; } 55% { transform: scale(1.16) rotate(4deg); opacity: 1; } 100% { transform: scale(1) rotate(0); } }
+.face.blank { border-color: rgba(255,255,255,.95); background: radial-gradient(130% 120% at 30% 18%, #ffffff, #e9ebef 60%, #d7dade); }
+.face.blank .dot { background: radial-gradient(circle at 38% 32%, #e4e6ea, #cfd2d8); box-shadow: none; }
+/* a glossy diagonal highlight across the top-left */
+.face::after { content: ""; position: absolute; inset: 0; background: linear-gradient(140deg, rgba(255,255,255,.5), rgba(255,255,255,0) 42%); pointer-events: none; }
+.face .dot { width: 25%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 38% 32%, #ffffff, #e4e4ea); box-shadow: inset 0 -2px 3px rgba(0,0,0,.28), 0 2px 3px rgba(0,0,0,.3); z-index: 1; }
+.die.num .face { background: radial-gradient(130% 120% at 30% 18%, #ffffff, #eceef2 70%, #dcdfe4); grid-template: repeat(3, 1fr) / repeat(3, 1fr); padding: 14%; }
+.die.num .pip { width: 72%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 38% 32%, #3a3a42, #15151a); box-shadow: inset 0 -1px 2px rgba(255,255,255,.2); }
+.die.num .pip.off { visibility: hidden; }
+.die.num.red-one .pip { background: radial-gradient(circle at 38% 32%, #ff6a5a, #c2160c); }
+
+/* gentle up-and-down bob while the (blank) dice are rolling — no colour flashing */
+.dice.shaking .die { animation: bob .55s ease-in-out infinite; animation-delay: calc(var(--i) * 90ms); }
+@keyframes bob { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-13px) rotate(-4deg); } }
+.die.pop { animation: pop .36s cubic-bezier(.3, 1.7, .5, 1) both; }
+/* Each die pops in from small when its colour is revealed. */
+@keyframes pop { 0% { transform: scale(.4) rotate(-14deg); opacity: .25; } 55% { transform: scale(1.15) rotate(3deg); opacity: 1; } 100% { transform: scale(1) rotate(0); } }
 
 /* suspense caption shown while the dice tumble */
 .suspense { margin: 0; text-align: center; font: 400 clamp(20px, 4.5vw, 28px)/1.1 var(--font-display); letter-spacing: .03em; color: var(--white); text-shadow: 0 3px 0 rgba(0,0,0,.4); animation: pulse 1s ease-in-out infinite; }
 @keyframes pulse { 0%, 100% { transform: scale(1); opacity: .88; } 50% { transform: scale(1.05); opacity: 1; } }
 
 .die.mini { width: 28px; border-radius: 18%; box-shadow: 0 2px 0 rgba(0,0,0,.25); flex: none; background: none; padding: 0; }
-.die.mini .face { width: 100%; height: 100%; border-radius: 26%; box-shadow: inset 0 2px 3px rgba(255,255,255,.3), inset 0 -3px 5px rgba(0,0,0,.25); }
+.die.mini { filter: none; }
+.die.mini .face { width: 100%; height: 100%; border-radius: 26%; border-width: 2px; box-shadow: inset 0 1px 2px rgba(255,255,255,.4), inset 0 -2px 4px rgba(0,0,0,.25); }
+.die.mini .face::after { display: none; }
 .die.mini .face .dot { width: 26%; }
 .die.num.mini .face { box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
 
@@ -327,7 +338,7 @@ dialog::backdrop { background: rgba(0,0,0,.6); }
   .controls select { font-size: 13px; padding: 8px 2px; letter-spacing: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .dice.tumbling .die, .die.pop { animation: none; }
+  .dice.shaking .die, .die.pop { animation: none; }
   .suspense { animation: none; }
   .go, .switch input, .switch input::after { transition: none; }
   .go::after { display: none; }
@@ -349,3 +360,12 @@ body.comfort #dice .die:hover, body.comfort #dice .die:active { filter: none; }
 body.comfort #dice .die .face::after { display: none; }   /* drop the glossy edge highlight */
 body.comfort .die.mini .face { filter: blur(2px) saturate(.85); }
 body.comfort .go::after { display: none; }                 /* no sheen sweep */
+
+/* odds panel — a row of dice with k filled, and the fair percentage */
+.odds-wrap { display: flex; flex-direction: column; gap: 8px; }
+.odds-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; background: rgba(0,0,0,.28); border: 1px solid var(--soft); border-radius: 12px; padding: 10px 14px; }
+.odds-dice { display: flex; gap: 6px; }
+.odds-dice .die.mini { width: 30px; }
+.odds-fig { display: flex; flex-direction: column; align-items: flex-end; line-height: 1.1; }
+.odds-fig b { font: 400 17px/1 var(--font-display); letter-spacing: .03em; }
+.odds-fig span { font-weight: 800; font-variant-numeric: tabular-nums; font-size: 15px; color: var(--muted); }
