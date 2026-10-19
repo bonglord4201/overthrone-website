@@ -1,0 +1,23 @@
+{
+  "id": "overthrone:solar_emperor_pet",
+  "display_name": "Sun Fox (Solar Emperor)",
+  "slot": "pet",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "model": "models/pet/solar_emperor_pet.bbmodel",
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "offset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rotation": [
+    0.0,
+    0.0,
+    0.0
+  ]
+}

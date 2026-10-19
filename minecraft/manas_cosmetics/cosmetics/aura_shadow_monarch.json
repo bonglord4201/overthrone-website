@@ -7,29 +7,34 @@
     "particle": "smoke",
     "colors": [
       [
+        210,
         160,
-        90,
         255
       ],
       [
+        140,
         70,
-        0,
-        150
+        255
       ],
       [
-        8,
+        60,
         0,
-        20
+        140
+      ],
+      [
+        6,
+        0,
+        16
       ]
     ],
-    "particle_count": 0,
-    "size": 1.35,
-    "speed": 0.9,
-    "radius": 1.0,
-    "height": 1.15,
+    "particle_count": 420,
+    "size": 1.5,
+    "speed": 0.95,
+    "radius": 1.05,
+    "height": 1.2,
     "alpha": 1.0,
-    "rotation_speed": 1.0,
+    "rotation_speed": 1.1,
     "emissive": true,
-    "motion_response": 1.0
+    "motion_response": 1.4
   }
 }

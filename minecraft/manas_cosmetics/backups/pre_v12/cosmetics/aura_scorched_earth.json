@@ -1,0 +1,40 @@
+{
+  "id": "overthrone:scorched_earth",
+  "display_name": "Scorched Earth",
+  "slot": "aura",
+  "aura": {
+    "style": "flame_scorched",
+    "particle": "smoke",
+    "colors": [
+      [
+        255,
+        210,
+        120
+      ],
+      [
+        255,
+        120,
+        30
+      ],
+      [
+        120,
+        30,
+        10
+      ],
+      [
+        30,
+        20,
+        20
+      ]
+    ],
+    "particle_count": 480,
+    "size": 1.25,
+    "speed": 0.95,
+    "radius": 1.15,
+    "height": 1.0,
+    "alpha": 1.0,
+    "rotation_speed": 1.0,
+    "emissive": true,
+    "motion_response": 1.0
+  }
+}

@@ -7,28 +7,33 @@
     "particle": "glow",
     "colors": [
       [
-        210,
-        245,
+        255,
+        255,
+        255
+      ],
+      [
+        190,
+        235,
         255
       ],
       [
         90,
-        170,
+        160,
         255
       ],
       [
-        40,
         60,
+        40,
         210
       ]
     ],
-    "particle_count": 0,
-    "size": 1.0,
-    "speed": 0.8,
-    "radius": 1.15,
+    "particle_count": 380,
+    "size": 1.05,
+    "speed": 0.85,
+    "radius": 1.2,
     "height": 1.0,
     "alpha": 1.0,
-    "rotation_speed": 0.7,
+    "rotation_speed": 0.65,
     "emissive": true,
     "motion_response": 1.0
   }

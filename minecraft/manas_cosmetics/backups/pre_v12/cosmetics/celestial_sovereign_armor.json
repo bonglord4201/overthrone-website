@@ -1,0 +1,24 @@
+{
+  "id": "overthrone:celestial_sovereign_armor",
+  "display_name": "Celestial Sovereign Armour",
+  "slot": "armor_set",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "model": "models/armor_set/celestial_sovereign_armor.bbmodel",
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "offset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rotation": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "needs_y_flip": false
+}

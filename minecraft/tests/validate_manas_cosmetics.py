@@ -32,6 +32,13 @@ for fn in sorted(os.listdir(os.path.join(MC, 'cosmetics'))):
     for k in ('scale', 'offset', 'rotation'):
         if k in d and not (isinstance(d[k], list) and len(d[k]) == 3 and all(isinstance(v, (int, float)) for v in d[k])):
             err(fn + ': ' + k + ' must be a 3-number array')
+    if 'particles' in d:   # WeaponParticleSpec: only weapon slots read it; the id must be a vanilla simple particle
+        pp = d['particles']
+        if d.get('slot') != 'weapon': err(fn + ': "particles" is only read for the weapon slot')
+        SIMPLE = 'end_rod reverse_portal flame snowflake electric_spark crimson_spore glow sculk_soul composter soul_fire_flame soul enchanted_hit crit totem_of_undying wax_on scrape cherry_leaves portal small_flame witch firework'.split()
+        if str(pp.get('particle', '')).replace('minecraft:', '') not in SIMPLE: err(fn + ': particles.particle must be a vanilla simple particle')
+        if not set(pp.get('on', [])) <= {'attack', 'use', 'charging'} or not pp.get('on'): err(fn + ': particles.on must use attack/use/charging')
+        if not 1 <= pp.get('count', 6) <= 64: err(fn + ': particles.count must be 1..64')
     if d.get('slot') in ('aura', 'weapon_aura'):
         a = d.get('aura') or {}
         if a.get('style') not in STYLES: err(fn + ': aura style ' + str(a.get('style')))

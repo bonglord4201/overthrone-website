@@ -7,28 +7,33 @@
     "particle": "crystal",
     "colors": [
       [
-        245,
+        255,
         255,
         255
       ],
       [
-        160,
-        225,
+        200,
+        240,
         255
       ],
       [
-        70,
-        140,
-        235
+        120,
+        200,
+        255
+      ],
+      [
+        60,
+        120,
+        230
       ]
     ],
-    "particle_count": 0,
-    "size": 1.0,
+    "particle_count": 320,
+    "size": 1.05,
     "speed": 0.9,
-    "radius": 1.15,
+    "radius": 1.2,
     "height": 1.0,
     "alpha": 1.0,
-    "rotation_speed": 0.8,
+    "rotation_speed": 0.75,
     "emissive": true,
     "motion_response": 1.0
   }

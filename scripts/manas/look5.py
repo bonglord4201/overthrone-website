@@ -1,7 +1,7 @@
 # Preview sheet of one set: wings, armour + helmet on the body, weapon in hand, ground sigil.
 import sys, os, json
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import sets5 as S5, sets6 as S6, setdefs, sim, premium
+import sets5 as S5, sets6 as S6, setdefs, sim, premium, wingkit, wingdefs
 import numpy as np
 from PIL import Image, ImageDraw
 def render_combo(paths, t, yaw, pitch, size, scale, dark=False):
@@ -13,7 +13,10 @@ def render_combo(paths, t, yaw, pitch, size, scale, dark=False):
     return c.image()
 def sheet(set_id, out_dir, png=None):
     d = setdefs.SETS[set_id]
-    pb = premium.builders(set_id) or {'wings': S5.wings, 'helm': S6.helm, 'armor': S6.armor, 'weapon': S6.weapon}
+    pb = dict(premium.builders(set_id) or {'wings': S5.wings, 'helm': S6.helm, 'armor': S6.armor, 'weapon': S6.weapon})
+    wid = set_id + '_wings'
+    if wid in wingdefs.WINGS: pb['wings'] = lambda n, d_: wingkit.build(n, wingdefs.WINGS[wid])
+    elif wid in wingdefs.MEMBRANE: pb['wings'] = lambda n, d_: wingkit.build_membrane(n, wingdefs.MEMBRANE[wid])
     parts = [('back', 'wings', pb['wings']), ('helmet', 'helm', pb['helm']), ('armor_set', 'armor', pb['armor']), ('weapon', 'weapon', pb['weapon']), ('ground', 'sigil', S5.sigil)]
     paths = []
     for slot, key, fn in parts:

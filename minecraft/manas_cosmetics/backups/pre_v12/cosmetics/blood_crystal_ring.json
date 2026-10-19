@@ -1,0 +1,23 @@
+{
+  "id": "overthrone:blood_crystal_ring",
+  "display_name": "Blood Crystal Ring",
+  "slot": "above_head",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "model": "models/above_head/blood_crystal_ring.bbmodel",
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "offset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rotation": [
+    0.0,
+    0.0,
+    0.0
+  ]
+}

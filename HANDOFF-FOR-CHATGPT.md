@@ -1,6 +1,6 @@
 # OVERTHRONE SMP: full handoff (read all of this before changing anything)
 
-Last updated: 2026-10-17 (second update that day). Written by Claude (Claude Code) for whoever works on the project next.
+Last updated: 2026-10-19 (cosmetics v12). Written by Claude (Claude Code) for whoever works on the project next.
 The owner is **__SK1TZ__**. They are not a coder: explain things simply, step by step, and give **complete
 files** to drag and drop (not snippets). They upload files to the server themselves through the
 MintServers file manager. Nobody can upload for them.
@@ -364,6 +364,38 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
     copy for depth, painting on both sides), gold leading edge + sabers + crest. 270 cubes / 141 KB (v10 had 1435).
     premium.py -> celestial10 (helm/armor/weapon still from celestial9). Package overthrone-celestial-sovereign-v11.zip,
     backups in minecraft/manas_cosmetics/backups/celestial_v10/. Apply this sheet method to every other wing next.
+  - **v12 (2026-10-19): ALL wings, 6 halos, all auras, set-weapon particles rebuilt** (owner: "redo everything, x100
+    better, no plain wings, real animations and particles"; then "wings must wrap around the body like the angel picture
+    and have physics, not stick up straight"). IDs, OT_MANAS, shop, crate and ownership untouched; no KubeJS changed.
+    - scripts/manas/wingkit.py = the wing system. Feathered family (`build`): up to 9 painted sheet layers per wing
+      (2 primary rows, secondaries, tertials, 3 covert rows), each on its own bone; feather outlines per style
+      (angel/dark/flame/crystal/leaf/mech). Membrane family (`build_membrane`): sculpted arm/forearm/finger plates,
+      each finger-gap panel on its own `fin%d_%s` bone, branching glowing veins, scales/tears/claws/spikes.
+      `effects()` adds themed model particles (angel, flame, frost, leaf, storm, void, blood).
+      Designs: scripts/manas/wingdefs.py (WINGS + MEMBRANE dicts, 34 wings). divine_sovereign_wings and the two tails
+      were NOT rebuilt (owner likes divine).
+    - Motion: `wrap_tracks` (WRAP table: speed, raise amp, sweep amp, raise base, shoulder/elbow/wrist Y). Negative Y
+      rotation on the back slot brings the tips FORWARD around the body (verified with an exaggerated test). The beat is
+      a travelling wave (shoulder -> elbow -> wrist lag) and each layer/finger ripples (`ripple_tracks`). idle = wrapped
+      breathing, walk = sway, run = swept back, jump = opening beat, fly = spread big strokes (fly kept below the point
+      where the tips meet overhead).
+    - Lessons (now in sim.py, so previews match the game): the mod draws EVERY face from both sides (no culling), and
+      vanilla entity shading darkens every face by its normal, glowing `_e` textures included (vertical faces ~74%).
+      So sheets are tilted to catch the light. A thin sheet's north face needs its u range REVERSED vs the south face,
+      otherwise a mirrored ghost copy shows through.
+    - scripts/manas/headkit.py: ornate halos (painted ring, runes, raised gems, inner counter-ring, rays, orbit crystals,
+      bloom, particles) for hero, fallen, void, crimson_crystal, radiant_double, throne halos.
+    - scripts/build-manas-auras.py: 37 auras retuned (4-stop gradients, 1.5-2x counts within the mod's 4000/frame
+      budget, MOTION dict for motion_response). Weapon auras fitted to the blade (BLADE_FIT).
+    - The 10 set blades now carry the mod's WeaponParticleSpec: `"particles": {particle, on:[attack,use,charging],
+      count 14, spread 0.35, speed 0.04, interval 4}` with vanilla SimpleParticleType ids (WEAPON_FX in
+      build-manas-models.py). The validator checks the ids/triggers/counts.
+    - Validator: 171 cosmetics OK, 114 models, biggest 189 KB, total ~6.5 MB compressed (was 4.3 MB).
+    - Backup of everything before v12: minecraft/manas_cosmetics/backups/pre_v12/ (models + cosmetics).
+      Package marketing/overthrone-cosmetics-v12.zip (config_manas_cosmetics/, rollback/, previews/ incl. before/after
+      sheets and animation GIFs), guide minecraft/manas_cosmetics/INSTALL-V12.md. NOT tested in game.
+    - Next: the other 9 armour sets + helms (still sets6 style) with vox.py, crowns/horns/circlet/sigil/orbit crystals,
+      pets ("x1000 better"), then wing tuning from the owner's in-game video.
  for top quality the owner should buy/commission .bbmodel files (BuiltByBit, MCModels,
   ManasMods' Discord) and send them; setup steps in minecraft/manas_cosmetics/README.md.
   Waiting on the Manas Cosmetics jar (this session can't reach CurseForge/Modrinth). The particle file can be switched off
@@ -515,7 +547,8 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
    It isn't from any of Claude's scripts as far as checked.
 5. The "Supermassive Slime" boss may still be unkillable (unconfirmed).
 
-6. **Cosmetics v8 stage 1** (Celestial Sovereign rebuild) waiting on an in-game test video; then rebuild the other 9 sets one by one.
+6. **Cosmetics v12** (all wings, halos, auras, set-weapon particles; marketing/overthrone-cosmetics-v12.zip, INSTALL-V12.md)
+   waiting on an in-game test video. Then: the other 9 armour sets, crowns/horns, pets.
 7. **Cosmetics v7** (2026-10-18, includes v6): blade-fitted weapon auras, walking pets, Lucifer-style membrane wings,
    crate hologram auto-refresh, plus v6 (10 armour/wing sets + set pets + everything priced, no Caverns key drops).
    marketing/overthrone-cosmetics-v7.zip must be installed and tested in game (armour binding,

@@ -1,0 +1,38 @@
+{
+  "id": "overthrone:soul_reaper_blade_aura",
+  "display_name": "Soul Reaper Blade Aura",
+  "slot": "weapon_aura",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "aura": {
+    "style": "vortex_shroud",
+    "particle": "smoke",
+    "colors": [
+      [
+        200,
+        150,
+        255
+      ],
+      [
+        110,
+        40,
+        200
+      ],
+      [
+        15,
+        5,
+        25
+      ]
+    ],
+    "particle_count": 260,
+    "size": 1.54,
+    "speed": 1.0,
+    "radius": 0.32,
+    "height": 0.78,
+    "alpha": 1.0,
+    "rotation_speed": 1.0,
+    "emissive": true,
+    "motion_response": 1.0,
+    "offset": -0.478
+  }
+}

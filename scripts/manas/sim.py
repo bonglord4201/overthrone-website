@@ -174,17 +174,22 @@ class Canvas:
         cy, sy = math.cos(math.radians(yaw)), math.sin(math.radians(yaw)); cp, sp = math.cos(math.radians(pitch)), math.sin(math.radians(pitch))
         self.V = np.array([[cy, 0, sy], [0, 1, 0], [-sy, 0, cy]]) ; self.V = np.array([[1, 0, 0], [0, cp, -sp], [0, sp, cp]]) @ self.V
         self.cy = center_y
-    def quad(self, M, v, uv, tex, uvw, uvh, emissive=True, translucent=False):
+    def quad(self, M, v, uv, tex, uvw, uvh, emissive=True, translucent=False, centre=None):
         P = np.array([(M @ np.array([*p, 1]))[:3] for p in v])
         P = np.c_[-P[:, 0], -P[:, 1] - self.cy, -P[:, 2]] @ self.V.T
         e1, e2 = P[1] - P[0], P[3] - P[0]
         nrm = np.cross(e1, e2); nl = np.linalg.norm(nrm)
-        # vanilla-ish entity lighting (two lights from above), only for lit textures
+        # Vanilla entity shading (checked in the mod: BBModelRenderer.quad emits every face twice, the second copy with the
+        # normal flipped, so faces are double-sided and the side you see has its normal towards you). Diffuse light from
+        # two world-space lights, accum = min(1, 0.6 * (max(0, n.L0) + max(0, n.L1)) + 0.4), applies to ALL textures,
+        # full-bright (_e) ones too; full-bright only ignores the light level (night / shade).
         light = 1.0
-        if not emissive and nl > 1e-9:
-            nv = nrm / nl; L1 = np.array([0.2, 1.0, -0.7]); L2 = np.array([-0.2, 1.0, 0.7])
-            L1 /= np.linalg.norm(L1); L2 /= np.linalg.norm(L2)
-            light = min(1.0, 0.4 + 0.6 * (abs(nv @ L1) + abs(nv @ L2)) * 0.5) * self.ambient
+        if nl > 1e-9:
+            nw = nrm / nl @ self.V                      # back to world space (display coords, Y up)
+            if (nrm / nl)[2] < 0: nw = -nw              # the copy facing the camera
+            L1 = np.array([0.2, 1.0, -0.7]); L2 = np.array([-0.2, 1.0, 0.7]); L1 /= np.linalg.norm(L1); L2 /= np.linalg.norm(L2)
+            light = min(1.0, 0.4 + 0.6 * (max(0.0, nw @ L1) + max(0.0, nw @ L2)))
+            if not emissive: light *= self.ambient
         n = int(min(400, max(4, max(np.linalg.norm(e1), np.linalg.norm(e2)) * self.scale * 1.8)))
         a, b = np.meshgrid((np.arange(n) + 0.5) / n, (np.arange(n) + 0.5) / n)
         a, b = a.ravel(), b.ravel()
@@ -260,7 +265,8 @@ class Canvas:
                     if uv[0] == uv[2] or uv[1] == uv[3]: continue
                     ti = fc.get('texture', 0); ti = ti if isinstance(ti, int) and 0 <= ti < len(model.texs) else 0
                     tx = model.texs[ti]
-                    self.quad(Mc, FACES[name](x0, y0, z0, x1, y1, z1), uv, tx['img'], model.uvw, model.uvh, tx['emissive'], tx['translucent'])
+                    self.quad(Mc, FACES[name](x0, y0, z0, x1, y1, z1), uv, tx['img'], model.uvw, model.uvh, tx['emissive'], tx['translucent'],
+                              centre=((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2))
             for k in b['children']: walk(k, Mb)
         for r in model.roots: walk(r, M)
     def image(self): self.flush(); return Image.fromarray(self.img)

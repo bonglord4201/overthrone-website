@@ -6,7 +6,7 @@
 # scripts/manas/setdefs.py -> sets5.py. Auras (incl. the sets' auras): build-manas-auras.py.
 import json, os, shutil, sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'manas'))
-import catalog4 as C, sim, setdefs, sets5 as S5, sets6 as S6, look5, pets4, pets6, pets7, premium
+import catalog4 as C, sim, setdefs, sets5 as S5, sets6 as S6, look5, pets4, pets6, pets7, premium, wingkit, wingdefs, headkit
 from PIL import Image, ImageDraw
 
 ROOT = os.path.join(os.path.dirname(__file__), '..', 'minecraft', 'manas_cosmetics')
@@ -28,18 +28,30 @@ def save(cid, name, slot, model, extra=None):
     with open(os.path.join(ROOT, 'cosmetics', cid + '.json'), 'w') as f: json.dump(sc, f, indent=2)
     built.append((cid, name, slot, path, sc)); print('built', cid, os.path.getsize(path) // 1024, 'KB', flush=True)
 
-for cid, (name, fn, pal) in C.BACK.items(): save(cid, name, 'back', fn(cid, pal))
-for cid, (name, slot, fn, kw) in C.HEADS.items(): save(cid, name, slot, fn(cid, **kw))
+def v12_wings(cid):
+    """The v12 wing system (scripts/manas/wingkit.py + wingdefs.py) for every wing it has a design for, else None."""
+    if cid in wingdefs.WINGS: return wingkit.build(cid, wingdefs.WINGS[cid])
+    if cid in wingdefs.MEMBRANE: return wingkit.build_membrane(cid, wingdefs.MEMBRANE[cid])
+    return None
+for cid, (name, fn, pal) in C.BACK.items(): save(cid, name, 'back', v12_wings(cid) or fn(cid, pal))
+for cid, (name, slot, fn, kw) in C.HEADS.items(): save(cid, name, slot, headkit.halo(cid, headkit.HALOS[cid]) if cid in headkit.HALOS else fn(cid, **kw))   # v12 ornate halos
 for cid, (name, fn, kw, floats) in C.PETS.items(): save(cid, name, 'pet', fn(cid, **kw), {'floats': True} if floats else None)
 # the 10 premium sets (auras + weapon auras for them are written by build-manas-auras.py)
+# Real vanilla particles fired by the server when the weapon is swung or used (Manas Cosmetics WeaponParticleSpec:
+# "particles": {particle (a vanilla simple particle id), on: attack|use|charging, count <= 64, spread, speed, interval}).
+WEAPON_FX = {'celestial_sovereign': 'minecraft:end_rod', 'void_overlord': 'minecraft:reverse_portal', 'solar_emperor': 'minecraft:flame',
+             'frost_monarch': 'minecraft:snowflake', 'storm_dragon': 'minecraft:electric_spark', 'blood_demon_king': 'minecraft:crimson_spore',
+             'abyssal_king': 'minecraft:glow', 'soul_reaper': 'minecraft:sculk_soul', 'verdant_dragon': 'minecraft:composter',
+             'thronebreaker': 'minecraft:soul_fire_flame'}
 WEAPON_WORD = {'spear': 'Spear', 'trident': 'Trident', 'scythe': 'Scythe', 'great': 'Greatsword', 'royal': 'Greatsword', 'long': 'Sword'}
 for sid, d in setdefs.SETS.items():
     t = d['title']
     pb = premium.builders(sid) or {'wings': S5.wings, 'helm': S6.helm, 'armor': S6.armor, 'weapon': S6.weapon}   # v8 premium sets
-    save(sid + '_wings', t + ' Wings', 'back', pb['wings'](sid + '_wings', d['wings']))
+    save(sid + '_wings', t + ' Wings', 'back', v12_wings(sid + '_wings') or pb['wings'](sid + '_wings', d['wings']))
     save(sid + '_helm', t + ' Helm', 'helmet', pb['helm'](sid + '_helm', d['helm']))
     save(sid + '_armor', t + ' Armour', 'armor_set', pb['armor'](sid + '_armor', d['armor']))
-    save(sid + '_blade', t + ' ' + WEAPON_WORD.get(d['weapon']['shape'], 'Blade'), 'weapon', pb['weapon'](sid + '_blade', d['weapon']))
+    save(sid + '_blade', t + ' ' + WEAPON_WORD.get(d['weapon']['shape'], 'Blade'), 'weapon', pb['weapon'](sid + '_blade', d['weapon']),
+         {'particles': {'particle': WEAPON_FX[sid], 'on': ['attack', 'use', 'charging'], 'count': 14, 'spread': 0.35, 'speed': 0.04, 'interval': 4}})
     kind, kw, floats, pname = setdefs.PETS[sid]
     fn = {'phoenix': pets7.phoenix7, 'fox': pets7.fox7, 'wisp': pets7.wisp7, 'dragon': pets7.dragon7, 'jelly': pets6.jelly}[kind]
     save(sid + '_pet', pname + ' (' + t + ')', 'pet', fn(sid + '_pet', **kw), {'floats': True} if floats else None)

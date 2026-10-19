@@ -1,0 +1,23 @@
+{
+  "id": "overthrone:abyssal_king_helm",
+  "display_name": "Abyssal King Helm",
+  "slot": "helmet",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "model": "models/helmet/abyssal_king_helm.bbmodel",
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "offset": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rotation": [
+    0.0,
+    0.0,
+    0.0
+  ]
+}
