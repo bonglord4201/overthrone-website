@@ -337,13 +337,10 @@ body.lost { background: radial-gradient(130% 70% at 50% 115%, #ff6a1f 0%, #a3170
 .lost-card p { margin: 0; color: var(--muted); }
 .lost-card .go { text-decoration: none; display: block; width: 100%; }
 
-/* Eye comfort: softens the dice for light-sensitive eyes. The bright dice faces
-   are blurred and desaturated so the colours aren't harsh, and the background art
-   is calmed a little. You can still tell the colours apart. */
-body.comfort .die .face { filter: blur(2.4px) saturate(.6) brightness(.9); }
-body.comfort .die .face .dot { filter: blur(1px); }
-body.comfort .die.mini .face { filter: blur(1.2px) saturate(.65) brightness(.92); }
-body.comfort .scene { filter: brightness(.82) saturate(.8); }
-body.comfort .go { filter: saturate(.8) brightness(.96); }
-body.comfort .go::after { display: none; }
-body.comfort .possible b { text-shadow: none; filter: saturate(.75); }
+/* Eye comfort / epilepsy-safe mode: blurs the dice into soft blobs so there are no
+   sharp, high-contrast colour edges, and (in app.js) removes the flashing roll
+   animation. The background is left exactly as it is. */
+body.comfort #dice .die { filter: blur(8px) saturate(.9); }
+body.comfort #dice .die .face::after { display: none; }   /* drop the glossy edge highlight */
+body.comfort .die.mini .face { filter: blur(1.6px) saturate(.85); }
+body.comfort .go::after { display: none; }                 /* no sheen sweep */

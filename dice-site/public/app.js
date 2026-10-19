@@ -254,6 +254,10 @@
 
   const SUSPENSE = ["What color will it be?", "Here we go!", "Rolling…", "Let's go!"];
 
+  // Calm mode = reduced-motion OR eye-comfort: no flashing, no bounce. Used so
+  // players with photosensitive epilepsy don't get the rapid colour changes.
+  const isCalm = () => reduced || state.comfort;
+
   // Reveal the dice one at a time with a pop, left to right.
   function revealRoll(r) {
     state.current = r;
@@ -262,13 +266,14 @@
     $("rollId").textContent = r.session || state.session;
     $("streak").textContent = r.seq;
     tickTimes();
+    const calm = isCalm();
     r.faces.forEach((f, i) => {
       const d = diceEl.children[i];
       setTimeout(() => {
         setDie(d, f);
-        d.classList.remove("pop"); void d.offsetWidth; d.classList.add("pop");
+        if (!calm) { d.classList.remove("pop"); void d.offsetWidth; d.classList.add("pop"); }
         popTone(i);
-      }, reduced ? 0 : i * 130);
+      }, calm ? 0 : i * 130);
     });
   }
 
@@ -279,8 +284,9 @@
     rolling = true;
     $("rollErr").hidden = true;
     const asked = api().roll(state.n, state.type);
+    const calm = isCalm();
     let timer, ticks = 0;
-    if (!reduced) {
+    if (!calm) {
       layoutDice(state.n, state.type);
       diceEl.classList.remove("landed");
       diceEl.classList.add("tumbling");
@@ -296,7 +302,7 @@
       }, 70);
     }
     try {
-      const [r] = await Promise.all([asked, new Promise((ok) => setTimeout(ok, reduced ? 0 : MIN_SPIN_MS))]);
+      const [r] = await Promise.all([asked, new Promise((ok) => setTimeout(ok, calm ? 0 : MIN_SPIN_MS))]);
       clearInterval(timer);
       diceEl.classList.remove("tumbling");
       $("suspense").hidden = true;
