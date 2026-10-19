@@ -194,3 +194,16 @@ dialog::backdrop { background: rgba(0,0,0,.6); }
   .crow { grid-template-columns: 36px auto 1fr; }
   .crow .mono.small { display: none; }
 }
+
+/* VIP login box in the streamer editor */
+.vip-box { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; background: var(--bg); }
+.vip-box h3 { margin: 0; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+.vip-state { font-size: 12px; font-weight: 700; color: var(--muted); }
+.vip-state.on { color: var(--ok); }
+.vip-state.off { color: var(--danger); }
+.vip-box .sub { margin: 0; }
+.vip-box #vipUrl { color: var(--accent); }
+.vip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.vip-grid label { display: flex; flex-direction: column; gap: 4px; }
+.vip-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+@media (max-width: 720px) { .vip-grid { grid-template-columns: 1fr; } }

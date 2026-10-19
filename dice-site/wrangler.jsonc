@@ -9,7 +9,7 @@
     // The API, uploaded pictures and /admin always run the Worker (so /admin can answer
     // "not found"). Addresses that aren't static files also reach the Worker, which is how
     // the secret admin address in the ADMIN_PATH secret works.
-    "run_worker_first": ["/api/*", "/media/*", "/admin", "/admin/*"]
+    "run_worker_first": ["/api/*", "/media/*", "/admin", "/admin/*", "/vip", "/vip/*"]
   },
   // This database_id is just an identifier for your D1 database (not a password), so it
   // can live in the repo — that lets auto-deploy from GitHub work. If you ever recreate the

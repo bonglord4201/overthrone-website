@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ColorRoll VIP</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='12' fill='%23fff'/%3E%3Crect x='11' y='11' width='42' height='42' rx='7' fill='%23e3261b'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Rubik:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="vip.css">
+</head>
+<body>
+<main class="wrap">
+  <p class="logo">Color<span>Roll</span> <small>VIP</small></p>
+
+  <form id="loginView" class="card" hidden>
+    <h1>Streamer sign in</h1>
+    <p class="sub">Sign in with the VIP username and password the owner gave you, then flip your Live switch yourself.</p>
+    <label for="user">VIP username</label>
+    <input id="user" autocomplete="username" autocapitalize="off" spellcheck="false" required>
+    <label for="password">Password</label>
+    <input id="password" type="password" autocomplete="current-password" required>
+    <button class="primary" type="submit">Sign in</button>
+    <p id="loginErr" class="error" role="alert" hidden></p>
+  </form>
+
+  <section id="panelView" class="card" hidden>
+    <div class="who">
+      <span id="avatar" class="avatar"></span>
+      <div>
+        <b id="name"></b>
+        <span id="handle" class="handle"></span>
+      </div>
+    </div>
+
+    <div class="livebox">
+      <div id="status" class="status"><span id="dot" class="dot"></span> <span id="statusText">Offline</span></div>
+      <label class="switch" for="live"><input type="checkbox" id="live"> <span>Live now</span></label>
+      <p class="hint">Turn this on when you go live on TikTok, and off when you finish. You'll jump to the top of the streamer list.</p>
+    </div>
+
+    <p id="saved" class="saved" role="status" hidden>Saved</p>
+    <button id="logout" class="quiet" type="button">Sign out</button>
+    <a class="quiet view" href="/" target="_blank" rel="noopener">View the site</a>
+  </section>
+</main>
+<script src="vip.js"></script>
+</body>
+</html>

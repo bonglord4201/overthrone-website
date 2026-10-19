@@ -260,18 +260,28 @@
       s.connect(f).connect(g).connect(a.destination); s.start(t); s.stop(t + dur + 0.02);
     } catch {}
   }
-  // Rattling shaker while the dice are "rolling": soft noise ticks that climb.
-  function rollSound() {
-    const ticks = Math.max(6, Math.round(MIN_SPIN_MS / 85));
-    for (let i = 0; i < ticks; i++) noise(0.06, { vol: 0.11, freq: 1000 + (i / ticks) * 1600 + Math.random() * 500, delay: i * 0.085 });
+  // One "clack" of dice hitting — a short bright noise transient plus a low knock,
+  // like plastic dice tumbling against each other.
+  function clack(delay, vol) {
+    noise(0.04, { vol: vol, freq: 2200 + Math.random() * 2200, q: 1.6, delay });
+    tone(150 + Math.random() * 70, 0.05, { type: "square", vol: vol * 0.5, to: 70, delay });
   }
-  // Each die lands with a soft note, climbing left to right like an arpeggio.
+  // Dice tumbling in a cup: many clacks at random gaps that thin out as they settle.
+  function rollSound() {
+    if (!state.sound) return;
+    const dur = MIN_SPIN_MS / 1000;
+    let t = 0;
+    while (t < dur) {
+      clack(t, 0.09 + Math.random() * 0.05);
+      t += 0.045 + Math.random() * 0.07 + (t / dur) * 0.05; // gaps widen toward the end
+    }
+  }
+  // Each die lands: a clack plus a soft note climbing left to right.
   const NOTES = [523.25, 587.33, 659.25, 783.99, 880, 1046.5];
   function landTone(i) {
+    clack(0, 0.12);
     const n = NOTES[Math.min(i, NOTES.length - 1)];
-    tone(n, 0.26, { type: "triangle", vol: 0.13 });
-    tone(n / 2, 0.2, { type: "sine", vol: 0.07 });
-    if (i === 0) noise(0.09, { vol: 0.12, freq: 280, q: 1.2 }); // soft thud under the first
+    tone(n, 0.22, { type: "triangle", vol: 0.1, delay: 0.02 });
   }
 
   const SUSPENSE = ["What color will it be?", "Here we go!", "Rolling…"];

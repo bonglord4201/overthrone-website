@@ -171,6 +171,12 @@
     $("fLive").checked = s ? s.live : false;
     $("fVisible").checked = s ? s.visible : true;
     $("fPic").value = "";
+    $("fVipUser").value = s ? s.vipUser || "" : "";
+    $("fVipPass").value = "";
+    $("vipUrl").textContent = location.origin + "/vip";
+    $("vipState").textContent = s && s.hasVip ? "● active" : "";
+    $("vipState").className = "vip-state" + (s && s.hasVip ? " on" : "");
+    $("vipClear").hidden = !(s && s.hasVip);
     $("editErr").hidden = true;
     $("editForm").hidden = false;
     $("addBtn").hidden = true;
@@ -236,12 +242,18 @@
       visible: $("fVisible").checked
     };
     if (picture !== undefined) body.avatar = picture;
+    // VIP: send the username if typed; send a new password only if one was entered.
+    const vipUser = $("fVipUser").value.trim();
+    const vipPass = $("fVipPass").value;
+    if (vipUser || (editing.id && editing.vipUser)) body.vipUser = vipUser;
+    if (vipPass) body.vipPassword = vipPass;
     $("saveBtn").disabled = true;
     $("editErr").hidden = true;
     try {
       if (editing.id) await api("streamers/" + editing.id, "PUT", body);
       else await api("streamers", "POST", body);
-      toast(editing.id ? "Changes saved" : `${body.name} added`);
+      const extra = vipPass && vipUser ? ` — VIP login: ${vipUser} / ${vipPass} (write this down, it won't show again)` : "";
+      toast((editing.id ? "Changes saved" : `${body.name} added`) + extra);
       closeEditor();
       loadStreamers();
     } catch (err) {
@@ -250,6 +262,21 @@
     } finally {
       $("saveBtn").disabled = false;
     }
+  });
+
+  // Generate a readable random password for a VIP streamer.
+  $("vipGen").addEventListener("click", () => {
+    const chars = "abcdefghijkmnpqrstuvwxyz23456789";
+    const buf = crypto.getRandomValues(new Uint8Array(10));
+    $("fVipPass").value = [...buf].map((b) => chars[b % chars.length]).join("");
+    $("fVipPass").focus();
+  });
+  // Remove VIP access: clear the username (server treats empty username as "remove").
+  $("vipClear").addEventListener("click", () => {
+    $("fVipUser").value = "";
+    $("fVipPass").value = "";
+    $("vipState").textContent = "will be removed on save";
+    $("vipState").className = "vip-state off";
   });
 
   // ---- catch cheats ----

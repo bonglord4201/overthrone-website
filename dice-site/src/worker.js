@@ -20,6 +20,7 @@ import { handleRolls } from "./rolls.js";
 import { isAdmin, login, logout, sameOrigin, adminConfigured } from "./auth.js";
 import { listPublic, handleAdminStreamers, serveMedia } from "./streamers.js";
 import { handleModeration } from "./moderation.js";
+import { handleVipApi } from "./vip.js";
 
 const ADMIN_PATH_RE = /^[A-Za-z0-9_-]{16,64}$/;
 const RESERVED = ["admin", "api", "media"];
@@ -54,6 +55,21 @@ async function route(request, env, url) {
 
   const parts = path.split("/").filter(Boolean);
   if (parts[0] === "media" && parts.length === 2 && method === "GET") return serveMedia(env, parts[1]);
+
+  // VIP area: a public page where a streamer signs in and sets their own live status.
+  if (parts[0] === "vip") {
+    if (parts[1] === "api") return handleVipApi(request, env, url, parts);
+    // Redirect /vip to /vip/ so the page's relative assets resolve under /vip/.
+    if (path === "/vip") return Response.redirect(url.origin + "/vip/", 301);
+    const file = parts.length === 1 ? "/vip/" : "/vip" + path.slice(4);
+    const res = await env.ASSETS.fetch(new Request(new URL(file, url), request));
+    if (res.status !== 200) return notFound(env, url);
+    const out = new Response(res.body, res);
+    out.headers.set("Cache-Control", "no-store");
+    out.headers.set("X-Robots-Tag", "noindex");
+    return out;
+  }
+
   if (parts[0] === "api") {
     if (parts[1] === "health" && method === "GET") return json({ ok: true });
     if (parts[1] === "streamers" && parts.length === 2 && method === "GET") return listPublic(env);

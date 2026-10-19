@@ -81,6 +81,20 @@
           <div id="preview" class="preview"></div>
         </div>
       </div>
+
+      <div class="vip-box">
+        <h3>VIP login <span id="vipState" class="vip-state"></span></h3>
+        <p class="sub">Give this streamer a login so they can flip their own Live switch at <b id="vipUrl">/vip</b>. Leave blank for none.</p>
+        <div class="vip-grid">
+          <label>VIP username<input id="fVipUser" autocomplete="off" spellcheck="false" placeholder="e.g. kaz"></label>
+          <label>Set / reset password<input id="fVipPass" type="text" autocomplete="off" placeholder="leave blank to keep current"></label>
+        </div>
+        <div class="vip-actions">
+          <button id="vipGen" class="quiet" type="button">Generate password</button>
+          <button id="vipClear" class="quiet danger" type="button" hidden>Remove VIP login</button>
+        </div>
+      </div>
+
       <p id="editErr" class="error" role="alert" hidden></p>
       <div class="actions">
         <button class="primary" type="submit" id="saveBtn">Save streamer</button>

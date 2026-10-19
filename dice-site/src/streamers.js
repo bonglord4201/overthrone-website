@@ -9,6 +9,7 @@
 //   GET    /media/:id                      an uploaded avatar
 
 import { json, readJson, nowIso } from "./http.js";
+import { hashPassword, genSalt, VIP_USER_RE } from "./vip.js";
 
 const SIDES = ["auto", "left", "right"];
 const HANDLE_RE = /^[A-Za-z0-9._]{2,24}$/;
@@ -28,7 +29,37 @@ const publicShape = (r) => ({
   live: !!r.live,
   side: r.side
 });
-const adminShape = (r) => ({ ...publicShape(r), visible: !!r.visible, sort: r.sort });
+const adminShape = (r) => ({ ...publicShape(r), visible: !!r.visible, sort: r.sort, vipUser: r.vip_user || "", hasVip: !!r.vip_hash });
+
+// Work out the VIP credential columns to write from an admin request.
+// Returns { set: {vip_user, vip_hash, vip_salt} } or { error }. `current` is the
+// existing row (null on create). Rules:
+//   body.vipUser    sets/changes the username (empty string clears VIP access)
+//   body.vipPassword sets/changes the password
+async function vipUpdate(env, body, current) {
+  const has = body && ("vipUser" in body || "vipPassword" in body);
+  if (!has) return { set: null };
+  let user = current ? current.vip_user : null;
+  let hashCols = current ? { vip_hash: current.vip_hash, vip_salt: current.vip_salt } : { vip_hash: null, vip_salt: null };
+
+  if ("vipUser" in body) {
+    const u = String(body.vipUser || "").trim().toLowerCase();
+    if (u === "") { return { set: { vip_user: null, vip_hash: null, vip_salt: null } }; } // clear access
+    if (!VIP_USER_RE.test(u)) return { error: "A VIP username is 3 to 32 letters, numbers, dot, dash or underscore." };
+    const clash = await env.DB.prepare("SELECT id FROM streamers WHERE vip_user = ? AND id != ?").bind(u, current ? current.id : -1).first();
+    if (clash) return { error: "That VIP username is already taken." };
+    user = u;
+  }
+  if ("vipPassword" in body && String(body.vipPassword) !== "") {
+    const pw = String(body.vipPassword);
+    if (pw.length < 6) return { error: "The VIP password must be at least 6 characters." };
+    const salt = genSalt();
+    hashCols = { vip_salt: salt, vip_hash: await hashPassword(pw, salt) };
+  }
+  if (!user) return { error: "Set a VIP username to give this streamer a login." };
+  if (!hashCols.vip_hash) return { error: "Set a VIP password to give this streamer a login." };
+  return { set: { vip_user: user, vip_hash: hashCols.vip_hash, vip_salt: hashCols.vip_salt } };
+}
 
 export async function listPublic(env) {
   const { results } = await env.DB.prepare("SELECT * FROM streamers WHERE visible = 1 ORDER BY live DESC, sort ASC, id ASC").all();
@@ -56,14 +87,20 @@ export async function handleAdminStreamers(request, env, parts) {
     const body = await readJson(request);
     const fields = validate(body);
     if (fields.error) return json(fields, 400);
+    const vip = await vipUpdate(env, body, null);
+    if (vip.error) return json(vip, 400);
     const avatarId = body.avatar ? await saveAvatar(env, body.avatar) : null;
     if (avatarId && avatarId.error) return json(avatarId, 400);
     const now = nowIso();
     const top = await env.DB.prepare("SELECT COALESCE(MAX(sort), -1) + 1 AS next FROM streamers").first();
-    const row = await env.DB.prepare(
+    let row = await env.DB.prepare(
       `INSERT INTO streamers (name, handle, avatar_id, verified, live, visible, side, sort, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING *`
     ).bind(fields.name, fields.handle, avatarId, fields.verified, fields.live, fields.visible, fields.side, top.next, now, now).first();
+    if (vip.set) {
+      row = await env.DB.prepare("UPDATE streamers SET vip_user = ?, vip_hash = ?, vip_salt = ? WHERE id = ? RETURNING *")
+        .bind(vip.set.vip_user, vip.set.vip_hash, vip.set.vip_salt, row.id).first();
+    }
     return json({ streamer: adminShape(row) }, 201);
   }
 
@@ -83,16 +120,22 @@ export async function handleAdminStreamers(request, env, parts) {
       const body = await readJson(request);
       const fields = validate({ ...adminShape(current), ...(body || {}) });
       if (fields.error) return json(fields, 400);
+      const vip = await vipUpdate(env, body, current);
+      if (vip.error) return json(vip, 400);
       // avatar: a data URL replaces the picture, null removes it, leaving it out keeps it.
       let avatarId = current.avatar_id;
       if (body && "avatar" in body) {
         avatarId = body.avatar ? await saveAvatar(env, body.avatar) : null;
         if (avatarId && avatarId.error) return json(avatarId, 400);
       }
-      const row = await env.DB.prepare(
+      let row = await env.DB.prepare(
         `UPDATE streamers SET name = ?, handle = ?, avatar_id = ?, verified = ?, live = ?, visible = ?, side = ?, updated_at = ?
          WHERE id = ? RETURNING *`
       ).bind(fields.name, fields.handle, avatarId, fields.verified, fields.live, fields.visible, fields.side, nowIso(), current.id).first();
+      if (vip.set) {
+        row = await env.DB.prepare("UPDATE streamers SET vip_user = ?, vip_hash = ?, vip_salt = ? WHERE id = ? RETURNING *")
+          .bind(vip.set.vip_user, vip.set.vip_hash, vip.set.vip_salt, current.id).first();
+      }
       if (current.avatar_id && current.avatar_id !== avatarId) {
         await env.DB.prepare("DELETE FROM media WHERE id = ?").bind(current.avatar_id).run();
       }

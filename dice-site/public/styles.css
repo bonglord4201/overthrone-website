@@ -121,20 +121,19 @@ h3 { margin: 0; font: 400 15px/1 var(--font-display); letter-spacing: .06em; }
 /* soft colour halo behind each die, matching its face colour */
 #dice .die::before { content: ""; position: absolute; inset: 6%; border-radius: 24%; background: var(--glow, transparent); filter: blur(14px); opacity: .6; z-index: -1; transition: background-color .08s; }
 .face {
-  position: relative; width: 100%; height: 100%; border-radius: 26%;
+  position: relative; width: 100%; height: 100%; border-radius: 24%;
   display: grid; place-items: center; overflow: hidden;
-  border: 3px solid rgba(255,255,255,.95);
-  background:
-    radial-gradient(130% 120% at 30% 18%, color-mix(in srgb, var(--c, #e3261b) 72%, #fff) 0%, var(--c, #e3261b) 52%, color-mix(in srgb, var(--c, #e3261b) 74%, #000) 100%);
-  box-shadow: inset 0 3px 5px rgba(255,255,255,.55), inset 0 -11px 18px rgba(0,0,0,.26);
+  border: 5px solid #ffffff;
+  background: var(--c, #e3261b);
+  box-shadow: inset 0 -6px 10px rgba(0,0,0,.16);
   transition: background .08s;
 }
-.face.blank { border-color: rgba(255,255,255,.95); background: radial-gradient(130% 120% at 30% 18%, #ffffff, #e9ebef 60%, #d7dade); }
-.face.blank .dot { background: radial-gradient(circle at 38% 32%, #e4e6ea, #cfd2d8); box-shadow: none; }
+.face.blank { border-color: #ffffff; background: #f1f2f5; }
+.face.blank .dot { background: #d2d4da; box-shadow: none; }
 /* a glossy diagonal highlight across the top-left */
-.face::after { content: ""; position: absolute; inset: 0; background: linear-gradient(140deg, rgba(255,255,255,.5), rgba(255,255,255,0) 42%); pointer-events: none; }
-.face .dot { width: 25%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 38% 32%, #ffffff, #e4e4ea); box-shadow: inset 0 -2px 3px rgba(0,0,0,.28), 0 2px 3px rgba(0,0,0,.3); z-index: 1; }
-.die.num .face { background: radial-gradient(130% 120% at 30% 18%, #ffffff, #eceef2 70%, #dcdfe4); grid-template: repeat(3, 1fr) / repeat(3, 1fr); padding: 14%; }
+.face::after { display: none; }
+.face .dot { width: 28%; aspect-ratio: 1; border-radius: 50%; background: #ffffff; box-shadow: 0 1px 2px rgba(0,0,0,.22); z-index: 1; }
+.die.num .face { background: #ffffff; grid-template: repeat(3, 1fr) / repeat(3, 1fr); padding: 14%; }
 .die.num .pip { width: 72%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 38% 32%, #3a3a42, #15151a); box-shadow: inset 0 -1px 2px rgba(255,255,255,.2); }
 .die.num .pip.off { visibility: hidden; }
 .die.num.red-one .pip { background: radial-gradient(circle at 38% 32%, #ff6a5a, #c2160c); }
