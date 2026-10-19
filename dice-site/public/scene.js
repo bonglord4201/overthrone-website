@@ -236,6 +236,111 @@
         ctx.fillRect(r() * W, r() * H, 1.5, 1.5);
       }
     },
+    // A dark disc with a bright rim: the eclipse several themes open on.
+    eclipse(ctx, l) {
+      const cx = l.x * W, cy = l.y * H, R = l.r * Math.min(W, H);
+      const halo = ctx.createRadialGradient(cx, cy, R * 0.6, cx, cy, R * 3);
+      halo.addColorStop(0, rgba(l.rgb, 0.55)); halo.addColorStop(1, rgba(l.rgb, 0));
+      ctx.fillStyle = halo; ctx.fillRect(0, 0, W, H);
+      ctx.save();
+      ctx.shadowColor = rgba(l.rgb, 1); ctx.shadowBlur = R * 0.5;
+      ctx.strokeStyle = rgba(l.rgb, 0.95); ctx.lineWidth = Math.max(2, R * 0.05);
+      ctx.beginPath(); ctx.arc(cx, cy, R, 0, 6.283); ctx.stroke();
+      ctx.restore();
+      ctx.fillStyle = l.core || "#07060c";
+      ctx.beginPath(); ctx.arc(cx, cy, R, 0, 6.283); ctx.fill();
+    },
+    // Tall columns framing the left and right edges, like a temple doorway.
+    pillars(ctx, l) {
+      const y0 = l.base * H, w = Math.max(26, W * 0.05), top = l.top * H;
+      ctx.fillStyle = l.color;
+      for (const x of [w * 0.6, W - w * 1.6]) {
+        ctx.fillRect(x, top, w, y0 - top);
+        // capital + base blocks
+        ctx.fillRect(x - w * 0.18, top, w * 1.36, w * 0.5);
+        ctx.fillRect(x - w * 0.22, y0 - w * 0.5, w * 1.44, w * 0.5);
+        // flutes
+        if (l.line) {
+          ctx.strokeStyle = l.line; ctx.lineWidth = 1;
+          for (let i = 1; i < 4; i++) { ctx.beginPath(); ctx.moveTo(x + (w * i) / 4, top + w * 0.5); ctx.lineTo(x + (w * i) / 4, y0 - w * 0.5); ctx.stroke(); }
+        }
+      }
+    },
+    // A central fortress: stacked towers with a glowing gate and lit windows.
+    castle(ctx, l) {
+      const r = rand(l.seed), cx = W / 2, base = l.base * H, bw = Math.min(W * 0.5, 540);
+      ctx.fillStyle = l.color;
+      const body = base - l.h * H;
+      ctx.fillRect(cx - bw / 2, body, bw, base - body);
+      // towers
+      const towers = 5;
+      for (let i = 0; i < towers; i++) {
+        const tx = cx - bw / 2 + (bw * (i + 0.5)) / towers;
+        const th = l.h * H * (i === Math.floor(towers / 2) ? 1.5 : 0.7 + r() * 0.5);
+        const tw = bw / towers * 0.6;
+        ctx.fillRect(tx - tw / 2, base - th, tw, th);
+        ctx.beginPath(); // conical roof
+        ctx.moveTo(tx - tw / 2, base - th); ctx.lineTo(tx, base - th - tw * 0.9); ctx.lineTo(tx + tw / 2, base - th); ctx.closePath(); ctx.fill();
+      }
+      // glow gate
+      if (l.gate) {
+        const g = ctx.createRadialGradient(cx, base, 0, cx, base, bw * 0.3);
+        g.addColorStop(0, rgba(l.gate, 0.9)); g.addColorStop(1, rgba(l.gate, 0));
+        ctx.fillStyle = g; ctx.fillRect(cx - bw * 0.3, base - bw * 0.3, bw * 0.6, bw * 0.3);
+      }
+      // windows
+      if (l.win) {
+        ctx.fillStyle = rgba(l.win, 0.9);
+        for (let i = 0; i < 40; i++) ctx.fillRect(cx - bw / 2 + r() * bw, body + r() * (base - body), 3, 5);
+      }
+    },
+    pyramids(ctx, l) {
+      const r = rand(l.seed), base = l.base * H;
+      for (const [cx, h] of [[W * 0.5, l.h * H], [W * 0.32, l.h * H * 0.7], [W * 0.7, l.h * H * 0.8]]) {
+        const half = h * 0.9;
+        ctx.fillStyle = l.color;
+        ctx.beginPath(); ctx.moveTo(cx, base - h); ctx.lineTo(cx - half, base); ctx.lineTo(cx + half, base); ctx.closePath(); ctx.fill();
+        // lit face
+        ctx.fillStyle = l.lit || "rgba(255,255,255,.08)";
+        ctx.beginPath(); ctx.moveTo(cx, base - h); ctx.lineTo(cx, base); ctx.lineTo(cx + half, base); ctx.closePath(); ctx.fill();
+      }
+    },
+    // Glowing crystal shards rising from the floor.
+    crystals(ctx, l) {
+      const r = rand(l.seed), base = l.base * H;
+      for (let i = 0; i < l.n; i++) {
+        const x = r() * W, h = H * (0.05 + 0.18 * r()), w = h * (0.14 + 0.1 * r()), lean = (r() - 0.5) * 0.3;
+        ctx.save();
+        ctx.translate(x, base); ctx.rotate(lean);
+        ctx.shadowColor = rgba(l.rgb, 0.9); ctx.shadowBlur = 14;
+        const grd = ctx.createLinearGradient(0, -h, 0, 0);
+        grd.addColorStop(0, rgba(l.rgb, 0.95)); grd.addColorStop(1, rgba(l.rgb, 0.25));
+        ctx.fillStyle = grd;
+        ctx.beginPath(); ctx.moveTo(0, -h); ctx.lineTo(-w, -h * 0.35); ctx.lineTo(-w * 0.5, 0); ctx.lineTo(w * 0.5, 0); ctx.lineTo(w, -h * 0.35); ctx.closePath(); ctx.fill();
+        ctx.restore();
+      }
+    },
+    // Translucent waterfalls falling from a height down to the floor.
+    waterfalls(ctx, l) {
+      const r = rand(l.seed), top = l.top * H, bottom = l.base * H;
+      for (let i = 0; i < l.n; i++) {
+        const x = r() * W, w = 10 + 30 * r();
+        const g = ctx.createLinearGradient(0, top, 0, bottom);
+        g.addColorStop(0, rgba(l.rgb, 0)); g.addColorStop(0.3, rgba(l.rgb, 0.4)); g.addColorStop(1, rgba(l.rgb, 0.12));
+        ctx.fillStyle = g; ctx.fillRect(x, top, w, bottom - top);
+      }
+    },
+    // A glossy foreground floor that mirrors the glow above it.
+    floor(ctx, l) {
+      const y0 = l.y * H;
+      const g = ctx.createLinearGradient(0, y0, 0, H);
+      g.addColorStop(0, rgba(l.rgb, 0.5)); g.addColorStop(0.25, rgba(l.rgb, 0.16)); g.addColorStop(1, rgba(l.dark || "0, 0, 0", 0.55));
+      ctx.fillStyle = g; ctx.fillRect(0, y0, W, H - y0);
+      // a bright reflected streak down the middle
+      const s = ctx.createLinearGradient(0, y0, 0, H);
+      s.addColorStop(0, rgba(l.glow || l.rgb, 0.4)); s.addColorStop(1, rgba(l.glow || l.rgb, 0));
+      ctx.fillStyle = s; ctx.fillRect(W * 0.3, y0, W * 0.4, H - y0);
+    },
     vignette(ctx, l) {
       const g = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.35, W / 2, H / 2, Math.hypot(W, H) * 0.6);
       g.addColorStop(0, "rgba(0, 0, 0, 0)");
