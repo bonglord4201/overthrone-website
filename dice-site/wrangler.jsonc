@@ -15,7 +15,7 @@
   // prints in place of PASTE_YOUR_DATABASE_ID_HERE below. (Local `wrangler dev` works
   // without it.)
   "d1_databases": [
-    { "binding": "DB", "database_name": "colorroll-db", "database_id": "PASTE_YOUR_DATABASE_ID_HERE", "migrations_dir": "migrations" }
+    { "binding": "DB", "database_name": "colorroll-db", "database_id": "275c4c69-7fde-4187-8e4e-2661124da701", "migrations_dir": "migrations" }
   ],
   "observability": { "enabled": true }
 }
