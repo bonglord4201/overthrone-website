@@ -358,6 +358,12 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
     Installed files: models/{back,helmet,armor_set,weapon}/celestial_sovereign_*.bbmodel. vox.py: back='face' paints the
     back face per strip, quant snaps strip edges (cube budget). Package marketing/overthrone-celestial-sovereign-v10.zip
     (with rollback/), INSTALL-V10-CELESTIAL.md. Validator passes; NOT tested in game.
+  - v11 (owner sent the Aurion in-game video again): lesson = premium wings come from PAINTED FEATHER SHEETS (many
+    individually outlined, varied feathers per surface, ragged tips, white->lavender bands), not from one box stack per
+    feather. scripts/manas/plumage.py paints a tier; celestial10.py places 6 tiers per wing (full-bright faces, backing
+    copy for depth, painting on both sides), gold leading edge + sabers + crest. 270 cubes / 141 KB (v10 had 1435).
+    premium.py -> celestial10 (helm/armor/weapon still from celestial9). Package overthrone-celestial-sovereign-v11.zip,
+    backups in minecraft/manas_cosmetics/backups/celestial_v10/. Apply this sheet method to every other wing next.
  for top quality the owner should buy/commission .bbmodel files (BuiltByBit, MCModels,
   ManasMods' Discord) and send them; setup steps in minecraft/manas_cosmetics/README.md.
   Waiting on the Manas Cosmetics jar (this session can't reach CurseForge/Modrinth). The particle file can be switched off

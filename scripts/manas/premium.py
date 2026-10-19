@@ -2,7 +2,7 @@
 # shared sets5/sets6 builders; ids stay the same (overthrone:<set>_wings/_helm/_armor/_blade), so shop, crate and
 # ownership are untouched.
 import importlib
-PREMIUM = {'celestial_sovereign': 'celestial9'}
+PREMIUM = {'celestial_sovereign': 'celestial10'}
 def builders(sid):
     if sid not in PREMIUM: return None
     mod = importlib.import_module(PREMIUM[sid])
