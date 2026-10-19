@@ -45,6 +45,9 @@ body {
   padding-block: 18px 40px;
 }
 .scene { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+/* slow "Ken Burns" drift on image backgrounds so the scene feels alive */
+#sky.kb { animation: kenburns 32s ease-in-out infinite alternate; transform-origin: 50% 45%; will-change: transform; }
+@keyframes kenburns { from { transform: scale(1.04); } to { transform: scale(1.14) translate(-1.5%, -1%); } }
 .page { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
 
 button, select, input { font: inherit; color: inherit; }
@@ -325,6 +328,7 @@ dialog::backdrop { background: rgba(0,0,0,.6); }
   .suspense { animation: none; }
   .go, .switch input, .switch input::after { transition: none; }
   .go::after { display: none; }
+  #sky.kb { animation: none; }
 }
 
 /* 404 page */
@@ -333,11 +337,13 @@ body.lost { background: radial-gradient(130% 70% at 50% 115%, #ff6a1f 0%, #a3170
 .lost-card p { margin: 0; color: var(--muted); }
 .lost-card .go { text-decoration: none; display: block; width: 100%; }
 
-/* Eye comfort: dims the background art and softens the colours for light-sensitive
-   eyes. It only lowers intensity — the dice result stays fully visible. */
-body.comfort .scene { filter: brightness(.55) saturate(.6) contrast(.95); }
-body.comfort .die .face { filter: saturate(.78) brightness(.9); }
-body.comfort .die.mini .face { filter: saturate(.8) brightness(.92); }
-body.comfort .roller { box-shadow: 0 24px 60px rgba(0,0,0,.5), 0 2px 0 rgba(255,255,255,.08) inset, 0 0 0 1px rgba(0,0,0,.25); }
+/* Eye comfort: softens the dice for light-sensitive eyes. The bright dice faces
+   are blurred and desaturated so the colours aren't harsh, and the background art
+   is calmed a little. You can still tell the colours apart. */
+body.comfort .die .face { filter: blur(2.4px) saturate(.6) brightness(.9); }
+body.comfort .die .face .dot { filter: blur(1px); }
+body.comfort .die.mini .face { filter: blur(1.2px) saturate(.65) brightness(.92); }
+body.comfort .scene { filter: brightness(.82) saturate(.8); }
+body.comfort .go { filter: saturate(.8) brightness(.96); }
 body.comfort .go::after { display: none; }
-body.comfort .possible b { text-shadow: none; }
+body.comfort .possible b { text-shadow: none; filter: saturate(.75); }

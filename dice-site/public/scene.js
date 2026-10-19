@@ -530,6 +530,12 @@
   });
 
   window.Scene = {
-    use(t) { theme = t; if (!W) size(); start(); }
+    use(t) {
+      theme = t;
+      if (!W) size();
+      // Slow drift only on photo backgrounds, and only when motion is allowed.
+      sky.classList.toggle("kb", !!t.image && !reduced);
+      start();
+    }
   };
 })();

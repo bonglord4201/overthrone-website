@@ -225,7 +225,7 @@
     layoutDice(state.n, state.type);
     $("rollId").textContent = state.session;
     [...diceEl.children].forEach((d, i) => setDie(d, i % 6));
-    $("rollMeta").textContent = "Press Go to roll";
+    $("rollMeta").textContent = "Press Roll again to roll";
   }
 
   // ---- sound ----
