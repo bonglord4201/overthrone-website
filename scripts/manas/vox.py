@@ -28,7 +28,7 @@ def raster(polys, w, h):
             inside ^= ((y1 > Y) != (y2 > Y)) & (X < (x2 - x1) * (Y - y1) / ((y2 - y1) + 1e-12) + x1)
     return inside
 
-def strips(mask, step):
+def strips(mask, step, quant=None):
     """Rows grouped every `step` px; runs of filled cells in each band -> rects (x0, y0, x1, y1) in px; equal bands merged."""
     k = max(1, int(round(step / RES))); ny, nx = mask.shape
     bands = []
@@ -42,11 +42,18 @@ def strips(mask, step):
                 runs.append((x0, x))
             else: x += 1
         bands.append((r0, min(ny, r0 + k), tuple(runs)))
+    if quant:
+        q = quant / RES
+        bands = [(r0, r1, tuple((int(round(a / q) * q), int(round(b / q) * q)) for a, b in runs if round(b / q) > round(a / q))) for r0, r1, runs in bands]
+        quant = None
     out = []; i = 0
     while i < len(bands):
         r0, r1, runs = bands[i]; j = i + 1
         while j < len(bands) and bands[j][2] == runs: r1 = bands[j][1]; j += 1
-        for (a, b) in runs: out.append((a * RES, r0 * RES, b * RES, r1 * RES))
+        for (a, b) in runs:
+            xa, xb = a * RES, b * RES
+            if quant: xa, xb = round(xa / quant) * quant, round(xb / quant) * quant
+            if xb > xa: out.append((xa, r0 * RES, xb, r1 * RES))
         i = j
     return out
 
@@ -83,7 +90,7 @@ class Sculptor:
             u0, v0 = uv[0], uv[1]
             side = L['side']; back = L.get('back') or side
             zf = c[2] + L.get('z', 0.0); zb = zf + L['t']
-            for (ax, ay, bx, by) in strips(mask, L.get('step', step)):
+            for (ax, ay, bx, by) in strips(mask, L.get('step', step), L.get('quant')):
                 X0, X1 = x0w + ax, x0w + bx
                 if self.ydown: Y0, Y1 = y0w + ay, y0w + by
                 else: Y0, Y1 = c[1] + h / 2 - by, c[1] + h / 2 - ay
@@ -92,7 +99,10 @@ class Sculptor:
                 # north face: u0 sits at X max, v0 at Y max  -> pick the slice so the painting lands where it was drawn
                 nu = (tu1, tv1, tu0, tv0) if self.ydown else (tu1, tv0, tu0, tv1)
                 north = UV(nu, uv.tex)
-                faces = {'north': F(north), 'south': F(back), 'east': F(side), 'west': F(side), 'up': F(side), 'down': F(side)}
+                if L.get('back') == 'face':   # the same painting on the back face (seen from the other side)
+                    south = UV((tu0, tv1, tu1, tv0) if self.ydown else (tu0, tv0, tu1, tv1), uv.tex)
+                else: south = back
+                faces = {'north': F(north), 'south': F(south), 'east': F(side), 'west': F(side), 'up': F(side), 'down': F(side)}
                 self.m.cube(bone, [X0, Y0, zf], [X1, Y1, zb], faces, piv, list(rot))
                 if guv is not None:
                     g0, h0 = guv[0], guv[1]

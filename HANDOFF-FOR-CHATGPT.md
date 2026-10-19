@@ -350,6 +350,14 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
     v10 helmet + chest PROTOTYPE only (not wired into the build, live cosmetics untouched). Backups of v8 + the v9 attempt:
     minecraft/manas_cosmetics/backups/celestial_v8_stage1/. Waiting for the owner to approve the direction before the
     shoulders/arms/waist/legs/wings are built with vox.py.
+  - v10 COMPLETE set built (owner: "wings missing, finish it"): the v10 wings were missing because celestial9.py had no
+    wings() and the preview only built helm+armor. Now celestial9.py has wings() (solid sculpted feathers: PRIM/SEC/COV
+    profiles, jittered sizes/angles, 6 rows, gold frame plates + wrist crests, harness; luminous faces), full armour
+    (pauldrons with lames/caps/feather fans, rerebrace, vambraces with fin, waist tabards/tassets, knee cops, ridged
+    greaves, sabatons, backplate) and weapon() (reuses celestial7's greatsword). premium.py now maps celestial -> celestial9.
+    Installed files: models/{back,helmet,armor_set,weapon}/celestial_sovereign_*.bbmodel. vox.py: back='face' paints the
+    back face per strip, quant snaps strip edges (cube budget). Package marketing/overthrone-celestial-sovereign-v10.zip
+    (with rollback/), INSTALL-V10-CELESTIAL.md. Validator passes; NOT tested in game.
  for top quality the owner should buy/commission .bbmodel files (BuiltByBit, MCModels,
   ManasMods' Discord) and send them; setup steps in minecraft/manas_cosmetics/README.md.
   Waiting on the Manas Cosmetics jar (this session can't reach CurseForge/Modrinth). The particle file can be switched off
