@@ -1,22 +1,27 @@
 // ColorRoll Worker.
 //
 // Static files in public/ are served by Workers Static Assets. This Worker
-// only runs for /api/*, and it is the only place dice are rolled: the browser
-// asks for a roll, the Worker picks the faces with crypto.getRandomValues,
-// saves the roll in D1 and only then sends it back. Editing the page cannot
-// change a result, and anyone can look a roll up by its ID.
+// runs for the routes in wrangler.jsonc (assets.run_worker_first) and for any
+// address that isn't a static file:
 //
-//   POST /api/roll            { key, dice, kind }  -> the new roll
-//   GET  /api/roll/:id                             -> the roll + the same roller's rolls around it
-//   GET  /api/roller/:roller                       -> that roller's last 20 rolls
-//   GET  /api/health
+//   /api/roll, /api/roller/*   dice rolls and verification (src/rolls.js)
+//   /api/streamers             the public top-streamers list (src/streamers.js)
+//   /media/*                   uploaded streamer pictures
+//   /<ADMIN_PATH>/             the admin panel, at a secret address
+//   /<ADMIN_PATH>/api/*        the admin panel's API, signed-in admin only
+//
+// The admin panel's files live in public/admin/, but /admin itself always
+// answers "page not found". They are only served at the secret address in
+// the ADMIN_PATH secret, so visitors can't tell an admin panel exists. The
+// password (src/auth.js) is a second lock behind that address.
 
-const ID_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
-const ID_RE = /^[A-HJ-NP-Za-km-z2-9]{10}$/;
-const ROLLER_RE = /^[0-9a-f]{12}$/;
-const KEY_RE = /^[A-Za-z0-9]{24,64}$/;
-const MIN_GAP_MS = 400; // one roll per roller per 0.4 s
-const NEIGHBOURS = 5;
+import { json } from "./http.js";
+import { handleRolls } from "./rolls.js";
+import { isAdmin, login, logout, sameOrigin, adminConfigured } from "./auth.js";
+import { listPublic, handleAdminStreamers, serveMedia } from "./streamers.js";
+
+const ADMIN_PATH_RE = /^[A-Za-z0-9_-]{16,64}$/;
+const RESERVED = ["admin", "api", "media"];
 
 export default {
   async fetch(request, env) {
@@ -24,129 +29,66 @@ export default {
     try {
       return await route(request, env, url);
     } catch (err) {
-      console.error("API error", String((err && err.message) || err));
-      return json({ error: "The dice server had a problem. Try again in a moment." }, 500);
+      console.error("Server error", String((err && err.message) || err));
+      return json({ error: "The server had a problem. Try again in a moment." }, 500);
     }
   }
 };
 
+// The secret admin address, or "" when ADMIN_PATH isn't set (admin panel off).
+function adminBase(env) {
+  const p = String(env.ADMIN_PATH || "").replace(/^\/+|\/+$/g, "");
+  return ADMIN_PATH_RE.test(p) && !RESERVED.includes(p.toLowerCase()) ? "/" + p : "";
+}
+
 async function route(request, env, url) {
-  const parts = url.pathname.split("/").filter(Boolean); // ["api", ...]
+  const path = url.pathname;
   const method = request.method;
+  const base = adminBase(env);
 
-  if (parts[1] === "health" && method === "GET") return json({ ok: true });
-
-  if (parts[1] === "roll" && parts.length === 2) {
-    if (method !== "POST") return json({ error: "Use POST to roll." }, 405);
-    return createRoll(request, env);
+  if (base && (path === base || path.startsWith(base + "/"))) {
+    if (path === base) return Response.redirect(url.origin + base + "/", 301);
+    return adminArea(request, env, url, path.slice(base.length));
   }
 
-  if (parts[1] === "roll" && parts.length === 3 && method === "GET") {
-    const id = parts[2];
-    if (!ID_RE.test(id)) return json({ error: "A roll ID is 10 letters and digits." }, 400);
-    const row = await env.DB.prepare("SELECT * FROM rolls WHERE id = ?").bind(id).first();
-    if (!row) return json({ error: "No roll has this ID. A made-up or edited ID will never be found." }, 404);
-    const [before, after] = await Promise.all([
-      env.DB.prepare("SELECT * FROM rolls WHERE roller = ? AND seq < ? ORDER BY seq DESC LIMIT ?").bind(row.roller, row.seq, NEIGHBOURS).all(),
-      env.DB.prepare("SELECT * FROM rolls WHERE roller = ? AND seq > ? ORDER BY seq ASC LIMIT ?").bind(row.roller, row.seq, NEIGHBOURS).all()
-    ]);
-    return json({ roll: shape(row), before: before.results.map(shape), after: after.results.map(shape) });
+  const parts = path.split("/").filter(Boolean);
+  if (parts[0] === "media" && parts.length === 2 && method === "GET") return serveMedia(env, parts[1]);
+  if (parts[0] === "api") {
+    if (parts[1] === "health" && method === "GET") return json({ ok: true });
+    if (parts[1] === "streamers" && parts.length === 2 && method === "GET") return listPublic(env);
+    return (await handleRolls(request, env, parts)) || json({ error: "Not found" }, 404);
   }
-
-  if (parts[1] === "roller" && parts.length === 3 && method === "GET") {
-    const roller = parts[2];
-    if (!ROLLER_RE.test(roller)) return json({ error: "Unknown roller ID." }, 400);
-    const { results } = await env.DB.prepare("SELECT * FROM rolls WHERE roller = ? ORDER BY seq DESC LIMIT 20").bind(roller).all();
-    return json({ rolls: results.map(shape) });
-  }
-
-  return json({ error: "Not found" }, 404);
+  return notFound(env, url);
 }
 
-async function createRoll(request, env) {
-  let body;
-  try {
-    body = await request.json();
-  } catch {
-    return json({ error: "Send the roll request as JSON." }, 400);
-  }
-  const key = String((body && body.key) || "");
-  const dice = Number(body && body.dice);
-  const kind = body && body.kind === "number" ? "number" : "color";
-  if (!KEY_RE.test(key)) return json({ error: "Missing or invalid roller key." }, 400);
-  if (!Number.isInteger(dice) || dice < 1 || dice > 6) return json({ error: "Roll 1 to 6 dice." }, 400);
+// Everything under the secret address. `rest` starts with "/".
+async function adminArea(request, env, url, rest) {
+  const private_ = { "Cache-Control": "no-store", "X-Robots-Tag": "noindex, nofollow", "X-Frame-Options": "DENY", "Referrer-Policy": "no-referrer" };
 
-  const roller = await rollerId(key);
-  const now = Date.now();
-  const faces = randomFaces(dice);
-
-  for (let attempt = 0; attempt < 3; attempt++) {
-    const id = randomId();
-    const createdAt = new Date(now).toISOString();
-    try {
-      // One statement, so the roll number and the rate limit are checked atomically.
-      const res = await env.DB.prepare(
-        `INSERT INTO rolls (id, roller, seq, dice, kind, faces, created_at)
-         SELECT ?1, ?2, COALESCE((SELECT MAX(seq) FROM rolls WHERE roller = ?2), 0) + 1, ?3, ?4, ?5, ?6
-         WHERE NOT EXISTS (SELECT 1 FROM rolls WHERE roller = ?2 AND created_at > ?7)`
-      ).bind(id, roller, dice, kind, faces.join(","), createdAt, new Date(now - MIN_GAP_MS).toISOString()).run();
-      if (!res.meta.changes) return json({ error: "Slow down a little between rolls." }, 429);
-      const row = await env.DB.prepare("SELECT * FROM rolls WHERE id = ?").bind(id).first();
-      return json({ roll: shape(row) }, 201);
-    } catch (err) {
-      // A clash on the roll ID (or a racing roll number) is retried with a new ID.
-      if (!/UNIQUE/i.test(String(err && err.message))) throw err;
-    }
+  if (rest.startsWith("/api/")) {
+    const parts = ["api", "admin", ...rest.slice(5).split("/").filter(Boolean)];
+    const method = request.method;
+    if (parts[2] === "login" && method === "POST") return login(request, env, url);
+    if (parts[2] === "logout" && method === "POST") return logout();
+    if (!(await isAdmin(request, env))) return json({ error: "Sign in to use the admin panel." }, 401, private_);
+    if (method !== "GET" && !sameOrigin(request, url)) return json({ error: "Make changes from the admin page." }, 403);
+    if (parts[2] === "me" && method === "GET") return json({ ok: true, ready: adminConfigured(env) });
+    if (parts[2] === "streamers") return handleAdminStreamers(request, env, parts);
+    return json({ error: "Not found" }, 404);
   }
-  return json({ error: "Could not save the roll. Try again." }, 503);
-}
 
-// Uniform 0-5 per die: reject bytes >= 252 so every face has exactly 42 of 252 values.
-function randomFaces(n) {
-  const out = [];
-  const buf = new Uint8Array(16);
-  while (out.length < n) {
-    crypto.getRandomValues(buf);
-    for (const b of buf) if (b < 252 && out.length < n) out.push(b % 6);
-  }
+  const file = rest === "/" ? "/admin/" : "/admin" + rest;
+  const res = await env.ASSETS.fetch(new Request(new URL(file, url), request));
+  if (res.status !== 200) return notFound(env, url);
+  const out = new Response(res.body, res);
+  for (const [k, v] of Object.entries(private_)) out.headers.set(k, v);
   return out;
 }
 
-function randomId() {
-  const limit = 256 - (256 % ID_CHARS.length);
-  let id = "";
-  const buf = new Uint8Array(32);
-  while (id.length < 10) {
-    crypto.getRandomValues(buf);
-    for (const b of buf) if (b < limit && id.length < 10) id += ID_CHARS[b % ID_CHARS.length];
-  }
-  return id;
-}
-
-// The public roller ID is a hash of the browser's secret key, so nobody else
-// can add rolls to a streamer's history and the key itself is never shown.
-async function rollerId(key) {
-  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("colorroll:" + key));
-  return [...new Uint8Array(digest)].slice(0, 6).map((b) => b.toString(16).padStart(2, "0")).join("");
-}
-
-const shape = (row) => ({
-  id: row.id,
-  roller: row.roller,
-  seq: row.seq,
-  dice: row.dice,
-  kind: row.kind,
-  faces: row.faces.split(",").map(Number),
-  at: row.created_at
-});
-
-function json(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-      "Cache-Control": "no-store",
-      "X-Content-Type-Options": "nosniff"
-    }
+async function notFound(env, url) {
+  const page = await env.ASSETS.fetch(new Request(new URL("/404", url)));
+  return new Response(page.ok ? page.body : "Page not found", {
+    status: 404,
+    headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" }
   });
 }

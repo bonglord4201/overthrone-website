@@ -16,7 +16,10 @@
     { name: "Blue", v: "--blue", cls: "c-blue" },
     { name: "Purple", v: "--purple", cls: "c-purple" }
   ];
-  const SKINS = ["blue", "sab-blue", "green", "sab-green", "red", "sab-red", "pink", "bw", "sab-black", "heaven", "hell", "underwater", "bronze", "silver", "gold", "casino", "midnight"];
+  const THEMES = window.THEMES;
+  const themeById = (id) => THEMES.find((t) => t.id === id);
+  // Older theme names that were renamed.
+  const OLD_THEMES = { "sab-blue": "dark-blue", "sab-green": "dark-green", "sab-red": "dark-red", "sab-black": "black", ocean: "underwater", midnight: "galaxy" };
   const KEY_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const ID_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
   const ID_RE = /^[A-HJ-NP-Za-km-z2-9]{10}$/;
@@ -53,7 +56,7 @@
   const state = {
     n: urlN >= 1 && urlN <= 6 ? urlN : store.get("n", 4),
     type: store.get("type", "color"),
-    skin: SKINS.includes(params.get("skin")) ? params.get("skin") : store.get("skin", "hell"),
+    skin: params.get("theme") || store.get("skin", "hell"),
     sound: store.get("sound", true),
     counter: store.get("counter", 0),
     key: store.get("key", ""),
@@ -62,8 +65,8 @@
     current: null,
     preview: false
   };
-  if (state.skin === "ocean") state.skin = "underwater";
-  if (!SKINS.includes(state.skin)) state.skin = "hell";
+  state.skin = OLD_THEMES[state.skin] || state.skin;
+  if (!themeById(state.skin)) state.skin = "hell";
   if (!["color", "number"].includes(state.type)) state.type = "color";
   if (!(state.n >= 1 && state.n <= 6)) state.n = 4;
   if (!/^[A-Za-z0-9]{24,64}$/.test(state.key)) { state.key = randomString(KEY_CHARS, 32); store.set("key", state.key); }
@@ -304,8 +307,28 @@
     });
   }
 
+  // ---- themes ----
+  const UI_VARS = { bg: "--bg", panel: "--panel", panelSolid: "--panel-solid", edge: "--edge", select: "--select-fg", pageFg: "--page-fg", brand: "--brand", brandAccent: "--brand-accent" };
+  const UI_DEFAULTS = { pageFg: "rgba(255, 255, 255, .78)", brand: "#ffffff", brandAccent: "var(--go)" };
+  function buildThemeMenu() {
+    const groups = new Map();
+    for (const t of THEMES) {
+      if (!groups.has(t.group)) groups.set(t.group, el("optgroup", { label: t.group }));
+      const o = el("option", { value: t.id, textContent: t.name });
+      o.style.color = t.ui.select;
+      groups.get(t.group).append(o);
+    }
+    $("skin").replaceChildren(...groups.values());
+  }
+  function applyTheme() {
+    const t = themeById(state.skin);
+    const root = document.documentElement.style;
+    for (const [k, v] of Object.entries(UI_VARS)) root.setProperty(v, t.ui[k] || UI_DEFAULTS[k] || "");
+    window.Scene.use(t);
+  }
+
   function applySettings() {
-    document.documentElement.dataset.skin = state.skin;
+    applyTheme();
     $("count").value = state.n;
     $("type").value = state.type;
     $("skin").value = state.skin;
@@ -415,66 +438,60 @@
 
   $("roll").addEventListener("click", () => roll());
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && document.body.classList.contains("stream")) return setStream(false);
     if (e.repeat || document.querySelector("dialog[open]")) return;
     if (["INPUT", "SELECT", "TEXTAREA", "BUTTON"].includes(e.target.tagName)) return;
     if (e.code === "Space" || e.key === "Enter") { e.preventDefault(); roll(); }
   });
   $("count").addEventListener("change", (e) => { state.n = +e.target.value; save(); roll(); });
   $("type").addEventListener("change", (e) => { state.type = e.target.value; save(); renderPossible(); renderHistory(); roll(); });
-  $("skin").addEventListener("change", (e) => { state.skin = e.target.value; save(); applySettings(); });
+  $("skin").addEventListener("change", (e) => { state.skin = e.target.value; save(); applyTheme(); });
   $("sound").addEventListener("change", (e) => { state.sound = e.target.checked; save(); });
   document.querySelectorAll("[data-d]").forEach((b) => b.addEventListener("click", () => {
     state.counter += +b.dataset.d; $("counter").textContent = state.counter; save();
   }));
   $("resetCounter").addEventListener("click", () => { state.counter = 0; $("counter").textContent = 0; save(); });
 
-  function setStream(on) {
-    document.body.classList.toggle("stream", on);
-    $("stream").checked = on;
-    $("exitStream").hidden = !on;
+  function setHistory(show) {
+    $("historyPanel").hidden = !show;
+    $("showHistory").hidden = show;
+    store.set("history-hidden", !show);
   }
-  $("stream").addEventListener("change", (e) => setStream(e.target.checked));
-  $("exitStream").addEventListener("click", () => setStream(false));
+  $("hideHistory").addEventListener("click", () => setHistory(false));
+  $("showHistory").addEventListener("click", () => setHistory(true));
 
-  // ---- background embers ----
-  const cvs = $("embers"), ctx = cvs.getContext("2d");
-  let W = 0, H = 0, sparks = [];
-  function resize() {
-    const dpr = Math.min(devicePixelRatio || 1, 2);
-    W = innerWidth; H = innerHeight;
-    cvs.width = W * dpr; cvs.height = H * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  // ---- top streamers ----
+  const TICK = '<svg class="tick" viewBox="0 0 24 24" aria-label="Verified"><path fill="#ffffff" d="M12 1.5l2.6 1.9 3.2-.1 1 3 2.6 1.9-1 3.1 1 3.1-2.6 1.9-1 3-3.2-.1L12 22.5l-2.6-1.9-3.2.1-1-3-2.6-1.9 1-3.1-1-3.1L5.2 6.3l1-3 3.2.1z"/><path fill="none" stroke="#1d0b0b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M7.8 12.3l2.8 2.8 5.6-5.8"/></svg>';
+  function streamerCard(s) {
+    const a = el("a", { className: "streamer" + (s.live ? " live" : ""), href: "https://www.tiktok.com/@" + encodeURIComponent(s.handle), target: "_blank", rel: "noopener noreferrer" });
+    const pic = el("span", { className: "pic" });
+    pic.append(s.avatar ? el("img", { src: s.avatar, alt: "", loading: "lazy", width: 50, height: 50 }) : el("span", { className: "noimg", textContent: s.name.slice(0, 1).toUpperCase() }));
+    if (s.live) pic.append(el("span", { className: "badge", textContent: "Live" }));
+    const name = el("span", { className: "name" }, el("span", { textContent: s.name }));
+    if (s.verified) name.insertAdjacentHTML("beforeend", TICK);
+    a.append(pic, el("span", { className: "who" }, name, el("span", { className: "handle", textContent: "@" + s.handle })));
+    a.setAttribute("aria-label", `${s.name}, @${s.handle}${s.live ? ", live now" : ""} on TikTok`);
+    return a;
   }
-  const spark = (y) => ({ x: Math.random() * W, y: y ?? H + 10, r: 0.8 + Math.random() * 2.2, vy: 0.3 + Math.random() * 0.9, vx: (Math.random() - 0.5) * 0.4, ph: Math.random() * 6.28 });
-  function frame() {
-    if (!document.hidden) {
-      const rgb = getComputedStyle(document.documentElement).getPropertyValue("--ember").trim();
-      ctx.clearRect(0, 0, W, H);
-      ctx.shadowColor = `rgba(${rgb}, .9)`; ctx.shadowBlur = 8;
-      for (const s of sparks) {
-        s.y -= s.vy; s.ph += 0.05; s.x += s.vx + Math.sin(s.ph) * 0.3;
-        if (s.y < -10) Object.assign(s, spark());
-        const a = Math.max(0, Math.min(1, s.y / H)) * (0.5 + 0.5 * Math.sin(s.ph * 2));
-        ctx.beginPath();
-        ctx.fillStyle = `rgba(${rgb}, ${a.toFixed(3)})`;
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fill();
-      }
+  async function loadStreamers() {
+    let list = [];
+    try { list = state.preview ? [] : (await request("/api/streamers")).streamers; } catch {}
+    const left = [], right = [];
+    list.forEach((s) => {
+      const side = s.side === "left" || s.side === "right" ? s.side : left.length <= right.length ? "left" : "right";
+      (side === "left" ? left : right).push(s);
+    });
+    for (const [panel, items] of [[$("streamersLeft"), left], [$("streamersRight"), right]]) {
+      panel.querySelector(".slist").replaceChildren(...items.map(streamerCard));
+      panel.hidden = !items.length;
     }
-    requestAnimationFrame(frame);
-  }
-  if (!reduced) {
-    resize();
-    addEventListener("resize", resize);
-    sparks = Array.from({ length: Math.round(Math.min(70, W / 18)) }, () => spark(Math.random() * H));
-    requestAnimationFrame(frame);
+    document.querySelector(".layout").classList.toggle("no-streamers", !list.length);
   }
 
   // ---- start ----
   async function start() {
+    buildThemeMenu();
     applySettings();
-    if (location.host) $("hostName").textContent = location.host;
+    if (store.get("history-hidden", false)) setHistory(false);
     showBlank();
     renderHistory();
     setInterval(tickTimes, 1000);
@@ -482,6 +499,7 @@
     state.roller = roller;
     state.preview = !online;
     $("previewNotice").hidden = online;
+    loadStreamers();
     try { state.history = await api().history(roller); } catch { state.history = []; }
     renderHistory();
     const last = state.history[0];

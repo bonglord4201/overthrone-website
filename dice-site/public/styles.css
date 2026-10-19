@@ -1,4 +1,5 @@
-/* Layout: a roller card and a 20-roll history card side by side over a full-bleed themed backdrop; stacks to one column on phones. */
+/* Layout: streamer lists left and right of a center column (roller, then the 20-roll history) over a painted theme scene; stacks on phones.
+   Theme colors below are the Hell defaults; app.js overwrites them from public/themes.js. */
 :root {
   color-scheme: dark;
   --font-display: "Luckiest Guy", "Arial Black", Impact, sans-serif;
@@ -19,191 +20,17 @@
   --blue: #1240ff;
   --purple: #7d1594;
 
-  /* skin: hell (default) */
+  /* theme */
   --bg: #170403;
-  --bg-art: radial-gradient(130% 70% at 50% 115%, #ff6a1f 0%, #c2200d 22%, #5e0906 50%, #1d0404 80%);
   --panel: rgba(110, 10, 6, .55);
   --panel-solid: #3a0805;
   --edge: rgba(255, 214, 205, .5);
   --soft: rgba(255, 255, 255, .12);
   --select-fg: #8e0f08;
-  --ember: 255, 122, 40;
   --page-fg: rgba(255, 255, 255, .78);
   --brand: #ffffff;
   --brand-accent: var(--go);
 }
-[data-skin="blue"] {
-  --bg: #0a3aa8;
-  --bg-art: radial-gradient(120% 80% at 50% 0%, #4aa3ff 0%, #1f63e0 40%, #0b2f8f 85%);
-  --panel: rgba(10, 40, 130, .55);
-  --panel-solid: #0d2f86;
-  --edge: rgba(210, 230, 255, .6);
-  --select-fg: #1250c4;
-  --ember: 200, 230, 255;
-}
-[data-skin="sab-blue"] {
-  --bg: #020814;
-  --bg-art: radial-gradient(100% 70% at 50% 100%, #0c4bd6 0%, #06205e 40%, #020814 80%);
-  --panel: rgba(4, 16, 48, .65);
-  --panel-solid: #061538;
-  --edge: rgba(80, 150, 255, .6);
-  --select-fg: #0b3fa8;
-  --ember: 60, 140, 255;
-}
-[data-skin="green"] {
-  --bg: #0b6b24;
-  --bg-art: radial-gradient(120% 80% at 50% 0%, #5be37e 0%, #1fa346 40%, #0a5a1f 85%);
-  --panel: rgba(6, 70, 24, .55);
-  --panel-solid: #0b4a1d;
-  --edge: rgba(210, 255, 220, .6);
-  --select-fg: #0b7a2a;
-  --ember: 210, 255, 200;
-}
-[data-skin="sab-green"] {
-  --bg: #020d05;
-  --bg-art: radial-gradient(100% 70% at 50% 100%, #12a03c 0%, #064d1b 40%, #020d05 80%);
-  --panel: rgba(3, 30, 12, .65);
-  --panel-solid: #052812;
-  --edge: rgba(80, 230, 120, .55);
-  --select-fg: #0b6b24;
-  --ember: 90, 255, 130;
-}
-[data-skin="red"] {
-  --bg: #a8100b;
-  --bg-art: radial-gradient(120% 80% at 50% 0%, #ff6a5a 0%, #e0261b 40%, #8a0b07 85%);
-  --panel: rgba(120, 10, 6, .5);
-  --panel-solid: #6e0a06;
-  --edge: rgba(255, 220, 214, .6);
-  --select-fg: #b5140d;
-  --ember: 255, 210, 190;
-}
-[data-skin="sab-red"] {
-  --bg: #0f0202;
-  --bg-art: radial-gradient(100% 70% at 50% 100%, #c9140c 0%, #5a0604 40%, #0f0202 80%);
-  --panel: rgba(40, 4, 3, .65);
-  --panel-solid: #2c0504;
-  --edge: rgba(255, 90, 80, .55);
-  --select-fg: #a8100b;
-  --ember: 255, 60, 40;
-}
-[data-skin="pink"] {
-  --bg: #e0569e;
-  --bg-art: radial-gradient(120% 80% at 50% 0%, #ffb3d9 0%, #f06bb0 40%, #b8337a 85%);
-  --panel: rgba(150, 30, 90, .5);
-  --panel-solid: #8c2259;
-  --edge: rgba(255, 230, 242, .7);
-  --select-fg: #c22d7d;
-  --ember: 255, 235, 245;
-}
-[data-skin="bw"] {
-  --bg: #e6e6e6;
-  --bg-art: linear-gradient(180deg, #ffffff 0%, #d4d4d4 100%);
-  --panel: rgba(15, 15, 15, .9);
-  --panel-solid: #141414;
-  --edge: rgba(0, 0, 0, .85);
-  --select-fg: #111111;
-  --ember: 0, 0, 0;
-  --page-fg: #2a2a2a;
-  --brand: #111111;
-}
-[data-skin="sab-black"] {
-  --bg: #000000;
-  --bg-art: radial-gradient(100% 60% at 50% 0%, #1f1f1f 0%, #000000 70%);
-  --panel: rgba(18, 18, 18, .85);
-  --panel-solid: #111111;
-  --edge: rgba(255, 255, 255, .35);
-  --select-fg: #111111;
-  --ember: 255, 255, 255;
-}
-[data-skin="heaven"] {
-  --bg: #bfe3ff;
-  --bg-art: radial-gradient(60% 40% at 50% 0%, #fff8d6 0%, rgba(255, 248, 214, 0) 70%), linear-gradient(180deg, #9fd3ff 0%, #dff1ff 60%, #ffffff 100%);
-  --panel: rgba(40, 90, 150, .62);
-  --panel-solid: #2c5f96;
-  --edge: rgba(255, 236, 170, .95);
-  --select-fg: #a8790a;
-  --ember: 255, 236, 160;
-  --page-fg: #2f4560;
-  --brand: #1d3a5c;
-}
-[data-skin="underwater"] {
-  --bg: #03101f;
-  --bg-art: radial-gradient(130% 80% at 50% -10%, #2b8ad0 0%, #0d3c74 45%, #041a35 85%);
-  --panel: rgba(4, 30, 64, .55);
-  --panel-solid: #08264a;
-  --edge: rgba(190, 228, 255, .5);
-  --select-fg: #0b4486;
-  --ember: 170, 225, 255;
-}
-[data-skin="bronze"] {
-  --bg: #2a160a;
-  --bg-art: radial-gradient(120% 80% at 30% 0%, #e0a46b 0%, #a8662f 35%, #5c3418 70%, #2a160a 100%);
-  --panel: rgba(60, 30, 12, .6);
-  --panel-solid: #4a2810;
-  --edge: rgba(255, 210, 160, .65);
-  --select-fg: #8a4b1d;
-  --ember: 255, 190, 120;
-}
-[data-skin="silver"] {
-  --bg: #8d939b;
-  --bg-art: radial-gradient(120% 80% at 30% 0%, #ffffff 0%, #c9ced6 35%, #8a919b 70%, #5a6069 100%);
-  --panel: rgba(40, 46, 56, .72);
-  --panel-solid: #3a4049;
-  --edge: rgba(255, 255, 255, .8);
-  --select-fg: #4a5260;
-  --ember: 255, 255, 255;
-  --page-fg: #1e232b;
-  --brand: #1e232b;
-}
-[data-skin="gold"] {
-  --bg: #6b4a00;
-  --bg-art: radial-gradient(120% 80% at 30% 0%, #fff1a8 0%, #f2c230 35%, #b8860b 70%, #6b4a00 100%);
-  --panel: rgba(90, 60, 0, .62);
-  --panel-solid: #5c4000;
-  --edge: rgba(255, 245, 200, .85);
-  --select-fg: #9a6b00;
-  --ember: 255, 245, 190;
-  --page-fg: #3d2a00;
-  --brand: #3d2a00;
-  --brand-accent: #ffffff;
-}
-[data-skin="casino"] {
-  --bg: #04190c;
-  --bg-art: radial-gradient(120% 80% at 50% 25%, #23854a 0%, #0f4d29 50%, #062612 85%);
-  --panel: rgba(0, 38, 14, .55);
-  --panel-solid: #0b3018;
-  --edge: rgba(240, 214, 140, .55);
-  --select-fg: #0d5b2c;
-  --ember: 255, 220, 130;
-}
-[data-skin="midnight"] {
-  --bg: #07030f;
-  --bg-art: radial-gradient(120% 80% at 50% 10%, #4b1f86 0%, #1c0b3a 50%, #08040f 85%);
-  --panel: rgba(30, 12, 60, .6);
-  --panel-solid: #1d0d38;
-  --edge: rgba(220, 196, 255, .5);
-  --select-fg: #4b1f86;
-  --ember: 220, 185, 255;
-}
-#skin option { background: #ffffff; }
-#skin option[value="hell"] { color: #8e0f08; }
-#skin option[value="blue"] { color: #1250c4; }
-#skin option[value="sab-blue"] { color: #0b3fa8; }
-#skin option[value="green"] { color: #0b7a2a; }
-#skin option[value="sab-green"] { color: #0b6b24; }
-#skin option[value="red"] { color: #b5140d; }
-#skin option[value="sab-red"] { color: #a8100b; }
-#skin option[value="pink"] { color: #c22d7d; }
-#skin option[value="bw"] { color: #111111; }
-#skin option[value="sab-black"] { color: #111111; }
-#skin option[value="heaven"] { color: #a8790a; }
-#skin option[value="underwater"] { color: #0b4486; }
-#skin option[value="bronze"] { color: #8a4b1d; }
-#skin option[value="silver"] { color: #4a5260; }
-#skin option[value="gold"] { color: #9a6b00; }
-#skin option[value="casino"] { color: #0d5b2c; }
-#skin option[value="midnight"] { color: #4b1f86; }
-
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 html { background: var(--bg); }
@@ -212,14 +39,13 @@ body {
   min-height: 100vh;
   color: var(--fg);
   font: 400 15px/1.45 var(--font-body);
-  background: var(--bg-art), var(--bg);
-  background-attachment: fixed;
+  background: var(--bg);
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
   padding-block: 18px 40px;
 }
-#embers { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-.page { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+.scene { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.page { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
 
 button, select, input { font: inherit; color: inherit; }
 button { cursor: pointer; }
@@ -233,7 +59,15 @@ button { cursor: pointer; }
 .tag { color: var(--page-fg); font-size: 13px; }
 
 /* cards */
-.layout { display: grid; grid-template-columns: minmax(0, 470px) minmax(0, 400px); gap: 22px; justify-content: center; align-items: start; }
+.layout {
+  display: grid; gap: 22px; justify-content: center; align-items: start;
+  grid-template-columns: minmax(0, 300px) minmax(0, 470px) minmax(0, 300px);
+  grid-template-areas: "left center right";
+}
+.center { grid-area: center; display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+.streamers.left { grid-area: left; }
+.streamers.right { grid-area: right; }
+.layout.no-streamers { grid-template-columns: minmax(0, 470px); grid-template-areas: "center"; }
 .panel {
   background: var(--panel);
   border: 3px solid var(--edge);
@@ -406,19 +240,35 @@ dialog::backdrop { background: rgba(0,0,0,.6); }
 .odds tr.hl td { background: rgba(255,225,0,.14); font-weight: 800; }
 .odds-wrap { overflow-x: auto; }
 
-/* stream mode: only the dice, the id and the roll button */
-.exit { position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); z-index: 5; }
-body.stream .chrome { display: none !important; }
-body.stream .layout { grid-template-columns: minmax(0, 720px); }
-body.stream .roller { background: transparent; border-color: transparent; box-shadow: none; backdrop-filter: none; }
-body.stream .dice { --max: 150px; }
-body.stream .rollid code { font-size: clamp(28px, 6vw, 40px); }
-body.stream .rollmeta { font-size: 16px; }
-.streamhint { display: none; }
-body.stream .streamhint { display: block; margin: 0; }
+/* top streamers */
+.streamers { gap: 10px; padding-inline: 14px; }
+.streamers h2 { font-size: 19px; }
+.slist { display: flex; flex-direction: column; gap: 8px; }
+.streamer {
+  display: grid; grid-template-columns: 50px minmax(0, 1fr); gap: 10px; align-items: center;
+  background: rgba(255, 255, 255, .16); border: 2px solid rgba(255, 255, 255, .45); border-radius: 10px;
+  padding: 6px 10px; color: var(--fg); text-decoration: none; transition: background .12s;
+}
+.streamer:hover { background: rgba(255, 255, 255, .26); }
+.streamer .pic { position: relative; width: 50px; height: 50px; }
+.streamer img, .streamer .noimg { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--white); background: var(--panel-solid); display: grid; place-items: center; font: 400 20px/1 var(--font-display); }
+.streamer.live img, .streamer.live .noimg { border-color: #ff2a5c; box-shadow: 0 0 0 2px #ff2a5c; }
+.streamer .badge { position: absolute; left: 50%; bottom: -5px; transform: translateX(-50%); background: #ff2a5c; color: var(--white); font-size: 11px; font-weight: 800; padding: 0 6px; border-radius: 4px; line-height: 15px; }
+.streamer .who { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.streamer .name { display: flex; align-items: center; gap: 5px; font: 400 17px/1.1 var(--font-display); letter-spacing: .02em; text-transform: uppercase; }
+.streamer .name span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.streamer .tick { width: 16px; height: 16px; flex: none; }
+.streamer .handle { font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-@media (max-width: 880px) {
-  .layout { grid-template-columns: minmax(0, 520px); }
+.x.corner { position: absolute; top: 14px; right: 14px; width: 26px; height: 26px; font-size: 18px; }
+.show-history { align-self: center; }
+
+@media (max-width: 1180px) {
+  .layout { grid-template-columns: repeat(2, minmax(0, 360px)); grid-template-areas: "center center" "left right"; }
+  .center { justify-self: center; width: min(100%, 520px); }
+}
+@media (max-width: 760px) {
+  .layout, .layout.no-streamers { grid-template-columns: minmax(0, 520px); grid-template-areas: "center" "left" "right"; }
 }
 @media (max-width: 480px) {
   .controls { gap: 6px; }
@@ -428,3 +278,9 @@ body.stream .streamhint { display: block; margin: 0; }
   .dice.tumbling .die, .dice.landed .die { animation: none; }
   .go, .switch input, .switch input::after { transition: none; }
 }
+
+/* 404 page */
+body.lost { background: radial-gradient(130% 70% at 50% 115%, #ff6a1f 0%, #a3170a 25%, #3a0604 55%, #170403 85%); min-height: 100vh; display: grid; place-items: center; }
+.lost-card { width: min(420px, 100%); text-align: center; align-items: center; }
+.lost-card p { margin: 0; color: var(--muted); }
+.lost-card .go { text-decoration: none; display: block; width: 100%; }

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-skin="hell">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -13,9 +13,10 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<canvas id="embers" aria-hidden="true"></canvas>
+<canvas id="sky" class="scene" aria-hidden="true"></canvas>
+<canvas id="fx" class="scene" aria-hidden="true"></canvas>
 <div class="page">
-  <header class="top chrome">
+  <header class="top">
     <a class="brand" href="./">Color<span>Roll</span></a>
     <span class="tag">Free color dice with rolls anyone can verify</span>
   </header>
@@ -23,108 +24,100 @@
   <p id="previewNotice" class="notice" hidden><b>Preview mode.</b> The dice server is not connected, so these rolls are saved in this browser only and viewers cannot verify them.</p>
 
   <main class="layout">
-    <section class="panel roller" aria-labelledby="roller-title">
-      <h1 id="roller-title" class="chrome">Roll Color Dice</h1>
+    <aside id="streamersLeft" class="panel streamers left" aria-label="Top streamers" hidden>
+      <h2>Our top streamers</h2>
+      <div class="slist"></div>
+    </aside>
 
-      <div class="controls chrome">
-        <label class="sr" for="count">Number of dice</label>
-        <select id="count">
-          <option value="1">1 Die</option>
-          <option value="2">2 Dice</option>
-          <option value="3">3 Dice</option>
-          <option value="4" selected>4 Dice</option>
-          <option value="5">5 Dice</option>
-          <option value="6">6 Dice</option>
-        </select>
-        <label class="sr" for="type">Dice type</label>
-        <select id="type">
-          <option value="color" selected>Color Dice</option>
-          <option value="number">Number Dice</option>
-        </select>
-        <label class="sr" for="skin">Theme</label>
-        <select id="skin">
-          <option value="blue">Blue</option>
-          <option value="sab-blue">Sab-Blue</option>
-          <option value="green">Green</option>
-          <option value="sab-green">Sab-Green</option>
-          <option value="red">Red</option>
-          <option value="sab-red">Sab-Red</option>
-          <option value="pink">Pink</option>
-          <option value="bw">B&amp;W</option>
-          <option value="sab-black">Sab-Black</option>
-          <option value="heaven">Heaven</option>
-          <option value="hell" selected>Hell</option>
-          <option value="underwater">Underwater</option>
-          <option value="bronze">Bronze</option>
-          <option value="silver">Silver</option>
-          <option value="gold">Gold</option>
-          <option value="casino">Casino</option>
-          <option value="midnight">Midnight</option>
-        </select>
-      </div>
+    <div class="center">
+      <section class="panel roller" aria-labelledby="roller-title">
+        <h1 id="roller-title">Roll Color Dice</h1>
 
-      <div id="dice" class="dice" role="img" aria-label="Dice"></div>
-      <p id="announce" class="sr" aria-live="polite"></p>
-      <p id="rollErr" class="err" role="alert" hidden></p>
-
-      <div class="rollid">
-        <span class="lbl">ID:</span>
-        <code id="rollId">----------</code>
-        <button id="copyId" class="ghost chrome" type="button">Copy</button>
-      </div>
-      <p id="rollMeta" class="rollmeta">&nbsp;</p>
-      <p id="streamHint" class="rollmeta streamhint">Viewers: check this roll ID at <b id="hostName">this site</b> → Verify History</p>
-
-      <button id="verifyBtn" class="verify chrome" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2h5M12 2v3"/></svg>
-        Verify History
-      </button>
-
-      <button id="roll" class="go" type="button">Go again!</button>
-
-      <div class="counter chrome" role="group" aria-label="Score counter">
-        <div class="side">
-          <button type="button" data-d="-1" aria-label="Minus 1">-1</button>
-          <button type="button" data-d="-10" aria-label="Minus 10">-10</button>
+        <div class="controls">
+          <label class="sr" for="count">Number of dice</label>
+          <select id="count">
+            <option value="1">1 Die</option>
+            <option value="2">2 Dice</option>
+            <option value="3">3 Dice</option>
+            <option value="4" selected>4 Dice</option>
+            <option value="5">5 Dice</option>
+            <option value="6">6 Dice</option>
+          </select>
+          <label class="sr" for="type">Dice type</label>
+          <select id="type">
+            <option value="color" selected>Color Dice</option>
+            <option value="number">Number Dice</option>
+          </select>
+          <label class="sr" for="skin">Theme</label>
+          <select id="skin"></select>
         </div>
-        <output id="counter" class="val" aria-live="polite">0</output>
-        <div class="side">
-          <button type="button" data-d="1" aria-label="Plus 1">+1</button>
-          <button type="button" data-d="10" aria-label="Plus 10">+10</button>
+
+        <div id="dice" class="dice" role="img" aria-label="Dice"></div>
+        <p id="announce" class="sr" aria-live="polite"></p>
+        <p id="rollErr" class="err" role="alert" hidden></p>
+
+        <div class="rollid">
+          <span class="lbl">ID:</span>
+          <code id="rollId">----------</code>
+          <button id="copyId" class="ghost" type="button">Copy</button>
         </div>
-      </div>
+        <p id="rollMeta" class="rollmeta">&nbsp;</p>
 
-      <div class="under chrome">
-        <span class="pill">Roll streak: <b id="streak">0</b></span>
-        <button id="resetCounter" class="ghost" type="button">Reset counter</button>
-      </div>
+        <button id="verifyBtn" class="verify" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2h5M12 2v3"/></svg>
+          Verify History
+        </button>
 
-      <p id="possible" class="possible chrome"></p>
+        <button id="roll" class="go" type="button">Go again!</button>
 
-      <button id="oddsBtn" class="link chrome" type="button">See your chances of winning →</button>
+        <div class="counter" role="group" aria-label="Score counter">
+          <div class="side">
+            <button type="button" data-d="-1" aria-label="Minus 1">-1</button>
+            <button type="button" data-d="-10" aria-label="Minus 10">-10</button>
+          </div>
+          <output id="counter" class="val" aria-live="polite">0</output>
+          <div class="side">
+            <button type="button" data-d="1" aria-label="Plus 1">+1</button>
+            <button type="button" data-d="10" aria-label="Plus 10">+10</button>
+          </div>
+        </div>
 
-      <div class="toggles chrome">
-        <label class="switch" for="sound">Sound <input type="checkbox" id="sound" checked></label>
-        <label class="switch" for="stream">Stream mode <input type="checkbox" id="stream"></label>
-      </div>
-    </section>
+        <div class="under">
+          <span class="pill">Roll streak: <b id="streak">0</b></span>
+          <button id="resetCounter" class="ghost" type="button">Reset counter</button>
+        </div>
 
-    <section class="panel history chrome" aria-labelledby="hist-title">
-      <h2 id="hist-title">Your last 20 rolls</h2>
-      <div class="statbox">
-        <h3>Stats:</h3>
-        <div id="stats" class="chips"></div>
-        <h3>Longest streak:</h3>
-        <div id="longest" class="chips"></div>
-      </div>
-      <div id="rolls" class="rolls"></div>
-    </section>
+        <p id="possible" class="possible"></p>
+
+        <button id="oddsBtn" class="link" type="button">See your chances of winning →</button>
+
+        <div class="toggles">
+          <label class="switch" for="sound">Sound <input type="checkbox" id="sound" checked></label>
+        </div>
+      </section>
+
+      <section id="historyPanel" class="panel history" aria-labelledby="hist-title">
+        <button id="hideHistory" class="x corner" type="button" aria-label="Hide your last 20 rolls">×</button>
+        <h2 id="hist-title">Your last 20 rolls</h2>
+        <div class="statbox">
+          <h3>Stats:</h3>
+          <div id="stats" class="chips"></div>
+          <h3>Longest streak:</h3>
+          <div id="longest" class="chips"></div>
+        </div>
+        <div id="rolls" class="rolls"></div>
+      </section>
+      <button id="showHistory" class="ghost show-history" type="button" hidden>Show your last 20 rolls</button>
+    </div>
+
+    <aside id="streamersRight" class="panel streamers right" aria-label="More top streamers" hidden>
+      <h2>Our top streamers</h2>
+      <div class="slist"></div>
+    </aside>
   </main>
 
-  <footer class="chrome">Press <kbd>Space</kbd> to roll. Dice are rolled and saved on the server, so a roll ID can't be faked or edited.</footer>
+  <footer>Press <kbd>Space</kbd> to roll. Dice are rolled and saved on the server, so a roll ID can't be faked or edited.</footer>
 </div>
-
-<button id="exitStream" class="ghost exit" type="button" hidden>Exit stream mode</button>
 
 <dialog id="verifyDlg" aria-labelledby="vTitle">
   <div class="dlg">
@@ -153,6 +146,8 @@
   </div>
 </dialog>
 
+<script src="themes.js"></script>
+<script src="scene.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
