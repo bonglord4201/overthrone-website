@@ -22,7 +22,7 @@
   const OLD_THEMES = {
     "sab-blue": "dark-blue", "sab-green": "dark-green", "sab-red": "dark-red", "sab-black": "black",
     ocean: "underwater", midnight: "void", galaxy: "void", arctic: "frozen", desert: "egypt",
-    sakura: "candy", haunted: "blood", storm: "void", casino: "jungle"
+    sakura: "candy", haunted: "hell", blood: "hell", storm: "void", casino: "jungle"
   };
   const KEY_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const ID_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";

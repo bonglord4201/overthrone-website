@@ -368,3 +368,8 @@ body.comfort .go::after { display: none; }                 /* no sheen sweep */
 .odds-fig { display: flex; flex-direction: column; align-items: flex-end; line-height: 1.1; }
 .odds-fig b { font: 400 17px/1 var(--font-display); letter-spacing: .03em; }
 .odds-fig span { font-weight: 800; font-variant-numeric: tabular-nums; font-size: 15px; color: var(--muted); }
+
+/* footer nav links */
+.footnav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 22px; margin-top: 6px; }
+.footnav a { color: var(--page-fg); font: 400 15px/1 var(--font-display); letter-spacing: .04em; text-transform: uppercase; text-decoration: none; text-shadow: 0 2px 0 rgba(0,0,0,.35); }
+.footnav a:hover { color: var(--brand-accent); }

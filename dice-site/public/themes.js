@@ -85,16 +85,7 @@ window.THEMES = [
     tint: ["rgba(255,245,250,.04)", "rgba(120,50,90,.3)"],
     particles: { type: "petal", rgb: "255, 170, 215", count: 42 }
   },
-  {
-    id: "blood", name: "Shadow Realm", group: "Worlds",
-    ui: { bg: "#0b0304", panel: "rgba(52, 8, 12, .5)", panelSolid: "#330608", edge: "rgba(255, 130, 130, .5)", select: "#a81020", accent: "#ff3344", accentFg: "#1a0203" },
-    image: "images/th/blood.webp",
-    sky: [[0, "#2a0407"], [1, "#0a0203"]],
-    tint: ["rgba(14,2,3,.2)", "rgba(8,1,2,.55)"],
-    particles: { type: "ember", rgb: "255, 60, 70", count: 55 }
-  },
-
-  // ---------- Metal ----------
+    // ---------- Metal ----------
   {
     id: "gold", name: "Gold", group: "Metal",
     ui: { bg: "#6b4a00", panel: "rgba(90, 60, 0, .5)", panelSolid: "#5c4000", edge: "rgba(255, 245, 200, .85)", select: "#9a6b00", pageFg: "#3d2a00", brand: "#3d2a00", brandAccent: "#ffffff", accent: "#ffd84a", accentFg: "#2a1c00" },
