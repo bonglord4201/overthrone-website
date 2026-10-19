@@ -62,9 +62,14 @@
     type: store.get("type", "color"),
     skin: params.get("theme") || store.get("skin", "hell"),
     sound: store.get("sound", true),
+    comfort: store.get("comfort", false),
     counter: store.get("counter", 0),
     key: store.get("key", ""),
     roller: "",
+    // The session code shown under the dice. Made fresh on every page load (never
+    // saved), so refreshing starts a new code — a streamer who keeps refreshing to
+    // escape a bad history leaves a trail of short sessions.
+    session: "",
     history: [],
     current: null,
     preview: false
@@ -74,7 +79,8 @@
   if (!["color", "number"].includes(state.type)) state.type = "color";
   if (!(state.n >= 1 && state.n <= 6)) state.n = 4;
   if (!/^[A-Za-z0-9]{24,64}$/.test(state.key)) { state.key = randomString(KEY_CHARS, 32); store.set("key", state.key); }
-  const save = () => ["n", "type", "skin", "sound", "counter"].forEach((k) => store.set(k, state[k]));
+  state.session = randomString(ID_CHARS, 10);
+  const save = () => ["n", "type", "skin", "sound", "counter", "comfort"].forEach((k) => store.set(k, state[k]));
 
   // ---- API (server, or this browser in preview mode) ----
   async function request(path, options) {
@@ -89,8 +95,9 @@
     return data;
   }
   const server = {
-    roll: (dice, kind) => request("/api/roll", { method: "POST", body: JSON.stringify({ key: state.key, dice, kind }) }).then((d) => d.roll),
+    roll: (dice, kind) => request("/api/roll", { method: "POST", body: JSON.stringify({ key: state.key, dice, kind, session: state.session }) }).then((d) => d.roll),
     get: (id) => request("/api/roll/" + encodeURIComponent(id)),
+    session: (code) => request("/api/session/" + encodeURIComponent(code)),
     history: (roller) => request("/api/roller/" + roller).then((d) => d.rolls),
     roller: (roller) => request("/api/roller/" + encodeURIComponent(roller)),
     report: (rollId, message) => request("/api/report", { method: "POST", body: JSON.stringify({ rollId, message }) })
@@ -101,10 +108,15 @@
       const all = preview.all();
       const mine = all.filter((r) => r.roller === state.roller);
       const faces = Array.from({ length: dice }, () => Number(randomString("012345", 1)));
-      const roll = { id: randomString(ID_CHARS, 10), roller: state.roller, seq: (mine[0] ? mine[0].seq : 0) + 1, dice, kind, faces, at: new Date().toISOString() };
+      const roll = { id: randomString(ID_CHARS, 10), roller: state.roller, seq: (mine[0] ? mine[0].seq : 0) + 1, dice, kind, faces, at: new Date().toISOString(), session: state.session };
       all.unshift(roll);
       store.set("preview-rolls", all.slice(0, 500));
       return roll;
+    },
+    async session(code) {
+      const rolls = preview.all().filter((r) => r.session === code).sort((a, b) => a.at.localeCompare(b.at));
+      if (!rolls.length) throw Object.assign(new Error("No session has this code."), { status: 404 });
+      return { session: code, roller: rolls[0].roller, rolls, flag: null };
     },
     async get(id) {
       const all = preview.all();
@@ -204,15 +216,15 @@
   function showRoll(r) {
     state.current = r;
     showFaces(r.faces, r.kind);
-    $("rollId").textContent = r.id;
+    $("rollId").textContent = r.session || state.session;
     $("streak").textContent = r.seq;
     tickTimes();
   }
   function showBlank() {
-    // Placeholder faces until the first real roll arrives.
+    // Placeholder faces until the first real roll arrives; the session code shows right away.
     layoutDice(state.n, state.type);
+    $("rollId").textContent = state.session;
     [...diceEl.children].forEach((d, i) => setDie(d, i % 6));
-    $("rollId").textContent = "----------";
     $("rollMeta").textContent = "Press Go to roll";
   }
 
@@ -247,7 +259,7 @@
     state.current = r;
     layoutDice(r.faces.length, r.kind);
     diceEl.setAttribute("aria-label", "Dice: " + r.faces.map((f) => faceName(f, r.kind)).join(", "));
-    $("rollId").textContent = r.id;
+    $("rollId").textContent = r.session || state.session;
     $("streak").textContent = r.seq;
     tickTimes();
     r.faces.forEach((f, i) => {
@@ -273,7 +285,6 @@
       diceEl.classList.remove("landed");
       diceEl.classList.add("tumbling");
       [...diceEl.children].forEach((d) => d.classList.remove("pop"));
-      $("rollId").textContent = "··········";
       $("suspense").textContent = SUSPENSE[Math.floor(Math.random() * 2)];
       $("suspense").hidden = false;
       const total = Math.round(MIN_SPIN_MS / 70);
@@ -378,6 +389,8 @@
     $("type").value = state.type;
     $("skin").value = state.skin;
     $("sound").checked = state.sound;
+    $("comfort").checked = state.comfort;
+    document.body.classList.toggle("comfort", state.comfort);
     $("counter").textContent = state.counter;
     renderPossible();
   }
@@ -400,21 +413,47 @@
   async function checkId(raw) {
     const id = raw.trim();
     const out = $("vResult");
-    const isRoll = ID_RE.test(id);
-    const isRoller = ROLLER_RE.test(id);
-    if (!isRoll && !isRoller) {
-      out.replaceChildren(verdict(false, "That isn't an ID.", "A roll ID is 10 letters and numbers (like 5T2mvXJ825). A roller ID is 12 letters a–f and numbers."));
+    const isCode = ID_RE.test(id);        // 10 chars: a session code (normal) or an older single-roll id
+    const isRoller = ROLLER_RE.test(id);  // 12 hex: a roller id
+    if (!isCode && !isRoller) {
+      out.replaceChildren(verdict(false, "That isn't an ID.", "A session ID is 10 letters and numbers (like 5T2mvXJ825). A roller ID is 12 letters a–f and numbers."));
       return;
     }
     out.replaceChildren(el("p", { textContent: "Checking…" }));
     try {
       if (isRoller) return await showRoller(id);
+      // A 10-character code is almost always a session; fall back to a single roll id.
+      try { return await showSession(id); }
+      catch (e) { if (e.status !== 404) throw e; }
       await showRoll(id);
     } catch (err) {
       out.replaceChildren(err.status === 404
-        ? verdict(false, "Not a real roll.", `No roll with the ID ${id} was ever made on ${location.host || "this site"}. If a streamer showed you this ID, the result was not rolled here.`)
+        ? verdict(false, "Not a real ID.", `No session or roll with the ID ${id} was ever made on ${location.host || "this site"}. If a streamer showed you this ID, nothing was rolled here under it.`)
         : verdict(false, "Couldn't check right now.", err.message));
     }
+  }
+
+  async function showSession(code) {
+    const data = await api().session(code); // throws 404 if no such session
+    const out = $("vResult");
+    const rolls = data.rolls; // chronological
+    const rows = rolls.map((x, i) => {
+      const prev = rolls[i - 1];
+      return el("div", { className: "vrow" },
+        el("span", { className: "seq", textContent: "#" + (i + 1) }),
+        diceSet(x),
+        el("span", { className: "when" }, el("b", { textContent: clock.format(new Date(x.at)) }), el("br"), i ? gap(prev.at, x.at) : ""));
+    });
+    const copy = el("button", { type: "button", className: "ghost", textContent: "Copy verify link" });
+    copy.addEventListener("click", () => copyText(verifyLink(code), copy, "Copy verify link"));
+    out.replaceChildren(...[
+      flagBanner(data.flag),
+      verdict(true, "Verified session.", `This is every roll made under ID ${code} on ${location.host || "this site"} — ${rolls.length} roll${rolls.length === 1 ? "" : "s"} in the order they happened. If a streamer only showed some of these on stream, the rest are re-rolls they hid.`),
+      el("h3", { textContent: "All rolls under this ID" }),
+      el("div", { className: "vlist" }, ...rows),
+      el("div", { className: "share" }, copy),
+      reportBlock(rolls.length ? rolls[rolls.length - 1].id : "")
+    ].filter(Boolean));
   }
 
   async function showRoll(id) {
@@ -512,7 +551,7 @@
       el("div", {}, title, el("small", { textContent: text })));
   }
   function openVerify(id) {
-    const target = id || (state.current && state.current.id) || "";
+    const target = id || state.session || (state.current && state.current.id) || "";
     $("vId").value = target;
     $("vResult").replaceChildren();
     if (!vDlg.open) vDlg.showModal();
@@ -561,6 +600,7 @@
   $("type").addEventListener("change", (e) => { state.type = e.target.value; save(); renderPossible(); renderHistory(); roll(); });
   $("skin").addEventListener("change", (e) => { state.skin = e.target.value; save(); applyTheme(); });
   $("sound").addEventListener("change", (e) => { state.sound = e.target.checked; save(); });
+  $("comfort").addEventListener("change", (e) => { state.comfort = e.target.checked; document.body.classList.toggle("comfort", state.comfort); save(); });
   document.querySelectorAll("[data-d]").forEach((b) => b.addEventListener("click", () => {
     state.counter += +b.dataset.d; $("counter").textContent = state.counter; save();
   }));

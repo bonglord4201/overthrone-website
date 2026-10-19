@@ -21,6 +21,7 @@ async function createRoll(request, env) {
   const key = String((body && body.key) || "");
   const dice = Number(body && body.dice);
   const kind = body && body.kind === "number" ? "number" : "color";
+  const session = ID_RE.test(String(body && body.session)) ? body.session : "";
   if (!KEY_RE.test(key)) return json({ error: "Missing or invalid roller key." }, 400);
   if (!Number.isInteger(dice) || dice < 1 || dice > 6) return json({ error: "Roll 1 to 6 dice." }, 400);
 
@@ -39,10 +40,10 @@ async function createRoll(request, env) {
     try {
       // One statement, so the roll number and the rate limit are checked atomically.
       const res = await env.DB.prepare(
-        `INSERT INTO rolls (id, roller, seq, dice, kind, faces, created_at)
-         SELECT ?1, ?2, COALESCE((SELECT MAX(seq) FROM rolls WHERE roller = ?2), 0) + 1, ?3, ?4, ?5, ?6
+        `INSERT INTO rolls (id, roller, seq, dice, kind, faces, created_at, session)
+         SELECT ?1, ?2, COALESCE((SELECT MAX(seq) FROM rolls WHERE roller = ?2), 0) + 1, ?3, ?4, ?5, ?6, ?8
          WHERE NOT EXISTS (SELECT 1 FROM rolls WHERE roller = ?2 AND created_at > ?7)`
-      ).bind(id, roller, dice, kind, faces.join(","), createdAt, new Date(now - MIN_GAP_MS).toISOString()).run();
+      ).bind(id, roller, dice, kind, faces.join(","), createdAt, new Date(now - MIN_GAP_MS).toISOString(), session).run();
       if (!res.meta.changes) return json({ error: "Slow down a little between rolls." }, 429);
       const row = await env.DB.prepare("SELECT * FROM rolls WHERE id = ?").bind(id).first();
       return json({ roll: shape(row) }, 201);
@@ -90,7 +91,8 @@ const shape = (row) => ({
   dice: row.dice,
   kind: row.kind,
   faces: row.faces.split(",").map(Number),
-  at: row.created_at
+  at: row.created_at,
+  session: row.session || ""
 });
 
 // The public part of a roller's flag: whether they're flagged or banned and the
@@ -139,6 +141,16 @@ export async function handleRolls(request, env, parts) {
 
   if (parts[1] === "report" && parts.length === 2 && method === "POST") {
     return fileReport(request, env);
+  }
+
+  // A session code groups every roll made in one page visit.
+  if (parts[1] === "session" && parts.length === 3 && method === "GET") {
+    const code = parts[2];
+    if (!ID_RE.test(code)) return json({ error: "A session code is 10 letters and digits." }, 400);
+    const { results } = await env.DB.prepare("SELECT * FROM rolls WHERE session = ? ORDER BY created_at ASC, seq ASC LIMIT 200").bind(code).all();
+    if (!results.length) return json({ error: "No session has this code. A made-up or edited code will never be found." }, 404);
+    const flag = await publicFlag(env, results[0].roller);
+    return json({ session: code, roller: results[0].roller, rolls: results.map(shape), flag });
   }
 
   if (parts[1] === "roll" && parts.length === 3 && method === "GET") {
