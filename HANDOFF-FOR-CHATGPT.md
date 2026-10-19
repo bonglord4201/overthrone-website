@@ -342,6 +342,14 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
     magic-circle sigil) with solid stepped feather slabs (slab(): 4 stepped blocks sharing one painted face; faces on the
     glow texture so they're full bright, sides shaded), bevelled gold (bevel_gold), heads4.crystal joints/tips, a 3D sigil
     ring + gem + orbiting crystals, and 34 particles. 930 cubes, 194 KB gz. wings_v1/wings_v2 are kept for reference.
+  - 2026-10-19 (later): owner rejected v8/v9 Celestial again (blocky armour, stick-fan wings, sticker details) and asked
+    for the PROCESS to change. Findings in minecraft/manas_cosmetics/MODEL-CONSTRAINTS.md: the mod renders cuboids only
+    (no mesh), free cube rotations + pivots + nested bones, per-face uv rects (no uv rotation), cutout alpha. New tool
+    scripts/manas/vox.py: solid sculpted plates (silhouette rasterised into stepped cuboid strips, gold frame layer +
+    raised ivory inset layer = real 3D rims, one painted texture sliced across the strips). scripts/manas/celestial9.py =
+    v10 helmet + chest PROTOTYPE only (not wired into the build, live cosmetics untouched). Backups of v8 + the v9 attempt:
+    minecraft/manas_cosmetics/backups/celestial_v8_stage1/. Waiting for the owner to approve the direction before the
+    shoulders/arms/waist/legs/wings are built with vox.py.
  for top quality the owner should buy/commission .bbmodel files (BuiltByBit, MCModels,
   ManasMods' Discord) and send them; setup steps in minecraft/manas_cosmetics/README.md.
   Waiting on the Manas Cosmetics jar (this session can't reach CurseForge/Modrinth). The particle file can be switched off
