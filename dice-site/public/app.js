@@ -193,6 +193,7 @@
       die.classList.toggle("red-one", f === 0);
     } else {
       face.style.setProperty("--c", `var(${COLORS[f].v})`);
+      die.style.setProperty("--glow", `var(${COLORS[f].v})`);
     }
     return die;
   }
@@ -661,11 +662,12 @@
     state.preview = !online;
     $("previewNotice").hidden = online;
     loadStreamers();
-    try { state.history = await api().history(roller); } catch { state.history = []; }
+    // Each visit starts fresh: a new session ID and an empty on-page history, so
+    // refreshing (or leaving and coming back) gives a new ID. A streamer who keeps
+    // refreshing to escape a bad run leaves a trail of separate short sessions.
+    state.history = [];
     renderHistory();
-    const last = state.history[0];
-    if (last && last.dice === state.n && last.kind === state.type) showRoll(last);
-    else await roll();
+    await roll();
     const v = params.get("verify") || (location.hash.match(/^#verify-([A-Za-z0-9]{10})$/) || [])[1];
     if (v) openVerify(v);
   }
