@@ -1,8 +1,11 @@
 // Dice rolls: the only place dice are rolled. The Worker picks the faces with
 // crypto.getRandomValues, saves the roll in D1 and only then sends it back,
 // so editing the page cannot change a result and anyone can look a roll up.
+//
+// Verification also reports whether a roller has been flagged or banned by the
+// owner, so players see a warning on a known re-roller or scammer.
 
-import { json } from "./http.js";
+import { json, readJson, nowIso } from "./http.js";
 
 const ID_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
 const ID_RE = /^[A-HJ-NP-Za-km-z2-9]{10}$/;
@@ -10,14 +13,11 @@ const ROLLER_RE = /^[0-9a-f]{12}$/;
 const KEY_RE = /^[A-Za-z0-9]{24,64}$/;
 const MIN_GAP_MS = 400; // one roll per roller per 0.4 s
 const NEIGHBOURS = 5;
+const REPORT_WINDOW_MS = 60000; // one report per address per minute
+const REPORT_MAX = 600;
 
 async function createRoll(request, env) {
-  let body;
-  try {
-    body = await request.json();
-  } catch {
-    return json({ error: "Send the roll request as JSON." }, 400);
-  }
+  const body = await readJson(request);
   const key = String((body && body.key) || "");
   const dice = Number(body && body.dice);
   const kind = body && body.kind === "number" ? "number" : "color";
@@ -25,6 +25,11 @@ async function createRoll(request, env) {
   if (!Number.isInteger(dice) || dice < 1 || dice > 6) return json({ error: "Roll 1 to 6 dice." }, 400);
 
   const roller = await rollerId(key);
+  const flag = await env.DB.prepare("SELECT banned, label FROM roller_flags WHERE roller = ?").bind(roller).first();
+  if (flag && flag.banned) {
+    return json({ error: "This roller is banned from " + (new URL(request.url).host || "this site") + (flag.label ? ": " + flag.label : "."), banned: true }, 403);
+  }
+
   const now = Date.now();
   const faces = randomFaces(dice);
 
@@ -88,6 +93,41 @@ const shape = (row) => ({
   at: row.created_at
 });
 
+// The public part of a roller's flag: whether they're flagged or banned and the
+// short reason. The private note is never sent here.
+async function publicFlag(env, roller) {
+  const f = await env.DB.prepare("SELECT banned, label FROM roller_flags WHERE roller = ?").bind(roller).first();
+  if (!f) return null;
+  return { flagged: true, banned: !!f.banned, label: f.label || "" };
+}
+
+async function fileReport(request, env) {
+  const body = await readJson(request);
+  const message = String((body && body.message) || "").trim();
+  const rollId = String((body && body.rollId) || "").trim();
+  if (message.length < 3 || message.length > 1000) return json({ error: "Tell us what happened (a few words up to 1000 characters)." }, 400);
+  if (rollId && !ID_RE.test(rollId)) return json({ error: "That roll ID isn't valid. Leave it blank or paste the 10-character ID." }, 400);
+
+  const ip = request.headers.get("CF-Connecting-IP") || "local";
+  const recent = await env.DB.prepare("SELECT COUNT(*) AS n FROM reports WHERE reporter_ip = ? AND created_at > ?")
+    .bind(ip, new Date(Date.now() - REPORT_WINDOW_MS).toISOString()).first();
+  if (recent.n > 0) return json({ error: "Thanks — you've already sent a report. Try again in a minute." }, 429);
+
+  let roller = null;
+  if (rollId) {
+    const row = await env.DB.prepare("SELECT roller FROM rolls WHERE id = ?").bind(rollId).first();
+    roller = row ? row.roller : null;
+  }
+  const total = await env.DB.prepare("SELECT COUNT(*) AS n FROM reports").first();
+  const writes = [env.DB.prepare("INSERT INTO reports (roll_id, roller, message, reporter_ip, status, created_at) VALUES (?, ?, ?, ?, 'new', ?)")
+    .bind(rollId || null, roller, message.slice(0, 1000), ip, nowIso())];
+  // Keep the table from growing without bound: drop the oldest reviewed reports.
+  if (total.n >= REPORT_MAX) {
+    writes.push(env.DB.prepare("DELETE FROM reports WHERE id IN (SELECT id FROM reports WHERE status = 'reviewed' ORDER BY created_at ASC LIMIT 50)"));
+  }
+  await env.DB.batch(writes);
+  return json({ ok: true }, 201);
+}
 
 export async function handleRolls(request, env, parts) {
   const method = request.method;
@@ -97,23 +137,31 @@ export async function handleRolls(request, env, parts) {
     return createRoll(request, env);
   }
 
+  if (parts[1] === "report" && parts.length === 2 && method === "POST") {
+    return fileReport(request, env);
+  }
+
   if (parts[1] === "roll" && parts.length === 3 && method === "GET") {
     const id = parts[2];
     if (!ID_RE.test(id)) return json({ error: "A roll ID is 10 letters and digits." }, 400);
     const row = await env.DB.prepare("SELECT * FROM rolls WHERE id = ?").bind(id).first();
     if (!row) return json({ error: "No roll has this ID. A made-up or edited ID will never be found." }, 404);
-    const [before, after] = await Promise.all([
+    const [before, after, flag] = await Promise.all([
       env.DB.prepare("SELECT * FROM rolls WHERE roller = ? AND seq < ? ORDER BY seq DESC LIMIT ?").bind(row.roller, row.seq, NEIGHBOURS).all(),
-      env.DB.prepare("SELECT * FROM rolls WHERE roller = ? AND seq > ? ORDER BY seq ASC LIMIT ?").bind(row.roller, row.seq, NEIGHBOURS).all()
+      env.DB.prepare("SELECT * FROM rolls WHERE roller = ? AND seq > ? ORDER BY seq ASC LIMIT ?").bind(row.roller, row.seq, NEIGHBOURS).all(),
+      publicFlag(env, row.roller)
     ]);
-    return json({ roll: shape(row), before: before.results.map(shape), after: after.results.map(shape) });
+    return json({ roll: shape(row), before: before.results.map(shape), after: after.results.map(shape), flag });
   }
 
   if (parts[1] === "roller" && parts.length === 3 && method === "GET") {
     const roller = parts[2];
     if (!ROLLER_RE.test(roller)) return json({ error: "Unknown roller ID." }, 400);
-    const { results } = await env.DB.prepare("SELECT * FROM rolls WHERE roller = ? ORDER BY seq DESC LIMIT 20").bind(roller).all();
-    return json({ rolls: results.map(shape) });
+    const [rolls, flag] = await Promise.all([
+      env.DB.prepare("SELECT * FROM rolls WHERE roller = ? ORDER BY seq DESC LIMIT 20").bind(roller).all(),
+      publicFlag(env, roller)
+    ]);
+    return json({ rolls: rolls.results.map(shape), flag });
   }
 
   return null;

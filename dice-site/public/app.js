@@ -87,7 +87,9 @@
   const server = {
     roll: (dice, kind) => request("/api/roll", { method: "POST", body: JSON.stringify({ key: state.key, dice, kind }) }).then((d) => d.roll),
     get: (id) => request("/api/roll/" + encodeURIComponent(id)),
-    history: (roller) => request("/api/roller/" + roller).then((d) => d.rolls)
+    history: (roller) => request("/api/roller/" + roller).then((d) => d.rolls),
+    roller: (roller) => request("/api/roller/" + encodeURIComponent(roller)),
+    report: (rollId, message) => request("/api/report", { method: "POST", body: JSON.stringify({ rollId, message }) })
   };
   const preview = {
     all: () => { const a = store.get("preview-rolls", []); return Array.isArray(a) ? a : []; },
@@ -108,10 +110,13 @@
       return {
         roll,
         before: same.filter((r) => r.seq < roll.seq).slice(0, 5),
-        after: same.filter((r) => r.seq > roll.seq).reverse().slice(0, 5)
+        after: same.filter((r) => r.seq > roll.seq).reverse().slice(0, 5),
+        flag: null
       };
     },
-    history: async (roller) => preview.all().filter((r) => r.roller === roller).slice(0, 20)
+    history: async (roller) => preview.all().filter((r) => r.roller === roller).slice(0, 20),
+    roller: async (roller) => ({ rolls: preview.all().filter((r) => r.roller === roller).slice(0, 20), flag: null }),
+    report: async () => ({ ok: true })
   };
   const api = () => (state.preview ? preview : server);
 
@@ -221,6 +226,36 @@
     } catch {}
   }
 
+  // A rising "shaker" rattle while the dice tumble: fast ticks whose pitch climbs.
+  function shakerTick(progress) {
+    beep(300 + progress * 520 + Math.random() * 80, 0.05, "square", 0.035);
+  }
+  // A bright pop as each die lands.
+  function popTone(i) {
+    const base = [523, 587, 659, 698, 784, 880][i % 6];
+    beep(base, 0.12, "triangle", 0.12);
+  }
+
+  const SUSPENSE = ["What color will it be?", "Here we go!", "Rolling…", "Let's go!"];
+
+  // Reveal the dice one at a time with a pop, left to right.
+  function revealRoll(r) {
+    state.current = r;
+    layoutDice(r.faces.length, r.kind);
+    diceEl.setAttribute("aria-label", "Dice: " + r.faces.map((f) => faceName(f, r.kind)).join(", "));
+    $("rollId").textContent = r.id;
+    $("streak").textContent = r.seq;
+    tickTimes();
+    r.faces.forEach((f, i) => {
+      const d = diceEl.children[i];
+      setTimeout(() => {
+        setDie(d, f);
+        d.classList.remove("pop"); void d.offsetWidth; d.classList.add("pop");
+        popTone(i);
+      }, reduced ? 0 : i * 130);
+    });
+  }
+
   // ---- rolling ----
   let rolling = false;
   async function roll() {
@@ -228,31 +263,37 @@
     rolling = true;
     $("rollErr").hidden = true;
     const asked = api().roll(state.n, state.type);
-    let timer;
+    let timer, ticks = 0;
     if (!reduced) {
       layoutDice(state.n, state.type);
       diceEl.classList.remove("landed");
       diceEl.classList.add("tumbling");
+      [...diceEl.children].forEach((d) => d.classList.remove("pop"));
       $("rollId").textContent = "··········";
+      $("suspense").textContent = SUSPENSE[Math.floor(Math.random() * 2)];
+      $("suspense").hidden = false;
+      const total = Math.round(MIN_SPIN_MS / 70);
       timer = setInterval(() => {
         [...diceEl.children].forEach((d) => setDie(d, Math.floor(Math.random() * 6)));
-        beep(320 + Math.random() * 260, 0.04, "square", 0.03);
+        shakerTick(ticks / total);
+        if (ticks === Math.floor(total * 0.6)) $("suspense").textContent = "Let's go!";
+        ticks++;
       }, 70);
     }
     try {
       const [r] = await Promise.all([asked, new Promise((ok) => setTimeout(ok, reduced ? 0 : MIN_SPIN_MS))]);
       clearInterval(timer);
       diceEl.classList.remove("tumbling");
-      showRoll(r);
-      if (!reduced) { void diceEl.offsetWidth; diceEl.classList.add("landed"); }
+      $("suspense").hidden = true;
+      revealRoll(r);
       state.history.unshift(r);
       state.history.length = Math.min(state.history.length, 20);
       renderHistory();
       $("announce").textContent = "Rolled " + describe(r);
-      beep(150, 0.16, "sine", 0.18); beep(90, 0.22, "sine", 0.12);
     } catch (err) {
       clearInterval(timer);
       diceEl.classList.remove("tumbling");
+      $("suspense").hidden = true;
       if (state.current && state.current.dice === state.n && state.current.kind === state.type) showRoll(state.current);
       else showBlank();
       $("rollErr").textContent = err.message;
@@ -339,33 +380,52 @@
 
   // ---- verify dialog ----
   const vDlg = $("verifyDlg");
+  const ROLLER_RE = /^[0-9a-f]{12}$/;
   const verifyLink = (id) => location.origin + location.pathname + "?verify=" + id;
+
+  // A banner shown at the top of a result when the owner has flagged the roller.
+  function flagBanner(flag) {
+    if (!flag || !flag.flagged) return null;
+    const title = flag.banned ? "Banned roller." : "Flagged roller.";
+    const text = (flag.banned
+      ? "The owner has banned this roller for cheating, so they can no longer roll here. "
+      : "The owner has flagged this roller for cheating. ") + (flag.label ? `Reason: ${flag.label}. ` : "") + "Be careful trusting their rolls.";
+    return el("div", { className: "verdict warn" }, el("span", { className: "mark", textContent: "!", ariaHidden: "true" }), el("div", {}, title, el("small", { textContent: text })));
+  }
 
   async function checkId(raw) {
     const id = raw.trim();
     const out = $("vResult");
-    if (!ID_RE.test(id)) {
-      out.replaceChildren(verdict(false, "That isn't a roll ID.", "A roll ID is exactly 10 letters and numbers, like 5T2mvXJ825."));
+    const isRoll = ID_RE.test(id);
+    const isRoller = ROLLER_RE.test(id);
+    if (!isRoll && !isRoller) {
+      out.replaceChildren(verdict(false, "That isn't an ID.", "A roll ID is 10 letters and numbers (like 5T2mvXJ825). A roller ID is 12 letters a–f and numbers."));
       return;
     }
     out.replaceChildren(el("p", { textContent: "Checking…" }));
-    let data;
     try {
-      data = await api().get(id);
+      if (isRoller) return await showRoller(id);
+      await showRoll(id);
     } catch (err) {
       out.replaceChildren(err.status === 404
         ? verdict(false, "Not a real roll.", `No roll with the ID ${id} was ever made on ${location.host || "this site"}. If a streamer showed you this ID, the result was not rolled here.`)
         : verdict(false, "Couldn't check right now.", err.message));
-      return;
     }
+  }
+
+  async function showRoll(id) {
+    const data = await api().get(id);
     const r = data.roll;
+    const out = $("vResult");
     const box = el("div", { className: "dice" }, ...r.faces.map((f) => die(f, r.kind)));
     box.style.setProperty("--n", r.dice);
 
+    const rollerBtn = el("button", { type: "button", className: "linkish", textContent: r.roller + (r.roller === state.roller ? " (you)" : "") });
+    rollerBtn.addEventListener("click", () => { $("vId").value = r.roller; checkId(r.roller); });
     const facts = el("dl", { className: "facts" },
       el("dt", { textContent: "Result" }), el("dd", { textContent: describe(r) }),
       el("dt", { textContent: "Rolled at" }), el("dd", {}, fullDate.format(new Date(r.at)), " (", agoSpan(r.at), ")"),
-      el("dt", { textContent: "Roller" }), el("dd", { textContent: r.roller + (r.roller === state.roller ? " (you)" : "") }),
+      el("dt", { textContent: "Roller" }), el("dd", {}, rollerBtn),
       el("dt", { textContent: "Roll number" }), el("dd", { textContent: `#${r.seq} by this roller` }));
 
     // Timeline: the same roller's rolls around this one, oldest first, with the time between them.
@@ -382,15 +442,66 @@
     const copy = el("button", { type: "button", className: "ghost", textContent: "Copy verify link" });
     copy.addEventListener("click", () => copyText(verifyLink(r.id), copy, "Copy verify link"));
 
-    out.replaceChildren(
+    out.replaceChildren(...[
+      flagBanner(data.flag),
       verdict(true, "Official roll.", `This roll was made and saved by the ${location.host || "ColorRoll"} server. If the dice on stream match these, the roll is real.`),
       box,
       facts,
       el("h3", { textContent: "Rolls by the same roller" }),
       el("p", { className: "tl-note", textContent: "Highlighted is the roll you checked. Extra rolls right before it that weren't shown on stream mean the streamer re-rolled until they liked the result." }),
       list,
-      el("div", { className: "share" }, copy));
+      el("div", { className: "share" }, copy),
+      reportBlock(r.id)
+    ].filter(Boolean));
   }
+
+  async function showRoller(roller) {
+    const data = await api().roller(roller);
+    const out = $("vResult");
+    if (!data.rolls.length) {
+      out.replaceChildren(verdict(false, "No rolls yet.", `Nobody with the roller ID ${roller} has rolled on ${location.host || "this site"}.`));
+      return;
+    }
+    const rows = data.rolls.map((x) => {
+      const idBtn = el("button", { type: "button", textContent: x.id });
+      idBtn.addEventListener("click", () => { $("vId").value = x.id; checkId(x.id); });
+      return el("div", { className: "vrow" },
+        el("span", { className: "seq", textContent: "#" + x.seq }),
+        el("div", {}, idBtn, diceSet(x)),
+        el("span", { className: "when" }, el("b", { textContent: clock.format(new Date(x.at)) })));
+    });
+    out.replaceChildren(...[
+      flagBanner(data.flag),
+      verdict(true, "Roller found.", `These are the last ${data.rolls.length} rolls by roller ${roller}. Tap any ID to see that roll on its own.`),
+      el("div", { className: "vlist" }, ...rows),
+      reportBlock("")
+    ].filter(Boolean));
+  }
+
+  // A small "report this" block so players can send the owner a scam report.
+  function reportBlock(rollId) {
+    const wrap = el("details", { className: "report" });
+    wrap.append(el("summary", { textContent: "Report this to the owner" }));
+    const box = el("textarea", { className: "rtext", maxLength: 1000, rows: 3, placeholder: "What happened? e.g. streamer re-rolled until green, then showed only that roll." });
+    const send = el("button", { type: "button", className: "go small", textContent: "Send report" });
+    const msg = el("p", { className: "rmsg", hidden: true });
+    send.addEventListener("click", async () => {
+      const text = box.value.trim();
+      if (text.length < 3) { msg.textContent = "Add a few words first."; msg.hidden = false; return; }
+      send.disabled = true;
+      try {
+        await api().report(rollId, text);
+        wrap.replaceChildren(el("p", { className: "rmsg ok", textContent: "Thanks — your report was sent to the owner." }));
+      } catch (err) {
+        msg.textContent = err.message;
+        msg.hidden = false;
+        send.disabled = false;
+      }
+    });
+    wrap.append(el("div", { className: "rform" }, box, send, msg));
+    return wrap;
+  }
+
   function verdict(ok, title, text) {
     return el("div", { className: "verdict " + (ok ? "ok" : "bad") },
       el("span", { className: "mark", textContent: ok ? "✓" : "✗", ariaHidden: "true" }),

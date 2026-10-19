@@ -19,6 +19,7 @@ import { json } from "./http.js";
 import { handleRolls } from "./rolls.js";
 import { isAdmin, login, logout, sameOrigin, adminConfigured } from "./auth.js";
 import { listPublic, handleAdminStreamers, serveMedia } from "./streamers.js";
+import { handleModeration } from "./moderation.js";
 
 const ADMIN_PATH_RE = /^[A-Za-z0-9_-]{16,64}$/;
 const RESERVED = ["admin", "api", "media"];
@@ -74,6 +75,7 @@ async function adminArea(request, env, url, rest) {
     if (method !== "GET" && !sameOrigin(request, url)) return json({ error: "Make changes from the admin page." }, 403);
     if (parts[2] === "me" && method === "GET") return json({ ok: true, ready: adminConfigured(env) });
     if (parts[2] === "streamers") return handleAdminStreamers(request, env, parts);
+    if (["rollers", "flags", "suspects", "reports"].includes(parts[2])) return handleModeration(request, env, parts);
     return json({ error: "Not found" }, 404);
   }
 

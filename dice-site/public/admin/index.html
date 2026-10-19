@@ -29,6 +29,8 @@
     <p class="logo">Color<span>Roll</span> <small>Admin</small></p>
     <nav class="tabs" aria-label="Admin sections">
       <button class="tab on" type="button" data-section="streamers" aria-current="page">Top streamers</button>
+      <button class="tab" type="button" data-section="cheats">Catch cheats</button>
+      <button class="tab" type="button" data-section="reports">Reports <span id="reportCount" class="count" hidden>0</span></button>
     </nav>
     <div class="bar-end">
       <a class="quiet" href="/" target="_blank" rel="noopener">View site</a>
@@ -88,7 +90,71 @@
 
     <div id="list" class="list" aria-live="polite"></div>
   </section>
+
+  <section id="section-cheats" class="section" hidden>
+    <div class="section-head">
+      <div>
+        <h1>Catch cheats</h1>
+        <p class="sub">Look up a roller by their ID or a roll ID, see their re-rolls, then flag or ban them. The dice are never touched — a flag just warns players, and a ban stops that roller from rolling here.</p>
+      </div>
+    </div>
+
+    <form id="lookupForm" class="card lookup">
+      <label for="lookupId">Roller ID or roll ID</label>
+      <div class="lookup-row">
+        <input id="lookupId" autocomplete="off" spellcheck="false" maxlength="16" placeholder="e.g. 3f9a1c7b2e04 or 5T2mvXJ825" required>
+        <button class="primary" type="submit">Look up</button>
+      </div>
+      <p class="hint">A roller ID is 12 characters (a–f and numbers). A roll ID is 10 letters and numbers.</p>
+    </form>
+
+    <div id="lookupResult" class="card lookup-result" hidden></div>
+
+    <div class="split">
+      <div class="card">
+        <h2>Suspicious activity (last 7 days)</h2>
+        <p class="sub">Rollers with several back-to-back rolls — the sign of re-rolling. Click one to look them up.</p>
+        <div id="suspects" class="mini-list" aria-live="polite"></div>
+      </div>
+      <div class="card">
+        <h2>Flagged &amp; banned</h2>
+        <p class="sub">Everyone you've flagged or banned. Players see a warning when they verify these rollers.</p>
+        <div id="flags" class="mini-list" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="section-reports" class="section" hidden>
+    <div class="section-head">
+      <div>
+        <h1>Reports</h1>
+        <p class="sub">Scam reports players sent you. Open the roll or roller ID to check it, flag the cheat, then mark the report reviewed.</p>
+      </div>
+      <button id="refreshReports" class="quiet" type="button">Refresh</button>
+    </div>
+    <div id="reports" class="list" aria-live="polite"></div>
+  </section>
 </div>
+
+<dialog id="flagDlg" aria-labelledby="flagTitle">
+  <form id="flagForm" class="dlg">
+    <div class="dlg-head">
+      <h2 id="flagTitle">Flag roller</h2>
+      <button class="x" type="button" data-close-flag aria-label="Close">×</button>
+    </div>
+    <p id="flagRoller" class="mono"></p>
+    <label for="flagLabel">Public reason (players see this)</label>
+    <input id="flagLabel" maxlength="80" placeholder="Caught re-rolling">
+    <label for="flagNote">Private note (only you)</label>
+    <input id="flagNote" maxlength="500" placeholder="optional">
+    <label class="checkline"><input id="flagBanned" type="checkbox"> Ban — block this roller from rolling on the site</label>
+    <div class="actions">
+      <button class="primary" type="submit">Save</button>
+      <button id="unflagBtn" class="quiet danger" type="button" hidden>Remove flag</button>
+      <button class="quiet" type="button" data-close-flag>Cancel</button>
+    </div>
+  </form>
+</dialog>
 
 <p id="toast" class="toast" role="status" hidden></p>
 

@@ -52,6 +52,7 @@
           <select id="skin"></select>
         </div>
 
+        <p id="suspense" class="suspense" hidden>What color will it be?</p>
         <div id="dice" class="dice" role="img" aria-label="Dice"></div>
         <p id="announce" class="sr" aria-live="polite"></p>
         <p id="rollErr" class="err" role="alert" hidden></p>
@@ -138,9 +139,9 @@
       <h2 id="vTitle">Verify a roll</h2>
       <button class="x" type="button" data-close aria-label="Close">×</button>
     </div>
-    <p>Type the ID shown under a streamer's dice. You'll see the official result saved on our server, the exact time it was rolled, and the rolls made just before and after it.</p>
+    <p>Type the ID shown under a streamer's dice to see the official result, the exact time, and the rolls just before and after it. You can also type a <b>roller ID</b> to see that player's last 20 rolls. Flagged or banned cheats show a warning.</p>
     <form id="verifyForm" class="vform">
-      <label for="vId">Roll ID<input id="vId" autocomplete="off" spellcheck="false" maxlength="16" placeholder="e.g. 5T2mvXJ825" required></label>
+      <label for="vId">Roll ID or roller ID<input id="vId" autocomplete="off" spellcheck="false" maxlength="16" placeholder="e.g. 5T2mvXJ825" required></label>
       <button class="go" type="submit">Check</button>
     </form>
     <div id="vResult" class="vresult" aria-live="polite"></div>

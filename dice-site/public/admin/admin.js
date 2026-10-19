@@ -64,7 +64,7 @@
   });
 
   // ---- sections ----
-  const SECTIONS = { streamers: loadStreamers };
+  const SECTIONS = { streamers: loadStreamers, cheats: loadCheats, reports: loadReports };
   function openSection(name) {
     document.querySelectorAll(".tab").forEach((t) => {
       const on = t.dataset.section === name;
@@ -252,6 +252,184 @@
     }
   });
 
+  // ---- catch cheats ----
+  const ROLLER_RE = /^[0-9a-f]{12}$/;
+  const ROLL_RE = /^[A-HJ-NP-Za-km-z2-9]{10}$/;
+  const COLORS = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple"];
+  const SWATCH = ["#e3261b", "#ff8c00", "#ffd60a", "#0b8a2a", "#1240ff", "#7d1594"];
+  const timeFull = new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "medium" });
+  const timeShort = new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+  const faceDot = (f, kind) => {
+    const d = el("span", { className: "dot", title: kind === "number" ? String(f + 1) : COLORS[f] });
+    if (kind === "number") { d.classList.add("num"); d.textContent = String(f + 1); }
+    else d.style.background = SWATCH[f];
+    return d;
+  };
+  const faceRow = (r) => el("span", { className: "dots" }, ...r.faces.map((f) => faceDot(f, r.kind)));
+
+  async function loadCheats() {
+    loadSuspects();
+    loadFlags();
+  }
+
+  $("lookupForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const raw = $("lookupId").value.trim();
+    const box = $("lookupResult");
+    box.hidden = false;
+    box.replaceChildren(el("p", { textContent: "Looking up…" }));
+    try {
+      let roller = raw;
+      if (ROLL_RE.test(raw)) {
+        // Resolve a roll ID to its roller through the public roll API.
+        const pub = await fetch("/api/roll/" + raw, { credentials: "same-origin" }).then((r) => r.json());
+        if (!pub.roll) throw new Error("No roll has that ID.");
+        roller = pub.roll.roller;
+      } else if (!ROLLER_RE.test(raw)) {
+        throw new Error("That isn't a roller ID (12 characters) or a roll ID (10 characters).");
+      }
+      const data = await api("rollers/" + roller);
+      renderLookup(data);
+    } catch (err) {
+      box.replaceChildren(el("p", { className: "error", textContent: err.message }));
+    }
+  });
+
+  function renderLookup(data) {
+    const s = data.stats;
+    const f = data.flag;
+    const head = el("div", { className: "lookup-head" },
+      el("div", {}, el("span", { className: "mono big", textContent: data.roller }),
+        f ? el("span", { className: "tag-flag" + (f.banned ? " banned" : "") , textContent: f.banned ? "Banned" : "Flagged" }) : ""),
+      el("button", { type: "button", className: "primary", textContent: f ? "Edit flag / ban" : "Flag or ban" }));
+    head.querySelector("button").addEventListener("click", () => openFlag(data.roller, f));
+
+    const warn = s.bursts >= 3 || s.longestBurst >= 4;
+    const summary = el("div", { className: "stat-row" },
+      stat(s.total, "rolls shown"),
+      stat(s.bursts, "quick re-rolls", warn),
+      stat(s.longestBurst, "longest burst", s.longestBurst >= 4));
+    const hint = el("p", { className: "sub", textContent: warn
+      ? "This pattern looks like re-rolling: several rolls came within a few seconds of each other."
+      : "Nothing jumps out, but check the times below yourself." });
+
+    const rows = data.rolls.map((r, i) => {
+      const prev = data.rolls[i + 1];
+      const gapMs = prev ? Date.parse(r.at) - Date.parse(prev.at) : null;
+      const quick = gapMs != null && gapMs >= 0 && gapMs < 6000;
+      return el("div", { className: "crow" + (quick ? " quick" : "") },
+        el("span", { className: "seq", textContent: "#" + r.seq }),
+        faceRow(r),
+        el("span", { className: "mono small", textContent: r.id }),
+        el("span", { className: "when", textContent: timeShort.format(new Date(r.at)) + (gapMs != null ? "  (" + gapSecs(gapMs) + ")" : "") }));
+    });
+
+    $("lookupResult").replaceChildren(head, summary, hint, el("div", { className: "crows" }, ...rows));
+  }
+  const gapSecs = (ms) => ms < 0 ? "—" : ms < 60000 ? Math.round(ms / 1000) + "s" : Math.round(ms / 60000) + "m";
+  const stat = (n, label, hot) => el("div", { className: "stat" + (hot ? " hot" : "") }, el("b", { textContent: String(n) }), el("span", { textContent: label }));
+
+  async function loadSuspects() {
+    const box = $("suspects");
+    try {
+      const { suspects } = await api("suspects");
+      if (!suspects.length) { box.replaceChildren(el("p", { className: "empty small", textContent: "No burst-rolling in the last 7 days." })); return; }
+      box.replaceChildren(...suspects.map((s) => {
+        const b = el("button", { type: "button", className: "mini" + (s.flagged ? " flagged" : "") },
+          el("span", { className: "mono", textContent: s.roller }),
+          el("span", { className: "mini-meta", textContent: `${s.bursts} quick · burst ${s.longestBurst} · ${s.total} rolls` + (s.flagged ? " · flagged" : "") }));
+        b.addEventListener("click", () => { openSection("cheats"); $("lookupId").value = s.roller; $("lookupForm").requestSubmit(); });
+        return b;
+      }));
+    } catch (err) { box.replaceChildren(el("p", { className: "error small", textContent: err.message })); }
+  }
+
+  async function loadFlags() {
+    const box = $("flags");
+    try {
+      const { flags } = await api("flags");
+      if (!flags.length) { box.replaceChildren(el("p", { className: "empty small", textContent: "Nobody flagged yet." })); return; }
+      box.replaceChildren(...flags.map((f) => {
+        const b = el("button", { type: "button", className: "mini" + (f.banned ? " banned" : " flagged") },
+          el("span", { className: "mono", textContent: f.roller }),
+          el("span", { className: "mini-meta", textContent: (f.banned ? "Banned" : "Flagged") + (f.label ? " · " + f.label : "") }));
+        b.addEventListener("click", () => { openSection("cheats"); $("lookupId").value = f.roller; $("lookupForm").requestSubmit(); });
+        return b;
+      }));
+    } catch (err) { box.replaceChildren(el("p", { className: "error small", textContent: err.message })); }
+  }
+
+  // ---- flag dialog ----
+  const flagDlg = $("flagDlg");
+  let flagRoller = null;
+  function openFlag(roller, existing) {
+    flagRoller = roller;
+    $("flagRoller").textContent = roller;
+    $("flagTitle").textContent = existing ? "Edit flag" : "Flag roller";
+    $("flagLabel").value = existing ? existing.label : "";
+    $("flagNote").value = existing ? existing.note : "";
+    $("flagBanned").checked = existing ? existing.banned : false;
+    $("unflagBtn").hidden = !existing;
+    flagDlg.showModal();
+  }
+  $("flagForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+      await api("flags", "POST", { roller: flagRoller, banned: $("flagBanned").checked, label: $("flagLabel").value.trim(), note: $("flagNote").value.trim() });
+      flagDlg.close();
+      toast("Saved");
+      $("lookupForm").requestSubmit();
+      loadFlags();
+    } catch (err) { toast(err.message); }
+  });
+  $("unflagBtn").addEventListener("click", async () => {
+    try {
+      await api("flags/" + flagRoller, "DELETE");
+      flagDlg.close();
+      toast("Flag removed");
+      $("lookupForm").requestSubmit();
+      loadFlags();
+    } catch (err) { toast(err.message); }
+  });
+  flagDlg.addEventListener("click", (e) => { if (e.target === flagDlg || e.target.closest("[data-close-flag]")) flagDlg.close(); });
+
+  // ---- reports ----
+  async function loadReports() {
+    const box = $("reports");
+    try {
+      const { reports } = await api("reports");
+      updateReportCount(reports.filter((r) => r.status === "new").length);
+      if (!reports.length) { box.replaceChildren(el("p", { className: "empty", textContent: "No reports yet." })); return; }
+      box.replaceChildren(...reports.map(reportRow));
+    } catch (err) { box.replaceChildren(el("p", { className: "empty", textContent: err.message })); }
+  }
+  function reportRow(r) {
+    const idBtn = r.rollId
+      ? el("button", { type: "button", className: "linkish mono", textContent: r.rollId })
+      : el("span", { className: "muted", textContent: "no roll ID" });
+    if (r.rollId) idBtn.addEventListener("click", () => { openSection("cheats"); $("lookupId").value = r.rollId; $("lookupForm").requestSubmit(); });
+
+    const mark = el("button", { type: "button", className: "quiet", textContent: r.status === "new" ? "Mark reviewed" : "Mark new" });
+    mark.addEventListener("click", async () => { await api("reports/" + r.id, "POST", { status: r.status === "new" ? "reviewed" : "new" }); loadReports(); });
+    const del = el("button", { type: "button", className: "quiet danger", textContent: "Delete" });
+    let armed;
+    del.addEventListener("click", async () => {
+      if (!armed) { del.textContent = "Tap again"; armed = setTimeout(() => { armed = null; del.textContent = "Delete"; }, 3000); return; }
+      clearTimeout(armed); await api("reports/" + r.id, "DELETE"); loadReports();
+    });
+
+    return el("div", { className: "report-row" + (r.status === "reviewed" ? " done" : "") },
+      el("div", { className: "report-top" }, idBtn, el("span", { className: "when", textContent: timeFull.format(new Date(r.at)) })),
+      el("p", { className: "report-msg", textContent: r.message }),
+      el("div", { className: "report-actions" }, mark, del));
+  }
+  function updateReportCount(n) {
+    const c = $("reportCount");
+    c.textContent = String(n);
+    c.hidden = n === 0;
+  }
+  $("refreshReports").addEventListener("click", loadReports);
+
   // ---- start ----
-  api("me").then(showApp, showLogin);
+  api("me").then(() => { showApp(); api("reports").then((d) => updateReportCount(d.reports.filter((r) => r.status === "new").length)).catch(() => {}); }, showLogin);
 })();
