@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ColorRoll Dice</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Free online color dice with verified rolls. Roll 1 to 6 color dice and let anyone check a roll by its ID.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='12' fill='%23fff'/%3E%3Crect x='11' y='11' width='42' height='42' rx='7' fill='%23e3261b'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Rubik:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<canvas id="sky" class="scene" aria-hidden="true"></canvas>
+<canvas id="fx" class="scene" aria-hidden="true"></canvas>
+<div class="page">
+  <header class="top">
+    <a class="brand" href="./">Color<span>Roll</span></a>
+    <span class="tag">Free color dice with rolls anyone can verify</span>
+  </header>
+
+  <p id="previewNotice" class="notice" hidden><b>Preview mode.</b> The dice server is not connected, so these rolls are saved in this browser only and viewers cannot verify them.</p>
+
+  <main class="layout">
+    <aside id="streamersLeft" class="panel streamers left" aria-label="Top streamers" hidden>
+      <h2>Our top streamers</h2>
+      <div class="slist"></div>
+    </aside>
+
+    <div class="center">
+      <section class="panel roller" aria-labelledby="roller-title">
+        <h1 id="roller-title">Roll Color Dice</h1>
+
+        <div class="controls">
+          <label class="sr" for="count">Number of dice</label>
+          <select id="count">
+            <option value="1">1 Die</option>
+            <option value="2">2 Dice</option>
+            <option value="3">3 Dice</option>
+            <option value="4" selected>4 Dice</option>
+            <option value="5">5 Dice</option>
+            <option value="6">6 Dice</option>
+          </select>
+          <label class="sr" for="type">Dice type</label>
+          <select id="type">
+            <option value="color" selected>Color Dice</option>
+            <option value="number">Number Dice</option>
+          </select>
+          <label class="sr" for="skin">Theme</label>
+          <select id="skin"></select>
+        </div>
+
+        <p id="suspense" class="suspense" hidden>What color will it be?</p>
+        <div id="dice" class="dice" role="img" aria-label="Dice"></div>
+        <p id="announce" class="sr" aria-live="polite"></p>
+        <p id="rollErr" class="err" role="alert" hidden></p>
+
+        <div class="rollid">
+          <span class="lbl">ID:</span>
+          <code id="rollId">----------</code>
+          <button id="copyId" class="ghost" type="button">Copy</button>
+        </div>
+        <p id="rollMeta" class="rollmeta">&nbsp;</p>
+
+        <button id="verifyBtn" class="verify" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2h5M12 2v3"/></svg>
+          Verify History
+        </button>
+
+        <button id="roll" class="go" type="button">Go again!</button>
+
+        <div class="counter" role="group" aria-label="Score counter">
+          <div class="side">
+            <button type="button" data-d="-1" aria-label="Minus 1">-1</button>
+            <button type="button" data-d="-10" aria-label="Minus 10">-10</button>
+          </div>
+          <output id="counter" class="val" aria-live="polite">0</output>
+          <div class="side">
+            <button type="button" data-d="1" aria-label="Plus 1">+1</button>
+            <button type="button" data-d="10" aria-label="Plus 10">+10</button>
+          </div>
+        </div>
+
+        <div class="under">
+          <span class="pill">Roll streak: <b id="streak">0</b></span>
+          <button id="resetCounter" class="ghost" type="button">Reset counter</button>
+        </div>
+
+        <p id="possible" class="possible"></p>
+
+        <button id="oddsBtn" class="link" type="button">See your chances of winning →</button>
+
+        <div class="toggles">
+          <label class="switch" for="sound">Sound <input type="checkbox" id="sound" checked></label>
+        </div>
+      </section>
+
+      <section id="historyPanel" class="panel history" aria-labelledby="hist-title">
+        <button id="hideHistory" class="x corner" type="button" aria-label="Hide your last 20 rolls">×</button>
+        <h2 id="hist-title">Your last 20 rolls</h2>
+        <div class="statbox">
+          <h3>Stats:</h3>
+          <div id="stats" class="chips"></div>
+          <h3>Longest streak:</h3>
+          <div id="longest" class="chips"></div>
+        </div>
+        <div id="rolls" class="rolls"></div>
+      </section>
+      <button id="showHistory" class="ghost show-history" type="button" hidden>Show your last 20 rolls</button>
+
+      <section class="panel info" aria-labelledby="how-title">
+        <h2 id="how-title">How do these color dice work?</h2>
+        <p>Every roll is made on our server, not in your browser. When you press <b>Go again!</b>, the server picks a color for each die, and each of the 6 colors has exactly the same chance: 1 in 6. All the dice can land on the same color.</p>
+        <p>The possible colors are <b class="c-red">Red</b>, <b class="c-orange">Orange</b>, <b class="c-yellow">Yellow</b>, <b class="c-green">Green</b>, <b class="c-blue">Blue</b> and <b class="c-purple">Purple</b>. You can roll 1 to 6 dice at once, switch to number dice, and pick any theme you like.</p>
+        <p>Each roll is saved with an ID and the exact time before you see it, and the site has no way to change a roll after it's made. To check a streamer's roll, press <b>Verify History</b> and type the ID shown under their dice. You'll see the official result, when it was rolled, and the rolls made just before and after it.</p>
+      </section>
+
+      <section class="panel info" aria-labelledby="about-title">
+        <h2 id="about-title">About us</h2>
+        <p>ColorRoll is a free online color dice roller for color game streams, parties, board games and any other game of chance. There's nothing to sign up for or download.</p>
+        <p>We built it so viewers never have to take a streamer's word for a roll. Every result can be checked by anyone, any time.</p>
+      </section>
+    </div>
+
+    <aside id="streamersRight" class="panel streamers right" aria-label="More top streamers" hidden>
+      <h2>Our top streamers</h2>
+      <div class="slist"></div>
+    </aside>
+  </main>
+
+  <footer>Press <kbd>Space</kbd> to roll. Dice are rolled and saved on the server, so a roll ID can't be faked or edited.</footer>
+</div>
+
+<dialog id="verifyDlg" aria-labelledby="vTitle">
+  <div class="dlg">
+    <div class="dlg-head">
+      <h2 id="vTitle">Verify a roll</h2>
+      <button class="x" type="button" data-close aria-label="Close">×</button>
+    </div>
+    <p>Type the ID shown under a streamer's dice to see the official result, the exact time, and the rolls just before and after it. You can also type a <b>roller ID</b> to see that player's last 20 rolls. Flagged or banned cheats show a warning.</p>
+    <form id="verifyForm" class="vform">
+      <label for="vId">Roll ID or roller ID<input id="vId" autocomplete="off" spellcheck="false" maxlength="16" placeholder="e.g. 5T2mvXJ825" required></label>
+      <button class="go" type="submit">Check</button>
+    </form>
+    <div id="vResult" class="vresult" aria-live="polite"></div>
+  </div>
+</dialog>
+
+<dialog id="oddsDlg" aria-labelledby="oTitle">
+  <div class="dlg">
+    <div class="dlg-head">
+      <h2 id="oTitle">Your chances</h2>
+      <button class="x" type="button" data-close aria-label="Close">×</button>
+    </div>
+    <p id="oIntro"></p>
+    <div class="odds-wrap"><table class="odds" id="oddsTable"></table></div>
+    <p>Every die is fair: each of the 6 sides has a 1 in 6 chance, and no roll depends on the one before it. All the dice can land on the same color.</p>
+  </div>
+</dialog>
+
+<script src="themes.js"></script>
+<script src="scene.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
