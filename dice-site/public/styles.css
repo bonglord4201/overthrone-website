@@ -240,6 +240,12 @@ dialog::backdrop { background: rgba(0,0,0,.6); }
 .odds tr.hl td { background: rgba(255,225,0,.14); font-weight: 800; }
 .odds-wrap { overflow-x: auto; }
 
+/* how it works / about */
+.info { gap: 12px; padding-inline: clamp(18px, 5vw, 32px); }
+.info h2 { text-align: left; }
+.info p { margin: 0; font-size: 16px; line-height: 1.55; max-width: 62ch; }
+.info b[class^="c-"] { text-shadow: 0 1px 0 rgba(0, 0, 0, .5); }
+
 /* top streamers */
 .streamers { gap: 10px; padding-inline: 14px; }
 .streamers h2 { font-size: 19px; }
