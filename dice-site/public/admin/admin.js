@@ -281,12 +281,18 @@
     try {
       let roller = raw;
       if (ROLL_RE.test(raw)) {
-        // Resolve a roll ID to its roller through the public roll API.
-        const pub = await fetch("/api/roll/" + raw, { credentials: "same-origin" }).then((r) => r.json());
-        if (!pub.roll) throw new Error("No roll has that ID.");
-        roller = pub.roll.roller;
+        // A 10-char code is usually a session; fall back to a single roll id. Both
+        // resolve to the roller, whose full cross-session history we then load.
+        const sess = await fetch("/api/session/" + raw, { credentials: "same-origin" }).then((r) => r.json()).catch(() => ({}));
+        if (sess.roller) {
+          roller = sess.roller;
+        } else {
+          const pub = await fetch("/api/roll/" + raw, { credentials: "same-origin" }).then((r) => r.json());
+          if (!pub.roll) throw new Error("No session or roll has that ID.");
+          roller = pub.roll.roller;
+        }
       } else if (!ROLLER_RE.test(raw)) {
-        throw new Error("That isn't a roller ID (12 characters) or a roll ID (10 characters).");
+        throw new Error("That isn't a roller ID (12 characters) or a session/roll ID (10 characters).");
       }
       const data = await api("rollers/" + roller);
       renderLookup(data);

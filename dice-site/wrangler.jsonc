@@ -11,11 +11,11 @@
     // the secret admin address in the ADMIN_PATH secret works.
     "run_worker_first": ["/api/*", "/media/*", "/admin", "/admin/*"]
   },
-  // Run `npx wrangler d1 create colorroll-db` once, then paste the database_id it
-  // prints in place of PASTE_YOUR_DATABASE_ID_HERE below. (Local `wrangler dev` works
-  // without it.)
+  // This database_id is just an identifier for your D1 database (not a password), so it
+  // can live in the repo — that lets auto-deploy from GitHub work. If you ever recreate the
+  // database with `npx wrangler d1 create colorroll-db`, paste the new id below.
   "d1_databases": [
-    { "binding": "DB", "database_name": "colorroll-db", "database_id": "PASTE_YOUR_DATABASE_ID_HERE", "migrations_dir": "migrations" }
+    { "binding": "DB", "database_name": "colorroll-db", "database_id": "275c4c69-7fde-4187-8e4e-2661124da701", "migrations_dir": "migrations" }
   ],
   "observability": { "enabled": true }
 }

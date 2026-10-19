@@ -332,3 +332,12 @@ body.lost { background: radial-gradient(130% 70% at 50% 115%, #ff6a1f 0%, #a3170
 .lost-card { width: min(420px, 100%); text-align: center; align-items: center; }
 .lost-card p { margin: 0; color: var(--muted); }
 .lost-card .go { text-decoration: none; display: block; width: 100%; }
+
+/* Eye comfort: dims the background art and softens the colours for light-sensitive
+   eyes. It only lowers intensity — the dice result stays fully visible. */
+body.comfort .scene { filter: brightness(.55) saturate(.6) contrast(.95); }
+body.comfort .die .face { filter: saturate(.78) brightness(.9); }
+body.comfort .die.mini .face { filter: saturate(.8) brightness(.92); }
+body.comfort .roller { box-shadow: 0 24px 60px rgba(0,0,0,.5), 0 2px 0 rgba(255,255,255,.08) inset, 0 0 0 1px rgba(0,0,0,.25); }
+body.comfort .go::after { display: none; }
+body.comfort .possible b { text-shadow: none; }
