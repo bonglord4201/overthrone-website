@@ -3,38 +3,38 @@
   "display_name": "Soul Reaper Aura",
   "slot": "aura",
   "aura": {
-    "style": "vortex_shroud",
-    "particle": "smoke",
+    "style": "rising_motes",
+    "particle": "comet",
     "colors": [
       [
-        235,
-        218,
-        255
-      ],
-      [
-        200,
-        150,
-        255
+        236,
+        255,
+        246
       ],
       [
         110,
-        40,
-        200
+        255,
+        210
       ],
       [
-        15,
-        5,
-        25
+        56,
+        186,
+        196
+      ],
+      [
+        126,
+        76,
+        226
       ]
     ],
-    "particle_count": 420,
-    "size": 1.3,
-    "speed": 1.0,
-    "radius": 1.2,
-    "height": 1.2,
+    "particle_count": 640,
+    "size": 1.15,
+    "speed": 0.75,
+    "radius": 1.3,
+    "height": 1.6,
     "alpha": 1.0,
-    "rotation_speed": 0.85,
+    "rotation_speed": 1.0,
     "emissive": true,
-    "motion_response": 1.8
+    "motion_response": 0.0
   }
 }

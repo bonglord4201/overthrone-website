@@ -396,6 +396,21 @@ Staff commands need op. In this repo the scripts are in `minecraft/kubejs/server
       sheets and animation GIFs), guide minecraft/manas_cosmetics/INSTALL-V12.md. NOT tested in game.
     - Next: the other 9 armour sets + helms (still sets6 style) with vox.py, crowns/horns/circlet/sigil/orbit crystals,
       pets ("x1000 better"), then wing tuning from the owner's in-game video.
+  - **v13 (2026-10-19): all 37 auras + 20 weapon auras redesigned** (owner video: auras looked bad and "fall behind").
+    - Root cause of falling behind (mod code): every *Style.render moves particles by -velocity x 4 x motion_response
+      (AuraMotionTracker smooths the per-tick velocity; a missing field = 1.0). All auras now have motion_response 0, and
+      the validator rejects anything else.
+    - Why they looked muddy: auras use AuraRenderTypes.auraTranslucent = NORMAL alpha blend (not additive) + the entity
+      translucent shader (diffuse light; billboard normal = camera back vector), and FlameStyle multiplies colour by a
+      0.55-1.0 flicker x 0.8-1.0 tint. Pale first stops / dark last stops / big soft 'glow' sprites become beige-brown fog.
+      Rules now: saturated stops (no near-black except smoke), solid textures (orb/pixel/tear/comet), small dense fire,
+      line-art circles at size ~2 (band width 0.022 x size, bands sample the texture's middle column).
+    - scripts/manas/aurasim.py now ports ALL 32 styles (prims(): billboards, flat quads, band segments, incl. the lag) and
+      texture() rebuilds the mod's particle alpha masks. scripts/manas/auraview.py renders them like the game (alpha
+      blend, shading, day spawn + night scene). The old additive-glow previews were flattering and wrong.
+    - 'offset' lifts an aura: solar_crown = sunburst_mandala at offset 2.12, radius 0.5 (a sun crown over the head).
+    - Backup: minecraft/manas_cosmetics/backups/pre_v13/cosmetics/ (57 files). Guide INSTALL-V13-AURAS.md, zip
+      marketing/overthrone-auras-v13.zip. Discord post: discord-bot/announcement-cosmetics-v13.txt. NOT tested in game.
  for top quality the owner should buy/commission .bbmodel files (BuiltByBit, MCModels,
   ManasMods' Discord) and send them; setup steps in minecraft/manas_cosmetics/README.md.
   Waiting on the Manas Cosmetics jar (this session can't reach CurseForge/Modrinth). The particle file can be switched off

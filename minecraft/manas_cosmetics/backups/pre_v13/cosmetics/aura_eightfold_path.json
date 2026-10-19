@@ -1,0 +1,40 @@
+{
+  "id": "overthrone:eightfold_path",
+  "display_name": "Eightfold Seal",
+  "slot": "aura",
+  "aura": {
+    "style": "octagram_array",
+    "particle": "glow",
+    "colors": [
+      [
+        240,
+        255,
+        240
+      ],
+      [
+        170,
+        245,
+        190
+      ],
+      [
+        80,
+        210,
+        130
+      ],
+      [
+        20,
+        100,
+        70
+      ]
+    ],
+    "particle_count": 400,
+    "size": 1.05,
+    "speed": 0.8,
+    "radius": 1.25,
+    "height": 1.0,
+    "alpha": 1.0,
+    "rotation_speed": 0.55,
+    "emissive": true,
+    "motion_response": 1.0
+  }
+}

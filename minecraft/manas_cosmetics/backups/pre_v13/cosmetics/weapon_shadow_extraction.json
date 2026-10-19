@@ -1,0 +1,38 @@
+{
+  "id": "overthrone:shadow_extraction",
+  "display_name": "Shadow Extraction",
+  "slot": "weapon_aura",
+  "weapon_type": "any",
+  "force_equip_allowed": true,
+  "aura": {
+    "style": "vortex_shroud",
+    "particle": "smoke",
+    "colors": [
+      [
+        160,
+        90,
+        255
+      ],
+      [
+        70,
+        0,
+        150
+      ],
+      [
+        8,
+        0,
+        20
+      ]
+    ],
+    "particle_count": 260,
+    "size": 1.4,
+    "speed": 0.9,
+    "radius": 0.32,
+    "height": 0.78,
+    "alpha": 1.0,
+    "rotation_speed": 1.0,
+    "emissive": true,
+    "motion_response": 1.0,
+    "offset": -0.35
+  }
+}

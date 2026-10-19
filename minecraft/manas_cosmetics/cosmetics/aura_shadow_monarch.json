@@ -4,37 +4,37 @@
   "slot": "aura",
   "aura": {
     "style": "vortex_shroud",
-    "particle": "smoke",
+    "particle": "orb",
     "colors": [
       [
-        210,
-        160,
+        240,
+        220,
         255
       ],
       [
-        140,
+        176,
+        96,
+        255
+      ],
+      [
+        112,
+        34,
+        232
+      ],
+      [
         70,
-        255
-      ],
-      [
-        60,
         0,
-        140
-      ],
-      [
-        6,
-        0,
-        16
+        150
       ]
     ],
-    "particle_count": 420,
-    "size": 1.5,
-    "speed": 0.95,
+    "particle_count": 960,
+    "size": 0.95,
+    "speed": 0.9,
     "radius": 1.05,
-    "height": 1.2,
+    "height": 1.05,
     "alpha": 1.0,
-    "rotation_speed": 1.1,
+    "rotation_speed": 1.0,
     "emissive": true,
-    "motion_response": 1.4
+    "motion_response": 0.0
   }
 }

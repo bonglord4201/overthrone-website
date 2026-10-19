@@ -4,7 +4,7 @@
   "slot": "aura",
   "aura": {
     "style": "rune_circle",
-    "particle": "glow",
+    "particle": "pixel",
     "colors": [
       [
         255,
@@ -12,29 +12,29 @@
         255
       ],
       [
-        200,
+        126,
         255,
         255
       ],
       [
-        40,
-        210,
-        245
+        0,
+        214,
+        255
       ],
       [
-        60,
-        90,
+        66,
+        116,
         255
       ]
     ],
-    "particle_count": 320,
-    "size": 1.15,
-    "speed": 0.8,
-    "radius": 1.25,
-    "height": 1.0,
+    "particle_count": 560,
+    "size": 1.0,
+    "speed": 0.85,
+    "radius": 1.15,
+    "height": 1.1,
     "alpha": 1.0,
     "rotation_speed": 0.7,
     "emissive": true,
-    "motion_response": 1.0
+    "motion_response": 0.0
   }
 }

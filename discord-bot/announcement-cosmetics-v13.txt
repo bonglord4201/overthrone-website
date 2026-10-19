@@ -1,0 +1,40 @@
+DISCORD ANNOUNCEMENT - New 3D Cosmetics (wings, halos, auras)
+Post this AFTER the v12 + v13 cosmetic files are installed on the server and you've checked them in game.
+
+OPTION A - the bot: in Discord type /announce and fill in:
+  channel:  #announcements
+  title:    ✨ NEW 3D COSMETICS: Wings, Halos & Auras Rebuilt ✨
+  ping:     @everyone
+  message:  copy EVERYTHING on the line below (it's one long line; \n makes the new lines)
+
+**Every wing, halo and aura on OVERTHRONE has been rebuilt from scratch!** ✨\n\n**🪽 34 Rebuilt Wings**\n🔸 Layered, hand-painted feathers, demon wings with glowing veins, crystal, flame, leaf and mech wings\n🔸 **Real animations**: they wrap around you, breathe when you stand still, sway when you walk and beat when you fly\n🔸 Every wing has its own **particle effects**: falling feathers, embers, snow, leaves, sparks, void wisps and more\n\n**😇 Halos & Crowns**\n🔸 Ornate halos with **glowing runes, gems, spinning rings and orbiting crystals**\n\n**🔥 37 New Auras**\n🔸 Fire, frost, lightning, shadow, spirits, magic circles, rune seals and a floating **Solar Crown**\n🔸 Auras now **stay locked to you** when you walk, sprint and fly\n\n**⚔️ 10 Premium Armour Sets**\n🔸 Wings, helm, armour, weapon skin, weapon aura, aura and ground sigil for each set\n🔸 Set weapons now give off **particles when you swing**\n\n**🛒 Where to get them**\n🔸 **Throne Shop**: the hub NPC or **/throneshop** → **3D COSMETICS** or **ARMOUR SETS**\n🔸 They're bought with **Throne Shards**. Get them at **https://overthronesmp.tebex.store**\n🔸 **Cosmetic Crate**: rare cosmetics are crate rewards. Cosmetic Keys drop in **the Caverns** (/warp caverns)\n🔸 Equip them with **/wardrobe**\n\nShow off your look in the Discord! 👑
+
+OPTION B - a normal Discord message (paste as-is, it's under 2000 characters):
+
+✨ **NEW 3D COSMETICS: Wings, Halos & Auras Rebuilt** ✨ @everyone
+
+Every wing, halo and aura on OVERTHRONE has been rebuilt from scratch!
+
+**🪽 34 Rebuilt Wings**
+🔸 Layered, hand-painted feathers, demon wings with glowing veins, crystal, flame, leaf and mech wings
+🔸 **Real animations**: they wrap around you, breathe when you stand still, sway when you walk and beat when you fly
+🔸 Every wing has its own **particle effects**: falling feathers, embers, snow, leaves, sparks, void wisps and more
+
+**😇 Halos & Crowns**
+🔸 Ornate halos with **glowing runes, gems, spinning rings and orbiting crystals**
+
+**🔥 37 New Auras**
+🔸 Fire, frost, lightning, shadow, spirits, magic circles, rune seals and a floating **Solar Crown**
+🔸 Auras now **stay locked to you** when you walk, sprint and fly
+
+**⚔️ 10 Premium Armour Sets**
+🔸 Wings, helm, armour, weapon skin, weapon aura, aura and ground sigil for each set
+🔸 Set weapons now give off **particles when you swing**
+
+**🛒 Where to get them**
+🔸 **Throne Shop**: the hub NPC or **/throneshop** → **3D COSMETICS** or **ARMOUR SETS**
+🔸 They're bought with **Throne Shards**. Get them at <https://overthronesmp.tebex.store>
+🔸 **Cosmetic Crate**: rare cosmetics are crate rewards. Cosmetic Keys drop in **the Caverns** (/warp caverns)
+🔸 Equip them with **/wardrobe**
+
+Show off your look in the Discord! 👑

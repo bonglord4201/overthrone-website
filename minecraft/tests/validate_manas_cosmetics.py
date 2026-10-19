@@ -46,6 +46,8 @@ for fn in sorted(os.listdir(os.path.join(MC, 'cosmetics'))):
         c = a.get('colors', [])
         if not c or not all(isinstance(x, list) and len(x) == 3 and all(isinstance(v, int) and 0 <= v <= 255 for v in x) for x in c):
             err(fn + ': colors must be [[r,g,b],...]')
+        if a.get('motion_response', 1.0) != 0:   # the mod pushes particles back by velocity x 4 x motion_response (missing = 1.0)
+            err(fn + ': motion_response must be 0, otherwise the aura falls behind the player when they move')
         if d.get('slot') == 'weapon_aura' and (a.get('radius', 1) > 0.5 or 'offset' not in a):
             err(fn + ': weapon auras must be fitted to the blade (radius <= 0.5 and an offset; see build-manas-auras.py BLADE_FIT)')
     else:

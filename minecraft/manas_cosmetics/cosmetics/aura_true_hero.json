@@ -3,38 +3,38 @@
   "display_name": "True Hero",
   "slot": "aura",
   "aura": {
-    "style": "radiant_sun",
-    "particle": "star",
+    "style": "hexagram",
+    "particle": "orb",
     "colors": [
       [
         255,
         255,
-        255
+        240
       ],
       [
         255,
-        240,
-        170
+        226,
+        110
       ],
       [
         255,
-        200,
-        70
+        184,
+        40
       ],
       [
         255,
-        140,
-        20
+        245,
+        190
       ]
     ],
-    "particle_count": 400,
-    "size": 1.15,
+    "particle_count": 1000,
+    "size": 0.62,
     "speed": 1.0,
     "radius": 1.15,
     "height": 1.0,
     "alpha": 1.0,
-    "rotation_speed": 0.8,
+    "rotation_speed": 0.6,
     "emissive": true,
-    "motion_response": 1.0
+    "motion_response": 0.0
   }
 }

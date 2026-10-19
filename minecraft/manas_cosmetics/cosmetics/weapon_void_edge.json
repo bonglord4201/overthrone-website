@@ -19,9 +19,9 @@
         210
       ],
       [
-        20,
+        60,
         0,
-        50
+        150
       ]
     ],
     "particle_count": 70,
@@ -32,7 +32,7 @@
     "alpha": 1.0,
     "rotation_speed": 1.2,
     "emissive": true,
-    "motion_response": 1.0,
+    "motion_response": 0.0,
     "offset": -0.35
   }
 }

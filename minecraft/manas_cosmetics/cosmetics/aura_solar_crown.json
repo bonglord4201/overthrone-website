@@ -4,7 +4,7 @@
   "slot": "aura",
   "aura": {
     "style": "sunburst_mandala",
-    "particle": "glow",
+    "particle": "orb",
     "colors": [
       [
         255,
@@ -13,28 +13,29 @@
       ],
       [
         255,
-        230,
-        110
+        222,
+        80
       ],
       [
         255,
-        170,
-        30
+        160,
+        20
       ],
       [
-        230,
-        100,
-        0
+        255,
+        240,
+        170
       ]
     ],
-    "particle_count": 420,
-    "size": 1.05,
-    "speed": 0.9,
-    "radius": 1.25,
+    "particle_count": 260,
+    "size": 1.5,
+    "speed": 1.0,
+    "radius": 0.5,
     "height": 1.0,
     "alpha": 1.0,
-    "rotation_speed": 0.7,
+    "rotation_speed": 0.8,
     "emissive": true,
-    "motion_response": 1.0
+    "motion_response": 0.0,
+    "offset": 2.12
   }
 }
