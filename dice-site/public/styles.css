@@ -57,11 +57,13 @@ button { cursor: pointer; }
 
 /* header */
 .top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: 4px 14px; text-align: center; }
-.brand { font: 400 clamp(26px, 5vw, 34px)/1 var(--font-display); color: var(--brand); text-decoration: none; letter-spacing: .02em; text-shadow: 0 3px 0 rgba(0,0,0,.35); display: inline-flex; align-items: center; gap: 8px; }
-.brand span { color: var(--brand-accent); }
+.brand { font: 400 clamp(26px, 5vw, 34px)/1 var(--font-display); text-decoration: none; letter-spacing: .02em; display: inline-flex; align-items: center; gap: 8px; }
+/* "Color" stays icy chrome; the die and "Roll" tint to the current theme's accent */
+.brand .lg-c { background: linear-gradient(180deg, #ffffff 0%, #d4d9e2 52%, #99a0ae 100%); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: 0 2px 0 rgba(0,0,0,.25); }
+.brand .lg-r { color: var(--accent); text-shadow: 0 2px 0 rgba(0,0,0,.35), 0 0 14px var(--accent); }
 .tag { color: var(--page-fg); font-size: 13px; }
-.logo-die { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(145deg, #ff5a3d, #c2160c); border: 2px solid #fff; display: inline-grid; place-items: center; flex: none; box-shadow: 0 2px 6px rgba(0,0,0,.4); }
-.logo-die::after { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #fff; }
+.logo-die { width: 28px; height: 28px; border-radius: 8px; background: var(--accent, #e3261b); border: 2px solid #fff; display: inline-grid; place-items: center; flex: none; box-shadow: inset 0 2px 3px rgba(255,255,255,.45), inset 0 -4px 6px rgba(0,0,0,.3), 0 2px 6px rgba(0,0,0,.4), 0 0 14px -2px var(--accent); }
+.logo-die::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.3); }
 
 /* top navigation bar */
 .nav { display: flex; align-items: center; gap: 14px; padding: 10px 16px; background: rgba(8,10,20,.62); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; backdrop-filter: blur(8px); flex-wrap: wrap; }
