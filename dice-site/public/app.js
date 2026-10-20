@@ -67,9 +67,9 @@
     counter: store.get("counter", 0),
     key: store.get("key", ""),
     roller: "",
-    // The session code shown under the dice. Made fresh on every page load (never
-    // saved), so refreshing starts a new code — a streamer who keeps refreshing to
-    // escape a bad history leaves a trail of short sessions.
+    // The session code shown under the dice. Kept for the whole visit, but a refresh
+    // starts a new code — a streamer who keeps refreshing to escape a bad history
+    // leaves a trail of short sessions.
     session: "",
     history: [],
     current: null,
@@ -80,7 +80,23 @@
   if (!["color", "number"].includes(state.type)) state.type = "color";
   if (!(state.n >= 1 && state.n <= 6)) state.n = 4;
   if (!/^[A-Za-z0-9]{24,64}$/.test(state.key)) { state.key = randomString(KEY_CHARS, 32); store.set("key", state.key); }
-  state.session = randomString(ID_CHARS, 10);
+  // One session per visit. It is kept in this tab while moving between ColorRoll
+  // pages (Lounge, About, ...), and starts fresh when the page is refreshed or the
+  // tab/site is closed (sessionStorage is cleared then).
+  const tab = {
+    get(k) { try { return JSON.parse(sessionStorage.getItem("colorroll:" + k)); } catch { return null; } },
+    set(k, v) { try { sessionStorage.setItem("colorroll:" + k, JSON.stringify(v)); } catch {} }
+  };
+  const navType = ((performance.getEntriesByType && performance.getEntriesByType("navigation")[0]) || {}).type;
+  const saved = navType === "reload" ? null : tab.get("visit");
+  const resumed = !!(saved && ID_RE.test(saved.session || ""));
+  state.session = resumed ? saved.session : randomString(ID_CHARS, 10);
+  if (resumed) {
+    state.history = Array.isArray(saved.history) ? saved.history.slice(0, 20) : [];
+    state.current = saved.current || null;
+  }
+  const saveVisit = () => tab.set("visit", { session: state.session, history: state.history, current: state.current });
+  saveVisit();
   const save = () => ["n", "type", "skin", "sound", "volume", "counter", "comfort"].forEach((k) => store.set(k, state[k]));
 
   // ---- API (server, or this browser in preview mode) ----
@@ -383,6 +399,7 @@
       state.history.unshift(r);
       state.history.length = Math.min(state.history.length, 20);
       renderHistory();
+      saveVisit();
       $("announce").textContent = "Rolled " + describe(r);
     } catch (err) {
       clearTimeout(capTimer);
@@ -890,13 +907,12 @@
     $("previewNotice").hidden = online;
     await loadVipRoom();   // signed-in VIP: show their own room first (wins over ?room)
     loadStreamers();       // populates streamers; applyRoom only fills a ?room if none shown yet
-    // Each visit starts fresh: a new session ID and an empty on-page history, so
-    // refreshing (or leaving and coming back) gives a new ID. A streamer who keeps
-    // refreshing to escape a bad run leaves a trail of separate short sessions.
-    state.history = [];
+    // Coming back from another ColorRoll page keeps the same session, history and
+    // last roll. A refresh or a new visit starts a new session with a fresh roll.
     renderHistory();
     renderPopular();
-    await roll();
+    if (resumed && state.current) showRoll(state.current);
+    else await roll();
     loadStats(); setInterval(loadStats, 15000);
     const v = params.get("verify") || (location.hash.match(/^#verify-([A-Za-z0-9]{10})$/) || [])[1];
     if (v) openVerify(v);
