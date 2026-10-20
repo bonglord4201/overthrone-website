@@ -263,17 +263,24 @@
   // One "clack" of dice hitting — a short bright noise transient plus a low knock,
   // like plastic dice tumbling against each other.
   function clack(delay, vol) {
-    noise(0.04, { vol: vol, freq: 2200 + Math.random() * 2200, q: 1.6, delay });
-    tone(150 + Math.random() * 70, 0.05, { type: "square", vol: vol * 0.5, to: 70, delay });
+    // sharp top-end "tick" of the plastic edge
+    noise(0.022, { vol: vol, freq: 3000 + Math.random() * 2600, q: 2.4, delay });
+    // woody mid "knock" — the body of the dice hitting
+    noise(0.05, { vol: vol * 0.6, freq: 700 + Math.random() * 380, q: 1.0, delay });
+    // low thunk for weight
+    tone(95 + Math.random() * 55, 0.06, { type: "triangle", vol: vol * 0.35, to: 52, delay });
   }
-  // Dice tumbling in a cup: many clacks at random gaps that thin out as they settle.
+  // Dice tumbling in a cup: dense clatter at the start that thins and slows
+  // as the dice settle, with the odd double-tick for a real "cluster" feel.
   function rollSound() {
     if (!state.sound) return;
     const dur = MIN_SPIN_MS / 1000;
     let t = 0;
     while (t < dur) {
-      clack(t, 0.09 + Math.random() * 0.05);
-      t += 0.045 + Math.random() * 0.07 + (t / dur) * 0.05; // gaps widen toward the end
+      const prog = t / dur;
+      clack(t, 0.08 + Math.random() * 0.05);
+      if (Math.random() < 0.45) clack(t + 0.012 + Math.random() * 0.02, 0.045 + Math.random() * 0.03);
+      t += 0.028 + Math.random() * 0.05 + prog * 0.08; // gaps widen as they settle
     }
   }
   // Each die lands: a clack plus a soft note climbing left to right.

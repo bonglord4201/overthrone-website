@@ -124,15 +124,18 @@ h3 { margin: 0; font: 400 15px/1 var(--font-display); letter-spacing: .06em; }
   position: relative; width: 100%; height: 100%; border-radius: 24%;
   display: grid; place-items: center; overflow: hidden;
   border: 5px solid #ffffff;
-  background: var(--c, #e3261b);
-  box-shadow: inset 0 -6px 10px rgba(0,0,0,.16);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.30), rgba(255,255,255,0) 40%, rgba(0,0,0,.14)),
+    var(--c, #e3261b);
+  box-shadow: inset 0 2px 3px rgba(255,255,255,.38), inset 0 -8px 12px rgba(0,0,0,.20);
   transition: background .08s;
 }
-.face.blank { border-color: #ffffff; background: #f1f2f5; }
+.face.blank { border-color: #ffffff; background: #f1f2f5; box-shadow: inset 0 -5px 9px rgba(0,0,0,.08); }
 .face.blank .dot { background: #d2d4da; box-shadow: none; }
-/* a glossy diagonal highlight across the top-left */
-.face::after { display: none; }
-.face .dot { width: 28%; aspect-ratio: 1; border-radius: 50%; background: #ffffff; box-shadow: 0 1px 2px rgba(0,0,0,.22); z-index: 1; }
+.face.blank::after { display: none; }
+/* a soft diagonal gloss across the top-left corner */
+.face::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(135deg, rgba(255,255,255,.34), rgba(255,255,255,0) 46%); }
+.face .dot { width: 30%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 42% 38%, #ffffff, #e9ebf0); box-shadow: 0 1px 2px rgba(0,0,0,.26), inset 0 -1px 1px rgba(0,0,0,.08); z-index: 1; }
 .die.num .face { background: #ffffff; grid-template: repeat(3, 1fr) / repeat(3, 1fr); padding: 14%; }
 .die.num .pip { width: 72%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 38% 32%, #3a3a42, #15151a); box-shadow: inset 0 -1px 2px rgba(255,255,255,.2); }
 .die.num .pip.off { visibility: hidden; }
