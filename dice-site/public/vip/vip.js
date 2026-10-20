@@ -28,6 +28,9 @@
     const av = $("avatar");
     if (s.avatar) { av.style.backgroundImage = `url(${s.avatar})`; av.textContent = ""; }
     else { av.style.backgroundImage = "none"; av.textContent = (s.name[0] || "?").toUpperCase(); }
+    const room = location.origin + "/?room=" + encodeURIComponent(s.handle);
+    $("roomUrl").href = room;
+    $("roomUrl").textContent = room.replace(/^https?:\/\//, "");
     setLive(s.live);
   }
   function setLive(on) {
@@ -65,6 +68,14 @@
       $("saved").textContent = err.message;
       $("saved").hidden = false;
     }
+  });
+
+  $("copyRoom").addEventListener("click", async () => {
+    const url = $("roomUrl").href;
+    try { await navigator.clipboard.writeText(url); } catch {}
+    const btn = $("copyRoom"), label = btn.textContent;
+    btn.textContent = "Copied!";
+    setTimeout(() => (btn.textContent = label), 1500);
   });
 
   $("logout").addEventListener("click", async () => {

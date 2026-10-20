@@ -166,6 +166,12 @@ export async function handleRolls(request, env, parts) {
     return json({ roll: shape(row), before: before.results.map(shape), after: after.results.map(shape), flag });
   }
 
+  // The public live feed: the most recent rolls from everyone. Read-only.
+  if (parts[1] === "recent" && parts.length === 2 && method === "GET") {
+    const { results } = await env.DB.prepare("SELECT * FROM rolls ORDER BY created_at DESC, seq DESC LIMIT 24").all();
+    return json({ rolls: results.map(shape) });
+  }
+
   if (parts[1] === "roller" && parts.length === 3 && method === "GET") {
     const roller = parts[2];
     if (!ROLLER_RE.test(roller)) return json({ error: "Unknown roller ID." }, 400);

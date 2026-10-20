@@ -85,6 +85,20 @@ window.THEMES = [
     tint: ["rgba(255,245,250,.04)", "rgba(120,50,90,.3)"],
     particles: { type: "petal", rgb: "255, 170, 215", count: 42 }
   },
+  {
+    id: "halloween", name: "Halloween", group: "Worlds",
+    ui: { bg: "#140a1e", panel: "rgba(52, 20, 72, .46)", panelSolid: "#2a1140", edge: "rgba(255, 170, 90, .6)", select: "#8a3bb0", accent: "#ff7a1e", accentFg: "#1a0a00" },
+    sky: [[0, "#180a2c"], [0.5, "#3d1352"], [0.8, "#8a3418"], [1, "#120806"]],
+    layers: [
+      { type: "stars", n: 70, rgb: "255, 228, 190", seed: 7, maxY: 0.55 },
+      { type: "moon", x: 0.78, y: 0.2, r: 0.08, rgb: "255, 196, 120" },
+      { type: "hills", color: "#0a0512", base: 0.92, amp: 0.14, seed: 4 },
+      { type: "castle", color: "#070310", base: 0.92, h: 0.26, seed: 3, win: "255, 168, 60", gate: "255, 130, 40" },
+      { type: "deadtrees", color: "#050208", base: 0.92, n: 4, seed: 9 },
+      { type: "vignette", a: 0.5 }
+    ],
+    particles: { type: "ember", rgb: "255, 140, 50", count: 54 }
+  },
     // ---------- Metal ----------
   {
     id: "gold", name: "Gold", group: "Metal",

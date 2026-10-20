@@ -101,7 +101,8 @@
     session: (code) => request("/api/session/" + encodeURIComponent(code)),
     history: (roller) => request("/api/roller/" + roller).then((d) => d.rolls),
     roller: (roller) => request("/api/roller/" + encodeURIComponent(roller)),
-    report: (rollId, message) => request("/api/report", { method: "POST", body: JSON.stringify({ rollId, message }) })
+    report: (rollId, message) => request("/api/report", { method: "POST", body: JSON.stringify({ rollId, message }) }),
+    recent: () => request("/api/recent").then((d) => d.rolls)
   };
   const preview = {
     all: () => { const a = store.get("preview-rolls", []); return Array.isArray(a) ? a : []; },
@@ -133,7 +134,8 @@
     },
     history: async (roller) => preview.all().filter((r) => r.roller === roller).slice(0, 20),
     roller: async (roller) => ({ rolls: preview.all().filter((r) => r.roller === roller).slice(0, 20), flag: null }),
-    report: async () => ({ ok: true })
+    report: async () => ({ ok: true }),
+    recent: async () => preview.all().slice(0, 24)
   };
   const api = () => (state.preview ? preview : server);
 
@@ -702,6 +704,7 @@
   async function loadStreamers() {
     let list = [];
     try { list = state.preview ? [] : (await request("/api/streamers")).streamers; } catch {}
+    applyRoom(list);
     const left = [], right = [];
     list.forEach((s) => {
       const side = s.side === "left" || s.side === "right" ? s.side : left.length <= right.length ? "left" : "right";
@@ -712,6 +715,40 @@
       panel.hidden = !items.length;
     }
     document.querySelector(".layout").classList.toggle("no-streamers", !list.length);
+  }
+
+  // When the page is opened as a streamer's room (…/?room=handle), show a banner
+  // with their name and picture, like "LEXOUSSAR'S VIP ROOM".
+  function applyRoom(list) {
+    const box = $("vipRoom");
+    const room = (params.get("room") || "").trim().toLowerCase().replace(/^@/, "");
+    const s = room && list.find((x) => (x.handle || "").toLowerCase() === room);
+    if (!s) { box.hidden = true; return; }
+    $("vipRoomName").textContent = (s.name || s.handle) + "'s";
+    const pic = $("vipRoomPic");
+    if (s.avatar) { pic.style.backgroundImage = `url(${s.avatar})`; pic.textContent = ""; }
+    else { pic.style.backgroundImage = "none"; pic.textContent = ((s.name || "?")[0] || "?").toUpperCase(); }
+    const live = $("vipRoomLive");
+    if (s.live) { live.hidden = false; live.href = "https://www.tiktok.com/@" + encodeURIComponent(s.handle) + "/live"; }
+    else live.hidden = true;
+    box.hidden = false;
+  }
+
+  // The public live feed: the newest rolls from everyone. Tap one to verify it.
+  async function renderLive() {
+    if (document.hidden) return;
+    let rolls = [];
+    try { rolls = await api().recent(); } catch { return; }
+    const feed = $("liveFeed");
+    if (!rolls.length) { feed.replaceChildren(el("p", { className: "empty", textContent: "No rolls yet — roll the dice to start the feed!" })); return; }
+    feed.replaceChildren(...rolls.map((r) => {
+      const b = el("button", { type: "button", className: "lrow", title: "Verify roll " + r.id },
+        diceSet(r),
+        agoSpan(r.at));
+      b.lastChild.className = "when";
+      b.addEventListener("click", () => openVerify(r.id));
+      return b;
+    }));
   }
 
   // ---- start ----
@@ -733,6 +770,8 @@
     state.history = [];
     renderHistory();
     await roll();
+    renderLive();
+    setInterval(renderLive, 6000);
     const v = params.get("verify") || (location.hash.match(/^#verify-([A-Za-z0-9]{10})$/) || [])[1];
     if (v) openVerify(v);
   }
