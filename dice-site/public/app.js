@@ -293,8 +293,6 @@
   // One "clack" of dice hitting — a short bright noise transient plus a low knock,
   // like plastic dice tumbling against each other.
   function clack(delay, vol) {
-    // Use the recorded clack when it's ready; otherwise synthesize one.
-    if (playSample(delay, vol * 1.3, 0.9 + Math.random() * 0.3)) return;
     // sharp top-end "tick" of the plastic edge
     noise(0.020, { vol: vol, freq: 3200 + Math.random() * 2600, q: 2.6, delay });
     // woody mid "knock" — the body of the dice hitting
@@ -306,6 +304,9 @@
   // then thins as they settle — matches the roll sound on sites like online-dice.
   function rollSound() {
     if (!state.sound) return;
+    // The recorded roll clip is the whole shake-and-settle; play it once.
+    if (playSample(0, 0.85, 0.97 + Math.random() * 0.06)) return;
+    // Synth fallback (used only until the sample has loaded).
     const dur = MIN_SPIN_MS / 1000;
     let t = 0;
     while (t < dur) {
@@ -320,6 +321,7 @@
   // Each die drops and settles: a knock plus a quick secondary bounce — no musical
   // note, so it sounds like real dice landing rather than a chime.
   function landTone(i) {
+    if (sampleBuf) return; // the roll clip already includes the dice settling
     clack(0, 0.17);
     clack(0.035 + Math.random() * 0.03, 0.1);
   }
@@ -726,16 +728,6 @@
     let list = [];
     try { list = state.preview ? [] : (await request("/api/streamers")).streamers; } catch {}
     applyRoom(list);
-    const left = [], right = [];
-    list.forEach((s) => {
-      const side = s.side === "left" || s.side === "right" ? s.side : left.length <= right.length ? "left" : "right";
-      (side === "left" ? left : right).push(s);
-    });
-    for (const [panel, items] of [[$("streamersLeft"), left], [$("streamersRight"), right]]) {
-      panel.querySelector(".slist").replaceChildren(...items.map(streamerCard));
-      panel.hidden = !items.length;
-    }
-    document.querySelector(".layout").classList.toggle("no-streamers", !list.length);
   }
 
   // When the page is opened as a streamer's room (…/?room=handle), show a banner
@@ -756,6 +748,95 @@
   }
 
 
+  // ---- live rolls feed (left column) ----
+  function avatarColor(s) { let h = 0; for (const c of String(s || "x")) h = (h * 31 + c.charCodeAt(0)) >>> 0; return `hsl(${h % 360} 55% 42%)`; }
+  async function renderLive() {
+    if (document.hidden) return;
+    let rolls = [];
+    try { rolls = await api().recent(); } catch { return; }
+    const feed = $("liveFeed");
+    if (!feed) return;
+    if (!rolls.length) { feed.replaceChildren(el("p", { className: "empty", textContent: "No rolls yet." })); return; }
+    feed.replaceChildren(...rolls.map((r) => {
+      const av = el("span", { className: "lr-av", textContent: (r.vip ? r.vip[0] : "P").toUpperCase() });
+      av.style.background = avatarColor(r.vip || r.roller || r.id);
+      const who = el("span", { className: "lr-who" + (r.vip ? " vip" : ""), textContent: r.vip ? "👑 " + r.vip : "Player" });
+      const when = agoSpan(r.at); when.className = "when";
+      const row = el("button", { type: "button", className: "lrow", title: "Verify roll " + r.id },
+        av,
+        el("span", { className: "lr-mid" }, who, diceSet(r)),
+        el("span", { className: "lr-meta" }, when, el("code", { className: "lr-id", textContent: r.id })));
+      row.addEventListener("click", () => openVerify(r.id));
+      return row;
+    }));
+  }
+
+  // ---- lounge chat (right column; same chat as /lounge) ----
+  let chatLast = -1;
+  async function loadChat() {
+    if (document.hidden) return;
+    const box = $("chatMessages");
+    if (!box) return;
+    let msgs = [];
+    try { msgs = (await (await fetch("/api/chat")).json()).messages || []; } catch { return; }
+    if (!msgs.length) { box.replaceChildren(el("p", { className: "empty", textContent: "No messages yet — say hi!" })); return; }
+    const nearBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 60;
+    box.replaceChildren(...msgs.map((m) => el("div", { className: "cmsg" },
+      el("span", { className: "cm-time", textContent: clock.format(new Date(m.at)) }),
+      el("span", { className: "cm-who", textContent: m.name }),
+      el("span", { className: "cm-text", textContent: m.body }))));
+    if (nearBottom || msgs.length !== chatLast) box.scrollTop = box.scrollHeight;
+    chatLast = msgs.length;
+  }
+  function setupChat() {
+    const form = $("chatForm");
+    if (!form) return;
+    $("chatName").value = store.get("chat-name", "");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = $("chatName").value.trim(), body = $("chatBody").value.trim();
+      if (!name || !body) return;
+      const btn = form.querySelector(".send"); btn.disabled = true; $("chatErr").hidden = true;
+      try {
+        const res = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, body }) });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || "Couldn't send that message.");
+        store.set("chat-name", name); $("chatBody").value = ""; await loadChat();
+      } catch (err) { $("chatErr").textContent = err.message; $("chatErr").hidden = false; }
+      finally { btn.disabled = false; $("chatBody").focus(); }
+    });
+  }
+
+  // ---- site stats bar ----
+  async function loadStats() {
+    try {
+      const s = await (await fetch("/api/stats")).json();
+      const set = (id, n) => { const e = $(id); if (e) e.textContent = Number(n || 0).toLocaleString(); };
+      set("statRolls", s.rolls); set("statPlayers", s.players); set("statVips", s.vips); set("statOnline", s.online);
+      const oc = $("onlineCount"); if (oc) oc.textContent = Number(s.online || 0).toLocaleString();
+    } catch {}
+  }
+
+  // ---- popular rooms (quick theme switch) ----
+  function renderPopular() {
+    const box = $("popularRooms");
+    if (!box) return;
+    const picks = ["frozen", "halloween", "candy", "egypt", "void", "hell", "neon", "jungle"].map(themeById).filter(Boolean);
+    box.replaceChildren(...picks.map((t) => {
+      const card = el("button", { type: "button", className: "room-card" + (t.id === state.skin ? " active" : ""), title: t.name });
+      const prev = el("span", { className: "rc-prev" });
+      if (t.image) prev.style.backgroundImage = `url(${t.image})`;
+      else prev.style.background = `linear-gradient(145deg, ${t.ui.panelSolid || "#333"}, ${t.ui.accent || "#555"})`;
+      card.append(prev, el("span", { className: "rc-name", textContent: t.name }));
+      card.addEventListener("click", () => {
+        state.skin = t.id; save(); applyTheme();
+        box.querySelectorAll(".room-card").forEach((c) => c.classList.toggle("active", c === card));
+        $("skin").value = t.id;
+      });
+      return card;
+    }));
+  }
+
   // ---- start ----
   async function start() {
     buildThemeMenu();
@@ -775,7 +856,12 @@
     // refreshing to escape a bad run leaves a trail of separate short sessions.
     state.history = [];
     renderHistory();
+    renderPopular();
+    setupChat();
     await roll();
+    renderLive(); setInterval(renderLive, 6000);
+    loadChat(); setInterval(loadChat, 4000);
+    loadStats(); setInterval(loadStats, 15000);
     const v = params.get("verify") || (location.hash.match(/^#verify-([A-Za-z0-9]{10})$/) || [])[1];
     if (v) openVerify(v);
   }

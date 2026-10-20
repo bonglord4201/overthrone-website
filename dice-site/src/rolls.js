@@ -186,6 +186,18 @@ export async function handleRolls(request, env, parts) {
     return json({ roll: shape(row), before: before.results.map(shape), after: after.results.map(shape), flag });
   }
 
+  // Public site stats for the stats bar. All real numbers.
+  if (parts[1] === "stats" && parts.length === 2 && method === "GET") {
+    const tenMinAgo = new Date(Date.now() - 10 * 60000).toISOString();
+    const [rolls, players, vips, online] = await Promise.all([
+      env.DB.prepare("SELECT COUNT(*) AS n FROM rolls").first(),
+      env.DB.prepare("SELECT COUNT(DISTINCT roller) AS n FROM rolls").first(),
+      env.DB.prepare("SELECT COUNT(*) AS n FROM streamers WHERE vip_user IS NOT NULL").first().catch(() => ({ n: 0 })),
+      env.DB.prepare("SELECT COUNT(DISTINCT roller) AS n FROM rolls WHERE created_at > ?").bind(tenMinAgo).first()
+    ]);
+    return json({ rolls: rolls.n, players: players.n, vips: vips.n, online: online.n }, 200, { "Cache-Control": "public, max-age=10" });
+  }
+
   // The public live feed: the most recent rolls from everyone. Read-only.
   if (parts[1] === "recent" && parts.length === 2 && method === "GET") {
     const { results } = await env.DB.prepare("SELECT * FROM rolls ORDER BY created_at DESC, seq DESC LIMIT 24").all();

@@ -12,7 +12,7 @@
     enabled: false,                       // <-- leave false until ad units are approved
     client: "ca-pub-5630157933832433",    // your AdSense publisher ID
     // Paste each real ad-unit's data-ad-slot number here. Empty = that slot stays blank.
-    slots: { top: "", belowHistory: "", belowInfo: "" }
+    slots: { rightTop: "" }
   };
 
   // Server-verified VIP check. Returns true only if the Worker accepts the VIP cookie.
