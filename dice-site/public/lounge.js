@@ -44,8 +44,12 @@
     if (!rolls.length) { feed.replaceChildren(el("p", { className: "empty", textContent: "No rolls yet." })); return; }
     feed.replaceChildren(...rolls.map((r) => {
       const dice = el("span", { className: "dice-mini" }, ...r.faces.map((f) => pip(f, r.kind)));
-      const b = el("button", { type: "button", className: "frow", title: "Verify roll " + r.id },
-        dice, el("span", { className: "when", textContent: ago(r.at) }));
+      const left = el("span", { className: "fleft" }, dice);
+      if (r.vip) left.append(el("span", { className: "vip-tag", textContent: "👑 " + r.vip }));
+      const meta = el("span", { className: "fmeta" },
+        el("code", { className: "rid", textContent: r.id }),
+        el("span", { className: "when", textContent: ago(r.at) }));
+      const b = el("button", { type: "button", className: "frow", title: "Verify roll " + r.id }, left, meta);
       b.addEventListener("click", () => { location.href = "/?verify=" + encodeURIComponent(r.id); });
       return b;
     }));

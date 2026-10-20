@@ -753,22 +753,6 @@
     box.hidden = false;
   }
 
-  // The public live feed: the newest rolls from everyone. Tap one to verify it.
-  async function renderLive() {
-    if (document.hidden) return;
-    let rolls = [];
-    try { rolls = await api().recent(); } catch { return; }
-    const feed = $("liveFeed");
-    if (!rolls.length) { feed.replaceChildren(el("p", { className: "empty", textContent: "No rolls yet — roll the dice to start the feed!" })); return; }
-    feed.replaceChildren(...rolls.map((r) => {
-      const b = el("button", { type: "button", className: "lrow", title: "Verify roll " + r.id },
-        diceSet(r),
-        agoSpan(r.at));
-      b.lastChild.className = "when";
-      b.addEventListener("click", () => openVerify(r.id));
-      return b;
-    }));
-  }
 
   // ---- start ----
   async function start() {
@@ -790,8 +774,6 @@
     state.history = [];
     renderHistory();
     await roll();
-    renderLive();
-    setInterval(renderLive, 6000);
     const v = params.get("verify") || (location.hash.match(/^#verify-([A-Za-z0-9]{10})$/) || [])[1];
     if (v) openVerify(v);
   }

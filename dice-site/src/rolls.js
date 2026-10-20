@@ -6,6 +6,11 @@
 // owner, so players see a warning on a known re-roller or scammer.
 
 import { json, readJson, nowIso } from "./http.js";
+import { vipSession } from "./vip.js";
+
+// Becomes false if the rolls.vip_name column doesn't exist yet (migration not run),
+// so rolls keep working either way.
+let vipCol = true;
 
 const ID_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
 const ID_RE = /^[A-HJ-NP-Za-km-z2-9]{10}$/;
@@ -31,25 +36,39 @@ async function createRoll(request, env) {
     return json({ error: "This roller is banned from " + (new URL(request.url).host || "this site") + (flag.label ? ": " + flag.label : "."), banned: true }, 403);
   }
 
+  // If a VIP is signed in, tag the roll with their name so the lounge can show it.
+  const vip = await vipSession(request, env).catch(() => null);
+  const vipName = vip && vip.name ? String(vip.name).slice(0, 40) : null;
+
   const now = Date.now();
   const faces = randomFaces(dice);
+  const gap = new Date(now - MIN_GAP_MS).toISOString();
 
   for (let attempt = 0; attempt < 3; attempt++) {
     const id = randomId();
     const createdAt = new Date(now).toISOString();
     try {
       // One statement, so the roll number and the rate limit are checked atomically.
-      const res = await env.DB.prepare(
-        `INSERT INTO rolls (id, roller, seq, dice, kind, faces, created_at, session)
-         SELECT ?1, ?2, COALESCE((SELECT MAX(seq) FROM rolls WHERE roller = ?2), 0) + 1, ?3, ?4, ?5, ?6, ?8
-         WHERE NOT EXISTS (SELECT 1 FROM rolls WHERE roller = ?2 AND created_at > ?7)`
-      ).bind(id, roller, dice, kind, faces.join(","), createdAt, new Date(now - MIN_GAP_MS).toISOString(), session).run();
+      const res = vipCol
+        ? await env.DB.prepare(
+            `INSERT INTO rolls (id, roller, seq, dice, kind, faces, created_at, session, vip_name)
+             SELECT ?1, ?2, COALESCE((SELECT MAX(seq) FROM rolls WHERE roller = ?2), 0) + 1, ?3, ?4, ?5, ?6, ?8, ?9
+             WHERE NOT EXISTS (SELECT 1 FROM rolls WHERE roller = ?2 AND created_at > ?7)`
+          ).bind(id, roller, dice, kind, faces.join(","), createdAt, gap, session, vipName).run()
+        : await env.DB.prepare(
+            `INSERT INTO rolls (id, roller, seq, dice, kind, faces, created_at, session)
+             SELECT ?1, ?2, COALESCE((SELECT MAX(seq) FROM rolls WHERE roller = ?2), 0) + 1, ?3, ?4, ?5, ?6, ?8
+             WHERE NOT EXISTS (SELECT 1 FROM rolls WHERE roller = ?2 AND created_at > ?7)`
+          ).bind(id, roller, dice, kind, faces.join(","), createdAt, gap, session).run();
       if (!res.meta.changes) return json({ error: "Slow down a little between rolls." }, 429);
       const row = await env.DB.prepare("SELECT * FROM rolls WHERE id = ?").bind(id).first();
       return json({ roll: shape(row) }, 201);
     } catch (err) {
+      const msg = String(err && err.message);
+      // vip_name column not added yet: fall back to a roll without it.
+      if (vipCol && /no such column/i.test(msg)) { vipCol = false; continue; }
       // A clash on the roll ID (or a racing roll number) is retried with a new ID.
-      if (!/UNIQUE/i.test(String(err && err.message))) throw err;
+      if (!/UNIQUE/i.test(msg)) throw err;
     }
   }
   return json({ error: "Could not save the roll. Try again." }, 503);
@@ -92,7 +111,8 @@ const shape = (row) => ({
   kind: row.kind,
   faces: row.faces.split(",").map(Number),
   at: row.created_at,
-  session: row.session || ""
+  session: row.session || "",
+  vip: row.vip_name || ""
 });
 
 // The public part of a roller's flag: whether they're flagged or banned and the
