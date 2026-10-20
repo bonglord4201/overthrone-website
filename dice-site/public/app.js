@@ -304,8 +304,8 @@
   // then thins as they settle — matches the roll sound on sites like online-dice.
   function rollSound() {
     if (!state.sound) return;
-    // The recorded roll clip is the whole shake-and-settle; play it once.
-    if (playSample(0, 0.85, 0.97 + Math.random() * 0.06)) return;
+    // The recorded roll clip is the whole shake-and-settle; play it once, at true pitch.
+    if (playSample(0, 0.9, 1.0)) return;
     // Synth fallback (used only until the sample has loaded).
     const dur = MIN_SPIN_MS / 1000;
     let t = 0;
