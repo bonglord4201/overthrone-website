@@ -14,10 +14,10 @@
 body {
   margin: 0; min-height: 100vh; color: var(--fg); font: 400 15px/1.5 var(--fb);
   background:
-    radial-gradient(1100px 620px at 12% 2%, rgba(150,22,28,.40), transparent 55%),
-    radial-gradient(1000px 640px at 90% 100%, rgba(90,14,20,.42), transparent 55%),
-    radial-gradient(1200px 800px at 50% 40%, rgba(20,22,40,.6), transparent 70%),
-    linear-gradient(180deg, #0a0912, #08070b 60%, #0a0608);
+    radial-gradient(1100px 620px at 12% 2%, rgba(150,22,28,.45), transparent 55%),
+    radial-gradient(1000px 640px at 90% 100%, rgba(90,14,20,.45), transparent 55%),
+    linear-gradient(180deg, rgba(8,7,11,.72), rgba(8,7,11,.88) 55%, rgba(8,6,8,.95)),
+    url("/images/th/hell.webp") center / cover no-repeat, #08070b;
   background-attachment: fixed;
 }
 .page { max-width: 1240px; margin: 0 auto; padding: 14px 16px 44px; }
@@ -41,7 +41,7 @@ body {
 .lounge-title { text-align: center; margin: 26px 0 18px; }
 .lt-crown { display: block; font-size: 26px; color: var(--gold2); text-shadow: 0 0 18px rgba(232,182,58,.6); margin-bottom: -6px; }
 .lounge-title h1 { margin: 0; font: 900 clamp(40px, 9vw, 72px)/1 var(--fd); letter-spacing: .14em; background: linear-gradient(180deg, #fff2c8 0%, var(--gold2) 42%, var(--gold) 60%, #8a5a12 100%); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 3px 10px rgba(0,0,0,.6)); }
-.lounge-title p { margin: 8px 0 0; color: var(--gold2); font: 700 12px/1 var(--fb); letter-spacing: .4em; text-transform: uppercase; opacity: .85; }
+.lounge-title p { display: inline-flex; align-items: center; gap: 14px; margin: 8px 0 0; color: var(--gold2); font: 700 12px/1 var(--fb); letter-spacing: .4em; text-transform: uppercase; opacity: .85; }
 
 /* two framed panels */
 .lounge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
@@ -113,3 +113,41 @@ body {
 .footnav a:hover { color: var(--gold2); }
 
 @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
+
+/* ---- richer details ---- */
+.lounge-title p::before, .lounge-title p::after { content: ""; width: clamp(36px, 12vw, 130px); height: 1px; background: linear-gradient(90deg, transparent, var(--gold)); }
+.lounge-title p::after { transform: scaleX(-1); }
+.lounge-title h1 { text-shadow: none; }
+/* gold corner brackets inside each frame */
+.frame::after { content: ""; position: absolute; inset: 7px; border-radius: 12px; pointer-events: none; opacity: .85;
+  background:
+    linear-gradient(var(--gold), var(--gold)) top left / 26px 2px no-repeat,
+    linear-gradient(var(--gold), var(--gold)) top left / 2px 26px no-repeat,
+    linear-gradient(var(--gold), var(--gold)) top right / 26px 2px no-repeat,
+    linear-gradient(var(--gold), var(--gold)) top right / 2px 26px no-repeat,
+    linear-gradient(var(--gold), var(--gold)) bottom left / 26px 2px no-repeat,
+    linear-gradient(var(--gold), var(--gold)) bottom left / 2px 26px no-repeat,
+    linear-gradient(var(--gold), var(--gold)) bottom right / 26px 2px no-repeat,
+    linear-gradient(var(--gold), var(--gold)) bottom right / 2px 26px no-repeat; }
+.frame > * { position: relative; z-index: 1; }
+/* glossy dice like the main roller */
+.pip { width: 28px; height: 28px; border-radius: 8px; border: 2.5px solid #fff; overflow: hidden; box-shadow: inset 0 -4px 6px rgba(0,0,0,.25), 0 2px 6px rgba(0,0,0,.45), 0 0 12px -3px var(--pc, transparent); }
+.pip::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.38), rgba(255,255,255,0) 48%); }
+.pip::after { width: 8px; height: 8px; z-index: 1; }
+.dice-mini { gap: 6px; }
+/* avatars: real VIP pictures, dice icon for players */
+.av-img { background-size: cover !important; background-position: center !important; box-shadow: 0 0 0 2px var(--gold), 0 0 14px -3px var(--gold), 0 2px 8px rgba(0,0,0,.5) !important; }
+.av-dice { background: radial-gradient(circle at 50% 40%, #2a1418, #0d090c) !important; position: relative; overflow: hidden; }
+.av-dice::after { content: ""; position: absolute; inset: 5px; background: url("/images/colorroll_dice.png") left center / contain no-repeat; }
+/* newest roll stands out */
+.frow:first-child { border-color: rgba(232,182,58,.38); background: linear-gradient(90deg, rgba(232,182,58,.10), rgba(0,0,0,.2) 60%); }
+.frow.fresh { animation: slideIn .55s ease-out; box-shadow: 0 0 22px -6px var(--gold); }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
+.who.vip { text-shadow: 0 0 12px currentColor; }
+/* chat bubbles + empty state */
+.cmsg { background: rgba(255,255,255,.03); border: 1px solid var(--soft); border-radius: 13px; padding: 8px 11px; }
+.messages .empty { margin: auto; text-align: center; font-size: 15px; }
+.empty-ico { display: block; font-size: 42px; margin-bottom: 8px; filter: drop-shadow(0 0 12px rgba(227,38,27,.5)); }
+.online-dot { animation: onl 2s ease-in-out infinite; }
+@keyframes onl { 50% { box-shadow: 0 0 2px var(--green); } }
+@media (prefers-reduced-motion: reduce) { .frow.fresh, .online-dot { animation: none; } }

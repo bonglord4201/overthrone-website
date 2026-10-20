@@ -411,19 +411,18 @@ body.comfort .go::after { display: none; }                 /* no sheen sweep */
 .vol { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: inherit; font-weight: 800; }
 .vol input[type="range"] { width: 110px; max-width: 40vw; accent-color: var(--brand-accent, #e3261b); cursor: pointer; }
 
-/* VIP room banner — a slim bar under the title: avatar + "NAME'S VIP ROOM" */
-.vip-room { display: flex; align-items: center; gap: 10px; width: 100%; margin: 0 0 4px; padding: 7px 12px; background: linear-gradient(135deg, rgba(255,205,70,.16), var(--panel) 70%); border: 1px solid var(--accent); border-radius: 14px; box-shadow: 0 4px 16px rgba(0,0,0,.3), 0 0 16px -8px var(--accent); }
+/* VIP room header — like the reference: round avatar + big chunky outlined "NAME'S VIP ROOM", no box */
+.vip-room { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; width: 100%; margin: -2px 0 6px; padding: 0; background: none; border: 0; box-shadow: none; }
 .vip-room[hidden] { display: none; }
-.vr-pic { flex: none; width: 40px; height: 40px; border-radius: 50%; background: var(--panel-solid) center/cover no-repeat; border: 2px solid var(--accent); display: grid; place-items: center; font: 400 18px/1 var(--font-display); color: var(--white); box-shadow: 0 0 12px -3px var(--accent); }
-.vr-text { display: inline-flex; align-items: baseline; gap: 8px; min-width: 0; }
-.vr-text b { font: 400 clamp(16px, 3.4vw, 22px)/1 var(--font-display); letter-spacing: .02em; color: #fff; text-transform: uppercase; text-shadow: 0 2px 0 rgba(0,0,0,.4); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.vr-sub { font: 800 12px/1 var(--font-body); letter-spacing: .22em; text-transform: uppercase; color: #ffd84a; white-space: nowrap; }
-.vr-live { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font: 800 11px/1 var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: #fff; background: linear-gradient(180deg, #ff5a3d, #e3261b); padding: 6px 11px; border-radius: 999px; text-decoration: none; white-space: nowrap; box-shadow: 0 2px 8px rgba(227,38,27,.5); }
+.vr-pic { flex: none; width: 54px; height: 54px; border-radius: 50%; background: var(--panel-solid) center/cover no-repeat; border: 3px solid #fff; display: grid; place-items: center; font: 400 24px/1 var(--font-display); color: #fff; box-shadow: 0 0 0 2px rgba(0,0,0,.55), 0 4px 14px rgba(0,0,0,.55), 0 0 22px -4px var(--accent); }
+.vr-text { display: inline-flex; align-items: baseline; gap: .32em; flex-wrap: wrap; justify-content: center; }
+.vr-text b, .vr-sub { font: 400 clamp(22px, 5.2vw, 32px)/1.05 var(--font-display); letter-spacing: .02em; color: #fff; text-transform: uppercase; white-space: nowrap;
+  text-shadow: -2px -2px 0 #120d12, 2px -2px 0 #120d12, -2px 2px 0 #120d12, 2px 2px 0 #120d12, 0 -2px 0 #120d12, 0 2px 0 #120d12, -2px 0 0 #120d12, 2px 0 0 #120d12, 0 5px 0 rgba(0,0,0,.55), 0 0 18px rgba(0,0,0,.45); }
+.vr-live { margin-left: 2px; display: inline-flex; align-items: center; gap: 6px; font: 800 11px/1 var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: #fff; background: linear-gradient(180deg, #ff5a3d, #e3261b); padding: 6px 11px; border-radius: 999px; text-decoration: none; white-space: nowrap; box-shadow: 0 2px 8px rgba(227,38,27,.5); }
 .vr-live:hover { filter: brightness(1.08); }
 .vr-live[hidden] { display: none; }
 .vr-live-dot, .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; display: inline-block; animation: livePulse 1.6s ease-out infinite; }
 @keyframes livePulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,.6); } 70% { box-shadow: 0 0 0 6px rgba(255,255,255,0); } 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); } }
-@media (max-width: 420px) { .vr-sub { display: none; } }
 
 /* Cog button beside Copy — opens the lounge (everyone's live rolls + chat) */
 .cog-btn { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; color: var(--white); background: rgba(0,0,0,.3); border: 1px solid var(--soft); text-decoration: none; transition: transform .2s, background .12s; }

@@ -31,19 +31,27 @@
     return Math.floor(s / 86400) + " days ago";
   }
 
-  function avatar(label, color) {
-    const a = el("span", { className: "av", textContent: (String(label || "?")[0] || "?").toUpperCase() });
-    a.style.background = `linear-gradient(145deg, ${color}, rgba(0,0,0,.4))`;
+  function avatar(label, color, img) {
+    const a = el("span", { className: "av" });
+    if (img) { a.classList.add("av-img"); a.style.backgroundImage = `url(${img})`; }
+    else { a.textContent = (String(label || "?")[0] || "?").toUpperCase(); a.style.background = `linear-gradient(145deg, ${color}, rgba(0,0,0,.4))`; }
     return a;
+  }
+  // Real VIP pictures, looked up by streamer name (public list).
+  let avatars = {};
+  async function loadAvatars() {
+    try { const d = await api("/api/streamers"); avatars = {}; for (const s of d.streamers || []) if (s.avatar) avatars[String(s.name).toLowerCase()] = s.avatar; } catch {}
   }
   function pip(face, kind) {
     if (kind === "number") return el("span", { className: "pip num", textContent: String(face + 1) });
     const p = el("span", { className: "pip" });
     p.style.background = COLORS[face] || "#888";
+    p.style.setProperty("--pc", COLORS[face] || "transparent");
     return p;
   }
 
   // ---- recent dice ----
+  let lastTop = null;
   async function loadFeed() {
     if (document.hidden) return;
     let rolls = [];
@@ -53,17 +61,19 @@
     feed.replaceChildren(...rolls.map((r) => {
       const label = r.vip || "Player";
       const col = r.vip ? nameColor(r.vip) : "#5b6072";
-      const who = el("span", { className: "who", textContent: r.vip ? "♛ " + r.vip : "Player" });
+      const who = el("span", { className: "who" + (r.vip ? " vip" : ""), textContent: r.vip ? "♛ " + r.vip : "Player" });
       who.style.color = col;
       const mid = el("span", { className: "mid" }, who, el("span", { className: "dice-mini" }, ...r.faces.map((f) => pip(f, r.kind))));
       const meta = el("span", { className: "meta" },
         el("span", { className: "when", textContent: ago(r.at) }),
         el("code", { className: "rid", textContent: "#" + r.id }));
       const b = el("button", { type: "button", className: "frow", title: "Verify roll " + r.id },
-        avatar(label, r.vip ? col : "#3a3f52"), mid, meta);
+        r.vip ? avatar(label, col, avatars[r.vip.toLowerCase()]) : el("span", { className: "av av-dice" }), mid, meta);
       b.addEventListener("click", () => { location.href = "/?verify=" + encodeURIComponent(r.id); });
       return b;
     }));
+    if (lastTop !== null && rolls[0].id !== lastTop && feed.firstChild) feed.firstChild.classList.add("fresh");
+    lastTop = rolls[0].id;
   }
 
   // ---- chat ----
@@ -73,7 +83,7 @@
     let msgs = [];
     try { msgs = (await api("/api/chat")).messages; } catch { return; }
     const box = $("messages");
-    if (!msgs.length) { box.replaceChildren(el("p", { className: "empty", textContent: "No messages yet — say hi!" })); return; }
+    if (!msgs.length) { box.replaceChildren(el("div", { className: "empty" }, el("span", { className: "empty-ico", textContent: "💬" }), "No messages yet — be the first to say hi!")); return; }
     const nearBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 60;
     box.replaceChildren(...msgs.map((m) => {
       const col = nameColor(m.name);
@@ -113,7 +123,8 @@
     } finally { btn.disabled = false; $("chatBody").focus(); }
   });
 
-  loadFeed(); loadChat(); loadOnline();
+  loadAvatars().then(loadFeed); loadChat(); loadOnline();
+  setInterval(loadAvatars, 60000);
   setInterval(loadFeed, 6000);
   setInterval(loadChat, 3000);
   setInterval(loadOnline, 15000);
