@@ -11,8 +11,8 @@ body {
   min-height: 100vh; padding: 0 16px;
 }
 .wrap { max-width: 760px; margin: 0 auto; padding: 28px 0 56px; }
-.brand { display: inline-block; font: 400 30px/1 "Luckiest Guy", cursive; letter-spacing: .02em; color: var(--fg); text-decoration: none; margin-bottom: 8px; }
-.brand span { color: var(--accent); }
+.brand { display: inline-block; text-decoration: none; margin-bottom: 8px; }
+.brand-img { height: 44px; width: auto; max-width: 240px; object-fit: contain; display: block; }
 .card { background: var(--panel); border: 1px solid var(--edge); border-radius: 18px; padding: 26px 24px; margin-top: 16px; }
 h1 { font: 400 32px/1.1 "Luckiest Guy", cursive; letter-spacing: .01em; margin: 6px 0 2px; }
 h2 { font-size: 20px; font-weight: 800; margin: 26px 0 8px; }
