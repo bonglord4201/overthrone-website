@@ -455,10 +455,22 @@
     }
     $("skin").replaceChildren(...groups.values());
   }
+  // The logo PNG is red (hue ~4°); rotate its hue to the theme's accent so it recolors per theme.
+  function logoHue(hex) {
+    const m = /^#?([0-9a-f]{6})$/i.exec(String(hex || "").trim());
+    if (!m) return "0deg";
+    const n = parseInt(m[1], 16), r = (n >> 16 & 255) / 255, g = (n >> 8 & 255) / 255, b = (n & 255) / 255;
+    const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn;
+    if (d < 0.03) return "0deg"; // near-grey accent: leave the logo red
+    let h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    h = h * 60; if (h < 0) h += 360;
+    return Math.round(((h - 4) % 360 + 360) % 360) + "deg";
+  }
   function applyTheme() {
     const t = themeById(state.skin);
     const root = document.documentElement.style;
     for (const [k, v] of Object.entries(UI_VARS)) root.setProperty(v, t.ui[k] || UI_DEFAULTS[k] || "");
+    root.setProperty("--logo-hue", logoHue(t.ui.accent));
     window.Scene.use(t);
   }
 
