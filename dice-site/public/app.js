@@ -763,10 +763,10 @@
   }
 
   // A signed-in VIP automatically sees their own room banner (server-verified).
+  // This runs first and wins; a ?room link is only a fallback for logged-out viewers.
   async function loadVipRoom() {
-    if (params.get("room")) return; // an explicit ?room link takes precedence
     try {
-      const res = await fetch("/vip/api/me", { credentials: "same-origin" });
+      const res = await fetch("/vip/api/me", { credentials: "same-origin", cache: "no-store" });
       if (!res.ok) return;
       const d = await res.json();
       if (d && d.streamer) showRoom(d.streamer);
@@ -876,8 +876,8 @@
     state.roller = roller;
     state.preview = !online;
     $("previewNotice").hidden = online;
-    loadVipRoom();
-    loadStreamers();
+    await loadVipRoom();   // signed-in VIP: show their own room first (wins over ?room)
+    loadStreamers();       // populates streamers; applyRoom only fills a ?room if none shown yet
     // Each visit starts fresh: a new session ID and an empty on-page history, so
     // refreshing (or leaving and coming back) gives a new ID. A streamer who keeps
     // refreshing to escape a bad run leaves a trail of separate short sessions.
