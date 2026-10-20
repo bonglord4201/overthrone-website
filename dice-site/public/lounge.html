@@ -5,31 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ColorRoll Lounge</title>
 <meta name="description" content="The ColorRoll lounge — see everyone's recent dice and chat with other players.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='12' fill='%23fff'/%3E%3Crect x='11' y='11' width='42' height='42' rx='7' fill='%23e3261b'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="icon" href="images/colorroll_dice.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Rubik:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Luckiest+Guy&family=Rubik:wght@400;600;800&display=swap">
 <link rel="stylesheet" href="lounge.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5630157933832433"
      crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="page">
-  <header class="top">
-    <a class="brand" href="/">Color<span>Roll</span> <small>Lounge</small></a>
-    <a class="back" href="/">← Back to the dice</a>
+  <header class="nav">
+    <a class="brand" href="/"><img class="brand-logo" src="images/colorroll_logo.png" alt="ColorRoll"></a>
+    <nav class="mainnav" aria-label="Main">
+      <a href="/">Dice Roller</a>
+      <a href="/lounge" class="active"><span class="nav-crown">♛</span> Lounge</a>
+      <a href="/about">About</a>
+    </nav>
+    <div class="navbtns">
+      <a class="nbtn vip" href="/vip">♛ VIP</a>
+      <a class="nbtn login" href="/vip">Login</a>
+    </div>
   </header>
 
-  <main class="grid">
-    <section class="card feed-card" aria-labelledby="feed-title">
-      <h2 id="feed-title">Recent dice <span class="live-dot" aria-hidden="true"></span></h2>
+  <div class="lounge-title">
+    <span class="lt-crown">♛</span>
+    <h1>LOUNGE</h1>
+    <p>Chat · Watch · Share · Vibe</p>
+  </div>
+
+  <main class="lounge-grid">
+    <section class="frame" aria-labelledby="feed-title">
+      <div class="panel-head">
+        <h2 id="feed-title">Recent Dice</h2>
+        <span class="live-badge"><span class="live-dot"></span> LIVE</span>
+      </div>
       <p class="sub">Everyone's newest rolls. Tap one to verify it.</p>
       <div id="feed" class="feed"></div>
     </section>
 
-    <section class="card chat-card" aria-labelledby="chat-title">
-      <h2 id="chat-title">Lounge chat</h2>
-      <p class="sub">Be kind. This is a public chat — never share personal info, links, or contact details. Messages are public.</p>
+    <section class="frame" aria-labelledby="chat-title">
+      <div class="panel-head">
+        <h2 id="chat-title">Lounge Chat</h2>
+        <span class="online"><span class="online-dot"></span> <b id="online">—</b> Online</span>
+      </div>
+      <p class="sub">Be kind. This is a public chat — never share personal info, links, or contact details.</p>
       <div id="messages" class="messages" aria-live="polite"></div>
       <form id="chatForm" class="chatbar" autocomplete="off">
         <input id="chatName" class="name" maxlength="20" placeholder="Your name" aria-label="Your name" required>
