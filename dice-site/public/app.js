@@ -552,12 +552,12 @@
         el("span", { className: "seq", textContent: "#" + (i + 1) }),
         diceSet(x),
         el("span", { className: "when" }, el("b", { textContent: clock.format(new Date(x.at)) }), el("br"), i ? gap(prev.at, x.at) : ""));
-    });
+    }).reverse(); // newest roll at the top
     const copy = el("button", { type: "button", className: "ghost", textContent: "Copy verify link" });
     copy.addEventListener("click", () => copyText(verifyLink(code), copy, "Copy verify link"));
     out.replaceChildren(...[
       flagBanner(data.flag),
-      verdict(true, "Verified session.", `This is every roll made under ID ${code} on ${location.host || "this site"} — ${rolls.length} roll${rolls.length === 1 ? "" : "s"} in the order they happened. If a streamer only showed some of these on stream, the rest are re-rolls they hid.`),
+      verdict(true, "Verified session.", `This is every roll made under ID ${code} on ${location.host || "this site"} — ${rolls.length} roll${rolls.length === 1 ? "" : "s"}, newest first. If a streamer only showed some of these on stream, the rest are re-rolls they hid.`),
       el("h3", { textContent: "All rolls under this ID" }),
       el("div", { className: "vlist" }, ...rows),
       el("div", { className: "share" }, copy),
