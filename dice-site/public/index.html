@@ -19,9 +19,19 @@
 <canvas id="sky" class="scene" aria-hidden="true"></canvas>
 <canvas id="fx" class="scene" aria-hidden="true"></canvas>
 <div class="page">
-  <header class="top">
-    <a class="brand" href="./">Color<span>Roll</span></a>
-    <span class="tag">Free color dice with rolls anyone can verify</span>
+  <header class="nav">
+    <a class="brand" href="/"><span class="logo-die" aria-hidden="true"></span>Color<span>Roll</span></a>
+    <nav class="mainnav" aria-label="Main">
+      <a href="/" class="active">Dice Roller</a>
+      <a href="/lounge">Lounge</a>
+      <a href="/about">About</a>
+      <button type="button" id="navOdds">Odds</button>
+      <button type="button" id="navVerify">Verify</button>
+    </nav>
+    <div class="navbtns">
+      <a class="nbtn vip" href="/vip">👑 VIP</a>
+      <a class="nbtn login" href="/vip">Login</a>
+    </div>
   </header>
 
   <p id="previewNotice" class="notice" hidden><b>Preview mode.</b> The dice server is not connected, so these rolls are saved in this browser only and viewers cannot verify them.</p>
@@ -38,6 +48,7 @@
         <div class="vr-text">
           <b id="vipRoomName"></b>
           <span class="vr-sub">VIP Room</span>
+          <span class="vr-tagline">Exclusive room · No ads · Special features</span>
         </div>
         <a id="vipRoomLive" class="vr-live" href="#" target="_blank" rel="noopener" hidden><span class="vr-live-dot"></span> Tap to watch LIVE</a>
       </div>

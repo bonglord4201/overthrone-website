@@ -690,6 +690,8 @@
   $("count").addEventListener("change", (e) => { state.n = +e.target.value; save(); roll(); });
   $("type").addEventListener("change", (e) => { state.type = e.target.value; save(); renderPossible(); renderHistory(); roll(); });
   $("skin").addEventListener("change", (e) => { state.skin = e.target.value; save(); applyTheme(); });
+  const navOdds = $("navOdds"); if (navOdds) navOdds.addEventListener("click", () => $("oddsBtn").click());
+  const navVerify = $("navVerify"); if (navVerify) navVerify.addEventListener("click", () => $("verifyBtn").click());
   $("sound").addEventListener("change", (e) => { state.sound = e.target.checked; save(); });
   $("vol").addEventListener("input", (e) => { setVolume(parseFloat(e.target.value)); });
   $("vol").addEventListener("change", (e) => { setVolume(parseFloat(e.target.value)); save(); });
