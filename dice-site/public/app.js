@@ -728,15 +728,22 @@
     let list = [];
     try { list = state.preview ? [] : (await request("/api/streamers")).streamers; } catch {}
     applyRoom(list);
+    const left = [], right = [];
+    list.forEach((s) => {
+      const side = s.side === "left" || s.side === "right" ? s.side : left.length <= right.length ? "left" : "right";
+      (side === "left" ? left : right).push(s);
+    });
+    for (const [panel, items] of [[$("streamersLeft"), left], [$("streamersRight"), right]]) {
+      if (!panel) continue;
+      panel.querySelector(".slist").replaceChildren(...items.map(streamerCard));
+      panel.hidden = !items.length;
+    }
+    const layout = document.querySelector(".layout");
+    if (layout) layout.classList.toggle("no-streamers", !list.length);
   }
 
-  // When the page is opened as a streamer's room (…/?room=handle), show a banner
-  // with their name and picture, like "LEXOUSSAR'S VIP ROOM".
-  function applyRoom(list) {
-    const box = $("vipRoom");
-    const room = (params.get("room") || "").trim().toLowerCase().replace(/^@/, "");
-    const s = room && list.find((x) => (x.handle || "").toLowerCase() === room);
-    if (!s) { box.hidden = true; return; }
+  // Show the VIP room banner for a streamer, like "LEXOUSSAR'S VIP ROOM".
+  function showRoom(s) {
     $("vipRoomName").textContent = (s.name || s.handle) + "'s";
     const pic = $("vipRoomPic");
     if (s.avatar) { pic.style.backgroundImage = `url(${s.avatar})`; pic.textContent = ""; }
@@ -744,7 +751,26 @@
     const live = $("vipRoomLive");
     if (s.live) { live.hidden = false; live.href = "https://www.tiktok.com/@" + encodeURIComponent(s.handle) + "/live"; }
     else live.hidden = true;
-    box.hidden = false;
+    $("vipRoom").hidden = false;
+  }
+
+  // A ?room=handle link shows that streamer's room banner.
+  function applyRoom(list) {
+    if (!$("vipRoom").hidden) return; // a signed-in VIP banner is already showing
+    const room = (params.get("room") || "").trim().toLowerCase().replace(/^@/, "");
+    const s = room && list.find((x) => (x.handle || "").toLowerCase() === room);
+    if (s) showRoom(s);
+  }
+
+  // A signed-in VIP automatically sees their own room banner (server-verified).
+  async function loadVipRoom() {
+    if (params.get("room")) return; // an explicit ?room link takes precedence
+    try {
+      const res = await fetch("/vip/api/me", { credentials: "same-origin" });
+      if (!res.ok) return;
+      const d = await res.json();
+      if (d && d.streamer) showRoom(d.streamer);
+    } catch {}
   }
 
 
@@ -850,6 +876,7 @@
     state.roller = roller;
     state.preview = !online;
     $("previewNotice").hidden = online;
+    loadVipRoom();
     loadStreamers();
     // Each visit starts fresh: a new session ID and an empty on-page history, so
     // refreshing (or leaving and coming back) gives a new ID. A streamer who keeps
@@ -857,10 +884,7 @@
     state.history = [];
     renderHistory();
     renderPopular();
-    setupChat();
     await roll();
-    renderLive(); setInterval(renderLive, 6000);
-    loadChat(); setInterval(loadChat, 4000);
     loadStats(); setInterval(loadStats, 15000);
     const v = params.get("verify") || (location.hash.match(/^#verify-([A-Za-z0-9]{10})$/) || [])[1];
     if (v) openVerify(v);

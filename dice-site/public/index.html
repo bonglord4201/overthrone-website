@@ -36,22 +36,27 @@
 
   <p id="previewNotice" class="notice" hidden><b>Preview mode.</b> The dice server is not connected, so these rolls are saved in this browser only and viewers cannot verify them.</p>
 
-  <main class="layout3">
-    <aside class="col side-col left-col" aria-label="Live rolls">
-      <section class="panel side-panel live-panel">
-        <div class="panel-head">
-          <h2>Live Rolls</h2>
-          <span class="live-badge"><span class="live-dot"></span> LIVE</span>
-        </div>
-        <p class="panel-sub">Everyone's newest rolls. Tap to verify.</p>
-        <div id="liveFeed" class="live-feed"></div>
-        <a class="panel-foot-link" href="/lounge">View full history →</a>
-      </section>
+  <main class="layout">
+    <aside id="streamersLeft" class="panel streamers left" aria-label="Top streamers" hidden>
+      <h2>Our top streamers</h2>
+      <div class="slist"></div>
     </aside>
 
-    <div class="col center">
+    <div class="center">
+      <div class="adslot" data-ad-slot="top" hidden><span class="ad-label">Advertisement</span></div>
+
       <section class="panel roller" aria-labelledby="roller-title">
         <h1 id="roller-title">Roll Color Dice</h1>
+
+        <div id="vipRoom" class="vip-room" hidden>
+          <span id="vipRoomPic" class="vr-pic" aria-hidden="true"></span>
+          <div class="vr-text">
+            <b id="vipRoomName"></b>
+            <span class="vr-sub">VIP Room</span>
+            <span class="vr-tagline">Exclusive room · No ads · Special features</span>
+          </div>
+          <a id="vipRoomLive" class="vr-live" href="#" target="_blank" rel="noopener" hidden><span class="vr-live-dot"></span> Tap to watch LIVE</a>
+        </div>
 
         <div class="controls">
           <label class="sr" for="count">Number of dice</label>
@@ -150,33 +155,9 @@
 
     </div>
 
-    <aside class="col side-col right-col" aria-label="VIP room and chat">
-      <div id="vipRoom" class="vip-room" hidden>
-        <span id="vipRoomPic" class="vr-pic" aria-hidden="true"></span>
-        <div class="vr-text">
-          <b id="vipRoomName"></b>
-          <span class="vr-sub">VIP Room</span>
-          <span class="vr-tagline">Exclusive room · No ads · Special features</span>
-        </div>
-        <a id="vipRoomLive" class="vr-live" href="#" target="_blank" rel="noopener" hidden><span class="vr-live-dot"></span> Tap to watch LIVE</a>
-      </div>
-
-      <div class="adslot side-ad" data-ad-slot="rightTop" hidden><span class="ad-label">Advertisement</span></div>
-
-      <section class="panel side-panel chat-panel">
-        <div class="panel-head">
-          <h2>Lounge Chat</h2>
-          <span class="online"><span class="online-dot"></span> <b id="onlineCount">—</b> online</span>
-        </div>
-        <p class="panel-sub">Be kind. No personal info, links, or contact details.</p>
-        <div id="chatMessages" class="chat-messages"></div>
-        <form id="chatForm" class="chatbar" autocomplete="off">
-          <input id="chatName" class="cname" maxlength="20" placeholder="Your name" aria-label="Your name" required>
-          <input id="chatBody" class="cbody" maxlength="200" placeholder="Type a message…" aria-label="Message" required>
-          <button class="send" type="submit">Send</button>
-        </form>
-        <p id="chatErr" class="err" role="alert" hidden></p>
-      </section>
+    <aside id="streamersRight" class="panel streamers right" aria-label="More top streamers" hidden>
+      <h2>Our top streamers</h2>
+      <div class="slist"></div>
     </aside>
   </main>
 
