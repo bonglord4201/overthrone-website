@@ -31,6 +31,7 @@
     const room = location.origin + "/?room=" + encodeURIComponent(s.handle);
     $("roomUrl").href = room;
     $("roomUrl").textContent = room.replace(/^https?:\/\//, "");
+    $("viewSite").href = room;
     setLive(s.live);
   }
   function setLive(on) {

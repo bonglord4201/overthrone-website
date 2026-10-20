@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ColorRoll Lounge</title>
+<meta name="description" content="The ColorRoll lounge — see everyone's recent dice and chat with other players.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='12' fill='%23fff'/%3E%3Crect x='11' y='11' width='42' height='42' rx='7' fill='%23e3261b'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Rubik:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="lounge.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5630157933832433"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <a class="brand" href="/">Color<span>Roll</span> <small>Lounge</small></a>
+    <a class="back" href="/">← Back to the dice</a>
+  </header>
+
+  <main class="grid">
+    <section class="card feed-card" aria-labelledby="feed-title">
+      <h2 id="feed-title">Recent dice <span class="live-dot" aria-hidden="true"></span></h2>
+      <p class="sub">Everyone's newest rolls. Tap one to verify it.</p>
+      <div id="feed" class="feed"></div>
+    </section>
+
+    <section class="card chat-card" aria-labelledby="chat-title">
+      <h2 id="chat-title">Lounge chat</h2>
+      <p class="sub">Be kind. This is a public chat — never share personal info, links, or contact details. Messages are public.</p>
+      <div id="messages" class="messages" aria-live="polite"></div>
+      <form id="chatForm" class="chatbar" autocomplete="off">
+        <input id="chatName" class="name" maxlength="20" placeholder="Your name" aria-label="Your name" required>
+        <input id="chatBody" class="body" maxlength="200" placeholder="Say something nice…" aria-label="Message" required>
+        <button class="send" type="submit">Send</button>
+      </form>
+      <p id="chatErr" class="err" role="alert" hidden></p>
+    </section>
+  </main>
+
+  <nav class="footnav" aria-label="Site">
+    <a href="/">Dice Roller</a>
+    <a href="/lounge">Lounge</a>
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+    <a href="/vip">VIP Login</a>
+  </nav>
+</div>
+<script src="lounge.js"></script>
+</body>
+</html>

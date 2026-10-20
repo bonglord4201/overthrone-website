@@ -21,6 +21,7 @@ import { isAdmin, login, logout, sameOrigin, adminConfigured } from "./auth.js";
 import { listPublic, handleAdminStreamers, serveMedia } from "./streamers.js";
 import { handleModeration } from "./moderation.js";
 import { handleVipApi } from "./vip.js";
+import { handleChat } from "./chat.js";
 
 const ADMIN_PATH_RE = /^[A-Za-z0-9_-]{16,64}$/;
 const RESERVED = ["admin", "api", "media"];
@@ -73,6 +74,7 @@ async function route(request, env, url) {
   if (parts[0] === "api") {
     if (parts[1] === "health" && method === "GET") return json({ ok: true });
     if (parts[1] === "streamers" && parts.length === 2 && method === "GET") return listPublic(env);
+    if (parts[1] === "chat") return handleChat(request, env, parts);
     return (await handleRolls(request, env, parts)) || json({ error: "Not found" }, 404);
   }
   return notFound(env, url);

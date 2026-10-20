@@ -237,7 +237,7 @@
   // Modelled on a real plastic-dice roll: a dense shaker rattle that builds a
   // little, then a louder cluster as the dice drop and settle. A master gain is
   // driven by the volume slider; the Sound switch mutes everything.
-  let audio, noiseBuf, master;
+  let audio, noiseBuf, master, sampleBuf = null, sampleReq = false;
   function ac() {
     if (!audio) {
       audio = new (window.AudioContext || window.webkitAudioContext)();
@@ -248,8 +248,25 @@
       master = audio.createGain();
       master.gain.value = state.volume;
       master.connect(audio.destination);
+      // The real ColorRoll dice clack, recorded from the original site.
+      if (!sampleReq) {
+        sampleReq = true;
+        fetch("/sounds/dice.mp3").then((r) => r.arrayBuffer()).then((b) => audio.decodeAudioData(b)).then((buf) => { sampleBuf = buf; }).catch(() => {});
+      }
     }
     return audio;
+  }
+  // Play the recorded dice clack, pitched slightly for variety. Returns false if
+  // the sample isn't loaded yet, so the caller can fall back to the synth.
+  function playSample(delay, vol, rate) {
+    if (!state.sound || !sampleBuf) return false;
+    try {
+      const a = ac(), t = a.currentTime + delay, s = a.createBufferSource(), g = a.createGain();
+      s.buffer = sampleBuf; s.playbackRate.value = rate;
+      g.gain.setValueAtTime(Math.max(0.0001, vol), t);
+      s.connect(g).connect(master); s.start(t);
+      return true;
+    } catch { return false; }
   }
   function setVolume(v) {
     state.volume = Math.min(1, Math.max(0, v));
@@ -276,6 +293,8 @@
   // One "clack" of dice hitting — a short bright noise transient plus a low knock,
   // like plastic dice tumbling against each other.
   function clack(delay, vol) {
+    // Use the recorded clack when it's ready; otherwise synthesize one.
+    if (playSample(delay, vol * 1.3, 0.9 + Math.random() * 0.3)) return;
     // sharp top-end "tick" of the plastic edge
     noise(0.020, { vol: vol, freq: 3200 + Math.random() * 2600, q: 2.6, delay });
     // woody mid "knock" — the body of the dice hitting
@@ -755,6 +774,7 @@
   async function start() {
     buildThemeMenu();
     applySettings();
+    try { ac(); } catch {} // start loading the dice sound sample early
     if (store.get("history-hidden", false)) setHistory(false);
     showBlank();
     renderHistory();
