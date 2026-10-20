@@ -234,7 +234,7 @@
     faces.forEach((f, i) => setDie(diceEl.children[i], f));
     diceEl.setAttribute("aria-label", "Dice: " + faces.map((f) => faceName(f, type)).join(", "));
   }
-  function showRoll(r) {
+  function drawRoll(r) {
     state.current = r;
     showFaces(r.faces, r.kind);
     $("rollId").textContent = r.session || state.session;
@@ -405,7 +405,7 @@
       clearTimeout(capTimer);
       diceEl.classList.remove("shaking");
       $("suspense").hidden = true;
-      if (state.current && state.current.dice === state.n && state.current.kind === state.type) showRoll(state.current);
+      if (state.current && state.current.dice === state.n && state.current.kind === state.type) drawRoll(state.current);
       else showBlank();
       $("rollErr").textContent = err.message;
       $("rollErr").hidden = false;
@@ -911,7 +911,7 @@
     // last roll. A refresh or a new visit starts a new session with a fresh roll.
     renderHistory();
     renderPopular();
-    if (resumed && state.current) showRoll(state.current);
+    if (resumed && state.current) drawRoll(state.current);
     else await roll();
     loadStats(); setInterval(loadStats, 15000);
     const v = params.get("verify") || (location.hash.match(/^#verify-([A-Za-z0-9]{10})$/) || [])[1];
