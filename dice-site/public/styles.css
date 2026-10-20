@@ -376,3 +376,15 @@ body.comfort .go::after { display: none; }                 /* no sheen sweep */
 .footnav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 22px; margin-top: 6px; }
 .footnav a { color: var(--page-fg); font: 400 15px/1 var(--font-display); letter-spacing: .04em; text-transform: uppercase; text-decoration: none; text-shadow: 0 2px 0 rgba(0,0,0,.35); }
 .footnav a:hover { color: var(--brand-accent); }
+
+/* volume slider (sits with the Sound / Eye comfort toggles) */
+.vol { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--page-fg); }
+.vol input[type="range"] { width: 110px; max-width: 40vw; accent-color: var(--brand-accent, #e3261b); cursor: pointer; }
+
+/* Ad slots. Hidden until ads.js fills them with a real, approved ad unit — so an
+   empty/disabled slot takes no space and never shows a fake ad. Never overlaps the
+   dice, roll button, verify or counter; always full-width and responsive. */
+.adslot { width: 100%; max-width: 728px; margin: 10px auto; text-align: center; min-height: 0; }
+.adslot[hidden] { display: none; }
+.adslot .ad-label { display: block; font: 400 11px/1 var(--font-body); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); opacity: .7; margin-bottom: 4px; }
+.adslot .adsbygoogle { display: block; }

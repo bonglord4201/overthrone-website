@@ -62,6 +62,7 @@
     type: store.get("type", "color"),
     skin: params.get("theme") || store.get("skin", "hell"),
     sound: store.get("sound", true),
+    volume: Math.min(1, Math.max(0, store.get("volume", 0.8))),
     comfort: store.get("comfort", false),
     counter: store.get("counter", 0),
     key: store.get("key", ""),
@@ -80,7 +81,7 @@
   if (!(state.n >= 1 && state.n <= 6)) state.n = 4;
   if (!/^[A-Za-z0-9]{24,64}$/.test(state.key)) { state.key = randomString(KEY_CHARS, 32); store.set("key", state.key); }
   state.session = randomString(ID_CHARS, 10);
-  const save = () => ["n", "type", "skin", "sound", "counter", "comfort"].forEach((k) => store.set(k, state[k]));
+  const save = () => ["n", "type", "skin", "sound", "volume", "counter", "comfort"].forEach((k) => store.set(k, state[k]));
 
   // ---- API (server, or this browser in preview mode) ----
   async function request(path, options) {
@@ -230,8 +231,11 @@
     $("rollMeta").textContent = "Press Roll again to roll";
   }
 
-  // ---- sound (WebAudio; a layered shaker rattle + a satisfying landing chime) ----
-  let audio, noiseBuf;
+  // ---- sound (WebAudio) ----
+  // Modelled on a real plastic-dice roll: a dense shaker rattle that builds a
+  // little, then a louder cluster as the dice drop and settle. A master gain is
+  // driven by the volume slider; the Sound switch mutes everything.
+  let audio, noiseBuf, master;
   function ac() {
     if (!audio) {
       audio = new (window.AudioContext || window.webkitAudioContext)();
@@ -239,8 +243,15 @@
       noiseBuf = audio.createBuffer(1, len, audio.sampleRate);
       const d = noiseBuf.getChannelData(0);
       for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+      master = audio.createGain();
+      master.gain.value = state.volume;
+      master.connect(audio.destination);
     }
     return audio;
+  }
+  function setVolume(v) {
+    state.volume = Math.min(1, Math.max(0, v));
+    if (master) master.gain.value = state.volume;
   }
   function tone(freq, dur, { type = "sine", vol = 0.12, to = freq, delay = 0 } = {}) {
     if (!state.sound) return;
@@ -248,7 +259,7 @@
       const a = ac(), t = a.currentTime + delay, o = a.createOscillator(), g = a.createGain();
       o.type = type; o.frequency.setValueAtTime(freq, t); o.frequency.exponentialRampToValueAtTime(Math.max(1, to), t + dur);
       g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(vol, t + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-      o.connect(g).connect(a.destination); o.start(t); o.stop(t + dur + 0.03);
+      o.connect(g).connect(master); o.start(t); o.stop(t + dur + 0.03);
     } catch {}
   }
   function noise(dur, { vol = 0.14, freq = 1600, q = 0.8, delay = 0 } = {}) {
@@ -257,38 +268,39 @@
       const a = ac(), t = a.currentTime + delay, s = a.createBufferSource(); s.buffer = noiseBuf;
       const f = a.createBiquadFilter(); f.type = "bandpass"; f.frequency.value = freq; f.Q.value = q;
       const g = a.createGain(); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-      s.connect(f).connect(g).connect(a.destination); s.start(t); s.stop(t + dur + 0.02);
+      s.connect(f).connect(g).connect(master); s.start(t); s.stop(t + dur + 0.02);
     } catch {}
   }
   // One "clack" of dice hitting — a short bright noise transient plus a low knock,
   // like plastic dice tumbling against each other.
   function clack(delay, vol) {
     // sharp top-end "tick" of the plastic edge
-    noise(0.022, { vol: vol, freq: 3000 + Math.random() * 2600, q: 2.4, delay });
+    noise(0.020, { vol: vol, freq: 3200 + Math.random() * 2600, q: 2.6, delay });
     // woody mid "knock" — the body of the dice hitting
-    noise(0.05, { vol: vol * 0.6, freq: 700 + Math.random() * 380, q: 1.0, delay });
+    noise(0.05, { vol: vol * 0.6, freq: 680 + Math.random() * 360, q: 1.0, delay });
     // low thunk for weight
-    tone(95 + Math.random() * 55, 0.06, { type: "triangle", vol: vol * 0.35, to: 52, delay });
+    tone(92 + Math.random() * 55, 0.055, { type: "triangle", vol: vol * 0.32, to: 50, delay });
   }
-  // Dice tumbling in a cup: dense clatter at the start that thins and slows
-  // as the dice settle, with the odd double-tick for a real "cluster" feel.
+  // Dice shaking in a cup: dense clatter that swells slightly toward the middle
+  // then thins as they settle — matches the roll sound on sites like online-dice.
   function rollSound() {
     if (!state.sound) return;
     const dur = MIN_SPIN_MS / 1000;
     let t = 0;
     while (t < dur) {
       const prog = t / dur;
-      clack(t, 0.08 + Math.random() * 0.05);
-      if (Math.random() < 0.45) clack(t + 0.012 + Math.random() * 0.02, 0.045 + Math.random() * 0.03);
-      t += 0.028 + Math.random() * 0.05 + prog * 0.08; // gaps widen as they settle
+      const swell = 1 - Math.abs(prog - 0.45) * 1.1; // louder in the middle of the shake
+      const v = (0.07 + Math.random() * 0.04) * Math.max(0.5, swell);
+      clack(t, v);
+      if (Math.random() < 0.5) clack(t + 0.010 + Math.random() * 0.018, v * 0.6);
+      t += 0.024 + Math.random() * 0.04 + prog * 0.06; // gaps widen as they settle
     }
   }
-  // Each die lands: a clack plus a soft note climbing left to right.
-  const NOTES = [523.25, 587.33, 659.25, 783.99, 880, 1046.5];
+  // Each die drops and settles: a knock plus a quick secondary bounce — no musical
+  // note, so it sounds like real dice landing rather than a chime.
   function landTone(i) {
-    clack(0, 0.12);
-    const n = NOTES[Math.min(i, NOTES.length - 1)];
-    tone(n, 0.22, { type: "triangle", vol: 0.1, delay: 0.02 });
+    clack(0, 0.17);
+    clack(0.035 + Math.random() * 0.03, 0.1);
   }
 
   const SUSPENSE = ["What color will it be?", "Here we go!", "Rolling…"];
@@ -433,6 +445,7 @@
     $("type").value = state.type;
     $("skin").value = state.skin;
     $("sound").checked = state.sound;
+    $("vol").value = state.volume;
     $("comfort").checked = state.comfort;
     document.body.classList.toggle("comfort", state.comfort);
     $("counter").textContent = state.counter;
@@ -657,6 +670,8 @@
   $("type").addEventListener("change", (e) => { state.type = e.target.value; save(); renderPossible(); renderHistory(); roll(); });
   $("skin").addEventListener("change", (e) => { state.skin = e.target.value; save(); applyTheme(); });
   $("sound").addEventListener("change", (e) => { state.sound = e.target.checked; save(); });
+  $("vol").addEventListener("input", (e) => { setVolume(parseFloat(e.target.value)); });
+  $("vol").addEventListener("change", (e) => { setVolume(parseFloat(e.target.value)); save(); });
   $("comfort").addEventListener("change", (e) => { state.comfort = e.target.checked; document.body.classList.toggle("comfort", state.comfort); save(); });
   document.querySelectorAll("[data-d]").forEach((b) => b.addEventListener("click", () => {
     state.counter += +b.dataset.d; $("counter").textContent = state.counter; save();
