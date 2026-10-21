@@ -3,7 +3,16 @@
   "name": "colorroll-dice",
   "main": "src/worker.js",
   "compatibility_date": "2025-11-01",
-  "previews": {},
+  "previews": {
+    "d1_databases": [
+      {
+        "binding": "DB",
+        "database_name": "colorroll-preview-db",
+        "database_id": "a5c8a64d-4a7f-4446-b2dd-4c12cd62065d",
+        "migrations_dir": "migrations"
+      }
+    ]
+  },
   "assets": {
     "directory": "./public",
     "binding": "ASSETS",
@@ -13,8 +22,8 @@
     "run_worker_first": ["/api/*", "/media/*", "/admin", "/admin/*", "/vip", "/vip/*"]
   },
   // This database_id is just an identifier for your D1 database (not a password), so it
-  // can live in the repo — that lets auto-deploy from GitHub work. If you ever recreate the
-  // database with `npx wrangler d1 create colorroll-db`, paste the new id below.
+  // can live in the repo — that lets auto-deploy from GitHub work. If you ever recreate
+  // the production database, paste the new id below.
   "d1_databases": [
     { "binding": "DB", "database_name": "colorroll-db", "database_id": "275c4c69-7fde-4187-8e4e-2661124da701", "migrations_dir": "migrations" }
   ],
