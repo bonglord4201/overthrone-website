@@ -44,7 +44,7 @@ async function createRoll(request, env) {
   // Only the authenticated skitzsab VIP can exclude a colour. Never trust a
   // client-supplied username; vipSession validates the signed server cookie.
   const requestedExclusion = body && Number.isInteger(body.excludeColor) ? body.excludeColor : -1;
-  const excludedColor = kind === "color" && vip && String(vip.vip_user || "").toLowerCase() === "skitzsab"
+  const excludedColor = kind === "color" && vip && String(vip.vip_user || "").toLowerCase() === "skitz"
     && requestedExclusion >= 0 && requestedExclusion <= 5 ? requestedExclusion : -1;
   const faces = excludedColor >= 0 ? randomFacesExcluding(dice, excludedColor) : randomFaces(dice);
   const gap = new Date(now - MIN_GAP_MS).toISOString();
