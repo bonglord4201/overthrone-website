@@ -136,3 +136,7 @@ public/_headers         security headers
 ```
 
 To rename the site, change "ColorRoll" in `public/index.html` (title, header, footer).
+
+## Cloudflare preview builds
+
+The Cloudflare preview build runs from this directory (`dice-site`) so Wrangler reads `wrangler.jsonc`, including its `previews` configuration. Keep preview resources isolated from production before testing API requests.
