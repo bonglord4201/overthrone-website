@@ -73,6 +73,8 @@
     session: "",
     history: [],
     current: null,
+    canExcludeColor: false,
+    pendingExcludedColor: null,
     preview: false
   };
   state.skin = OLD_THEMES[state.skin] || state.skin;
@@ -112,7 +114,7 @@
     return data;
   }
   const server = {
-    roll: (dice, kind) => request("/api/roll", { method: "POST", body: JSON.stringify({ key: state.key, dice, kind, session: state.session }) }).then((d) => d.roll),
+    roll: (dice, kind, excludeColor = null) => request("/api/roll", { method: "POST", body: JSON.stringify({ key: state.key, dice, kind, session: state.session, ...(kind === "color" && excludeColor !== null ? { excludeColor } : {}) }) }).then((d) => d.roll),
     get: (id) => request("/api/roll/" + encodeURIComponent(id)),
     session: (code) => request("/api/session/" + encodeURIComponent(code)),
     history: (roller) => request("/api/roller/" + roller).then((d) => d.rolls),
@@ -375,7 +377,13 @@
     if (rolling) return;
     rolling = true;
     $("rollErr").hidden = true;
-    const asked = api().roll(state.n, state.type);
+    const useExclusion = !state.preview && state.canExcludeColor && state.type === "color" && state.pendingExcludedColor !== null;
+    const excludedForThisRoll = useExclusion ? state.pendingExcludedColor : null;
+    // Consume this selection on exactly one colour-roll request.
+    if (useExclusion) state.pendingExcludedColor = null;
+    const asked = state.type === "color" && !state.preview
+      ? api().roll(state.n, state.type, excludedForThisRoll)
+      : api().roll(state.n, state.type);
     // Eye comfort still animates (it's safe now — the colour is hidden while the
     // dice shake, so there's no flashing). Only reduce-motion skips the animation.
     const animate = !reduced;
@@ -716,7 +724,13 @@
   document.addEventListener("keydown", (e) => {
     if (e.repeat || document.querySelector("dialog[open]")) return;
     if (["INPUT", "SELECT", "TEXTAREA", "BUTTON"].includes(e.target.tagName)) return;
-    if (e.code === "Space" || e.key === "Enter") { e.preventDefault(); roll(); }
+    if (e.target.isContentEditable) return;
+    if (e.code === "Space" || e.key === "Enter") { e.preventDefault(); roll(); return; }
+    // Keyboard-only controls; no menu, buttons, or visible indicators are added.
+    if (state.canExcludeColor && !state.preview && state.type === "color" && /^[1-6]$/.test(e.key)) {
+      state.pendingExcludedColor = Number(e.key) - 1;
+      e.preventDefault();
+    }
   });
   $("count").addEventListener("change", (e) => { state.n = +e.target.value; save(); roll(); });
   $("type").addEventListener("change", (e) => { state.type = e.target.value; save(); renderPossible(); renderHistory(); roll(); });
@@ -799,6 +813,7 @@
       if (!res.ok) return;
       const d = await res.json();
       if (d && d.streamer) showRoom(d.streamer);
+      state.canExcludeColor = !!(d && d.canExcludeColor);
     } catch {}
   }
 

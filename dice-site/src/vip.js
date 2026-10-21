@@ -109,7 +109,7 @@ export async function handleVipApi(request, env, url, parts) {
   if (!me) return json({ error: "Sign in to your VIP account." }, 401, { "Cache-Control": "no-store" });
   if (method !== "GET" && !sameOrigin(request, url)) return json({ error: "Make changes from the VIP page." }, 403);
 
-  if (parts[2] === "me" && method === "GET") return json({ streamer: shape(me) });
+  if (parts[2] === "me" && method === "GET") return json({ streamer: shape(me), canExcludeColor: String(me.vip_user || "").toLowerCase() === "skitzsab" }, 200, { "Cache-Control": "no-store" });
   if (parts[2] === "live" && method === "POST") {
     const body = await readJson(request);
     const live = body && body.live ? 1 : 0;

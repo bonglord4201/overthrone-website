@@ -41,7 +41,12 @@ async function createRoll(request, env) {
   const vipName = vip && vip.name ? String(vip.name).slice(0, 40) : null;
 
   const now = Date.now();
-  const faces = randomFaces(dice);
+  // Only the authenticated skitzsab VIP can exclude a colour. Never trust a
+  // client-supplied username; vipSession validates the signed server cookie.
+  const requestedExclusion = body && Number.isInteger(body.excludeColor) ? body.excludeColor : -1;
+  const excludedColor = kind === "color" && vip && String(vip.vip_user || "").toLowerCase() === "skitzsab"
+    && requestedExclusion >= 0 && requestedExclusion <= 5 ? requestedExclusion : -1;
+  const faces = excludedColor >= 0 ? randomFacesExcluding(dice, excludedColor) : randomFaces(dice);
   const gap = new Date(now - MIN_GAP_MS).toISOString();
 
   for (let attempt = 0; attempt < 3; attempt++) {
@@ -81,6 +86,22 @@ function randomFaces(n) {
   while (out.length < n) {
     crypto.getRandomValues(buf);
     for (const b of buf) if (b < 252 && out.length < n) out.push(b % 6);
+  }
+  return out;
+}
+
+// Uniformly choose among the five allowed colours. Each result has 50 of the
+// 256 byte values after rejecting bytes >= 250, so there is no modulo bias.
+function randomFacesExcluding(n, excluded) {
+  const out = [];
+  const buf = new Uint8Array(16);
+  while (out.length < n) {
+    crypto.getRandomValues(buf);
+    for (const b of buf) {
+      if (b >= 250 || out.length >= n) continue;
+      const face = b % 5;
+      out.push(face >= excluded ? face + 1 : face);
+    }
   }
   return out;
 }
