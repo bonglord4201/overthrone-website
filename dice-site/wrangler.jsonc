@@ -27,5 +27,6 @@
   "d1_databases": [
     { "binding": "DB", "database_name": "colorroll-db", "database_id": "275c4c69-7fde-4187-8e4e-2661124da701", "migrations_dir": "migrations" }
   ],
+  // Trigger a fresh preview build after setting Preview Base secrets and the isolated D1 binding.
   "observability": { "enabled": true }
 }
