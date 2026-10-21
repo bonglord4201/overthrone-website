@@ -723,11 +723,15 @@
   $("roll").addEventListener("click", () => roll());
   document.addEventListener("keydown", (e) => {
     if (e.repeat || document.querySelector("dialog[open]")) return;
-    if (["INPUT", "SELECT", "TEXTAREA", "BUTTON"].includes(e.target.tagName)) return;
+    if (["INPUT", "SELECT", "TEXTAREA"].includes(e.target.tagName)) return;
     if (e.target.isContentEditable) return;
+    const choosingExcludedColor = state.canExcludeColor && !state.preview && state.type === "color" && /^[1-6]$/.test(e.key);
+    // A click on Roll Again leaves focus on its button. Allow VIP number keys
+    // while a button is focused, but don't steal Space/Enter or other button keys.
+    if (e.target.tagName === "BUTTON" && !choosingExcludedColor) return;
     if (e.code === "Space" || e.key === "Enter") { e.preventDefault(); roll(); return; }
     // Keyboard-only controls; no menu, buttons, or visible indicators are added.
-    if (state.canExcludeColor && !state.preview && state.type === "color" && /^[1-6]$/.test(e.key)) {
+    if (choosingExcludedColor) {
       state.pendingExcludedColor = Number(e.key) - 1;
       e.preventDefault();
     }
