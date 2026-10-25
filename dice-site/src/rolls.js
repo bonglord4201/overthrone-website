@@ -41,10 +41,10 @@ async function createRoll(request, env) {
   const vipName = vip && vip.name ? String(vip.name).slice(0, 40) : null;
 
   const now = Date.now();
-  // Only the authenticated skitz, jarrett or moonsab VIP can exclude a colour. Never trust a
+  // Only the authenticated skitz, jarrett or m00nsab VIP can exclude a colour. Never trust a
   // client-supplied username; vipSession validates the signed server cookie.
   const requestedExclusion = body && Number.isInteger(body.excludeColor) ? body.excludeColor : -1;
-  const excludedColor = kind === "color" && vip && ["skitz", "jarrett", "moonsab"].includes(String(vip.vip_user || "").toLowerCase())
+  const excludedColor = kind === "color" && vip && ["skitz", "jarrett", "m00nsab"].includes(String(vip.vip_user || "").toLowerCase())
     && requestedExclusion >= 0 && requestedExclusion <= 5 ? requestedExclusion : -1;
   const faces = excludedColor >= 0 ? randomFacesExcluding(dice, excludedColor) : randomFaces(dice);
   const gap = new Date(now - MIN_GAP_MS).toISOString();
